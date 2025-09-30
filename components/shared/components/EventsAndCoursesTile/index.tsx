@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material'
 import { IoIosArrowRoundForward } from 'react-icons/io'
-import { saxoGrammaticus } from '../../../../lib/fonts'
+import { dubaiFont } from '../../../../lib/fonts'
 
 export type EventsCourseTitleProps = {
   id?: number
@@ -17,7 +17,7 @@ function EventsAndCoursesTile(props: EventsCourseTitleProps) {
       component='p'
       onClick={onClick}
       sx={{
-        fontFamily: `${saxoGrammaticus.style.fontFamily}, sans-serif`,
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
         color: isSelected
           ? (theme: any) => theme.palette.custom.main
           : (theme: any) => theme.palette.custom.heading,

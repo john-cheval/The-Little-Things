@@ -10,7 +10,7 @@ import {
 } from '@mui/material'
 import Link from 'next/link'
 import { IoIosArrowRoundForward } from 'react-icons/io'
-import { saxoGrammaticus } from '../../../lib/fonts'
+import { dubaiFont } from '../../../lib/fonts'
 import { truncateByChars } from '../../../utils/truncate'
 
 function CourseCard(props) {
@@ -76,7 +76,7 @@ function CourseCard(props) {
           sx={{
             color: (theme: any) => theme.palette.custom.heading,
             fontSize: { xs: '20px', md: '24px' },
-            fontFamily: `${saxoGrammaticus.style.fontFamily}, sans-serif`,
+            fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
             textTransform: 'uppercase',
             fontWeight: '300 !important',
             marginBottom: { xs: 0 },

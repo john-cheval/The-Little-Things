@@ -32,25 +32,6 @@
   --breakpoint-xl: 1536px;
 }
 
-@font-face {
-  font-family: 'Saxo Grammaticus';
-  src: url('../public/fonts/SaxoGrammaticusRegular.woff') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Saxo Grammaticus';
-  src: url('../public/fonts/SaxoGrammaticusLight.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Saxo Grammaticus';
-  src: url('../public/fonts/SaxoGrammaticusBold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-}
-
 /* Common Classes */
 .text-center-lg {
   text-align: center;
@@ -67,7 +48,7 @@
 .heading-main {
   color: var(--color-custom-heading);
   font-size: 25px;
-  font-family: 'Saxo Grammaticus', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   text-transform: uppercase;
   font-weight: 300;
   line-height: normal;
@@ -107,7 +88,7 @@
 }
 
 .heading {
-  font-family: 'Saxo Grammaticus', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   text-transform: uppercase;
   font-weight: 300;
   line-height: normal;
@@ -460,7 +441,7 @@
 .about-responsive-heading {
   font-size: 25px;
   max-width: 100%;
-  font-family: 'Saxo Grammaticus', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   color: var(--color-custom-heading);
   text-transform: uppercase;
   font-weight: 300;
@@ -1358,7 +1339,7 @@ ol {
   font-weight: 400;
   line-height: 33px;
   text-decoration: none;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   padding: 0 0 10px 0;
 }
 .footer-link {
@@ -1376,7 +1357,7 @@ ol {
 
 .footer-address {
   color: #2a110a;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 33px;
@@ -1384,7 +1365,7 @@ ol {
 }
 
 .footer-view-map-btn {
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 31px;
@@ -1942,3 +1923,5 @@ input[type='number'] {
 .send-button.is-disabled {
   cursor: not-allowed;
 }
+
+/* TLT CSS */

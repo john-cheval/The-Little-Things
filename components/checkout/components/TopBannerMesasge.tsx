@@ -1,5 +1,5 @@
 import { Box, Link, Typography } from '@mui/material'
-import { saxoGrammaticus } from '../../../lib/fonts'
+import { dubaiFont } from '../../../lib/fonts'
 
 function TopBannerMesasge() {
   return (
@@ -22,7 +22,7 @@ function TopBannerMesasge() {
           fontSize: { xs: '18px', md: '20px', lg: '30px' },
           fontWeight: 300,
           textAlign: 'center',
-          fontFamily: `${saxoGrammaticus.style.fontFamily}, sans-serif`,
+          fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
           lineHeight: '1.5',
           textTransform: 'uppercase',
         }}

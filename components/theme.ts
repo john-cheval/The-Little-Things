@@ -16,7 +16,7 @@ import {
 import { alpha, createTheme, Theme } from '@mui/material'
 import type { LinkProps } from '@mui/material/Link'
 import { Components, PaletteOptions } from '@mui/material/styles'
-import { saxoGrammaticus } from '../lib/fonts'
+import { dubaiFont } from '../lib/fonts'
 
 type ThemePaletteOptions = PaletteOptions & {
   custom: {
@@ -124,7 +124,7 @@ export const fontSize = (from: number, to: number) =>
   breakpointVal('fontSize', from, to, themeBaseDefaults.breakpoints.values)
 
 const commonHeadingProperties = {
-  fontFamily: `${saxoGrammaticus.style.fontFamily}, sans-serif`,
+  fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
   textTransform: 'uppercase' as const,
   fontWeight: 300,
   lineHeight: 'normal',
@@ -138,7 +138,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
     ...themeBaseDefaults,
     shape: { borderRadius: 3 },
     typography: {
-      fontFamily: "'Bricolage Grotesque', sans-serif",
+      fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
       // @see docs typography.md
       h1: {
         ...commonHeadingProperties,
@@ -165,7 +165,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
         lineHeight: 1.55,
       },
       h6: {
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
         ...fontSize(15, 16),
         fontWeight: 400,
         lineHeight: 1.8,
@@ -173,7 +173,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
         color: '#2A110A',
       },
       p: {
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
         lineHeight: '158%',
         fontSize: '16px',
         letterSpacing: '0%',
@@ -181,7 +181,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
       },
 
       navlink: {
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
         fontSize: '16px',
         fontWeight: 400,
         fontVariationSettings: "'wght' 400",
@@ -267,7 +267,7 @@ const createOverrides = (theme: Theme): Components<Theme> => ({
         overflowY: 'scroll',
         backgroundColor: '#fff',
         color: '#000',
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
       },
       a: {
         textDecoration: 'none',

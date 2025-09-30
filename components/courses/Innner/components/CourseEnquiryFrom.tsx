@@ -8,6 +8,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { AlekseonFormDocument } from '../../../../graphql/aleskonForm.gql'
 import { UpdateAlekseonFormDocument } from '../../../../graphql/UpdateAleskonForm.gql'
 import ReCaptcha from '../../../../utils/ReCaptcha'
+import { dubaiFont } from '../../../../lib/fonts'
 
 interface RecaptchaRefType {
   resetCaptcha: () => void
@@ -35,17 +36,17 @@ const inputFieldSx: SxProps<Theme> = {
     color: '#441E14', // Use a visible color
   },
   '& input[type="number"]::-webkit-outer-spin-button, & input[type="number"]::-webkit-inner-spin-button':
-    {
-      WebkitAppearance: 'none', // Chrome, Safari
-      margin: 0,
-    },
+  {
+    WebkitAppearance: 'none', // Chrome, Safari
+    margin: 0,
+  },
 
   '& .mui-style-ymipag-MuiButtonBase-root-MuiButton-root.Mui-disabled ': {
     color: (theme: any) => theme.palette.custom.main,
   },
 
   '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
-    fontFamily: '"Bricolage Grotesque"',
+    fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
     fontSize: { xs: '15px', md: '16px' },
     fontStyle: 'normal',
     fontWeight: 400,
@@ -53,7 +54,7 @@ const inputFieldSx: SxProps<Theme> = {
     color: 'inherit',
   },
   '& .MuiOutlinedInput-input::placeholder': {
-    fontFamily: '"Bricolage Grotesque"',
+    fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
     fontSize: { xs: '15px', md: '16px' },
     fontStyle: 'normal',
     fontWeight: 400,
@@ -82,14 +83,14 @@ const inputFieldSx: SxProps<Theme> = {
     borderWidth: '1px !important',
   },
   '& .mui-style-y9718c-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline ':
-    {
-      borderColor: '#c5c5c5',
-      borderWidth: '1px !important',
-    },
+  {
+    borderColor: '#c5c5c5',
+    borderWidth: '1px !important',
+  },
   '& .mui-style-y9718c-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline':
-    {
-      borderColor: '#c5c5c5',
-    },
+  {
+    borderColor: '#c5c5c5',
+  },
 }
 
 function CourseEnquiryForm({ defaultTitle }) {

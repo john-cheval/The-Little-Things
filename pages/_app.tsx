@@ -9,7 +9,7 @@ import {
 import { CssBaseline } from '@mui/material'
 import { AppProps } from 'next/app'
 import { darkTheme, lightTheme } from '../components/theme'
-import { saxoGrammaticus } from '../lib/fonts'
+import { dubaiFont } from '../lib/fonts'
 import { I18nProvider } from '../lib/i18n/I18nProvider'
 import '../styles/global.css'
 
@@ -18,7 +18,7 @@ export default function ThemedApp(props: AppProps) {
   const { locale = 'en' } = router
 
   return (
-    <div className={saxoGrammaticus.variable}>
+    <div className={dubaiFont.variable}>
       <CssAndFramerMotionProvider {...props}>
         <I18nProvider key={locale} locale={locale}>
           <GraphQLProvider {...props}>
