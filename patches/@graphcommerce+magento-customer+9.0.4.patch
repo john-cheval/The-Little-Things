@@ -1,0 +1,2515 @@
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AccountAddresses/AccountAddresses.tsx b/node_modules/@graphcommerce/magento-customer/components/AccountAddresses/AccountAddresses.tsx
+index 039c584..7c8af81 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AccountAddresses/AccountAddresses.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AccountAddresses/AccountAddresses.tsx
+@@ -48,6 +48,20 @@ export function AccountAddresses(props: AccountAddressesProps) {
+             display: 'block',
+             maxWidth: 'max-content',
+             margin: `${theme.spacings.md} auto`,
++            backgroundColor:(theme:any)=>theme.palette.custom.main,
++            color:(theme:any)=>theme.palette.custom.border,
++            // paddingBlock:'18px',
++            borderRadius:'4px',
++            fontSize: { xs: '15px', md: '16px' },
++          // width:'200px',
++           border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++           textTransform:'capitalize',
++            transition:'all 0.4s ease-in-out',
++            '&:hover':{
++              backgroundColor:'transparent !important',
++              color:(theme:any)=>theme.palette.custom.main,
++           border: (theme:any) => `1px solid ${theme.palette.custom.main}`
++            }
+           })}
+         >
+           <Trans id='Add new address' />
+@@ -63,7 +77,23 @@ export function AccountAddresses(props: AccountAddressesProps) {
+           title={<Trans id='You have no addresses saved yet' />}
+           icon={<IconSvg src={iconHome} size='xxl' />}
+           button={
+-            <Button href='/account/addresses/add' size='large' variant='pill' color='primary'>
++            <Button   sx={{
++            backgroundColor:(theme:any)=>theme.palette.custom.main,
++            color:(theme:any)=>theme.palette.custom.border,
++            // paddingBlock:'18px',
++            borderRadius:'4px',
++            fontSize: { xs: '15px', md: '16px' },
++          // width:'200px',
++           border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++           textTransform:'capitalize',
++            transition:'all 0.4s ease-in-out',
++            '&:hover':{
++              backgroundColor:'transparent !important',
++              color:(theme:any)=>theme.palette.custom.main,
++           border: (theme:any) => `1px solid ${theme.palette.custom.main}`
++            }
++          }}
++            href='/account/addresses/add' size='large' variant='pill' color='primary'>
+               <Trans id='Add new address' />
+             </Button>
+           }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AccountDeleteForm/AccountDeleteForm.tsx b/node_modules/@graphcommerce/magento-customer/components/AccountDeleteForm/AccountDeleteForm.tsx
+index 1f2027c..42b19be 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AccountDeleteForm/AccountDeleteForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AccountDeleteForm/AccountDeleteForm.tsx
+@@ -38,11 +38,48 @@ export function AccountDeleteForm() {
+     <>
+       {!called || error || loading ? (
+         <WaitForCustomer waitFor={dashboard}>
+-          <Box component='form' onSubmit={submitHandler} noValidate>
+-            <Typography variant='h6' textAlign='center'>
++          <Box component='form' onSubmit={submitHandler} noValidate sx={{
++            minWidth:{xs:'280px', sm:'350px', md:'400px',lg:'500px'},
++  '& .MuiOutlinedInput-root': {
++    '& .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&:hover .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++      borderWidth: '1px',
++    },
++    '& .MuiOutlinedInput-input': {
++      fontFamily: '"Bricolage Grotesque"',
++      fontSize: { xs: '15px', md: '16px' },
++      fontStyle: 'normal',
++      fontWeight: 400,
++      lineHeight: '158%',
++      color: (theme:any)=>theme.palette.custom.main, 
++      // padding:'17px',// input text color
++    },
++    '& .MuiOutlinedInput-input::placeholder': {
++      color:(theme:any)=>theme.palette.custom.main,
++      opacity: 1,
++    },
++  },
++  '& .MuiInputLabel-root': {
++    color: (theme:any)=>theme.palette.custom.main,
++  },
++  '& .MuiInputLabel-root.Mui-focused': {
++    color:(theme:any)=>theme.palette.custom.main, // label when focused
++  },
++}}>
++            <Typography variant='h6' textAlign='center' sx={{
++              color:(theme:any)=>theme.palette.custom?.main
++            }}>
+               <Trans>Are you sure you want to delete your account?</Trans>
+             </Typography>
+-            <Typography variant='body1' textAlign='center'>
++            <Typography variant='body1' textAlign='center' sx={{
++              color:(theme:any)=>theme.palette.custom?.main
++            }}>
+               <Trans>
+                 Doing so will remove all your data including order history and saved shipping /
+                 billing addresses.
+@@ -64,14 +101,33 @@ export function AccountDeleteForm() {
+                 </Trans>
+               }
+             />
+-            <FormActions>
++            <FormActions sx={{
++        padding:0,
++        marginTop:'10px'
++      }}>
+               <Button
+                 type='submit'
+                 loading={loading}
+                 color='error'
+-                variant='pill'
++              //  variant='pill'
+                 size='large'
+-                sx={{ color: 'white', bgcolor: 'error.main' }}
++                 sx={{
++            backgroundColor:'red',
++            color:'#fff',
++            // paddingBlock:'18px',
++            borderRadius:'4px',
++            fontSize: { xs: '15px', md: '16px' },
++          // width:'200px',
++           border: (theme:any) => `1px solid red`,
++           textTransform:'capitalize',
++            transition:'all 0.4s ease-in-out',
++            '&:hover':{
++              backgroundColor:'transparent',
++              color:(theme:any)=>theme.palette.custom.main,
++           border: (theme:any) => `1px solid red`
++            }
++          }}
++               
+               >
+                 <Trans>Delete account</Trans>
+               </Button>
+@@ -80,7 +136,9 @@ export function AccountDeleteForm() {
+         </WaitForCustomer>
+       ) : (
+         <>
+-          <Typography variant='h6' textAlign='center'>
++          <Typography variant='h6' textAlign='center' sx={{
++              color:(theme:any)=>theme.palette.custom?.main
++            }}>
+             <Trans>Account deletion successful</Trans>
+           </Typography>
+           <FormActions>
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AccountOrders/AccountOrders.tsx b/node_modules/@graphcommerce/magento-customer/components/AccountOrders/AccountOrders.tsx
+index eb0007f..5721a88 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AccountOrders/AccountOrders.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AccountOrders/AccountOrders.tsx
+@@ -39,15 +39,29 @@ export function AccountOrders(props: AccountOrdersProps) {
+         (theme) => ({
+           typography: 'body2',
+           marginBottom: theme.spacings.md,
++          
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+     >
+       {isFirstPage && (
+         <SectionContainer labelLeft={<Trans id='Latest orders' />}>
++          <Box  sx={{
++                      border: '1px solid #ECECEC',
++                      borderRadius: '4px',
++                      backgroundColor: '#fff',
++                      padding: {xs:'20px', md:'35px', lg:'55px'},
++                    }}>
++
++      
+           {latestOrders?.map(
+-            (order) => order && <OrderCard key={order.number} {...order} images={images} />,
++            (order) => order && (
++              <Box>
++                <OrderCard key={order.number} {...order} images={images} />
++              </Box>
++            ),
+           )}
++              </Box>
+           {orders?.items && !orders?.items?.length && <NoOrdersFound />}
+         </SectionContainer>
+       )}
+@@ -66,9 +80,17 @@ export function AccountOrders(props: AccountOrdersProps) {
+               marginBottom: theme.spacings.md,
+             })}
+           >
+-            {olderOrders?.map(
++            <Box sx={{
++                      border: '1px solid #D5B1B8',
++                      borderRadius: '4px',
++                      backgroundColor: '#fff',
++                      padding: '55px',
++                    }}>
++              {olderOrders?.map(
+               (order) => order && <OrderCard key={order.number} {...order} images={images} />,
+             )}
++            </Box>
++            
+           </SectionContainer>
+         )}
+ 
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AccountSignInUpForm/AccountSignInUpForm.tsx b/node_modules/@graphcommerce/magento-customer/components/AccountSignInUpForm/AccountSignInUpForm.tsx
+index 495d466..1cc4bc1 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AccountSignInUpForm/AccountSignInUpForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AccountSignInUpForm/AccountSignInUpForm.tsx
+@@ -80,7 +80,7 @@ export function AccountSignInUpForm(props: AccountSignInUpFormProps) {
+             <LayoutTitle variant='h2' gutterBottom={false}>
+               <Trans id='Sign in' />
+             </LayoutTitle>
+-            <Typography variant='h6' align='center'>
++            <Typography variant='h6' align='center' sx={{color:(theme:any)=>theme.palette.custom.secondary}}>
+               <Trans id='Fill in your password' />
+             </Typography>
+           </>
+@@ -91,7 +91,7 @@ export function AccountSignInUpForm(props: AccountSignInUpFormProps) {
+             <LayoutTitle variant='h2' gutterBottom={false}>
+               <Trans id='Create account!' />
+             </LayoutTitle>
+-            <Typography variant='h6' align='center'>
++            <Typography variant='h6' align='center' sx={{color:(theme:any)=>theme.palette.custom.secondary}}>
+               <Trans id='Create a password and tell us your name' />
+             </Typography>
+           </>
+@@ -144,6 +144,21 @@ export function AccountSignInUpForm(props: AccountSignInUpFormProps) {
+               '& .ActionCard-root.sizeLarge': {
+                 px: theme.spacings.md,
+               },
++               '& .ActionCard-root':{
++                color:(theme:any)=> theme.palette.custom.main,
++                fontSize:'16px',
++                border:(theme:any)=>`1px solid ${theme.palette.custom.borderInput}`,
++                borderRadius:'4px'
++              },
++              '& .ActionCard-root.selected':{
++                backgroundColor:(theme:any)=> theme.palette.custom.heading,
++                border:(theme:any)=>`1px solid ${theme.palette.custom.main}`,
++                boxShadow:'none !important'
++              },
++              '& .ActionCard-title.selected':{
++                color:'#fff !important',
++              },
++              
+             })}
+             items={[
+               { value: 'signin', title: <Trans id='Sign in' /> },
+@@ -162,6 +177,40 @@ export function AccountSignInUpForm(props: AccountSignInUpFormProps) {
+                 variant='outlined'
+                 control={control}
+                 name='email'
++                sx={{
++  '& .MuiOutlinedInput-root': {
++    '& .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&:hover .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++      borderWidth: '1px',
++    },
++    '& .MuiOutlinedInput-input': {
++      fontFamily: '"Bricolage Grotesque"',
++      fontSize: { xs: '15px', md: '16px' },
++      fontStyle: 'normal',
++      fontWeight: 400,
++      lineHeight: '158%',
++      color: (theme:any)=>theme.palette.custom.main, 
++      // padding:'17px',// input text color
++    },
++    '& .MuiOutlinedInput-input::placeholder': {
++      color:(theme:any)=>theme.palette.custom.main,
++      opacity: 1,
++    },
++  },
++  '& .MuiInputLabel-root': {
++    color: (theme:any)=>theme.palette.custom.main,
++  },
++  '& .MuiInputLabel-root.Mui-focused': {
++    color:(theme:any)=>theme.palette.custom.main, // label when focused
++  },
++}}
++
+                 required
+                 InputProps={{
+                   endAdornment:
+@@ -209,14 +258,80 @@ export function AccountSignInUpForm(props: AccountSignInUpFormProps) {
+       )}
+ 
+       {(mode === 'signin' || mode === 'session-expired') && (
+-        <Box>
+-          <SignInForm email={emailValue} setError={setError} clearErrors={clearErrors} />
++        <Box sx={{
++          marginTop:'10px', md:0
++        }}>
++          <SignInForm sx={{
++  '& .MuiOutlinedInput-root': {
++    '& .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&:hover .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++      borderWidth: '1px',
++    },
++    '& .MuiOutlinedInput-input': {
++      fontFamily: '"Bricolage Grotesque"',
++      fontSize: { xs: '15px', md: '16px' },
++      fontStyle: 'normal',
++      fontWeight: 400,
++      lineHeight: '158%',
++      color: (theme:any)=>theme.palette.custom.main, // input text color
++    },
++    '& .MuiOutlinedInput-input::placeholder': {
++      color: (theme:any)=>theme.palette.custom.main,
++      opacity: 1,
++    },
++  },
++  '& .MuiInputLabel-root': {
++    color: (theme:any)=>theme.palette.custom.main,
++  },
++  '& .MuiInputLabel-root.Mui-focused': {
++    color: (theme:any)=>theme.palette.custom.main, // label when focused
++  },
++}}
++ email={emailValue} setError={setError} clearErrors={clearErrors} />
+         </Box>
+       )}
+ 
+       {mode === 'signup' && canSignUp && (
+         <Box>
+-          <SignUpForm email={emailValue} setError={setError} clearErrors={clearErrors} />
++          <SignUpForm sx={{
++  '& .MuiOutlinedInput-root': {
++    '& .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&:hover .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++      borderWidth: '1px',
++    },
++    '& .MuiOutlinedInput-input': {
++      fontFamily: '"Bricolage Grotesque"',
++      fontSize: { xs: '15px', md: '16px' },
++      fontStyle: 'normal',
++      fontWeight: 400,
++      lineHeight: '158%',
++      color: (theme:any)=>theme.palette.custom.main, // input text color
++    },
++    '& .MuiOutlinedInput-input::placeholder': {
++      color: (theme:any)=>theme.palette.custom.main,
++      opacity: 1,
++    },
++  },
++  '& .MuiInputLabel-root': {
++    color: (theme:any)=>theme.palette.custom.main,
++  },
++  '& .MuiInputLabel-root.Mui-focused': {
++    color: (theme:any)=>theme.palette.custom.main, // label when focused
++  },
++}}
++ email={emailValue} setError={setError} clearErrors={clearErrors} />
+         </Box>
+       )}
+       {mode === 'signup' && !canSignUp && (
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCity.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCity.tsx
+index 93fd266..6012393 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCity.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCity.tsx
+@@ -1,26 +1,105 @@
+ import type { FieldPath, FieldValues } from '@graphcommerce/ecommerce-ui'
+-import { TextFieldElement } from '@graphcommerce/ecommerce-ui'
++import { SelectElement, TextFieldElement, useWatch } from '@graphcommerce/ecommerce-ui'
+ import { Trans } from '@lingui/react'
+ import type { AddressFieldsOptions } from './useAddressFieldsForm'
+ import { useAddressFieldsForm } from './useAddressFieldsForm'
++import { useAddressCountryRegion } from '@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion'
++import { gql, useQuery } from '@apollo/client'
++import { useEffect } from 'react'
++
++const GET_CITIES = gql`
++  query GetCities($country_code: String!, $state_name: String!) {
++    getCities(country_code: $country_code, state_name: $state_name) {
++      city
++    }
++  }
++`
+ 
+ export function AddressCity<
+   TFieldValues extends FieldValues = FieldValues,
+   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+ >(props: AddressFieldsOptions<TFieldValues, TName>) {
+   const form = useAddressFieldsForm<TFieldValues, TName>(props)
+-  const { control, name, readOnly, required } = form
++  const { control, name, readOnly, required, getValues } = form
++  const address = useAddressCountryRegion(props)
++  const { regionList } = address
++  // console.log(country,countryList,'this is the country')
++
++  const regionIdw = useWatch({ name: 'regionId' as any, control: address?.control })
++
++  const countryCode = form.getValues("countryCode" as any)
++  const regionId = form.getValues("regionId" as any)
++
++  const regionName = regionList.find(r => r.id === regionId)?.name;
++
++  const { data, loading, error } = useQuery(GET_CITIES, {
++    variables: {
++      country_code: countryCode ?? '',
++      state_name: regionName ?? '',
++    },
++    skip: !countryCode || !regionName, // only run when both are available
++  })
+ 
+   return (
+-    <TextFieldElement
+-      control={control}
+-      name={name.city}
+-      variant='outlined'
+-      type='text'
+-      required={required[name.city]}
+-      label={<Trans id='City' />}
+-      showValid
+-      InputProps={{ readOnly }}
+-    />
++    <>
++      {data?.getCities?.length > 0 ?
++        <SelectElement
++          control={control}
++          name={name.city}
++          variant='outlined'
++          label={<Trans id='Area' />}
++          required={required[name.city]}
++          showValid
++          InputProps={{ readOnly }}
++          options={data?.getCities?.map((city) => ({ ...city, id: city.city, label: city.city }))}
++          SelectProps={{
++            MenuProps: {
++              PaperProps: {
++                sx: {
++                  backgroundColor: (theme: any) => theme.palette.custom.border,
++                  color: (theme: any) => theme.palette.custom.main,
++                  "&::-webkit-scrollbar": {
++                    width: '6px',
++                    borderRadius: 0,
++                    backgroundColor: '#ebebeb',
++                  },
++                  '&::-webkit-scrollbar-track': {
++                    baxkgroundColor: '#ebebeb',
++                    borderRadius: '0px'
++                  },
++                  "&::-webkit-scrollbar-thumb": {
++                    backgroundColor: (theme: any) => theme.palette.custom.main,
++                    borderRadius: '0px'
++                  },
++                  // scrollbarWidth:'none',
++                  // msOverflowStyle:'none',
++                  '& .MuiMenuItem-root': {
++                    color: (theme: any) => theme.palette.custom.main,
++                    transition: 'background-color 0.3s ease',
++                    '&:hover': {
++                      backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                    },
++                    '&.Mui-selected': {
++                      backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                    },
++                  }
++                }
++              }
++            }
++          }}
++          onChange={(value) => {
++            form.setValue("city" as any, value as any)
++          }}
++        /> : <TextFieldElement
++          control={control}
++          name={name.city}
++          variant='outlined'
++          type='text'
++          required={required[name.city]}
++          label={<Trans id='Area' />}
++          showValid
++          InputProps={{ readOnly }}
++        />}
++    </>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
+index 7bebe6d..9f03e20 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
+@@ -4,9 +4,12 @@ import { useQuery } from '@graphcommerce/graphql'
+ import { CountryRegionsDocument } from '@graphcommerce/magento-store'
+ import { filterNonNullableKeys, FormRow } from '@graphcommerce/next-ui'
+ import { Trans } from '@lingui/react'
+-import { useMemo } from 'react'
++import { useEffect, useMemo } from 'react'
+ import type { AddressFieldsOptions } from './useAddressFieldsForm'
+ import { useAddressFieldsForm } from './useAddressFieldsForm'
++import { AddressPostcode } from '@graphcommerce/magento-customer/components/AddressFields/AddressPostcode'
++import { AddressCity } from '@graphcommerce/magento-customer/components/AddressFields/AddressCity'
++import { ids } from 'webpack'
+ 
+ /** @public */
+ export function useAddressCountryRegion<
+@@ -29,6 +32,10 @@ export function useAddressCountryRegion<
+     [countries],
+   )
+ 
++  useEffect(() => {
++    form.setValue("countryCode" as any, countryList?.[0]?.two_letter_abbreviation as any)
++  }, [])
++
+   const regionList = useMemo(
+     () =>
+       filterNonNullableKeys(
+@@ -46,8 +53,13 @@ export function AddressCountryRegion<
+   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+ >(props: AddressFieldsOptions<TFieldValues, TName>) {
+   const form = useAddressCountryRegion<TFieldValues, TName>(props)
+-  const { control, name, readOnly, required, countryList, regionList, loading } = form
+-
++  const { control, name, readOnly, required, countryList, regionList, loading, defaultVariables } = form
++  // slotListconsole.log("defaultVariables::", defaultVariables)
++  // slotListconsole.log("name::", name)
++  // slotListconsole.log("control::", control)
++  // slotListconsole.log("v::", regionList)
++  // slotListconsole.log("countryList::", countryList)
++  // slotListconsole.log("control::", control.getFieldState(name.countryCode))
+   if (loading) {
+     return (
+       <FormRow>
+@@ -58,40 +70,158 @@ export function AddressCountryRegion<
+           name={name.countryCode}
+           showValid
+           InputProps={{ readOnly }}
++          defaultChecked
+         />
+       </FormRow>
+     )
+   }
+ 
++  // if (countryList) {
++  //   form.setValue(name.countryCode as any, countryList[0]?.two_letter_abbreviation as any)
++  // }
++  // useEffect(() => {
++  //   // countryList.map((country) => ({
++  //   //   id: country.two_letter_abbreviation,
++  //   //   label: country.full_name_locale,
++  //   // }
++
++  // }, [countryList])
++
+   return (
+-    <FormRow>
+-      <SelectElement
+-        control={control}
+-        name={name.countryCode}
+-        SelectProps={{ autoWidth: true }}
+-        variant='outlined'
+-        label={<Trans id='Country' />}
+-        required={required[name.countryCode]}
+-        showValid
+-        InputProps={{ readOnly }}
+-        options={countryList.map((country) => ({
+-          id: country.two_letter_abbreviation,
+-          label: country.full_name_locale,
+-        }))}
+-      />
++    <>
++      <FormRow sx={{
++        '& .MuiInputLabel-root.MuiInputLabel-animated': {
++          padding: '0 6px',
++        },
++        '& .MuiOutlinedInput-root .MuiSelect-icon': {
++          color: (theme: any) => theme.palette.custom.wishlistColor,
++        },
++        '& .MuiOutlinedInput-root .InputCheckmark': {
++          display: 'none'
++        }
++      }}>
++        <AddressPostcode {...props} />
+ 
+-      {regionList.length > 0 && (
+         <SelectElement
+           control={control}
+-          name={name.regionId}
++          name={name.countryCode}
++          SelectProps={{
++            MenuProps: {
++              PaperProps: {
++                sx: {
++                  backgroundColor: (theme: any) => theme.palette.custom.border,
++                  color: (theme: any) => theme.palette.custom.main,
++                  "&::-webkit-scrollbar": {
++                    width: '6px',
++                    borderRadius: 0,
++                    backgroundColor: '#ebebeb',
++                  },
++                  '&::-webkit-scrollbar-track': {
++                    baxkgroundColor: '#ebebeb',
++                    borderRadius: '0px'
++                  },
++                  "&::-webkit-scrollbar-thumb": {
++                    backgroundColor: (theme: any) => theme.palette.custom.main,
++                    borderRadius: '0px'
++                  },
++                  // scrollbarWidth:'none',
++                  // msOverflowStyle:'none',
++                  '& .MuiMenuItem-root': {
++                    color: (theme: any) => theme.palette.custom.main,
++                    transition: 'background-color 0.3s ease',
++                    '&:hover': {
++                      backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                    },
++                    '&.Mui-selected': {
++                      backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                    },
++                  }
++                }
++              }
++            },
++            // autoWidth: true
++            fullWidth: true,
++            value: countryList?.[0]?.two_letter_abbreviation,
++            defaultValue: countryList?.[0]?.two_letter_abbreviation,
++          }}
+           variant='outlined'
+-          label={<Trans id='Region' />}
+-          required
++          label={<Trans id='Country' />}
++          required={required[name.countryCode]}
+           showValid
+           InputProps={{ readOnly }}
+-          options={regionList.map((region) => ({ ...region, label: region.name }))}
++          options={countryList.map((country) => ({
++            id: country.two_letter_abbreviation,
++            label: country.full_name_locale,
++          }))}
++          defaultChecked={true}
+         />
+-      )}
+-    </FormRow>
++      </FormRow>
++
++      <FormRow sx={{
++        '& .MuiInputLabel-root.MuiInputLabel-animated': {
++          padding: '0 6px',
++        },
++        '& .MuiOutlinedInput-root .MuiSelect-icon': {
++          color: (theme: any) => theme.palette.custom.wishlistColor,
++        },
++        '& .MuiOutlinedInput-root .InputCheckmark': {
++          display: 'none'
++        }
++      }}>
++        {regionList.length > 0 && (
++          <SelectElement
++            control={control}
++            name={name.regionId}
++            variant='outlined'
++            label={<Trans id='Region' />}
++            required
++            showValid
++            InputProps={{ readOnly }}
++            options={regionList.map((region) => ({ ...region, label: region.name }))}
++            SelectProps={{
++              MenuProps: {
++                PaperProps: {
++                  sx: {
++                    backgroundColor: (theme: any) => theme.palette.custom.border,
++                    color: (theme: any) => theme.palette.custom.main,
++                    "&::-webkit-scrollbar": {
++                      width: '6px',
++                      borderRadius: 0,
++                      backgroundColor: '#ebebeb',
++                    },
++                    '&::-webkit-scrollbar-track': {
++                      baxkgroundColor: '#ebebeb',
++                      borderRadius: '0px'
++                    },
++                    "&::-webkit-scrollbar-thumb": {
++                      backgroundColor: (theme: any) => theme.palette.custom.main,
++                      borderRadius: '0px'
++                    },
++                    // scrollbarWidth:'none',
++                    // msOverflowStyle:'none',
++                    '& .MuiMenuItem-root': {
++                      color: (theme: any) => theme.palette.custom.main,
++                      transition: 'background-color 0.3s ease',
++                      '&:hover': {
++                        backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                      },
++                      '&.Mui-selected': {
++                        backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                      },
++                    }
++                  }
++                }
++              }
++            }}
++            onChange={(value) => {
++              form.setValue("regionId" as any, value as any)
++            }}
++          />
++        )}
++        <AddressCity {...props} />
++
++
++      </FormRow>
++    </>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx
+index 400ed2c..7abe436 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx
+@@ -25,12 +25,23 @@ export function AddressFields<
+       <FormRow>
+         <AddressStreet {...props} />
+         <AddressHousenumber {...props} />
+-        <AddressAddition {...props} />
++        {/*  <AddressAddition {...props} /> */}
+       </FormRow>
+-      <FormRow>
++      {/* <FormRow sx={{
++        '& .MuiInputLabel-root.MuiInputLabel-animated': {
++          padding: '0 6px',
++        },
++        '& .MuiOutlinedInput-root .MuiSelect-icon': {
++          color: (theme: any) => theme.palette.custom.wishlistColor,
++        },
++        '& .MuiOutlinedInput-root .InputCheckmark': {
++          display: 'none'
++        }
++      }}>
+         <AddressPostcode {...props} />
++
+         <AddressCity {...props} />
+-      </FormRow>
++      </FormRow> */}
+       {!countryFirst && <AddressCountryRegion {...props} />}
+     </>
+   )
+diff --git a/node_modules/@graphcommerce/magento-customer/components/ApolloCustomerError/ApolloCustomerErrorFullPage.tsx b/node_modules/@graphcommerce/magento-customer/components/ApolloCustomerError/ApolloCustomerErrorFullPage.tsx
+index fe2fe28..906ac8d 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/ApolloCustomerError/ApolloCustomerErrorFullPage.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/ApolloCustomerError/ApolloCustomerErrorFullPage.tsx
+@@ -26,7 +26,7 @@ export function ApolloCustomerErrorFullPage(props: ApolloCustomerErrorFullPagePr
+       error={newError}
+       button={
+         unauthorized ? (
+-          <Button href='/account/signin' variant='pill' color='primary' size='large'>
++          <Button sx={{borderRadius:'8px'}} href='/account/signin' variant='pill' color='primary' size='large'>
+             {canSignUp ? <Trans id='Sign in or create an account!' /> : <Trans id='Sign in' />}
+           </Button>
+         ) : (
+diff --git a/node_modules/@graphcommerce/magento-customer/components/ChangeNameForm/ChangeNameForm.tsx b/node_modules/@graphcommerce/magento-customer/components/ChangeNameForm/ChangeNameForm.tsx
+index 0be3575..0405ee2 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/ChangeNameForm/ChangeNameForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/ChangeNameForm/ChangeNameForm.tsx
+@@ -30,25 +30,102 @@ export function ChangeNameForm(props: ChangeNameFormProps) {
+ 
+   return (
+     <>
+-      <Form onSubmit={submit} noValidate>
++      <Form onSubmit={submit} noValidate
++      sx={{
++            minWidth:{xs:'280px', sm:'350px', md:'400px',lg:'500px'},
++  '& .MuiOutlinedInput-root': {
++    '& svg.MuiSelect-icon':{
++      fill:(theme:any)=>theme.palette.custom.wishlistColor,
++      color:(theme:any)=>theme.palette.custom.wishlistColor
++    },
++    '& .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&:hover .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++      borderWidth: '1px',
++    },
++    '& .MuiOutlinedInput-input': {
++      fontFamily: '"Bricolage Grotesque"',
++      fontSize: { xs: '15px', md: '16px' },
++      fontStyle: 'normal',
++      fontWeight: 400,
++      lineHeight: '158%',
++      color: (theme:any)=>theme.palette.custom.main, 
++      // padding:'17px',// input text color
++    },
++    '& .MuiOutlinedInput-input::placeholder': {
++      color:(theme:any)=>theme.palette.custom.main,
++      opacity: 1,
++    },
++  },
++  '& .MuiInputLabel-root': {
++    color: (theme:any)=>theme.palette.custom.main,
++  },
++  '& .MuiInputLabel-root.Mui-focused': {
++    color:(theme:any)=>theme.palette.custom.main, // label when focused
++  },
++}}>
+         <NameFields form={form} prefix />
+-        <FormDivider />
+-        <FormActions>
++        <FormDivider sx={{
++        background:(theme:any)=>theme.palette.custom.borderSecondary
++      }}/>
++        <FormActions sx={{
++                padding:0,
++                marginTop:'10px'
++              }}>
+           <Button
+             type='submit'
+             color='primary'
+-            variant='pill'
++            // variant='pill'
++            fullWidth
+             size='large'
+             loading={formState.isSubmitting}
++             sx={{
++                        backgroundColor:(theme:any)=>theme.palette.custom.main,
++                        color:(theme:any)=>theme.palette.custom.border,
++                        // paddingBlock:'18px',
++                        borderRadius:'4px',
++                        fontSize: { xs: '15px', md: '16px' },
++                      // width:'200px',
++                       border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++                       textTransform:'capitalize',
++                        transition:'all 0.4s ease-in-out',
++                        '&:hover':{
++                          backgroundColor:'transparent',
++                          color:(theme:any)=>theme.palette.custom.main,
++                       border: (theme:any) => `1px solid ${theme.palette.custom.main}`
++                        }
++                      }}
+           >
+             <Trans id='Save changes' />
+           </Button>
+         </FormActions>
+         <ApolloCustomerErrorAlert error={error} />
+       </Form>
+-      <MessageSnackbar
++      <MessageSnackbar sx={{
++          '& .MuiSnackbarContent-message':{
++            '& svg':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize:{xs:'18px', lg:'25px'},
++            },
++            '& .MuiBox-root':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize: { xs: '15px', md: '16px' },
++              textAlign:'center'
++            },
++            '& .MuiButtonBase-root':{
++              width:{xs:'35px', xl:'40px'},
++              height:{xs:'35px', xl:'40px'},
++              
++            }
++          }
++        }} 
+         open={formState.isSubmitSuccessful && !error}
+-        variant='pill'
++      
+         severity='success'
+       >
+         <Trans id='Successfully saved changes' />
+diff --git a/node_modules/@graphcommerce/magento-customer/components/ChangePasswordForm/ChangePasswordForm.tsx b/node_modules/@graphcommerce/magento-customer/components/ChangePasswordForm/ChangePasswordForm.tsx
+index de1222a..65bb50b 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/ChangePasswordForm/ChangePasswordForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/ChangePasswordForm/ChangePasswordForm.tsx
+@@ -12,18 +12,94 @@ import {
+   FormRow,
+   MessageSnackbar,
+ } from '@graphcommerce/next-ui'
+-import { useFormGqlMutation } from '@graphcommerce/react-hook-form'
++import { useFormContext, useFormGqlMutation } from '@graphcommerce/react-hook-form'
+ import { Trans } from '@lingui/react'
+ import { ValidatedPasswordElement } from '../ValidatedPasswordElement/ValidatedPasswordElement'
+ import type { ChangePasswordMutation, ChangePasswordMutationVariables } from './ChangePassword.gql'
+ import { ChangePasswordDocument } from './ChangePassword.gql'
++import { useState } from 'react'
++import { t } from '@lingui/macro'
++import { CircularProgress } from '@mui/material'
+ 
+ export function ChangePasswordForm() {
++  const [validationError, setValidationError] = useState<string>('')
++  const [showValidationError, setShowValidationError] = useState<boolean>(false)
++   const [currentPassword, setCurrentPassword] = useState('')
++  const [newPassword, setNewPassword] = useState('')
++  const [confirmPassword, setConfirmPassword] = useState('')
++
++
+   const form = useFormGqlMutation<
+     ChangePasswordMutation,
+     ChangePasswordMutationVariables & { confirmPassword?: string }
+-  >(ChangePasswordDocument, {}, { errorPolicy: 'all' })
+-  const { handleSubmit, required, formState, error, control } = form
++  >(ChangePasswordDocument, {
++    mode:'onChange',
++    reValidateMode:'onChange',
++    onBeforeSubmit:(values)=>{
++ 
++      // Clear previous errors
++      setValidationError('')
++      setShowValidationError(false)
++      form.clearErrors()
++      
++     
++
++      // Check if current password and new password are the same
++      if (currentPassword === newPassword) {
++        const errorMsg = `New password cannot be the same as the current password.`
++        setValidationError(errorMsg)
++        setShowValidationError(true)
++        form.setError('newPassword', { 
++          message: errorMsg 
++        })
++        return false
++      }
++
++      // Check if new password and confirm password match
++      if (newPassword !== confirmPassword) {
++        const errorMsg = `New password and confirm password do not match.`
++        setValidationError(errorMsg)
++        setShowValidationError(true)
++        form.setError('confirmPassword', { 
++          message: errorMsg 
++        })
++        return false
++      }
++
++      // Validate password strength
++      const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&]{8,}$/
++      if (!passwordRegex.test(newPassword)) {
++        const errorMsg = `Password must be at least 8 characters long and contain at least one letter and one number`
++        setValidationError(errorMsg)
++        setShowValidationError(true)
++        form.setError('newPassword', { 
++          message: errorMsg 
++        })
++        return false
++      }
++       return { currentPassword, newPassword }
++    },
++    onComplete:(result)=>{
++         if (!result.errors) {
++        setShowValidationError(false)
++        setValidationError('')
++
++        // 🔹 Clear all local states
++        setCurrentPassword('')
++        setNewPassword('')
++        setConfirmPassword('')
++
++        // 🔹 Reset form values in react-hook-form
++        form.reset({
++          currentPassword: '',
++          newPassword: '',
++          confirmPassword: '',
++        })
++      }
++    }
++  }, { errorPolicy: 'all' })
++
++  const { handleSubmit, required, formState, error, control, watch } = form
+   const [remainingError0, authenticationError] = graphqlErrorByCategory({
+     category: 'graphql-authentication',
+     error,
+@@ -33,12 +109,50 @@ export function ChangePasswordForm() {
+     error: remainingError0,
+   })
+ 
++  const watchedValues = watch()
++  
+   const submitHandler = handleSubmit(() => {})
+ 
+   const showSuccess = !formState.isSubmitting && formState.isSubmitSuccessful && !error?.message
+ 
++  const hasValidationErrors = 
++    Object.keys(formState.errors).length > 0 || 
++    !!error
++
+   return (
+-    <Form onSubmit={submitHandler} noValidate>
++    <Form onSubmit={submitHandler} noValidate sx={{
++      minWidth:{xs:'280px', sm:'350px', md:'400px',lg:'500px'},
++      '& .MuiOutlinedInput-root': {
++        '& .MuiOutlinedInput-notchedOutline': {
++          borderColor: (theme:any)=>theme.palette.custom.borderInput,
++        },
++        '&:hover .MuiOutlinedInput-notchedOutline': {
++          borderColor: (theme:any)=>theme.palette.custom.borderInput,
++        },
++        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++          borderColor: (theme:any)=>theme.palette.custom.borderInput,
++          borderWidth: '1px',
++        },
++        '& .MuiOutlinedInput-input': {
++          fontFamily: '"Bricolage Grotesque"',
++          fontSize: { xs: '15px', md: '16px' },
++          fontStyle: 'normal',
++          fontWeight: 400,
++          lineHeight: '158%',
++          color: (theme:any)=>theme.palette.custom.main, 
++        },
++        '& .MuiOutlinedInput-input::placeholder': {
++          color:(theme:any)=>theme.palette.custom.main,
++          opacity: 1,
++        },
++      },
++      '& .MuiInputLabel-root': {
++        color: (theme:any)=>theme.palette.custom.main,
++      },
++      '& .MuiInputLabel-root.Mui-focused': {
++        color:(theme:any)=>theme.palette.custom.main,
++      },
++    }}>
+       <FormRow>
+         <PasswordElement
+           control={control}
+@@ -50,6 +164,14 @@ export function ChangePasswordForm() {
+           disabled={formState.isSubmitting}
+           error={Boolean(authenticationError)}
+           helperText={authenticationError?.message}
++          onChange={(e) => {
++           setCurrentPassword(e.target.value)
++            // Clear validation errors when user starts typing in current password
++            if (showValidationError) {
++              setShowValidationError(false)
++              setValidationError('')
++            }
++          }}
+         />
+       </FormRow>
+ 
+@@ -62,8 +184,21 @@ export function ChangePasswordForm() {
+           label={<Trans id='New password' />}
+           required={required.newPassword}
+           disabled={formState.isSubmitting}
+-          error={Boolean(inputError)}
+-          helperText={inputError?.message}
++          error={Boolean(inputError) || Boolean(formState.errors.newPassword)}
++          helperText={formState.errors.newPassword?.message || inputError?.message}
++          onChange={(e) => {
++          setNewPassword(e.target.value)
++
++            // Clear validation errors when user starts typing
++            if (showValidationError) {
++              setShowValidationError(false)
++              setValidationError('')
++            }
++            // Clear confirm password error if passwords match
++            if (formState.errors.confirmPassword && watchedValues.newPassword === watchedValues.confirmPassword) {
++              form.clearErrors('confirmPassword')
++            }
++          }}
+         />
+         <PasswordRepeatElement
+           control={control}
+@@ -74,27 +209,95 @@ export function ChangePasswordForm() {
+           label={<Trans id='Confirm password' />}
+           required
+           disabled={formState.isSubmitting}
++          error={Boolean(formState.errors.confirmPassword)}
++          helperText={formState.errors.confirmPassword?.message}
++          onChange={(e) => {
++           setConfirmPassword(e.target.value)
++
++            // Clear validation errors when user starts typing in confirm password
++            if (showValidationError) {
++              setShowValidationError(false)
++              setValidationError('')
++            }
++            // Clear confirm password field error when user types
++            if (formState.errors.confirmPassword) {
++              form.clearErrors('confirmPassword')
++            }
++          }}
+         />
+       </FormRow>
+ 
+-      <FormDivider />
++      <FormDivider sx={{
++        background:(theme:any)=>theme.palette.custom.borderSecondary
++      }} />
+ 
+-      <FormActions>
++      <FormActions sx={{
++        padding:0,
++        marginTop:'10px'
++      }}>
+         <Button
+           type='submit'
+           loading={formState.isSubmitting}
+-          color='primary'
+-          variant='pill'
+           size='large'
++          disabled={
++            !currentPassword ||
++            !newPassword ||
++            !confirmPassword ||
++            formState.isSubmitting
++          }
++          sx={{
++            backgroundColor:(theme:any)=>theme.palette.custom.main,
++            color:(theme:any)=>theme.palette.custom.border,
++            borderRadius:'4px',
++            fontSize: { xs: '15px', md: '16px' },
++            border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++            textTransform:'capitalize',
++            transition:'all 0.4s ease-in-out',
++            paddingBlock:{xs:'15px', sm:'18px'},
++            minWidth:{xs:'250px', sm:'400px'},
++            '&:hover:not(:disabled)': {
++              backgroundColor: 'transparent',
++              color: (theme: any) => theme.palette.custom.main,
++              border: (theme: any) => `1px solid ${theme.palette.custom.main}`
++            },
++            '&:disabled':{
++              cursor:'not-allowed',
++               color:(theme:any)=>`${theme.palette.custom.border} !important`,
++            }
++          }}
+         >
+-          <Trans id='Save new password' />
++
++          {formState.isSubmitting ? (
++           <CircularProgress size="30px"  sx={{
++            color:'#d4d4d4'
++           }}/>
++                    ):<Trans id='Save new Password' />}
++          
+         </Button>
+       </FormActions>
+ 
+       <ApolloErrorSnackbar error={remainingError} />
+ 
++     
++
+       {showSuccess && (
+-        <MessageSnackbar open={showSuccess} sticky variant='pill' severity='success'>
++        <MessageSnackbar sx={{
++          '& .MuiSnackbarContent-message':{
++            '& svg':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize:{xs:'18px', lg:'25px'},
++            },
++            '& .MuiBox-root':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize: { xs: '15px', md: '16px' },
++              textAlign:'center'
++            },
++            '& .MuiButtonBase-root':{
++              width:{xs:'35px', xl:'40px'},
++              height:{xs:'35px', xl:'40px'},
++            }
++          }
++        }} open={showSuccess} sticky variant='pill' severity='success'>
+           <Trans id='Successfully changed password' />
+         </MessageSnackbar>
+       )}
+diff --git a/node_modules/@graphcommerce/magento-customer/components/CreateCustomerAddressForm/CreateCustomerAddressForm.tsx b/node_modules/@graphcommerce/magento-customer/components/CreateCustomerAddressForm/CreateCustomerAddressForm.tsx
+index 65401af..cc61b69 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/CreateCustomerAddressForm/CreateCustomerAddressForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/CreateCustomerAddressForm/CreateCustomerAddressForm.tsx
+@@ -60,7 +60,44 @@ export function CreateCustomerAddressForm() {
+ 
+   return (
+     <>
+-      <Form onSubmit={submitHandler} noValidate>
++      <Form onSubmit={submitHandler} noValidate sx={{
++            minWidth:{xs:'280px', sm:'350px', md:'400px',lg:'500px'},
++  '& .MuiOutlinedInput-root': {
++    '& svg.MuiSelect-icon':{
++      fill:(theme:any)=>theme.palette.custom.wishlistColor,
++      color:(theme:any)=>theme.palette.custom.wishlistColor
++    },
++    '& .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&:hover .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++      borderWidth: '1px',
++    },
++    '& .MuiOutlinedInput-input': {
++      fontFamily: '"Bricolage Grotesque"',
++      fontSize: { xs: '15px', md: '16px' },
++      fontStyle: 'normal',
++      fontWeight: 400,
++      lineHeight: '158%',
++      color: (theme:any)=>theme.palette.custom.main, 
++      // padding:'17px',// input text color
++    },
++    '& .MuiOutlinedInput-input::placeholder': {
++      color:(theme:any)=>theme.palette.custom.main,
++      opacity: 1,
++    },
++  },
++  '& .MuiInputLabel-root': {
++    color: (theme:any)=>theme.palette.custom.main,
++  },
++  '& .MuiInputLabel-root.Mui-focused': {
++    color:(theme:any)=>theme.palette.custom.main, // label when focused
++  },
++}}>
+         <CompanyFields form={form} />
+         <NameFields form={form} prefix />
+         <AddressFields form={form} name={{ regionId: 'region.region_id' }} />
+@@ -76,19 +113,54 @@ export function CreateCustomerAddressForm() {
+           />
+         </FormRow>
+ 
+-        <FormActions>
++        <FormActions sx={{
++                padding:0,
++                marginTop:'10px'
++              }}>
+           <Button
+             type='submit'
+-            variant='pill'
++           
+             color='primary'
+-            size='large'
+             loading={formState.isSubmitting}
++            sx={{
++                        backgroundColor:(theme:any)=>theme.palette.custom.main,
++                        color:(theme:any)=>theme.palette.custom.border,
++                         paddingBlock:'18px',
++                        borderRadius:'4px',
++                        fontSize: { xs: '15px', md: '16px' },
++                      // width:'200px',
++                       border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++                       textTransform:'capitalize',
++                        transition:'all 0.4s ease-in-out',
++                        '&:hover':{
++                          backgroundColor:'transparent',
++                          color:(theme:any)=>theme.palette.custom.main,
++                       border: (theme:any) => `1px solid ${theme.palette.custom.main}`
++                        }
++                      }}
+           >
+             <Trans id='Save changes' />
+           </Button>
+         </FormActions>
+       </Form>
+-      <MessageSnackbar open={Boolean(data) && !error} variant='pill' severity='success'>
++      <MessageSnackbar sx={{
++          '& .MuiSnackbarContent-message':{
++            '& svg':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize:{xs:'18px', lg:'25px'},
++            },
++            '& .MuiBox-root':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize: { xs: '15px', md: '16px' },
++              textAlign:'center'
++            },
++            '& .MuiButtonBase-root':{
++              width:{xs:'35px', xl:'40px'},
++              height:{xs:'35px', xl:'40px'},
++              
++            }
++          }
++        }}   open={Boolean(data) && !error}  severity='success'>
+         <Trans id='Your address has been added' components={{ 0: <strong /> }} />
+       </MessageSnackbar>
+ 
+diff --git a/node_modules/@graphcommerce/magento-customer/components/CustomerFab/CustomerFab.tsx b/node_modules/@graphcommerce/magento-customer/components/CustomerFab/CustomerFab.tsx
+index 68bd1d0..eb342cf 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/CustomerFab/CustomerFab.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/CustomerFab/CustomerFab.tsx
+@@ -10,6 +10,7 @@ import { Fab, NoSsr } from '@mui/material'
+ import React from 'react'
+ import type { UseCustomerSessionReturn } from '../../hooks'
+ import { useCustomerAccountCanSignIn, useCustomerSession } from '../../hooks'
++import { Image } from '@graphcommerce/image'
+ 
+ export type CustomerFabContentProps = {
+   icon?: React.ReactNode
+@@ -47,6 +48,13 @@ function CustomerFabContent(props: CustomerFabContentProps) {
+         {...BadgeProps}
+       >
+         {icon ?? <IconSvg src={iconPerson} size='large' />}
++        {/* {icon ?? <Image
++         src={iconPerson}
++         alt="iconPerson"
++         layout='fill'
++         width={24}
++         height={24}
++         />} */}
+       </DesktopHeaderBadge>
+     </Fab>
+   )
+diff --git a/node_modules/@graphcommerce/magento-customer/components/ForgotPasswordForm/ForgotPasswordForm.tsx b/node_modules/@graphcommerce/magento-customer/components/ForgotPasswordForm/ForgotPasswordForm.tsx
+index c50a52a..452c2a9 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/ForgotPasswordForm/ForgotPasswordForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/ForgotPasswordForm/ForgotPasswordForm.tsx
+@@ -30,6 +30,8 @@ export function ForgotPasswordForm(props: ForgotPasswordFormProps) {
+         sx={(theme) => ({
+           marginTop: theme.spacings.md,
+           marginBottom: theme.spacings.sm,
++          color:(theme:any)=>theme.palette.custom.main,
++          textAlign:'center',
+         })}
+       >
+         <Trans id='We’ve send a password reset link to your email address!' />
+@@ -51,6 +53,40 @@ export function ForgotPasswordForm(props: ForgotPasswordFormProps) {
+           rules={{
+             pattern: { value: emailPattern, message: i18n._(/* i18n */ 'Invalid email address') },
+           }}
++           sx={{
++            minWidth:{xs:'280px', sm:'350px', md:'400px',lg:'500px'},
++  '& .MuiOutlinedInput-root': {
++    '& .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&:hover .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++    },
++    '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++      borderColor: (theme:any)=>theme.palette.custom.borderInput,
++      borderWidth: '1px',
++    },
++    '& .MuiOutlinedInput-input': {
++      fontFamily: '"Bricolage Grotesque"',
++      fontSize: { xs: '15px', md: '16px' },
++      fontStyle: 'normal',
++      fontWeight: 400,
++      lineHeight: '158%',
++      color: (theme:any)=>theme.palette.custom.main, 
++      // padding:'17px',// input text color
++    },
++    '& .MuiOutlinedInput-input::placeholder': {
++      color:(theme:any)=>theme.palette.custom.main,
++      opacity: 1,
++    },
++  },
++  '& .MuiInputLabel-root': {
++    color: (theme:any)=>theme.palette.custom.main,
++  },
++  '& .MuiInputLabel-root.Mui-focused': {
++    color:(theme:any)=>theme.palette.custom.main, // label when focused
++  },
++}}
+           helperText={formState.errors.email?.message}
+           disabled={formState.isSubmitting}
+           showValid
+@@ -59,16 +95,31 @@ export function ForgotPasswordForm(props: ForgotPasswordFormProps) {
+ 
+       <ApolloCustomerErrorAlert error={error} />
+ 
+-      <FormActions>
++      <FormActions sx={{padding:'10px'}}>
+         <Button
+           type='submit'
+           loading={formState.isSubmitting}
+           color='primary'
+-          variant='pill'
++          // variant='pill'
+           size='large'
++           sx={{
++            backgroundColor:(theme:any)=>theme.palette.custom.main,
++            color:(theme:any)=>theme.palette.custom.border,
++            paddingBlock:'18px',
++            borderRadius:'4px',
++            fontSize: { xs: '15px', md: '16px' },
++           width:'200px',
++           border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++            transition:'all 0.4s ease-in-out',
++            '&:hover':{
++              backgroundColor:'transparent',
++              color:(theme:any)=>theme.palette.custom.main,
++           border: (theme:any) => `1px solid ${theme.palette.custom.main}`
++            }
++          }}
+           {...buttonProps}
+         >
+-          <Trans id='Send password reset email' />
++          <Trans id='Submit' />
+         </Button>
+       </FormActions>
+     </Form>
+diff --git a/node_modules/@graphcommerce/magento-customer/components/GuestOrderOverview/GuestOrder.graphql b/node_modules/@graphcommerce/magento-customer/components/GuestOrderOverview/GuestOrder.graphql
+index 3cba4b8..9daef9f 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/GuestOrderOverview/GuestOrder.graphql
++++ b/node_modules/@graphcommerce/magento-customer/components/GuestOrderOverview/GuestOrder.graphql
+@@ -1,6 +1,7 @@
+ query GuestOrder($orderNumber: String!, $email: String!, $postcode: String!) {
+-  guestOrder(input: { number: $orderNumber, email: $email, postcode: $postcode }) {
++  guestOrder(input: { number: $orderNumber, email: $email, lastname: $postcode }) {
+     ...OrderDetails
+     ...OrderItems
+   }
+ }
++ 
+\ No newline at end of file
+diff --git a/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx b/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
+index 24faf9f..4c206d0 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
+@@ -43,7 +43,7 @@ export function NameFields(props: NameFieldProps) {
+             name='prefix'
+             label={<Trans id='Prefix' />}
+             showValid
+-            InputProps={{ readOnly }}
++            // InputProps={{ readOnly }}
+             options={prefixes.map((option) => ({ id: option, label: option }))}
+           />
+         </FormRow>
+@@ -59,6 +59,7 @@ export function NameFields(props: NameFieldProps) {
+           InputProps={{ readOnly }}
+           showValid
+         />
++
+         <TextFieldElement
+           control={control}
+           name='lastname'
+diff --git a/node_modules/@graphcommerce/magento-customer/components/NoOrdersFound/NoOrdersFound.tsx b/node_modules/@graphcommerce/magento-customer/components/NoOrdersFound/NoOrdersFound.tsx
+index 85cfe9f..356d87f 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/NoOrdersFound/NoOrdersFound.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/NoOrdersFound/NoOrdersFound.tsx
+@@ -13,7 +13,7 @@ export function NoOrdersFound(props: NoOrdersFoundProps) {
+   return (
+     <Box
+       className={classes.root}
+-      sx={[(theme) => ({ marginTop: theme.spacings.sm }), ...(Array.isArray(sx) ? sx : [sx])]}
++      sx={[(theme) => ({ marginTop: theme.spacings.sm , color:(theme:any)=>theme.palette.custom.main}), ...(Array.isArray(sx) ? sx : [sx])]}
+     >
+       <IconHeader src={iconBox} size='small'>
+         <Trans id='No orders found' />
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.graphql b/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.graphql
+index b6b5b05..e64be17 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.graphql
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.graphql
+@@ -26,4 +26,5 @@ fragment OrderCard on CustomerOrder {
+     country_code
+     region_id
+   }
++  
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.tsx b/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.tsx
+index 426b71c..ac47125 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderCard/OrderCard.tsx
+@@ -1,7 +1,7 @@
+ import { Money } from '@graphcommerce/magento-store'
+ import { DateTimeFormat, NextLink, extendableComponent } from '@graphcommerce/next-ui'
+ import type { SxProps, Theme } from '@mui/material'
+-import { Box, ListItemButton, Skeleton, styled } from '@mui/material'
++import { Box, ListItemButton, Skeleton, styled, Typography } from '@mui/material'
+ import type { UseOrderCardItemImages } from '../../hooks/useOrderCardItemImages'
+ import { OrderCardItemImage } from '../OrderCardItemImage/OrderCardItemImage'
+ import { OrderStateLabel } from '../OrderStateLabel/OrderStateLabel'
+@@ -92,34 +92,43 @@ export function OrderCard(props: OrderCardProps) {
+           width: '100%',
+           boxShadow: 'none',
+           marginTop: theme.spacings.xxs,
+-          borderBottom: `1px solid ${theme.palette.divider}`,
++          borderBottom: `1px solid #E6E6E6`,
+           '&:hover': { background: 'none' },
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+     >
+-      <OrderContainer className={classes.orderContainer}>
+-        <OrderRow>
+-          <Box component='span' className={classes.orderMoney} sx={{ fontWeight: 'bold' }}>
+-            <Money {...total?.grand_total} />
+-          </Box>
+-          <DateTimeFormat date={order_date} />
+-          <span>#{number}</span>
+-        </OrderRow>
+-        <OrderRow>
+-          <OrderStateLabel {...props} status={status} />
+-        </OrderRow>
+-        <Box className={classes.orderProducts}>
++      <OrderContainer sx={{
++        padding:0,
++        display:'flex',
++        justifyContent:'space-between'
++      }} className={classes.orderContainer}>
++        <Box sx={{
++          color:(theme:any)=>theme.palette.custom.smallHeading,
++          lineHeight:'156%'
++        }}>
++          
++          <DateTimeFormat  date={order_date} />
++          <Box component='span' sx={{
++            fontWeight:700,
++            fontSize:{xs:'16px', md:'16px'},
++          lineHeight:'156%',
++            display:'block'
++          }}>#{number}</Box>
++
++   <Box className={classes.orderProducts}>
+           <Box
+             className={classes.images}
+             sx={(theme) => ({
+               display: 'grid',
+               gridAutoFlow: 'column',
+-              gap: theme.spacings.xxs,
+-              gridTemplateColumns: 'repeat(auto-fit, 88px)',
++            //  gap: theme.spacings.xxs,
++              gridTemplateColumns: 'repeat(auto-fit, 60px)',
+               placeContent: 'center',
+               placeItems: 'center',
+-              padding: theme.spacings.xxs,
++              // padding: theme.spacings.xxs,
++              paddingTop:'15px',
++              gap:'10px'
+             })}
+           >
+             {items
+@@ -129,6 +138,9 @@ export function OrderCard(props: OrderCardProps) {
+                   item?.product_url_key &&
+                   images?.[item.product_url_key] && (
+                     <OrderCardItemImage
++                    sx={{
++                      borderRadius:'8px'
++                    }}
+                       key={item.product_url_key}
+                       {...images[item.product_url_key]}
+                     />
+@@ -141,16 +153,31 @@ export function OrderCard(props: OrderCardProps) {
+                   display: 'flex',
+                   justifyContent: 'center',
+                   alignItems: 'center',
+-                  width: 88,
+-                  height: 88,
++                  width: 40,
++                  height: 32,
+                 }}
+               >{`+${totalItems - maxItemsInRow}`}</Box>
+             )}
+           </Box>
++      </Box> 
+         </Box>
+-        <Box className={`${classes.orderRow} ${classes.tracking}`} sx={{ textAlign: 'center' }}>
+-          {shipments?.[0]?.tracking?.[0] && <TrackingLink {...shipments?.[0].tracking?.[0]} />}
++        <Box>
++          <OrderRow>
++          <OrderStateLabel {...props} status={status} />
++          </OrderRow>
++          <OrderRow sx={{
++            width:'fit-content',
++            marginRight:0,
++            '& .OrderCard-orderMoney .mui-style-7b7t20':{
++
++            }
++          }}>
++            <Box component='span' className={classes.orderMoney} sx={{ fontWeight: 'bold' , width:'fit-content'}}>
++            <Money {...total?.grand_total} />
++          </Box>
++          </OrderRow>
+         </Box>
++     
+       </OrderContainer>
+     </ListItemButton>
+   )
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderCardItemImage/OrderCardItemImage.tsx b/node_modules/@graphcommerce/magento-customer/components/OrderCardItemImage/OrderCardItemImage.tsx
+index c4ad49e..bd30ca6 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderCardItemImage/OrderCardItemImage.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderCardItemImage/OrderCardItemImage.tsx
+@@ -15,15 +15,15 @@ const { classes } = extendableComponent(componentName, parts)
+ export function OrderCardItemImage(props: OrderCardItemImageProps) {
+   const { thumbnail, sx = [] } = props
+ 
+-  const sxx: SxProps<Theme> = [{ width: 88, height: 88 }, ...(Array.isArray(sx) ? sx : [sx])]
++  const sxx: SxProps<Theme> = [{ width: 60, height: 60 }, ...(Array.isArray(sx) ? sx : [sx])]
+ 
+   return (
+     <>
+       {thumbnail ? (
+         <Image
+           alt={thumbnail?.label ?? ''}
+-          width={88}
+-          height={88}
++          width={40}
++          height={40}
+           src={thumbnail?.url ?? ''}
+           className={classes.image}
+           sx={sxx}
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderDetails.tsx b/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderDetails.tsx
+index a89744e..10d7701 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderDetails.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderDetails.tsx
+@@ -47,20 +47,36 @@ export function OrderDetails(props: OrderDetailsProps) {
+         (theme) => ({
+           padding: theme.spacings.sm,
+           marginBottom: theme.spacings.md,
+-          background:
+-            theme.palette.mode === 'light'
+-              ? theme.palette.background.default
+-              : lighten(theme.palette.background.default, 0.15),
+-          ...breakpointVal(
+-            'borderRadius',
+-            theme.shape.borderRadius * 2,
+-            theme.shape.borderRadius * 3,
+-            theme.breakpoints.values,
+-          ),
++          background:"#fff",
++          borderRadius:'4px',
++          border:'1px solid #ECECEC',
+           '& .SectionHeader-root': {
+             mt: 0,
+-            mb: theme.spacings.xs,
++            mb: theme.spacings.sm,
++             paddingBottom: theme.spacings.xs,
++            borderBottom:'1px solid #e6e6e6',
++            '& .MuiTypography-root':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize: { xs: '15px', md: '16px' },
++              fontWeight:600,
++              lineHeight:'158%',
++              textTransform:'capitalize'
++            }
+           },
++          '& .OrderDetails-orderDetailContainer':{
++            '& .OrderDetails-orderDetailRow .SectionContainer-root':{
++              '& p, span, .OrderDetails-invoice, .AddressMultiLine-root':{
++                color:(theme:any)=>theme.palette.custom.main,
++                fontSize: { xs: '15px', md: '16px' },
++                },
++              '& .SectionHeader-root':{
++                mb:theme.spacings.xxs,
++              },
++              '& svg':{
++                display:'none'
++              }
++            }
++          }
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderTotals.tsx b/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderTotals.tsx
+index 14b7419..ff7db36 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderTotals.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderDetails/OrderTotals.tsx
+@@ -21,15 +21,17 @@ export function OrderTotals(props: OrderTotalsProps) {
+       className={classes.totalsContainer}
+       sx={[
+         (theme) => ({
+-          border: `1px solid ${theme.palette.divider}`,
++          border: `1px solid #ECECEC`,
++          borderRadius: '4px',
++          backgroundColor: '#fff',
++          
+           marginBottom: theme.spacings.md,
+           p: theme.spacings.sm,
+-          ...breakpointVal(
+-            'borderRadius',
+-            theme.shape.borderRadius * 2,
+-            theme.shape.borderRadius * 3,
+-            theme.breakpoints.values,
+-          ),
++          '& .OrderTotals-totalsRow p':{
++           color:(theme:any)=>theme.palette.custom.main,
++           fontSize: { xs: '15px', md: '16px' },
++          }
++          
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+@@ -71,7 +73,10 @@ export function OrderTotals(props: OrderTotalsProps) {
+           color: theme.palette.primary.main,
+         })}
+       >
+-        <Typography>
++        <Typography sx={{
++          fontWeight:700,
++          textTransform:'capitalize'
++        }}>
+           <Trans id='Grand total' />
+         </Typography>
+         <Money {...total?.grand_total} />
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderItem/OrderItem.tsx b/node_modules/@graphcommerce/magento-customer/components/OrderItem/OrderItem.tsx
+index 3be6e6b..107c31a 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderItem/OrderItem.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderItem/OrderItem.tsx
+@@ -55,43 +55,43 @@ export function OrderItem(props: OrderItemProps) {
+     <Box
+       className={classes.root}
+       sx={(theme) => ({
+-        borderBottom: `1px solid ${theme.palette.divider}`,
++        // borderBottom: `1px solid ${theme.palette.divider}`,
+         display: 'grid',
+         gridTemplate: `
+-          "picture itemName itemName itemName"
+-          "picture itemOptions itemOptions itemOptions"
+-          "picture itemPrice quantity rowPrice"
++          " itemName itemName itemName"
++          " itemOptions itemOptions itemOptions"
++          " itemPrice quantity rowPrice"
+         `,
+-        gridTemplateColumns: `${rowImageSize} repeat(3, 1fr)`,
++       // gridTemplateColumns: `${rowImageSize} repeat(3, 1fr)`,
+         columnGap: theme.spacings.sm,
+         alignItems: 'baseline',
+         typography: 'body1',
+         py: theme.spacings.xxs,
+         [theme.breakpoints.up('sm')]: {
+           gridTemplate: `
+-            "picture itemName itemName itemName itemName"
+-            "picture itemOptions itemPrice quantity rowPrice"
++            " itemName itemName itemName itemName"
++            " itemOptions itemPrice quantity rowPrice"
+           `,
+-          gridTemplateColumns: `${rowImageSize} 4fr 1fr 1fr minmax(75px, 1fr)`,
++       //   gridTemplateColumns: `${rowImageSize} 4fr 1fr 1fr minmax(75px, 1fr)`,
+         },
+ 
+         '&:not(.hasOptions)': {
+           display: 'grid',
+           gridTemplate: `
+-            "picture itemName itemName itemName"
+-            "picture itemPrice quantity rowPrice"`,
++            " itemName itemName itemName"
++            " itemPrice quantity rowPrice"`,
+           alignItems: 'center',
+           gridTemplateColumns: `${rowImageSize} repeat(3, 1fr)`,
+           [theme.breakpoints.up('sm')]: {
+             gridTemplate: `
+-              "picture itemName itemPrice quantity rowPrice"
++              " itemName itemPrice quantity rowPrice"
+             `,
+-            gridTemplateColumns: `${rowImageSize} 4fr 1fr minmax(120px, 1fr) minmax(75px, 1fr)`,
++           // gridTemplateColumns: `${rowImageSize} 4fr 1fr minmax(120px, 1fr) minmax(75px, 1fr)`,
+           },
+         },
+       })}
+     >
+-      <Box className={classes.picture} sx={{ gridArea: 'picture' }}>
++   {/*   <Box className={classes.picture} sx={{ gridArea: 'picture' }}>
+         <Box href={productLink} component={NextLink} className={classes.productLink}>
+           <Box className={classes.pictureSpacing}>
+             {thumbnail?.url && thumbnail?.label && (
+@@ -108,17 +108,18 @@ export function OrderItem(props: OrderItemProps) {
+             )}
+           </Box>
+         </Box>
+-      </Box>
++      </Box> */} 
+ 
+       <Box
+         href={productLink}
+         component={NextLink}
+         className={classes.itemName}
+-        sx={(theme) => ({
+-          typography: 'h5',
+-          fontWeight: 500,
++        sx={(theme:any) => ({
++          // typography: 'h5',
++          fontSize: { xs: '15px', md: '16px' },
++          fontWeight: 600,
+           gridArea: 'itemName',
+-          color: theme.palette.text.primary,
++          color: theme.palette.custom.main,
+           textDecoration: 'none',
+           flexWrap: 'nowrap',
+           maxWidth: 'max-content',
+@@ -159,9 +160,9 @@ export function OrderItem(props: OrderItemProps) {
+             <Box
+               key={option?.label}
+               className={classes.option}
+-              sx={(theme) => ({
+-                color: theme.palette.grey['500'],
+-                marginRight: theme.spacings.xs,
++              sx={(theme:any) => ({
++                color: theme.palette.custom.main,
++                marginRight: '5px',
+                 paddingBottom: '1px',
+                 display: 'inline',
+               })}
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderItems/OrderItems.tsx b/node_modules/@graphcommerce/magento-customer/components/OrderItems/OrderItems.tsx
+index 0e7f493..50190cf 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderItems/OrderItems.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderItems/OrderItems.tsx
+@@ -30,6 +30,23 @@ export function OrderItems(props: OrderItemsProps) {
+         (theme) => ({
+           marginTop: theme.spacings.md,
+           marginBottom: theme.spacings.sm,
++           background:"#fff",
++            borderRadius:'4px',
++          border:'1px solid #ECECEC',
++          padding: theme.spacings.sm,
++          '& .SectionHeader-root': {
++            mt: 0,
++            mb: 0,
++            paddingBottom: theme.spacings.xs,
++            borderBottom:'1px solid #e6e6e6',
++            '& .MuiTypography-root':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize: { xs: '15px', md: '16px' },
++              fontWeight:600,
++              lineHeight:'158%',
++              textTransform:'capitalize'
++            }
++          },
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+diff --git a/node_modules/@graphcommerce/magento-customer/components/OrderStateLabel/OrderStateLabel.tsx b/node_modules/@graphcommerce/magento-customer/components/OrderStateLabel/OrderStateLabel.tsx
+index 622f5d5..9949942 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/OrderStateLabel/OrderStateLabel.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/OrderStateLabel/OrderStateLabel.tsx
+@@ -10,6 +10,7 @@ type OrderStateLabelPropsBase = OrderStateProps
+ export type OrderStateLabelProps = {
+   sx?: SxProps<Theme>
+   short?: boolean
++  detail?:boolean
+ } & OrderStateLabelPropsBase
+ 
+ type OwnerState = {
+@@ -23,7 +24,7 @@ const { withState } = extendableComponent<OwnerState, typeof componentName, type
+ )
+ 
+ export function OrderStateLabel(props: OrderStateLabelProps) {
+-  const { sx = [], status, short = false } = props
++  const { sx = [], status, short = false, detail=false } = props
+   const orderState = getOrderState(props)
+ 
+   const classes = withState({ orderState })
+@@ -34,7 +35,7 @@ export function OrderStateLabel(props: OrderStateLabelProps) {
+       className={classes.root}
+       sx={[
+         (theme) => ({
+-          fontStyle: 'italic',
++          // fontStyle: 'italic',
+           fontWeight: 'normal',
+           '&.orderStatePending': {
+             color: theme.palette.text.disabled,
+@@ -52,7 +53,7 @@ export function OrderStateLabel(props: OrderStateLabelProps) {
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+     >
+-      {short ? status : <Trans>Order status: {status}</Trans>}
++      {short ? status : <Trans>Order {detail?'Status':""}: {status}</Trans>}
+     </Box>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/ReorderItems/ReorderItems.tsx b/node_modules/@graphcommerce/magento-customer/components/ReorderItems/ReorderItems.tsx
+index 2079ebf..13bb1e3 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/ReorderItems/ReorderItems.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/ReorderItems/ReorderItems.tsx
+@@ -31,7 +31,7 @@ export function ReorderItems(props: ReorderItemsProps) {
+         link={{ whiteSpace: 'nowrap' }}
+         type='submit'
+         loading={formState.isSubmitting}
+-        endIcon={<IconSvg src={iconChevronRight} />}
++        // endIcon={<IconSvg src={iconChevronRight} />}
+       >
+         <Trans>Reorder</Trans>
+       </LinkOrButton>
+diff --git a/node_modules/@graphcommerce/magento-customer/components/SignInForm/SignInForm.tsx b/node_modules/@graphcommerce/magento-customer/components/SignInForm/SignInForm.tsx
+index 9a27189..6a7c0ff 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/SignInForm/SignInForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/SignInForm/SignInForm.tsx
+@@ -5,9 +5,10 @@ import { Button, FormActions, FormRow } from '@graphcommerce/next-ui'
+ import { t } from '@lingui/macro'
+ import { Trans } from '@lingui/react'
+ import type { SxProps, Theme } from '@mui/material'
+-import { Box, FormControl, Link } from '@mui/material'
++import { Box, CircularProgress, FormControl, Link } from '@mui/material'
+ import { useSignInForm } from '../../hooks/useSignInForm'
+ import { ApolloCustomerErrorAlert } from '../ApolloCustomerError/ApolloCustomerErrorAlert'
++import { useState } from 'react'
+ 
+ export type SignInFormProps = {
+   email?: string
+@@ -17,7 +18,9 @@ export type SignInFormProps = {
+ }
+ 
+ export function SignInForm(props: SignInFormProps) {
+-  const { email, sx, setError, clearErrors } = props
++const { email, sx, setError, clearErrors } = props
++const [password,setpassword] = useState<string>("")
++const [hasTyped, setHasTyped] = useState(false);
+ 
+   const form = useSignInForm({
+     email,
+@@ -29,7 +32,8 @@ export function SignInForm(props: SignInFormProps) {
+       }
+       // eslint-disable-next-line @typescript-eslint/no-use-before-define
+       clearErrors()
+-      return variables
++       setHasTyped(false);
++      return {...variables,password}
+     },
+   })
+ 
+@@ -37,6 +41,7 @@ export function SignInForm(props: SignInFormProps) {
+   const [remainingError, authError] = graphqlErrorByCategory({
+     category: 'graphql-authentication',
+     error,
++     mask: 'No user found. Please sign up if you’re new here.',
+   })
+ 
+   const submitHandler = handleSubmit(() => {})
+@@ -45,6 +50,13 @@ export function SignInForm(props: SignInFormProps) {
+     <Box component='form' onSubmit={submitHandler} noValidate sx={sx}>
+       <FormRow sx={{ gridTemplateColumns: 'none' }}>
+         <PasswordElement
++          onChange={(e)=>{
++             setHasTyped(true);
++            setpassword(e.target.value)
++             if (error) {
++              form.clearErrors()
++            }
++          }}
+           variant='outlined'
+           error={!!formState.errors.password || !!authError}
+           control={control}
+@@ -55,10 +67,10 @@ export function SignInForm(props: SignInFormProps) {
+           id='current-password'
+           required={required.password}
+           disabled={formState.isSubmitting}
+-          helperText={!!formState.errors.password || authError?.message}
++          helperText={formState.errors.password?.message || (hasTyped ? null : authError?.message)}
+           InputProps={{
+             endAdornment: (
+-              <Link href='/account/forgot-password' underline='hover' sx={{ whiteSpace: 'nowrap' }}>
++              <Link href='/account/forgot-password' underline='hover' sx={{ whiteSpace: 'nowrap', color:(theme:any)=>theme.palette.custom.main }}>
+                 <Trans id='Forgot password?' />
+               </Link>
+             ),
+@@ -74,10 +86,34 @@ export function SignInForm(props: SignInFormProps) {
+             type='submit'
+             loading={formState.isSubmitting}
+             color='primary'
+-            variant='pill'
++            // variant='pill'
++            disabled={formState.isSubmitting || !formState.isValid}
+             size='large'
++            sx={{
++            backgroundColor:(theme:any)=>theme.palette.custom.main,
++            color:(theme:any)=>theme.palette.custom.border,
++            paddingBlock:{xs:'15px', sm:'18px'},
++            borderRadius:'4px',
++            width:'100%',
++            minWidth:{xs:'250px', sm:'400px'},
++            border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++            transition:'all 0.4s ease-in-out',
++            '&:hover':{
++              backgroundColor:'transparent',
++              color:(theme:any)=>theme.palette.custom.main,
++            border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++            },
++           '&:disabled':{
++              cursor:'not-allowed',
++              color:(theme:any)=>`${theme.palette.custom.border} !important`,
++            }
++          }}
+           >
+-            <Trans id='Sign in' />
++           {formState.isSubmitting ? (
++            <CircularProgress size="30px"  sx={{
++             color:'#d4d4d4'
++            }}/>
++                     ):<Trans id='Create Account' />}
+           </Button>
+         </FormControl>
+       </FormActions>
+diff --git a/node_modules/@graphcommerce/magento-customer/components/SignOutForm/SignOutForm.tsx b/node_modules/@graphcommerce/magento-customer/components/SignOutForm/SignOutForm.tsx
+index a7e71e8..955b85b 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/SignOutForm/SignOutForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/SignOutForm/SignOutForm.tsx
+@@ -2,10 +2,12 @@ import { useApolloClient } from '@graphcommerce/graphql'
+ import type { FormState } from '@graphcommerce/react-hook-form'
+ import { useFormGqlMutation } from '@graphcommerce/react-hook-form'
+ import { useRouter } from 'next/router'
+-import React from 'react'
++import React, { useState } from 'react'
+ import { ApolloCustomerErrorAlert } from '../ApolloCustomerError/ApolloCustomerErrorAlert'
+ import { SignOutFormDocument } from './SignOutForm.gql'
+ import { signOut } from './signOut'
++import { MessageSnackbar } from '@graphcommerce/next-ui'
++import { Trans } from '@lingui/react'
+ 
+ export type SignOutFormProps = {
+   button: (props: { formState: FormState<Record<string, unknown>> }) => React.ReactNode
+@@ -15,23 +17,59 @@ export function SignOutForm(props: SignOutFormProps) {
+   const { button: Button } = props
+   const router = useRouter()
+   const client = useApolloClient()
++  const [showSuccess, setShowSuccess] = useState(false)
+ 
+   const { handleSubmit, formState, error } = useFormGqlMutation(
+     SignOutFormDocument,
+     {
+-      onComplete: async () => {
+-        signOut(client)
+-        await router.push('/')
+-      },
++     onComplete: async () => {
++  setShowSuccess(true)
++  setTimeout(() => {
++    signOut(client)
++    setTimeout(async () => {
++      await router.push('/')
++    }, 1000)
++  }, 2000) 
++},
+     },
+     { errorPolicy: 'all' },
+   )
+   const submitHandler = handleSubmit(() => {})
+ 
+   return (
++    <>
+     <form onSubmit={submitHandler} noValidate>
+       <Button formState={formState} />
+       <ApolloCustomerErrorAlert error={error} />
+     </form>
++     {showSuccess && (
++            <MessageSnackbar
++              sx={{
++                '& .MuiSnackbarContent-message': {
++                  '& svg': {
++                    color: (theme: any) => theme.palette.custom.main,
++                    fontSize: { xs: '18px', lg: '25px' },
++                  },
++                  '& .MuiBox-root': {
++                    color: (theme: any) => theme.palette.custom.main,
++                    fontSize: { xs: '15px', md: '16px' },
++                    textAlign: 'center',
++                  },
++                  '& .MuiButtonBase-root': {
++                    width: { xs: '35px', xl: '40px' },
++                    height: { xs: '35px', xl: '40px' },
++                  },
++                },
++              }}
++              open={showSuccess}
++              onClose={() => setShowSuccess(false)}
++              sticky
++              variant='pill'
++              severity='success'
++            >
++              <Trans id='Signed out successfully' />
++            </MessageSnackbar>
++          )}
++    </>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUp.graphql b/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUp.graphql
+index 62c2fbb..9eadfab 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUp.graphql
++++ b/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUp.graphql
+@@ -1,7 +1,7 @@
+ mutation SignUp(
+   $email: String!
+   $password: String!
+-  $prefix: String!
++  $prefix: String
+   $firstname: String!
+   $middlename: String
+   $lastname: String!
+diff --git a/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUpForm.tsx b/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUpForm.tsx
+index c68c353..6086891 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUpForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/SignUpForm/SignUpForm.tsx
+@@ -7,23 +7,27 @@ import type { UseFormClearErrors, UseFormSetError } from '@graphcommerce/react-h
+ import { FormPersist, useFormGqlMutation } from '@graphcommerce/react-hook-form'
+ import { t } from '@lingui/macro'
+ import { Trans } from '@lingui/react'
+-import { Alert } from '@mui/material'
++import { Alert, Box, CircularProgress } from '@mui/material'
+ import { useSignInForm } from '../../hooks/useSignInForm'
+ import { ApolloCustomerErrorSnackbar } from '../ApolloCustomerError/ApolloCustomerErrorSnackbar'
+ import { NameFields } from '../NameFields/NameFields'
+ import { ValidatedPasswordElement } from '../ValidatedPasswordElement/ValidatedPasswordElement'
+ import type { SignUpMutation, SignUpMutationVariables } from './SignUp.gql'
+ import { SignUpDocument } from './SignUp.gql'
++import type { SxProps, Theme } from '@mui/material'
++import { useState } from 'react'
++
+ 
+ type SignUpFormProps = {
+   email?: string
++   sx?: SxProps<Theme>
+   setError: UseFormSetError<{ email?: string; requestedMode?: 'signin' | 'signup' }>
+   clearErrors: UseFormClearErrors<{ email?: string; requestedMode?: 'signin' | 'signup' }>
+ }
+ 
+ export function SignUpForm(props: SignUpFormProps) {
+-  const { email, setError, clearErrors } = props
+-
++  const { email, setError, clearErrors,sx } = props
++  const [password,setPassword] = useState<string>("")
+   const storeConfig = useQuery(StoreConfigDocument)
+   const signIn = useSignInForm({ email })
+   const form = useFormGqlMutation<
+@@ -32,6 +36,8 @@ export function SignUpForm(props: SignUpFormProps) {
+   >(
+     SignUpDocument,
+     {
++      mode:'onChange',
++      reValidateMode: 'onChange',
+       defaultValues: { email },
+       onBeforeSubmit: (values) => {
+         if (!email) {
+@@ -39,9 +45,24 @@ export function SignUpForm(props: SignUpFormProps) {
+           setError('email', { message: t`Please enter a valid email address` })
+           return false
+         }
++
++
++
++        if(values.password !== values.confirmPassword){
++          form.setError('confirmPassword',{
++            message:t`Passwords do not match`
++          })
++          return false
++        }
++
++       // if(!values.password || values.password.trim()===''){
++       //   form.setError('password',{
++       //     message:t`password Required`
++       //   })
++       // }
+         // eslint-disable-next-line @typescript-eslint/no-use-before-define
+         clearErrors()
+-        return { ...values, email: email ?? '' }
++        return { ...values, email: email ?? '' ,password}
+       },
+       onComplete: async (result, variables) => {
+         if (!result.errors && !storeConfig.data?.storeConfig?.create_account_confirmation) {
+@@ -75,7 +96,10 @@ export function SignUpForm(props: SignUpFormProps) {
+   }
+ 
+   return (
+-    <form onSubmit={submitHandler} noValidate>
++    <Box component='form' onSubmit={submitHandler} noValidate sx={sx}>
++
++      <NameFields form={form} prefix={false} />
++
+       <FormRow>
+         <ValidatedPasswordElement
+           control={control}
+@@ -88,6 +112,13 @@ export function SignUpForm(props: SignUpFormProps) {
+           required={required.password}
+           disabled={formState.isSubmitting}
+           helperText={inputError?.message}
++          // onChange={(e)=>{setpassword(e.target.value)}}
++          onChange={(e) => {
++            setPassword(e.target.value)
++            if (formState.errors.confirmPassword) {
++              form.clearErrors('confirmPassword')
++            }
++          }}
+         />
+         <PasswordRepeatElement
+           control={control}
+@@ -99,33 +130,73 @@ export function SignUpForm(props: SignUpFormProps) {
+           autoComplete='new-password'
+           required
+           disabled={formState.isSubmitting}
++          helperText={formState.errors.confirmPassword?.message}
+         />
+       </FormRow>
+ 
+-      <NameFields form={form} prefix />
+-
++{/* 
+       <SwitchElement
+         control={control}
+         name='isSubscribed'
+         disabled={formState.isSubmitting}
+         label={<Trans id='Subscribe to newsletter' />}
+       />
+-
++*/}
+       <ApolloCustomerErrorSnackbar error={remainingError} />
+ 
+       <FormActions>
+         <Button
+           type='submit'
+           id='create-account'
+-          variant='pill'
++          // variant='pill'
++         disabled={formState.isSubmitting || !formState.isValid}
+           color='primary'
+           size='large'
+           loading={formState.isSubmitting}
++          sx={{
++            backgroundColor:(theme:any)=>theme.palette.custom.main,
++            color:(theme:any)=>theme.palette.custom.border,
++            paddingBlock:{xs:'15px', sm:'18px'},
++            borderRadius:'4px',
++            width:'100%',
++            minWidth:{xs:'250px', sm:'400px'},
++            border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++            transition:'all 0.4s ease-in-out',
++            fontSize: { xs: '15px', md: '16px' },
++             '&:hover:not(:disabled)': {
++              backgroundColor: 'transparent',
++              color: (theme: any) => theme.palette.custom.main,
++              border: (theme: any) => `1px solid ${theme.palette.custom.main}`,
++            },
++            '&:hover':{
++              backgroundColor:'transparent',
++              color:(theme:any)=>theme.palette.custom.main,
++              border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++            },
++            '&:disabled':{
++              cursor:'not-allowed',
++               color:(theme:any)=>`${theme.palette.custom.border} !important`,
++            }
++            
++            //  '&:disabled': {
++            //   backgroundColor: (theme: any) => theme.palette.grey[300],
++            //   color: (theme: any) => theme.palette.grey[500],
++            //   border: (theme: any) => `1px solid ${theme.palette.grey[300]}`,
++            //   cursor: 'not-allowed',
++            //   opacity: 0.6,
++            // }
++          }}
+         >
+-          <Trans id='Create Account' />
++
++          {formState.isSubmitting ? (
++ <CircularProgress size="30px"  sx={{
++  color:'#d4d4d4'
++ }}/>
++          ):<Trans id='Create Account' />}
++          
+         </Button>
+       </FormActions>
+       <FormPersist form={form} name='SignUp' exclude={['password', 'confirmPassword']} />
+-    </form>
++    </Box>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/UpdateCustomerEmailForm/UpdateCustomerEmailForm.tsx b/node_modules/@graphcommerce/magento-customer/components/UpdateCustomerEmailForm/UpdateCustomerEmailForm.tsx
+index 2c28caa..096e6ca 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/UpdateCustomerEmailForm/UpdateCustomerEmailForm.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/UpdateCustomerEmailForm/UpdateCustomerEmailForm.tsx
+@@ -52,7 +52,44 @@ export function UpdateCustomerEmailForm(props: UpdateCustomerEmailFormProps) {
+   const watchNewEmail = watch('email')
+ 
+   return (
+-    <Form onSubmit={submit} noValidate>
++    <Form onSubmit={submit} noValidate sx={{
++                minWidth:{xs:'280px', sm:'350px', md:'400px',lg:'500px'},
++      '& .MuiOutlinedInput-root': {
++        '& svg.MuiSelect-icon':{
++          fill:(theme:any)=>theme.palette.custom.wishlistColor,
++          color:(theme:any)=>theme.palette.custom.wishlistColor
++        },
++        '& .MuiOutlinedInput-notchedOutline': {
++          borderColor: (theme:any)=>theme.palette.custom.borderInput,
++        },
++        '&:hover .MuiOutlinedInput-notchedOutline': {
++          borderColor: (theme:any)=>theme.palette.custom.borderInput,
++        },
++        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
++          borderColor: (theme:any)=>theme.palette.custom.borderInput,
++          borderWidth: '1px',
++        },
++        '& .MuiOutlinedInput-input': {
++          fontFamily: '"Bricolage Grotesque"',
++          fontSize: { xs: '15px', md: '16px' },
++          fontStyle: 'normal',
++          fontWeight: 400,
++          lineHeight: '158%',
++          color: (theme:any)=>theme.palette.custom.main, 
++          // padding:'17px',// input text color
++        },
++        '& .MuiOutlinedInput-input::placeholder': {
++          color:(theme:any)=>theme.palette.custom.main,
++          opacity: 1,
++        },
++      },
++      '& .MuiInputLabel-root': {
++        color: (theme:any)=>theme.palette.custom.main,
++      },
++      '& .MuiInputLabel-root.Mui-focused': {
++        color:(theme:any)=>theme.palette.custom.main, // label when focused
++      },
++    }}>
+       <FormRow>
+         <TextFieldElement
+           variant='outlined'
+@@ -118,20 +155,59 @@ export function UpdateCustomerEmailForm(props: UpdateCustomerEmailFormProps) {
+ 
+       <ApolloCustomerErrorSnackbar error={remainingError} />
+ 
+-      <FormDivider />
+-      <FormActions>
++      <FormDivider sx={{
++        background:(theme:any)=>theme.palette.custom.borderSecondary
++      }} />
++      <FormActions sx={{
++                padding:0,
++                marginTop:'10px'
++              }}>
+         <Button
+           type='submit'
+           color='primary'
+-          variant='pill'
++        //  variant='pill'
+           size='large'
+           loading={formState.isSubmitting}
++           sx={{
++                                  backgroundColor:(theme:any)=>theme.palette.custom.main,
++                                  color:(theme:any)=>theme.palette.custom.border,
++                                  // paddingBlock:'18px',
++                                  borderRadius:'4px',
++                                  fontSize: { xs: '15px', md: '16px' },
++                                // width:'200px',
++                                 border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++                                 textTransform:'capitalize',
++                                  transition:'all 0.4s ease-in-out',
++                                  '&:hover':{
++                                    backgroundColor:'transparent',
++                                    color:(theme:any)=>theme.palette.custom.main,
++                                 border: (theme:any) => `1px solid ${theme.palette.custom.main}`
++                                  }
++                                }}
+         >
+           <Trans id='Save changes' />
+         </Button>
+       </FormActions>
+ 
+       <MessageSnackbar
++      sx={{
++          '& .MuiSnackbarContent-message':{
++            '& svg':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize:{xs:'18px', lg:'25px'},
++            },
++            '& .MuiBox-root':{
++              color:(theme:any)=>theme.palette.custom.main,
++              fontSize: { xs: '15px', md: '16px' },
++              textAlign:'center'
++            },
++            '& .MuiButtonBase-root':{
++              width:{xs:'35px', xl:'40px'},
++              height:{xs:'35px', xl:'40px'},
++              
++            }
++          }
++        }} 
+         variant='pill'
+         severity='success'
+         sticky
+diff --git a/node_modules/@graphcommerce/magento-customer/components/WaitForCustomer/WaitForCustomer.tsx b/node_modules/@graphcommerce/magento-customer/components/WaitForCustomer/WaitForCustomer.tsx
+index 505bd21..3484be2 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/WaitForCustomer/WaitForCustomer.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/WaitForCustomer/WaitForCustomer.tsx
+@@ -49,7 +49,7 @@ export function WaitForCustomer(props: WaitForCustomerProps) {
+   const error = mergeErrors(
+     queries.map((query) => (typeof query === 'boolean' ? null : query.error)).filter(nonNullable),
+   )
+-
++// console.log(session,"this is the session")
+   return (
+     <WaitForQueries
+       waitFor={!session.loggedIn ? session.query : queries}
+@@ -68,10 +68,24 @@ export function WaitForCustomer(props: WaitForCustomerProps) {
+       {!session.loggedIn &&
+         (unauthenticated ?? (
+           <FullPageMessage
+-            icon={<IconSvg src={iconPerson} size='xxl' />}
++            icon={<IconSvg src={''} size='xxl' />}
+             title={<Trans id='You must sign in to continue' />}
+             button={
+-              <Button href='/account/signin' variant='pill' color='secondary' size='large'>
++              <Button  sx={{
++                          backgroundColor:(theme:any)=>theme.palette.custom.main,
++                          color:(theme:any)=>theme.palette.custom.border,
++                         // paddingBlock:'18px',
++                          borderRadius:'4px',
++                          fontSize: { xs: '15px', md: '16px' },
++                        width:'200px',
++                         border: (theme:any) => `1px solid ${theme.palette.custom.main}`,
++                          transition:'all 0.4s ease-in-out',
++                          '&:hover':{
++                            backgroundColor:'transparent',
++                            color:(theme:any)=>theme.palette.custom.main,
++                         border: (theme:any) => `1px solid ${theme.palette.custom.main}`
++                          }
++                        }} href='/account/signin'  color='secondary' size='large'>
+                 {!session.valid ? (
+                   <Trans id='Sign in' />
+                 ) : (
+diff --git a/node_modules/@graphcommerce/magento-customer/hooks/useCustomerSession.ts b/node_modules/@graphcommerce/magento-customer/hooks/useCustomerSession.ts
+index 12b00b5..1937112 100644
+--- a/node_modules/@graphcommerce/magento-customer/hooks/useCustomerSession.ts
++++ b/node_modules/@graphcommerce/magento-customer/hooks/useCustomerSession.ts
+@@ -2,6 +2,7 @@ import type { QueryResult } from '@graphcommerce/graphql'
+ import { useQuery } from '@graphcommerce/graphql'
+ import type { CustomerTokenQuery, CustomerTokenQueryVariables } from './CustomerToken.gql'
+ import { CustomerTokenDocument } from './CustomerToken.gql'
++import { StoreConfigDocument } from '@graphcommerce/magento-store'
+ 
+ export type UseCustomerSessionOptions = Record<string, unknown>
+ 
+@@ -12,12 +13,15 @@ export type UseCustomerSessionReturn = {
+ 
+ // eslint-disable-next-line @typescript-eslint/no-unused-vars
+ export function useCustomerSession(_: UseCustomerSessionOptions = {}) {
++  const storeConfig = useQuery(StoreConfigDocument)
+   const query = useQuery(CustomerTokenDocument)
+   const tokenData = query.data?.customerToken
++  const customer_access_token_lifetime = storeConfig.data?.storeConfig?.customer_access_token_lifetime
+ 
+   return {
+     ...tokenData,
+     loggedIn: Boolean(tokenData?.token),
+     query,
++    customer_access_token_lifetime
+   }
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/hooks/useSignInForm.interceptor.ts b/node_modules/@graphcommerce/magento-customer/hooks/useSignInForm.interceptor.ts
+new file mode 100644
+index 0000000..466fdc6
+--- /dev/null
++++ b/node_modules/@graphcommerce/magento-customer/hooks/useSignInForm.interceptor.ts
+@@ -0,0 +1,76 @@
++/* hash:717073135 */
++/* eslint-disable */
++/* This file is automatically generated for @graphcommerce/magento-customer/hooks/useSignInForm */
++
++/** @see {@link file://./useSignInForm.ts} for source of original */
++/** SOURCE_START */
++import { useApolloClient } from '@graphcommerce/graphql'
++import { useSignInForm as useSignInFormuseSignInFormMergeCart } from '@graphcommerce/magento-cart/plugins/useSignInFormMergeCart'
++import { setCssFlag } from '@graphcommerce/next-ui'
++import type { UseFormGraphQlOptions } from '@graphcommerce/react-hook-form'
++import { useFormGqlMutation } from '@graphcommerce/react-hook-form'
++import type { SignInMutation, SignInMutationVariables } from '../components/SignInForm/SignIn.gql'
++import { SignInDocument } from '../components/SignInForm/SignIn.gql'
++import { signOut } from '../components/SignOutForm/signOut'
++import { CustomerDocument } from './Customer.gql'
++
++type UseSignInFormProps = {
++  email?: string
++} & UseFormGraphQlOptions<SignInMutation, SignInMutationVariables>
++export function useSignInFormOriginal({ email, ...options }: UseSignInFormProps) {
++  const client = useApolloClient()
++  return useFormGqlMutation(
++    SignInDocument,
++    {
++      ...options,
++      defaultValues: {
++        email,
++        ...options?.defaultValues,
++      },
++      onBeforeSubmit: async (values) => {
++        const oldEmail = client.cache.readQuery({
++          query: CustomerDocument,
++        })?.customer?.email
++        if (oldEmail && oldEmail !== email) signOut(client)
++        const newValues = email
++          ? {
++              ...values,
++              email,
++            }
++          : values
++        return options?.onBeforeSubmit ? options.onBeforeSubmit(newValues) : newValues
++      },
++      onComplete: (...args) => {
++        setCssFlag('private-query', true)
++        return options.onComplete?.(...args)
++      },
++    },
++    {
++      errorPolicy: 'all',
++    },
++  )
++}
++
++/** SOURCE_END */
++
++const logged: Set<string> = new Set()
++const logOnce = (log: string, ...additional: unknown[]) => {
++  if (logged.has(log)) return
++  logged.add(log)
++  console.warn(log, ...additional)
++}
++
++const useSignInFormuseSignInFormMergeCartInterceptor: typeof useSignInFormOriginal = (...args) => {
++  return useSignInFormuseSignInFormMergeCart(useSignInFormOriginal, ...args)
++}
++
++/**
++ * Here you see the 'interceptor' that is applying all the configured plugins.
++ *
++ * This file is NOT meant to be modified directly and is auto-generated if the plugins or the
++ * original source changes.
++ *
++ * @see {@link file://./useSignInForm.ts} for original source file
++ * @see {useSignInFormuseSignInFormMergeCart} for source of applied plugin
++ */
++export const useSignInForm = useSignInFormuseSignInFormMergeCartInterceptor

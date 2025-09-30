@@ -1,0 +1,234 @@
+diff --git a/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/GetShippingMethods.graphql b/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/GetShippingMethods.graphql
+index bbf68aa..10958c8 100644
+--- a/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/GetShippingMethods.graphql
++++ b/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/GetShippingMethods.graphql
+@@ -1,6 +1,31 @@
+ query GetShippingMethods($cartId: String!) {
+   cart(cart_id: $cartId) {
+     id
++    shipping_addresses{
++      firstname
++      lastname
++      country{
++        code
++      }
++      region {
++        code
++        region_id
++      }
++      telephone
++      pickup_location_code
++    }
++    billing_address{
++      firstname
++      lastname
++      country{
++        code
++      }
++      region {
++        code
++        region_id
++      }
++      telephone
++    }
+     ...AvailableShippingMethods
+   }
+ }
+diff --git a/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/ShippingMethodForm.tsx b/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/ShippingMethodForm.tsx
+index 2df7a90..57267c7 100644
+--- a/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/ShippingMethodForm.tsx
++++ b/node_modules/@graphcommerce/magento-cart-shipping-method/components/ShippingMethodForm/ShippingMethodForm.tsx
+@@ -27,40 +27,41 @@ import { ShippingMethodFormDocument } from './ShippingMethodForm.gql'
+ 
+ export type ShippingMethodFormProps = Pick<UseFormComposeOptions, 'step'> & {
+   sx?: SxProps<Theme>
++  isPickup?: boolean
+   children?: React.ReactNode
+ } & UseFormGraphQlOptions<
+-    ShippingMethodFormMutation,
+-    ShippingMethodFormMutationVariables & { carrierMethod?: string }
+-  >
++  ShippingMethodFormMutation,
++  ShippingMethodFormMutationVariables & { carrierMethod?: string }
++>
+ 
+ function notEmpty<TValue>(value: TValue | null | undefined): value is TValue {
+   return value !== null && value !== undefined
+ }
+ 
+ export function ShippingMethodForm(props: ShippingMethodFormProps) {
+-  const { step, sx, children, onBeforeSubmit = (vars) => vars, ...options } = props
++  const { step, sx, children, onBeforeSubmit = (vars) => vars, isPickup = false, ...options } = props
+   const { data: cartQuery } = useCartQuery(GetShippingMethodsDocument)
+ 
+   const shippingAddress = cartQuery?.cart?.shipping_addresses?.[0]
+   const availableMethods = (shippingAddress?.available_shipping_methods ?? []).filter(notEmpty)
+ 
+-  const items = useMemo(
+-    () =>
+-      availableMethods
+-        // Move disabled items to the bottom
+-        .sort((a) => (a.available ? -1 : 1))
+-        .filter((m) => {
+-          if (m.carrier_code === 'freeshipping') return m.available === true
+-          return m.method_code
+-        })
+-        .map((method) => ({
+-          ...method,
+-          disabled: !method?.available,
+-          value: `${method?.carrier_code}-${method?.method_code ?? ''}`,
+-          method_title: method?.method_title || '',
+-        })),
+-    [availableMethods],
+-  )
++  // const items = useMemo(
++  //   () =>
++  //     availableMethods
++  //       // Move disabled items to the bottom
++  //       .sort((a) => (a.available ? -1 : 1))
++  //       .filter((m) => {
++  //         if (m.carrier_code === 'freeshipping') return m.available === true
++  //         return m.method_code
++  //       })
++  //       .map((method) => ({
++  //         ...method,
++  //         disabled: !method?.available,
++  //         value: `${method?.carrier_code}-${method?.method_code ?? ''}`,
++  //         method_title: method?.method_title || '',
++  //       })),
++  //   [availableMethods],
++  // )
+ 
+   // Override with the currently selected method if there is one.
+   const selectedMethod = cartQuery?.cart?.shipping_addresses?.[0]?.selected_shipping_method
+@@ -75,46 +76,73 @@ export function ShippingMethodForm(props: ShippingMethodFormProps) {
+     defaultValues: { carrierMethod },
+     onBeforeSubmit: (variables) => {
+       const [carrier, method] = (variables.carrierMethod ?? '').split('-')
++      console.log(carrier, method, "==>carrier")
++      if (carrier === "instore") {
++        return onBeforeSubmit({ ...variables, carrier, method: "pickup" })
++      }
++
++      if (carrier === "cityrate") {
++        return onBeforeSubmit({ ...variables, carrier, method: "cityrate" })
++      }
++
++      if (carrier === "flatrate") {
++        return onBeforeSubmit({ ...variables, carrier, method: "flatrate" })
++      }
++
+       return onBeforeSubmit({ ...variables, carrier, method })
+     },
+     ...options,
+   })
+ 
+   const { handleSubmit, control, error, setValue } = form
+-  const submit = handleSubmit(() => {})
+-
+-  useFormCompose({ form, step, submit, key: 'ShippingMethodForm' })
+-
+-  const renderItems = [...items]
+-  if (renderItems.length === 0) {
+-    renderItems.push({
+-      disabled: true,
+-      value: '',
+-      available: false,
+-      carrier_code: '',
+-      carrier_title: i18n._(
+-        /* i18n */ 'Please fill out an address to be able to select a shipping method',
+-      ),
+-      method_title: '',
+-      price_incl_tax: {},
+-      price_excl_tax: {},
+-    })
+-  }
+-
+-  const firstCarrierMethod = items.length === 1 ? items[0].value : undefined
++  const submit = handleSubmit(() => { })
++
++  // useFormCompose({ form, step, submit, key: 'ShippingMethodForm' })
++
++  // const renderItems = [...items]
++  // if (renderItems.length === 0) {
++  //   renderItems.push({
++  //     disabled: true,
++  //     value: '',
++  //     available: false,
++  //     carrier_code: '',
++  //     carrier_title: i18n._(
++  //       /* i18n */ 'Please fill out an address to be able to select a shipping method',
++  //     ),
++  //     method_title: '',
++  //     price_incl_tax: {},
++  //     price_excl_tax: {},
++  //   })
++  // }
++
++  // const firstCarrierMethod = items.length === 1 ? items[0].value : undefined
++  // useEffect(() => {
++  //   //  If there is a shipping address AND there is only one shipping method
++  //   if (shippingAddress && firstCarrierMethod) {
++  //     // AND the current carrierMethod is not the same (or not set) as the single shipping method
++  //     if (carrierMethod !== firstCarrierMethod) {
++  //       // THEN set the shipping method to the only one available.
++  //       setValue('carrierMethod', firstCarrierMethod, { shouldValidate: true })
++  //     }
++  //   }
++  // }, [shippingAddress, firstCarrierMethod, carrierMethod, setValue])
++
+   useEffect(() => {
+-    //  If there is a shipping address AND there is only one shipping method
+-    if (shippingAddress && firstCarrierMethod) {
+-      // AND the current carrierMethod is not the same (or not set) as the single shipping method
+-      if (carrierMethod !== firstCarrierMethod) {
+-        // THEN set the shipping method to the only one available.
+-        setValue('carrierMethod', firstCarrierMethod, { shouldValidate: true })
++    if (shippingAddress) {
++      if (isPickup && shippingAddress?.pickup_location_code) {
++        setValue('carrierMethod', "instore", { shouldValidate: true })
++        submit()
++      } else {
++        setValue('carrierMethod', availableMethods?.[0]?.carrier_code, { shouldValidate: true })
++        submit()
+       }
+     }
+-  }, [shippingAddress, firstCarrierMethod, carrierMethod, setValue])
++    console.log(isPickup, shippingAddress, "==>isPickup")
++  }, [shippingAddress, isPickup])
+ 
+   return (
+-    <FormProvider {...form}>
++    <>
++      {/* <FormProvider {...form}>
+       <FormAutoSubmit
+         control={control}
+         submit={submit}
+@@ -132,16 +160,18 @@ export function ShippingMethodForm(props: ShippingMethodFormProps) {
+           name='carrierMethod'
+           size='large'
+           color='secondary'
+-          rules={{ required: i18n._(/* i18n */ 'Please select a shipping method') }}
+-          items={renderItems}
+-          render={
+-            ShippingMethodActionCard as React.FC<ActionCardItemRenderProps<ActionCardItemBase>>
+-          }
++          rules={{ required: i18n._('Please select a shipping method') }}
++      items={renderItems}
++      render={
++        ShippingMethodActionCard as React.FC<ActionCardItemRenderProps<ActionCardItemBase>>
++      }
+         />
+-        <ApolloCartErrorAlert error={error} />
+-      </Form>
+-      {children}
+-    </FormProvider>
++      <ApolloCartErrorAlert error={error} />
++    </Form >
++      { children }
++    </FormProvider > */
++      }
++    </>
+   )
+ }
+ 

@@ -1,0 +1,13 @@
+query Layout {
+  menu: categories {
+    __typename
+  }
+  footer: cmsBlocks(identifiers: "custom-footer") {
+    items {
+      identifier
+      title
+      content
+    }
+  }
+  ...MenuQueryFragment
+}

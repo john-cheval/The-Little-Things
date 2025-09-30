@@ -1,0 +1,392 @@
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/CHANGELOG.md b/node_modules/@graphcommerce/magento-product-configurable/CHANGELOG.md
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Config.graphqls b/node_modules/@graphcommerce/magento-product-configurable/Config.graphqls
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/ConfigurableCartItem.graphql b/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/ConfigurableCartItem.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/ConfigurableCartItem.tsx b/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/ConfigurableCartItem.tsx
+old mode 100644
+new mode 100755
+index 0c7dbf4..d3e43c4
+--- a/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/ConfigurableCartItem.tsx
++++ b/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/ConfigurableCartItem.tsx
+@@ -14,8 +14,10 @@ export function ConfigurableCartItem(props: ConfigurableCartItemFragment & CartI
+       {...props}
+       product={{
+         ...product,
+-        name: configured_variant?.name ?? product.name,
+-        thumbnail: configured_variant?.thumbnail ?? product.thumbnail,
++        // name: configured_variant?.name ?? product.name,
++        // thumbnail: configured_variant?.thumbnail ?? product.thumbnail,
++        name: product.name,
++        thumbnail: product.thumbnail,
+       }}
+       withOptions
+     >
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/OptionsList.tsx b/node_modules/@graphcommerce/magento-product-configurable/ConfigurableCartItem/OptionsList.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/ConfigurableContext/ConfigurableProductForm.graphql b/node_modules/@graphcommerce/magento-product-configurable/ConfigurableContext/ConfigurableProductForm.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/ConfigurableProductPage.graphql b/node_modules/@graphcommerce/magento-product-configurable/ConfigurableProductPage.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/ProductPageConfigurableQueryFragment.graphql b/node_modules/@graphcommerce/magento-product-configurable/ProductPageConfigurableQueryFragment.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/SwatchList.tsx b/node_modules/@graphcommerce/magento-product-configurable/SwatchList.tsx
+old mode 100644
+new mode 100755
+index 3032ee5..6fbdca8
+--- a/node_modules/@graphcommerce/magento-product-configurable/SwatchList.tsx
++++ b/node_modules/@graphcommerce/magento-product-configurable/SwatchList.tsx
+@@ -24,6 +24,7 @@ export function SwatchList(props: SwatchListProps) {
+     configurable_options?.filter((option) => attributes.includes(option?.attribute_code ?? '')) ??
+     []
+ 
++  
+   return (
+     <>
+       {options.map((option) => (
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/ColorSwatchData.graphql b/node_modules/@graphcommerce/magento-product-configurable/Swatches/ColorSwatchData.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/ColorSwatchData.tsx b/node_modules/@graphcommerce/magento-product-configurable/Swatches/ColorSwatchData.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/ImageSwatchData.graphql b/node_modules/@graphcommerce/magento-product-configurable/Swatches/ImageSwatchData.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/ImageSwatchData.tsx b/node_modules/@graphcommerce/magento-product-configurable/Swatches/ImageSwatchData.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/SwatchData.graphql b/node_modules/@graphcommerce/magento-product-configurable/Swatches/SwatchData.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/TextSwatchData.graphql b/node_modules/@graphcommerce/magento-product-configurable/Swatches/TextSwatchData.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/TextSwatchData.tsx b/node_modules/@graphcommerce/magento-product-configurable/Swatches/TextSwatchData.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/Swatches/types.ts b/node_modules/@graphcommerce/magento-product-configurable/Swatches/types.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableCartItemOptions/ConfigurableCartItemOptions.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableCartItemOptions/ConfigurableCartItemOptions.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableCartItemOptions/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableCartItemOptions/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValue/ConfigurableOptionValue.graphql b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValue/ConfigurableOptionValue.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValue/ConfigurableOptionValue.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValue/ConfigurableOptionValue.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValue/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValue/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueColor/ConfigurableOptionValueColor.graphql b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueColor/ConfigurableOptionValueColor.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueColor/ConfigurableOptionValueColor.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueColor/ConfigurableOptionValueColor.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueColor/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueColor/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueImage/ConfigurableOptionValueImage.graphql b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueImage/ConfigurableOptionValueImage.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueImage/ConfigurableOptionValueImage.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueImage/ConfigurableOptionValueImage.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueImage/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueImage/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueText/ConfigurableOptionValueText.graphql b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueText/ConfigurableOptionValueText.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueText/ConfigurableOptionValueText.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueText/ConfigurableOptionValueText.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueText/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableOptionValueText/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOption.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOption.tsx
+old mode 100644
+new mode 100755
+index 0482241..e01bca1
+--- a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOption.tsx
++++ b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOption.tsx
+@@ -14,6 +14,7 @@ import type {
+   ConfigurableOptionValue,
+   ConfigurableOptionValueFragment,
+ } from '../ConfigurableOptionValue'
++import { useEffect } from 'react'
+ 
+ export type ConfigurableProductOptionProps = NonNullable<
+   NonNullable<ConfigurableOptionsFragment['configurable_options']>[number]
+@@ -43,7 +44,10 @@ export function ConfigurableProductOption(props: ConfigurableProductOptionProps)
+   } = props
+   const fieldName = `cartItems.${index}.selected_options.${optionIndex}` as const
+ 
+-  const { control } = useFormAddProductsToCart()
++  const splittedLabel = label?.split(' ')?.[1]
++  
++
++  const { control,setValue } = useFormAddProductsToCart()
+ 
+   const selectedOption = useWatch({ control, name: fieldName })
+ 
+@@ -57,6 +61,8 @@ export function ConfigurableProductOption(props: ConfigurableProductOptionProps)
+ 
+   const { configured } = useConfigurableOptionsForSelection({ url_key, selectedOptions })
+ 
++ 
++
+   const available =
+     configured?.configurable_product_options_selection?.options_available_for_selection?.find(
+       (o) => o?.attribute_code === attribute_code,
+@@ -68,15 +74,42 @@ export function ConfigurableProductOption(props: ConfigurableProductOptionProps)
+     disabled: !(!available || available.includes(ov.uid)),
+   }))
+ 
++    useEffect(() => {
++    // Check if a value for this field is already selected
++    if (!selectedOption) {
++      // Find the first item that is not disabled
++      const firstAvailableItem = items.find((item) => !item.disabled);
++      
++      // If a valid item exists, set it as the default value in the form
++      if (firstAvailableItem) {
++        setValue(fieldName, firstAvailableItem.value);
++      }
++    }
++  }, [items, selectedOption, fieldName, setValue]);
++
+   if (!values) return null
+ 
+   return (
+     <Box key={fieldName} sx={[...(Array.isArray(sx) ? sx : [sx])]}>
+-      <SectionHeader
+-        labelLeft={optionStartLabels?.[attribute_code ?? ''] ?? label}
++
++      {label ==='Weight' && (
++   <SectionHeader
++   labelLeft={
++    label ==='Weight'
++      ? 'Weight'
++      : undefined 
++  }
+         labelRight={optionEndLabels?.[attribute_code ?? '']}
+-        sx={{ mt: 0 }}
++        sx={{ mt: 0 , '& .SectionHeader-left':{
++          color:'#000',
++          fontSize: { xs:'15px', md: '16px' },
++          fontWeight:500,
++          lineHeight:'120%',
++          textTransform:'capitalize'
++        }}}
+       />
++      )}
++   
+ 
+       <ActionCardListForm<
+         ActionCardItemBase & ConfigurableOptionValueFragment,
+@@ -92,7 +125,43 @@ export function ConfigurableProductOption(props: ConfigurableProductOptionProps)
+         rules={{
+           required: i18n._(/* i18n*/ 'Please select a value for ‘{label}’', { label }),
+         }}
++        sx={{
++          borderRadius:'8px',
++          outline:'none',
++          boxShadow:'none',
++          textTransform:'capitalize',
++          fontSize:{xs:'15px',md:'16px'},
++          fontWeight:400,
++         '& .ActionCard-root.variantOutlined':{
++          border:'1px solid #F6DBE0',
++          boxShadow:'none',
++         },
++         '& .MuiTouchRipple-root': {
++        display: 'none', 
++      },
++      '& .ActionCard-root .variantOutlined':{
++        boxShadow:'none !important'
++      },
++         '& .ActionCard-root.variantOutlined.selected':{
++          border:'1px solid #441E14',
++          outline:'none', boxShadow:'none',
++          backgroundColor:'#F6DBE0',  
++          // fontWeight:500,
++          // '& .ActionCard-title.selected':{
++          //   fontWeight:500
++          // }
++         },
++          '& .ActionCard-root.variantOutlined.selected:focus':{
++          border:'1px solid #441E14',
++          outline:'none', boxShadow:'none',
++         },
++         '& .ActionCard-root.variantOutlined:focus':{
++          outline:'none', boxShadow:'none',
++         },
++        }}
+       />
+     </Box>
+   )
+ }
++
++
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOptions.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOptions.tsx
+old mode 100644
+new mode 100755
+index d17ad07..05bd97c
+--- a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOptions.tsx
++++ b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/ConfigurableProductOptions.tsx
+@@ -54,6 +54,8 @@ export function ConfigurableProductOptions(props: ConfigurableProductOptionsProp
+     return formatter.format(options.map((o) => o.label))
+   }, [locale, options])
+ 
++
++
+   useEffect(() => {
+     if (unavailable) {
+       setError(`cartItems.${index}.sku`, {
+@@ -62,7 +64,6 @@ export function ConfigurableProductOptions(props: ConfigurableProductOptionsProp
+     }
+     if (!unavailable) clearErrors(`cartItems.${index}.sku`)
+   }, [allLabels, clearErrors, index, setError, unavailable])
+-
+   return (
+     <Box sx={(theme) => ({ display: 'grid', rowGap: theme.spacings.sm })}>
+       {options.map((option, optionIndex) => (
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/ConfigurableProductOptions/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ProductListItemConfigurable/ProductListItemConfigurable.graphql b/node_modules/@graphcommerce/magento-product-configurable/components/ProductListItemConfigurable/ProductListItemConfigurable.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ProductListItemConfigurable/ProductListItemConfigurable.tsx b/node_modules/@graphcommerce/magento-product-configurable/components/ProductListItemConfigurable/ProductListItemConfigurable.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/ProductListItemConfigurable/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/ProductListItemConfigurable/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/components/index.ts b/node_modules/@graphcommerce/magento-product-configurable/components/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableOptions.graphql b/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableOptions.graphql
+old mode 100644
+new mode 100755
+index 35ba3bd..6e46130
+--- a/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableOptions.graphql
++++ b/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableOptions.graphql
+@@ -14,6 +14,13 @@ fragment ConfigurableOptions on ConfigurableProduct {
+       }
+     }
+   }
++  categories {
++        id
++        uid
++        name
++        url_key
++        url_path
++      }
+   configurable_options {
+     attribute_code
+     uid
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableOptionsSelection.graphql b/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableOptionsSelection.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableProductAddToCart.graphql b/node_modules/@graphcommerce/magento-product-configurable/graphql/ConfigurableProductAddToCart.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/graphql/GetConfigurableOptionsSelection.graphql b/node_modules/@graphcommerce/magento-product-configurable/graphql/GetConfigurableOptionsSelection.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/graphql/index.ts b/node_modules/@graphcommerce/magento-product-configurable/graphql/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/hooks/index.ts b/node_modules/@graphcommerce/magento-product-configurable/hooks/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/hooks/useConfigurableOptionsSelection.ts b/node_modules/@graphcommerce/magento-product-configurable/hooks/useConfigurableOptionsSelection.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/index.ts b/node_modules/@graphcommerce/magento-product-configurable/index.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/next-env.d.ts b/node_modules/@graphcommerce/magento-product-configurable/next-env.d.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableCartItemActionCard.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableCartItemActionCard.tsx
+old mode 100644
+new mode 100755
+index 8e6acbf..c0d36fe
+--- a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableCartItemActionCard.tsx
++++ b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableCartItemActionCard.tsx
+@@ -20,10 +20,12 @@ export function CartItemActionCard(props: PluginProps<CartItemActionCardProps>)
+         ...rest.cartItem,
+         product: {
+           ...rest.cartItem.product,
+-          name: import.meta.graphCommerce.configurableVariantValues?.content
+-            ? rest.cartItem.configured_variant.name
+-            : rest.cartItem.product.name,
+-          thumbnail: rest.cartItem.configured_variant.thumbnail,
++          // name: import.meta.graphCommerce.configurableVariantValues?.content
++          //   ? rest.cartItem.configured_variant.name
++          //   : rest.cartItem.product.name,
++          name: rest.cartItem.product.name,
++          // thumbnail: rest.cartItem.configured_variant.thumbnail,
++          thumbnail: rest.cartItem.product.thumbnail,
+           // url_key: import.meta.graphCommerce.configurableVariantValues?.url
+           //   ? rest.cartItem.configured_variant.url_key
+           //   : rest.cartItem.product.url_key,
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageDescription.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageDescription.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageGallery.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageGallery.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageJsonLd.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageJsonLd.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageMeta.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageMeta.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageName.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPageName.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPagePrice.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPagePrice.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPagePriceTiers.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductPagePriceTiers.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductShortDescription.tsx b/node_modules/@graphcommerce/magento-product-configurable/plugins/ConfigurableProductPage/ConfigurableProductShortDescription.tsx
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/test/addConfigurableProductToCart.playwright.ts b/node_modules/@graphcommerce/magento-product-configurable/test/addConfigurableProductToCart.playwright.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/test/addConfigurableProductToCart.ts b/node_modules/@graphcommerce/magento-product-configurable/test/addConfigurableProductToCart.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/tsconfig.json b/node_modules/@graphcommerce/magento-product-configurable/tsconfig.json
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/utils/DefaultConfigurableOptionsSelection.graphql b/node_modules/@graphcommerce/magento-product-configurable/utils/DefaultConfigurableOptionsSelection.graphql
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/utils/defaultConfigurableOptionsSelection.ts b/node_modules/@graphcommerce/magento-product-configurable/utils/defaultConfigurableOptionsSelection.ts
+old mode 100644
+new mode 100755
+diff --git a/node_modules/@graphcommerce/magento-product-configurable/utils/index.ts b/node_modules/@graphcommerce/magento-product-configurable/utils/index.ts
+old mode 100644
+new mode 100755

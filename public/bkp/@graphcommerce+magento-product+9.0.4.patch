@@ -1,0 +1,2084 @@
+diff --git a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx
+index 6ae6263..e5e8b03 100644
+--- a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx
+@@ -1,11 +1,21 @@
+ import { useCartEnabled } from '@graphcommerce/magento-cart'
++import { AddProductsToCartFab } from '@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab'
+ import type { ButtonProps } from '@graphcommerce/next-ui'
+ import { Button } from '@graphcommerce/next-ui'
+ import { Trans } from '@lingui/macro'
++import { CircularProgress, Typography } from '@mui/material'
+ import type { UseAddProductsToCartActionProps } from './useAddProductsToCartAction'
+ import { useAddProductsToCartAction } from './useAddProductsToCartAction'
+ 
++export type customAddToCrtProps = {
++  isIcon?: boolean
++  icConfigured?: boolean
++  urlKey?: string
++  isBuyNow?: boolean
++  isAdson?: boolean
++}
+ export type AddProductsToCartButtonProps = UseAddProductsToCartActionProps &
++  customAddToCrtProps &
+   Pick<
+     ButtonProps<'button'>,
+     | 'variant'
+@@ -21,23 +31,63 @@ export type AddProductsToCartButtonProps = UseAddProductsToCartActionProps &
+   >
+ 
+ export function AddProductsToCartButton(props: AddProductsToCartButtonProps) {
+-  const { children, product, disabled, ...rest } = props
+-  const { showSuccess, ...action } = useAddProductsToCartAction(props)
++  const {
++    children,
++    product,
++    disabled,
++    isIcon,
++    icConfigured,
++    urlKey,
++    isAdson = false,
++    ...rest
++  } = props
++  const { showSuccess, loading, ...action } = useAddProductsToCartAction(props)
+   const cartEnabled = useCartEnabled()
+ 
+   if (!cartEnabled) return null
+ 
+   return (
+-    <Button
+-      type='submit'
+-      color='primary'
+-      variant='pill'
+-      size='large'
+-      {...rest}
+-      {...action}
+-      disabled={disabled}
+-    >
+-      {children || <Trans>Add to Cart</Trans>}
+-    </Button>
++    <>
++      {isIcon ? (
++        <AddProductsToCartFab
++          sku={product?.sku}
++          isLink={icConfigured}
++          url={urlKey}
++          sx={{
++            height: '50px',
++            width: '50px',
++            '& svg': {
++              fontSize: '25px',
++              stroke: 'unset !important',
++              left: { xs: '5px', md: '6px' },
++              top: { xs: '1px', md: '3px' },
++              position: 'relative',
++            },
++          }}
++        />
++      ) : (
++        <Button
++          type='submit'
++          color='primary'
++          variant='pill'
++          size='large'
++          {...rest}
++          {...action}
++          disabled={disabled || loading}
++        >
++           {loading ? (
++            <CircularProgress color='inherit' size={24} />
++          ) : (
++            children ? (
++              children
++            ) : isAdson ? (
++              <Trans> Add </Trans>
++            ) : (
++              <Trans>Add to Cart</Trans>
++            )
++          )}
++        </Button>
++      )}
++    </>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
+index 2050980..41e2af9 100644
+--- a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
+@@ -2,18 +2,23 @@ import { useCartEnabled } from '@graphcommerce/magento-cart'
+ import type { FabProps } from '@graphcommerce/next-ui'
+ import { Fab, iconCheckmark, iconShoppingBag } from '@graphcommerce/next-ui'
+ import { t } from '@lingui/macro'
+-import type { SxProps, Theme } from '@mui/material'
++import { Box, Button, CircularProgress, type SxProps, type Theme } from '@mui/material'
+ import type { UseAddProductsToCartActionProps } from './useAddProductsToCartAction'
+ import { useAddProductsToCartAction } from './useAddProductsToCartAction'
++import { IoArrowForwardSharp } from 'react-icons/io5'
++import Link from 'next/link'
+ 
+ export type AddProductsToCartFabProps = {
+   sx?: SxProps<Theme>
+   icon?: FabProps['icon']
++  isButton?:boolean
++  isLink?:boolean
++  url?:string | undefined
+ } & Pick<FabProps, 'color' | 'size'> &
+   UseAddProductsToCartActionProps
+ 
+ export function AddProductsToCartFab(props: AddProductsToCartFabProps) {
+-  const { icon = iconShoppingBag, product, sku, ...rest } = props
++  const { icon = iconShoppingBag, product,isButton=false, sku,isLink,url, ...rest } = props
+   const { showSuccess, ...action } = useAddProductsToCartAction(props)
+ 
+   const cartEnabled = useCartEnabled()
+@@ -21,12 +26,75 @@ export function AddProductsToCartFab(props: AddProductsToCartFabProps) {
+   if (!cartEnabled) return null
+ 
+   return (
+-    <Fab
++    <>
++    {isButton ? (
++     <Button
++      type="submit" 
++     // {...action}   
++       onClick={action.onClick}
++      sx={{
++       fontWeight: 400,
++        lineHeight: '170%',
++        fontSize: {xs:'15px !important', md:'15px !important'},
++        color: '#302100',
++        textDecoration: 'underline',
++        display: 'flex',
++        alignItems: 'center',
++        columnGap: '4px',
++        justifyContent: 'flex-end',
++        marginLeft: 'auto',
++        cursor: action.loading ? 'not-allowed' : 'pointer',
++        pointerEvents: action.loading ? 'none' : 'auto',
++        '& .arrow-icon': {
++          transition: 'transform 0.3s ease-in-out',
++        },
++        '&:hover .arrow-icon': {
++          transform: 'translateX(5px)',
++        },
++         background: 'none',
++    border: 'none',
++    padding: 0,
++    fontFamily: 'inherit',
++    textAlign: 'inherit',
++    width: 'fit-content',
++    '&:hover':{
++      background:'transparent'
++    }
++     }}> {action.loading? 'Adding':'Cart'}   <Box
++        component="span"
++        className="arrow-icon" 
++        sx={{ 
++          display: 'flex',
++          alignItems: 'center',
++        }}
++      >
++       {action.loading ? (
++      <CircularProgress size={20} color="inherit" />
++    ) : (
++      <IoArrowForwardSharp />
++    )}
++      </Box></Button>
++    ):url ? <Link href={`/p/${url}`}>
++      <Fab
++      type='submit'
++      {...rest}
++      // {...action}
++      icon={icon}
++      aria-label={t`Add to Cart`}
++      
++    />
++    </Link>:(
++      (
++<Fab
+       type='submit'
+       {...rest}
+       {...action}
+       icon={showSuccess && !action.loading ? iconCheckmark : icon}
+       aria-label={t`Add to Cart`}
++      
+     />
++    )
++    )}
++    </>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartForm.tsx b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartForm.tsx
+index 1b7a2ac..eb65af9 100644
+--- a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartForm.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartForm.tsx
+@@ -35,6 +35,8 @@ export type AddProductsToCartFormProps = {
+    * @deprecated use snackbarProps.disableSuccessSnackbar instead
+    */
+   disableSuccessSnackbar?: boolean
++    onSuccess?: () => void;
++  
+ } & UseFormGraphQlOptions<AddProductsToCartMutation, AddProductsToCartFields>
+ 
+ const name = 'AddProductsToCartForm'
+@@ -60,6 +62,7 @@ export function AddProductsToCartForm(props: AddProductsToCartFormProps) {
+     errorSnackbar,
+     successSnackbar,
+     snackbarProps,
++    onSuccess,
+     ...formProps
+   } = props
+   const router = useRouter()
+@@ -128,6 +131,8 @@ export function AddProductsToCartForm(props: AddProductsToCartFormProps) {
+ 
+         if (toUserErrors(result.data).length || result.errors?.length || !redirect) return
+ 
++        onSuccess?.();
++
+         if (redirect === 'added') {
+           await crosssellsQuery.current
+           const method = router.pathname.startsWith('/checkout/added')
+diff --git a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/useAddProductsToCartAction.ts b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/useAddProductsToCartAction.ts
+index 0fff1a5..652d07c 100644
+--- a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/useAddProductsToCartAction.ts
++++ b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/useAddProductsToCartAction.ts
+@@ -20,6 +20,7 @@ export type UseAddProductsToCartActionReturn = {
+   onClick: React.MouseEventHandler<HTMLButtonElement>
+   onMouseDown: React.MouseEventHandler<HTMLButtonElement>
+   showSuccess: boolean
++  isBuyNow?: boolean
+ }
+ 
+ export function useAddProductsToCartAction(
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/CustomizableAreaOption.tsx b/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/CustomizableAreaOption.tsx
+index c61ffc0..ce11bee 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/CustomizableAreaOption.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/CustomizableAreaOption.tsx
+@@ -36,13 +36,14 @@ export function CustomizableAreaOption(props: CustomizableAreaOptionProps) {
+         {...register(`cartItems.${index}.entered_options.${optionIndex}.uid`)}
+         value={uid}
+       />
+-      <SectionHeader labelLeft={title} sx={{ mt: 0 }} />
++      <SectionHeader labelLeft={title} sx={{ mt: 0 ,}} />
+       <TextFieldElement
+         sx={{ width: '100%' }}
+         color='primary'
+         multiline
+         minRows={3}
+         control={control}
++        placeholder='Add your message on the cake, example Happy Birthday'
+         name={`cartItems.${index}.entered_options.${optionIndex}.value`}
+         InputProps={{
+           endAdornment:
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/ProductCustomizable.tsx b/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/ProductCustomizable.tsx
+index a1ec789..b384c62 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/ProductCustomizable.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductCustomizable/ProductCustomizable.tsx
+@@ -10,6 +10,8 @@ import { CustomizableFieldOption } from './CustomizableFieldOption'
+ import { CustomizableMultipleOption } from './CustomizableMultipleOption'
+ import { CustomizableRadioOption } from './CustomizableRadioOption'
+ import type { ProductCustomizableFragment } from './ProductCustomizable.gql'
++import { SxProps } from '@mui/material'
++import { Theme } from '@emotion/react'
+ 
+ const defaultRenderer = {
+   CustomizableAreaOption,
+@@ -33,14 +35,18 @@ type OptionTypeRendererProp = Simplify<
+     : MissingOptionTypeRenderer & DefinedOptionTypeRenderer
+ >
+ 
+-export type ProductCustomizableProps = AddToCartItemSelector & {
++type noteprops = {
++    sx?: SxProps<Theme>
++}
++
++export type ProductCustomizableProps = AddToCartItemSelector & noteprops & {
+   product: ProductCustomizableFragment & ProductPagePriceFragment
+ } & (keyof MissingOptionTypeRenderer extends never
+     ? { renderer?: OptionTypeRendererProp }
+     : { renderer: OptionTypeRendererProp })
+ 
+ export function ProductCustomizable(props: ProductCustomizableProps) {
+-  const { product, renderer, index = 0 } = props
++  const { product, renderer, index = 0 ,sx= []} = props
+ 
+   return (
+     <>
+@@ -53,6 +59,7 @@ export function ProductCustomizable(props: ProductCustomizableProps) {
+           index={index}
+           currency={product.price_range.minimum_price.final_price.currency}
+           productPrice={product.price_range.minimum_price.final_price.value}
++          // sx={{color:'red'}}
+         />
+       ))}
+     </>
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/PriceSlider.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/PriceSlider.tsx
+index fb82adb..9ad67b7 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/PriceSlider.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/PriceSlider.tsx
+@@ -7,7 +7,7 @@ import { useCallback } from 'react'
+ import type { FilterProps } from './ProductFiltersProAggregations'
+ 
+ export type PriceSliderProps = {
+-  value: FilterRangeTypeInput | null | undefined
++  value?: FilterRangeTypeInput | null | undefined | string | number
+   // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   onChange: (...event: any[]) => void
+   sx?: SxProps<Theme>
+@@ -31,28 +31,43 @@ export function PriceSlider(props: PriceSliderProps) {
+ 
+   const [min, max] = getMinMaxFromOptions(options)
+ 
+-  const from = value?.from ? Number(value?.from) : min
+-  const to = value?.to ? Number(value?.to) : max
++  const isFilterRange =
++    value !== null && typeof value === 'object' && 'from' in value && 'to' in value
+ 
+-  const renderMoney = useCallback((v: number) => <Money round value={v} />, [])
++  const from = isFilterRange && value?.from ? Number(value?.from) : min
++  const to = isFilterRange && value?.to ? Number(value?.to) : max
++
++  const renderMoney = useCallback((v: number) => <Money sx={{ fontWeight: 400, fontSize: { xs:  '15px', md: '16px' } }} round value={v} />, [])
+ 
+   return (
+     <Box
+       sx={[
+         (theme) => ({
+-          pt: theme.spacings.md,
+-          pb: theme.spacings.xs,
+-          px: theme.spacings.xxs,
++          pt: theme.spacings.sm,
++           pb: theme.spacings.xs,
++          position:'relative',
++          top:'-20px'
++          // px: theme.spacings.xxs,
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+       className={classes.container}
+     >
++      <Box className='priceSliderRange' 
++      sx={{ 
++        display: 'flex',
++        justifyContent: 'space-between',
++        transform: 'translateX(0px) translateY(210%) scale(1)' 
++        }}>
++    <Money value={from} sx={{ fontWeight: 400, fontSize: { xs: '15px', md: '16px' }, color:'#000' }} />
++    <Money value={to} sx={{ fontWeight: 400, fontSize: { xs: '15px', md: '16px', color:'#000' } }} />
++  </Box>
+       <Slider
+         min={min}
+         max={max}
+         size='large'
+         aria-labelledby='range-slider'
++        
+         value={[from, to]}
+         onChange={useEventCallback((_e, sliderValues) => {
+           if (!Array.isArray(sliderValues)) throw Error('not a range')
+@@ -68,15 +83,45 @@ export function PriceSlider(props: PriceSliderProps) {
+           if (!value && !newVal) return
+ 
+           // All values are the same, no need to update
+-          if (value && newVal && value.from === newVal.from && value.to === newVal.to) return
++          const currentFrom = isFilterRange && value.from ? String(value.from) : undefined;
++          const currentTo = isFilterRange && value.to ? String(value.to) : undefined;
++
++          if (newVal && currentFrom === newVal.from && currentTo === newVal.to) return
+ 
+           // The value has changed, rerender
+           onChange(newVal)
+         })}
+-        valueLabelDisplay='on'
++        valueLabelDisplay='off'
+         valueLabelFormat={renderMoney}
+         className={classes.slider}
+         step={1}
++        sx={(theme) => ({
++          '& .MuiSlider-track': {
++            backgroundColor: (theme: any) => theme.palette.custom.heading,
++            transition: 'background-color 0.3s ease-in-out',
++            height: '3px',
++            color: (theme: any) => theme.palette.custom.heading,
++
++          },
++          '& .MuiSlider-rail': {
++            height: '1px',
++            backgroundColor: (theme: any) => theme.palette.custom.borderSecondary,
++
++          },
++          '& .MuiSlider-thumb': {
++            backgroundColor: (theme: any) => theme.palette.custom.heading,
++            width: '10px',
++            height: '10px',
++            borderRadius: '50%',
++            transition: 'background-color 0.3s ease-in-out, transform 0.3s ease-in-out',
++          },
++          '&  .MuiSlider-thumb[data-index="0"] .MuiSlider-valueLabelOpen': {
++            transform: 'translate(25px, 40%) scale(1)'
++          },
++          '&  .MuiSlider-thumb[data-index="1"] .MuiSlider-valueLabelOpen': {
++            transform: 'translate(-20px, 40%) scale(1)'
++          }
++        })}
+       />
+     </Box>
+   )
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualChip.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualChip.tsx
+index 76eff68..739e239 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualChip.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualChip.tsx
+@@ -69,9 +69,9 @@ export function ProductFilterEqualChip(props: FilterProps) {
+         onReset={
+           canReset
+             ? () => {
+-                form.setValue(name, null)
+-                return submit()
+-              }
++              form.setValue(name, null)
++              return submit()
++            }
+             : undefined
+         }
+         onClose={submit}
+@@ -88,6 +88,7 @@ export function ProductFilterEqualChip(props: FilterProps) {
+             variant='default'
+             size='medium'
+             items={items}
++            isFilter={true}
+           />
+         )}
+       </ChipOverlayOrPopper>
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualSection.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualSection.tsx
+index 421d5d4..2e70533 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualSection.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterEqualSection.tsx
+@@ -68,6 +68,7 @@ export function ProductFilterEqualSection(props: FilterProps) {
+           size='responsive'
+           items={items}
+           showMoreAfter={4}
++          isFilter={true}
+         />
+       }
+       right={
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeChip.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeChip.tsx
+index 021469e..757b7ae 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeChip.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeChip.tsx
+@@ -37,14 +37,16 @@ export function ProductFilterRangeChip(props: FilterProps) {
+         return (
+           <ChipOverlayOrPopper
+             label={label}
++
++
+             chipProps={{ variant: 'outlined', className: classes.root }}
+             overlayProps={{ sizeSm: 'minimal', sizeMd: 'minimal' }}
+             onReset={
+               from !== min || to !== max
+                 ? () => {
+-                    form.setValue(name, null)
+-                    return submit()
+-                  }
++                  form.setValue(name, null)
++                  return submit()
++                }
+                 : undefined
+             }
+             onApply={submit}
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeSection.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeSection.tsx
+index cabc140..16ea4dd 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeSection.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFilterRangeSection.tsx
+@@ -1,17 +1,18 @@
+ import { Controller } from '@graphcommerce/ecommerce-ui'
+-import type { ProductAttributeFilterInput } from '@graphcommerce/graphql-mesh'
+-import { ActionCardAccordion, Button } from '@graphcommerce/next-ui'
++import { ActionCardAccordion, Button, IconSvg } from '@graphcommerce/next-ui'
+ import { Trans } from '@lingui/react'
+ import { isFilterTypeRange } from '../ProductListItems/filterTypes'
+ import { PriceSlider, getMinMaxFromOptions } from './PriceSlider'
+ import { useProductFiltersPro } from './ProductFiltersPro'
+ import type { FilterProps } from './ProductFiltersProAggregations'
++import { ProductAttributeFilterInput } from '@graphcommerce/graphql-mesh'
++
+ 
+ export function ProductFilterRangeSection(props: FilterProps) {
+   const { aggregation } = props
+   const { attribute_code, label, options } = aggregation
+ 
+-  const { form, params } = useProductFiltersPro()
++  const { form, submit, params } = useProductFiltersPro()
+   const { control } = form
+   const attrCode = attribute_code as keyof ProductAttributeFilterInput
+   const name = `filters.${attrCode}` as const
+@@ -33,23 +34,83 @@ export function ProductFilterRangeSection(props: FilterProps) {
+         const from = value?.from ? Number(value?.from) : min
+         const to = value?.to ? Number(value?.to) : max
+ 
++        const handleChange = (price) => {
++          onChange(price)
++          form.setValue(name, price)
++          submit()
++        }
++
+         return (
+           <ActionCardAccordion
++            right={<></>}
++            defaultExpanded={true}
+             summary={label}
+-            details={<PriceSlider options={options} value={value} onChange={onChange} />}
+-            right={
+-              from !== min || to !== max ? (
+-                <Button
+-                  color='primary'
+-                  onClick={(e) => {
+-                    e.stopPropagation()
+-                    form.setValue(name, null)
+-                  }}
+-                >
+-                  <Trans id='Clear' />
+-                </Button>
+-              ) : undefined
+-            }
++            sx={{
++
++              // '& .MuiAccordionDetails-root.mui-style-bp98xx-MuiPaper-root-MuiAccordion-root':{
++              borderBottom: '0 !important',
++              //},
++              paddingTop: theme => theme.spacings.xs,
++
++              '& .MuiAccordionSummary-expandIconWrapper': {
++                display: 'none',
++              },
++
++              '& .MuiAccordionSummary-root': {
++                cursor: 'default',
++                pointerEvents: 'none',
++                minHeight: 'auto !important',
++
++                '&:hover, &.Mui-focusVisible': {
++                  backgroundColor: 'transparent',
++                },
++              },
++
++              '& .mui-style-1yfomfv-MuiSlider-root .MuiSlider-valueLabel': {
++                color: (theme: any) => `${theme.palette.custom.dark} !important`,
++              },
++              ['& .MuiSlider-thumb']: {
++                ['& .MuiSlider-valueLabelOpen span span:not-(:first-child)']: {
++                  transform: 'translateX(10px) translateY(40%) scale(1)',
++                  color: (theme: any) => `${theme.palette.custom.dark} !important`,
++                  fontSize: { xs: '15px', md: '16px' },
++                  fontWeight: 400,
++                  '& .MuiSlider-valueLabelCircle': {
++                    color: (theme: any) => `${theme.palette.custom.dark} !important`,
++                  }
++
++                },
++                ['&:nth-of-type(1) .MuiSlider-valueLabelOpen span']: {
++                  left: "unset",
++                  right: "10px",
++                  color: (theme: any) => `${theme.palette.custom.dark} !important`,
++                  fontSize: { xs: '15px', md: '16px' },
++                  fontWeight: 400,
++                  '& .MuiSlider-valueLabelCircle': {
++                    color: (theme: any) => `${theme.palette.custom.dark} !important`,
++                  }
++                },
++              },
++
++              '& .PriceSlider-container': {
++                paddingTop: 0,
++                paddingBottom: {xs:'5px', md:'30px'},
++                //borderBottom:'0 !important'
++              },
++
++              '& .PriceSlider-slider': {
++                maxWidth: 'calc(100% - 4px)',
++              },
++
++              '& .MuiTypography-body1': {
++                marginBottom: '0px',
++              }
++
++            }}
++            details={<PriceSlider options={options} value={value} onChange={handleChange} />}
++          //  right={
++          //   <IconSvg />
++          // }
+           />
+         )
+       }}
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersPro.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersPro.tsx
+index 174d687..3d26ebe 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersPro.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersPro.tsx
+@@ -119,6 +119,21 @@ export function ProductFiltersPro(props: FilterFormProviderProps) {
+   const scrollMarginTop = useTransform(() => (isDesktop.get() ? 0 : theme.appShell.headerHeightSm))
+   const scroll = useTransform(() => !autoSubmitMd || isDesktop.get())
+ 
++  function modifyUrl(url: string, comparewUrl: string) {
++    // Regex to match the part between '/c/' and '/q/'
++    const regex = comparewUrl?.includes('/c') ? /\/c\/([^\/]+)\/q/ : /\/c\/(.*?)\/q/;
++
++    // Check if the segment between /c/ and /q/ exists and contains 'cake'
++    return url.replace(regex, (match, segment) => {
++      // If the segment does not contain 'cake', replace it with comparewUrl
++      if (!segment.includes(comparewUrl)) {
++        return `/c/${comparewUrl}/q`;  // Replace the segment with 'cake' or the comparewUrl
++      }
++      return match;  // If the segment already includes comparewUrl, return the original match
++    });
++  }
++
++
+   const submit = useEventCallback(
+     form.handleSubmit(async (formValues) => {
+       const path = productListLinkFromFilter({ ...formValues, currentPage: 1 })
+@@ -137,6 +152,51 @@ export function ProductFiltersPro(props: FilterFormProviderProps) {
+     }),
+   )
+ 
++  // useEffect(() => {
++  //   if (!router.asPath?.includes('/c')) {
++  //     form.setValue('url', router.asPath)
++  //   }
++
++  // }, [router.asPath])
++  // When the component mounts, we want to set the global filter form
++
++  // const submit = useEventCallback(
++  //   form.handleSubmit(async (formValues) => {
++  //     // Generate path from form values
++  //     const path = productListLinkFromFilter({ ...formValues, currentPage: 1 });
++
++  //     // Modify the path based on the router's current path
++  //     const modifyPath = modifyUrl(path, router.asPath);
++  //     if (
++  //       router.asPath === modifyPath ||
++  //       router.asPath === path ||
++  //       modifyPath.includes('/c/c/')
++  //     ) {
++  //       return false;
++  //     }
++
++  //     // Check if the current path is a search or filter page
++  //     const isSearch = router.asPath.startsWith('/search');
++  //     const isFilter = (router.query.url ?? []).includes('q');
++
++  //     // Function to handle routing (with optional shallow routing)
++  //     const next = async (shallow = false, replace = isSearch || isFilter) => {
++  //       const opts = { shallow, scroll: scroll.get() };
++  //       // Perform either replace or push routing
++  //       await (replace
++  //         ? router.replace(modifyPath, modifyPath, opts)
++  //         : router.push(modifyPath, modifyPath, opts));
++  //     };
++
++  //     // If there's a custom handleSubmit, call it with formValues and next as a callback
++  //     if (handleSubmit) return handleSubmit(formValues, next);
++
++  //     // Otherwise, just call next directly
++  //     return next();
++  //   })
++  // );
++
++
+   const filterFormContext = useMemo(() => {
+     const ctx: ProductFiltersProContext = {
+       form,
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAggregations.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAggregations.tsx
+index 918ce2e..4308043 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAggregations.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAggregations.tsx
+@@ -16,6 +16,7 @@ export type FilterRenderer = Record<AttributeFrontendInputEnum, React.FC<FilterP
+ 
+ export type ProductFiltersProAggregationsProps = {
+   renderer?: Partial<FilterRenderer>
++  
+ }
+ 
+ export const productFiltersProSectionRenderer: Partial<FilterRenderer> = {
+@@ -57,7 +58,7 @@ export function ProductFiltersProAggregations(props: ProductFiltersProAggregatio
+             return null
+           }
+ 
+-          return <Component key={aggregation.attribute_code} aggregation={aggregation} {...props} />
++          return <Component key={aggregation.attribute_code} aggregation={aggregation} {...props}  />
+         },
+       )}
+     </>
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAllFiltersChip.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAllFiltersChip.tsx
+index 5643683..89f9b09 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAllFiltersChip.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProAllFiltersChip.tsx
+@@ -13,8 +13,18 @@ import { ProductFiltersProSortSection } from './ProductFiltersProSortSection'
+ import { activeAggregations } from './activeAggregations'
+ import { applyAggregationCount } from './applyAggregationCount'
+ import { useProductFiltersProClearAllAction } from './useProductFiltersProClearAllAction'
++import { Box, Typography } from '@mui/material'
++import { ProductFiltersProCategorySection } from '@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection'
++import { iconFilterProduct } from '../../../../../plugins/icons'
++import { useState } from 'react'
++import Link from 'next/link'
+ 
+-export type ProductFiltersProAllFiltersChipProps = ProductFiltersProAggregationsProps &
++export type Productfilterprops ={
++  menus?:any
++  paramss?:any
++}
++
++export type ProductFiltersProAllFiltersChipProps = ProductFiltersProAggregationsProps & Productfilterprops &
+   ProductFiltersProSortSectionProps &
+   Omit<
+     ChipOverlayOrPopperProps,
+@@ -23,7 +33,7 @@ export type ProductFiltersProAllFiltersChipProps = ProductFiltersProAggregations
+   Partial<Pick<ChipOverlayOrPopperProps, 'label' | 'selectedLabel' | 'children'>>
+ 
+ export function ProductFiltersProAllFiltersChip(props: ProductFiltersProAllFiltersChipProps) {
+-  const { sort_fields, total_count, renderer, category, ...rest } = props
++  const { sort_fields, total_count, renderer, category,menus,paramss, ...rest } = props
+ 
+   const { submit, params, aggregations, appliedAggregations } = useProductFiltersPro()
+   const { sort } = params
+@@ -38,9 +48,15 @@ export function ProductFiltersProAllFiltersChip(props: ProductFiltersProAllFilte
+ 
+   const clearAll = useProductFiltersProClearAllAction()
+ 
++  const curentPath = params?.url?.split('/').filter(Boolean)
++  const [expanded, setExpanded] = useState<string | false>(curentPath[0] || false)
++  const handleAccordionChange = (categoryName: string) => {
++    setExpanded(expanded === categoryName ? false : categoryName)
++  }
++
+   return (
+     <ChipOverlayOrPopper
+-      label={<Trans id='All filters' />}
++      label={<Trans id='Filter' />}
+       chipProps={{ variant: 'outlined' }}
+       onApply={submit}
+       onReset={hasFilters ? clearAll : undefined}
+@@ -48,20 +64,134 @@ export function ProductFiltersProAllFiltersChip(props: ProductFiltersProAllFilte
+       selectedLabel={allFilters}
+       selected={hasFilters}
+       breakpoint={false}
+-      overlayProps={{ variantMd: 'right', widthMd: '500px' }}
++      overlayProps={{ variantMd: 'right', widthMd: '500px', sx:{
++        '& .LayoutOverlayBase-background':{
++           bottom:'80px',
++           position:'fixed',
++           minHeight:'80% !important', width:'100%',
++          borderRadius:'0 0 0 0 !important',
++           top:'unset',
++           overflowY: 'auto',
++           overflowX:'hidden',
++           '& .LayoutHeader-root':{
++            '& .LayoutHeaderContent-bg':{
++              boxShadow:'none',
++              borderRadius:0,
++            },
++            '& .LayoutHeaderContent-center .MuiTypography-root':{
++              display:'none'
++            },
++            '& .LayoutHeaderContent-right  .MuiButtonBase-root':{
++              position:'absolute',
++              left:'13px',
++              top:'20px',
++              
++            },
++            '& .LayoutHeaderContent-left  .MuiButtonBase-root':{
++              position:'absolute',
++              right:'13px',
++              top:'5px',
++              '& svg':{
++                stroke:(theme:any)=>theme.palette.custom.main,
++                fontSize:{xs:'25px',sm:'28px', md:'30px'}
++              }
++            }
++           },
++           '& .OverlayPanelActions-content':{
++           // paddingTop:'30px'
++           flex: '1 1 auto',
++           minHeight: 0,               
++           overflowY: 'auto',
++           overflowX:'hidden',
++           WebkitOverflowScrolling: 'touch',
++           paddingBottom: '30px',
++           },
++           '& .OverlayPanelActions-footer':{
++            flex: '0 0 auto',
++            '& .MuiButtonBase-root':{
++              backgroundColor:(theme:any)=>theme.palette.custom.heading,
++              color:'#fff',
++              borderRadius:'4px',
++              boxShadow:'none',
++              border:(theme:any)=>`1px solid ${theme.palette.custom.heading}`
++            }
++           }
++          }
++      } }}
+       {...rest}
+     >
+       {() => (
+-        <>
+-          <ProductFiltersProSortSection
++        < >
++        <ProductFiltersProAggregations
++            renderer={{ ...productFiltersProSectionRenderer, ...renderer }}
++          />
++
++          <Typography
++            sx={{
++                fontSize: { xs: '18px', },
++                fontWeight: 500,
++                lineHeight: '120%',
++                color: (theme: any) => theme.palette.custom.dark,
++                paddingBlock:'15px',
++                borderBottom: (theme:any) => `1px solid ${theme.palette.custom.borderSecondary}`,
++                }}
++                >
++                  Categories
++              </Typography>
++
++              {menus
++              ?.filter((menu) => menu?.uid !== 'MTM=' && menu?.uid !== 'NDc=')
++              .map((menu, index) =>
++                menu?.children?.length > 0 ? (
++                  <Box key={index}>
++                    <ProductFiltersProCategorySection
++                    sx={{
++                      '& .MuiCollapse-root':{
++                        '& .MuiAccordionDetails-root .ActionCardLayout-root':{
++                          display:'flex',
++                          flexWrap:'wrap',
++                         
++                        }
++                      }
++                    }}
++                      filterIcons={iconFilterProduct}
++                      category={menu}
++                      params={paramss}
++                      hideBreadcrumbs
++                      categoryTitle={menu?.name}
++                      expanded={expanded === menu?.name}
++                      handleChange={() => handleAccordionChange(menu?.name)}
++                    />
++                  </Box>
++                ) : (
++                  <Link href={`/${menu?.url_path}`} legacyBehavior passHref>
++                    <Typography
++                      sx={{
++                        fontSize: { xs: '18px'},
++                        fontWeight: 400,
++                        lineHeight: '120%',
++                        color: (theme: any) => theme.palette.custom.dark,
++                        display: 'flex',
++                        alignItems: 'center',
++                        gap: '8px',
++                        paddingBlock: '15px',
++                        cursor: 'pointer',
++                        borderBottom: (theme: any) =>
++                          `1px solid ${theme.palette.custom.borderSecondary}`,
++                      }}
++                    >
++                      {menu?.name}
++                    </Typography>
++                  </Link>
++                ),
++              )}
++        {/*   <ProductFiltersProSortSection
+             sort_fields={sort_fields}
+             total_count={total_count}
+             category={category}
+           />
+-          <ProductFiltersProLimitSection />
+-          <ProductFiltersProAggregations
+-            renderer={{ ...productFiltersProSectionRenderer, ...renderer }}
+-          />
++          <ProductFiltersProLimitSection /> */}
++          
+         </>
+       )}
+     </ChipOverlayOrPopper>
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx
+index 80912c1..6d139f3 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx
+@@ -10,99 +10,162 @@ import {
+   iconChevronLeft,
+   IconSvg,
+   responsiveVal,
++  // iconFilterProduct
+ } from '@graphcommerce/next-ui'
+ import { Trans } from '@lingui/react'
+ import type { SxProps, Theme } from '@mui/material'
+-import { Box } from '@mui/material'
++import { Box, } from '@mui/material'
+ import { useProductFiltersPro } from './ProductFiltersPro'
++import { useProductFiltersProClearAllAction } from '@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProClearAllAction'
++import { StaticImport } from '@graphcommerce/image'
++import { iconCloseAccordion, iconOpenAccordion } from '../../../../../plugins/icons'
++import { useState } from 'react'
++
+ 
+ export type ProductFiltersProCategoryAccordionProps = {
+   hideTitle?: boolean
+   sx?: SxProps<Theme>
+   categoryTree: CategoryTreeItem[]
++  filterIcons?: string | StaticImport
++  categoryTitle?: string
++  handleChange?: () => void
+   onChange: (uid: CategoryTreeItem) => void | Promise<void>
++  defaultExpandeds?: boolean
++  expanded?: boolean
+ } & Pick<ActionCardAccordionProps, 'defaultExpanded'>
+ 
+ export function ProductFiltersProCategoryAccordion(props: ProductFiltersProCategoryAccordionProps) {
+-  const { hideTitle, sx, categoryTree, onChange, defaultExpanded } = props
++  const { hideTitle, sx, categoryTree, onChange, handleChange, defaultExpanded, filterIcons, categoryTitle, expanded, defaultExpandeds = false } = props
+   const { form } = useProductFiltersPro()
+ 
++
++
++  const [expandeds, setExpandeds] = useState(defaultExpandeds)
++
++
+   const name = 'filters.category_uid.in'
+   const currentFilter = useWatch({ control: form.control, name })
+-
++  const clearAll = useProductFiltersProClearAllAction()
++  const handleAccordionToggle = () => {
++    setExpandeds(!expandeds)
++  }
+   return (
+-    <ActionCardAccordion
+-      sx={[
+-        hideTitle ? { '& .MuiAccordionSummary-root': { display: 'none' } } : {},
+-        sx,
+-        ...(Array.isArray(sx) ? sx : [sx]),
+-      ]}
+-      defaultExpanded={defaultExpanded}
+-      summary={<Trans id='Categories' />}
+-      right={
+-        currentFilter && currentFilter.length > 0 ? (
+-          <Button
+-            color='primary'
+-            onClick={(e) => {
+-              e.stopPropagation()
+-              form.setValue(name, null)
++    <>
++
++      {<ActionCardAccordion
++        sx={[
++          hideTitle ? { '& .MuiAccordionSummary-root': { display: 'none' } } : {},
++          {
++            // borderBottom:(theme:any)=>`${theme.palette.custom.borderSecondary} !important`,
++            '& .MuiAccordionSummary-expandIconWrapper': {
++              display: 'none',
++            },
++            '& .MuiAccordionSummary-root': {
++              cursor: 'default',
++              //pointerEvents: 'none',
++              minHeight: 'auto !important',
++
++              '&:hover, &.Mui-focusVisible': {
++                backgroundColor: 'transparent',
++              },
++            },
++
++          },
++          sx,
++          ...(Array.isArray(sx) ? sx : [sx]),
++        ]}
++        defaultExpanded={expandeds}
++        perentExpanded={expandeds}
++        onChange={handleAccordionToggle}
++        summary={<Box sx={{
++          fontFamily: "'Bricolage Grotesque', sans-serif",
++          fontSize: { xs: '18px', md: '20px' },
++          fontWeight: 400,
++          lineHeight: '120%',
++          color: (theme: any) => theme.palette.custom.dark,
++          display: 'flex',
++          alignItems: 'center',
++          gap: '8px',
++          paddingTop: '15px'
++        }}>
++          {categoryTitle}</Box>}
++        right={
++          <Box onClick={handleAccordionToggle} sx={{
++            position: 'relative',
++            top: '10px',
++            '& svg': {
++              stroke: (theme: any) => theme.palette.custom.wishlistColor
++            }
++          }}>
++            <IconSvg
++              src={expandeds ? iconCloseAccordion : iconOpenAccordion}
++              size='medium'
++              sx={{
++                width: '20px',
++                height: '20px',
++
++              }}
++            />
++          </Box>
++
++        }
++        details={
++          <ActionCardList
++            size='responsive'
++            variant='default'
++            sx={{ mb: 2 }}
++            value={form.getValues('url')}
++            onChange={async (e, value) => {
++              const item = categoryTree.find((i) => i.value === value)
++              if (!item) return
++              await onChange(item)
+             }}
+           >
+-            <Trans id='Clear' />
+-          </Button>
+-        ) : undefined
+-      }
+-      details={
+-        <ActionCardList
+-          size='responsive'
+-          variant='default'
+-          sx={{ mb: 2 }}
+-          value={form.getValues('url')}
+-          onChange={async (e, value) => {
+-            const item = categoryTree.find((i) => i.value === value)
+-            if (!item) return
+-            await onChange(item)
+-          }}
+-        >
+-          {categoryTree.map(({ isBack, indent, ...item }) => {
+-            const indentVal = isBack ? 0 : indent + 1
+-            return (
+-              <ActionCard
+-                key={item.value}
+-                {...item}
+-                size='responsive'
+-                title={
+-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+-                    <Box sx={{ marginRight: 1 }}>
+-                      {isBack ? (
+-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+-                          <IconSvg src={iconChevronLeft} size='medium' />
+-                          {item.title}
++            {categoryTree.map(({ isBack, indent, ...item }) => {
++              const indentVal = isBack ? 0 : indent + 1
++              return (
++                <ActionCard
++                  isFilter={true}
++                  key={item.value}
++                  {...item}
++                  size='responsive'
++                  title={
++                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: (theme: any) => theme.palette.custom.dark, }}>
++                      <Box sx={{ marginRight: 1, fontSize: { xs: '15px', md: '16px' } }}>
++                        {isBack ? (
++                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
++                            <IconSvg src={iconChevronLeft} size='medium' />
++                            {item.title}
++                          </Box>
++                        ) : (
++                          item.title
++                        )}
++                      </Box>
++                      {item.count !== null && (
++                        <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
++                          ({item.count})
+                         </Box>
+-                      ) : (
+-                        item.title
+                       )}
+                     </Box>
+-                    {item.count !== null && (
+-                      <Box sx={{ typography: 'caption', color: 'text.disabled' }}>
+-                        ({item.count})
+-                      </Box>
+-                    )}
+-                  </Box>
+-                }
+-                sx={{
+-                  '&.sizeSmall': { pl: responsiveVal(8 * indentVal, 12 * indentVal) },
+-                  '&.sizeMedium': { pl: responsiveVal(10 * indentVal, 14 * indentVal) },
+-                  '&.sizeLarge': { pl: responsiveVal(12 * indentVal, 16 * indentVal) },
+-                  '&.sizeResponsive': { pl: responsiveVal(8 * indentVal, 16 * indentVal) },
+-                  '& .ActionCard-title.selected': { fontWeight: 'bold' },
+-                }}
+-              />
+-            )
+-          })}
+-        </ActionCardList>
++                  }
++                  sx={{
++                    '&.sizeSmall': { pl: responsiveVal(8 * indentVal, 12 * indentVal) },
++                    '&.sizeMedium': { pl: responsiveVal(10 * indentVal, 14 * indentVal) },
++                    '&.sizeLarge': { pl: responsiveVal(12 * indentVal, 16 * indentVal) },
++                    '&.sizeResponsive': { pl: responsiveVal(8 * indentVal, 16 * indentVal) },
++                    '& .ActionCard-title.selected': { fontWeight: 'bold' },
++                  }}
++                />
++              )
++            })}
++          </ActionCardList>
++        }
++      // openAccordionIcon={iconOpenAccordion}
++      // closeAccordionIcon={iconCloseAccordion}
++      />
+       }
+-    />
++
++    </>
+   )
+ }
+ 
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProClearAll.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProClearAll.tsx
+index e238d8c..d5c83c5 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProClearAll.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProClearAll.tsx
+@@ -7,15 +7,17 @@ import { useProductFilterProHasFiltersApplied } from './useProductFiltersProHasF
+ 
+ type AllFiltersSidebar = ProductFiltersProAggregationsProps & {
+   sx?: SxProps<Theme>
++  title?:string
++  menuList?:any
+ }
+ 
+ export function ProductFiltersProClearAll(props: AllFiltersSidebar) {
+-  const { sx = [] } = props
++  const { sx = [] , title='Clear all filters',menuList={}} = props
+ 
+-  const clearAll = useProductFiltersProClearAllAction()
++  const clearAll = useProductFiltersProClearAllAction({menuList})
+   const hasFilters = useProductFilterProHasFiltersApplied()
+ 
+-  if (!hasFilters) return null
++  // if (!hasFilters) return null
+ 
+   return (
+     <Button
+@@ -26,11 +28,14 @@ export function ProductFiltersProClearAll(props: AllFiltersSidebar) {
+       color='inherit'
+       disableElevation
+       onClick={(e) => {
++        console.log();
++        
+         e.preventDefault()
++        
+         return clearAll()
+       }}
+     >
+-      <Trans id='Clear all filters' />
++      <Trans id={title} />
+     </Button>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProLimitSection.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProLimitSection.tsx
+index 27fdd62..d3398c8 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProLimitSection.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProLimitSection.tsx
+@@ -48,23 +48,24 @@ export function ProductFiltersProLimitSection(props: ProductFiltersProLimitSecti
+           variant='default'
+           size='responsive'
+           items={options}
++          isFilter={true}
+         />
+       }
+-      right={
+-        activePageSize ? (
+-          <Button
+-            variant='inline'
+-            color='primary'
+-            onClick={(e) => {
+-              e.stopPropagation()
+-              form.setValue('pageSize', null)
+-              form.setValue('currentPage', 1)
+-            }}
+-          >
+-            <Trans id='Clear' />
+-          </Button>
+-        ) : undefined
+-      }
++    // right={
++    //   activePageSize ? (
++    //     <Button
++    //       variant='inline'
++    //       color='primary'
++    //       onClick={(e) => {
++    //         e.stopPropagation()
++    //         form.setValue('pageSize', null)
++    //         form.setValue('currentPage', 1)
++    //       }}
++    //     >
++    //       <Trans id='Clear' />
++    //     </Button>
++    //   ) : undefined
++    // }
+     />
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortChip.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortChip.tsx
+index 3e95496..ebb6c77 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortChip.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortChip.tsx
+@@ -30,11 +30,11 @@ export function ProductFiltersProSortChip(props: ProductListActionSortProps) {
+       onReset={
+         showReset
+           ? () => {
+-              form.setValue('sort', null)
+-              form.setValue('dir', null)
+-              form.setValue('currentPage', 1)
+-              return submit()
+-            }
++            form.setValue('sort', null)
++            form.setValue('dir', null)
++            form.setValue('currentPage', 1)
++            return submit()
++          }
+           : undefined
+       }
+       onClose={submit}
+@@ -48,6 +48,7 @@ export function ProductFiltersProSortChip(props: ProductListActionSortProps) {
+           size='medium'
+           render={ActionCard}
+           items={options}
++          isFilter={true}
+         />
+       )}
+     </ChipOverlayOrPopper>
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortSection.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortSection.tsx
+index b64ae6d..d5a4675 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortSection.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProSortSection.tsx
+@@ -5,23 +5,33 @@ import type { SxProps, Theme } from '@mui/material'
+ import { useProductFiltersPro } from './ProductFiltersPro'
+ import type { UseProductFiltersProSortProps } from './useProductFiltersProSort'
+ import { useProductFiltersProSort } from './useProductFiltersProSort'
++import { StaticImport } from '@graphcommerce/image'
++import { useEffect, useState } from 'react'
+ 
+ export type ProductFiltersProSortSectionProps = UseProductFiltersProSortProps & {
+   sx?: SxProps<Theme>
++  openAccordionIcon?: string | StaticImport
++  closeAccordionIcon?: string | StaticImport
++  menu?: any
+ }
+ 
+ export function ProductFiltersProSortSection(props: ProductFiltersProSortSectionProps) {
+-  const { sx } = props
++  const { sx, openAccordionIcon, closeAccordionIcon, menu } = props
+   const { form } = useProductFiltersPro()
+-  const { options, showReset, selected } = useProductFiltersProSort(props)
++  const { options, showReset, selected, selectedLabel, handleChange, expanded } = useProductFiltersProSort(props)
+ 
+-  if ((options.length ?? 0) <= 1) return null
+ 
++  if ((options.length ?? 0) <= 1) return null
++  console.log(selected, "==>selected")
+   return (
+     <ActionCardAccordion
+       sx={sx}
++      perentExpanded={expanded}
++      onChange={handleChange}
+       defaultExpanded={selected}
+-      summary={<Trans id='Sort By' />}
++      openAccordionIcon={openAccordionIcon}
++      closeAccordionIcon={closeAccordionIcon}
++      summary={<Trans id={`Sort by: ${selectedLabel}`} values={{ selectedLabel }} />}
+       details={
+         <ActionCardListForm
+           control={form.control}
+@@ -30,24 +40,26 @@ export function ProductFiltersProSortSection(props: ProductFiltersProSortSection
+           variant='default'
+           size='responsive'
+           render={ActionCard}
+-          items={options}
++          items={options || []}
++          isFilter={true}
+         />
+       }
+-      right={
+-        showReset ? (
+-          <Button
+-            color='primary'
+-            onClick={(e) => {
+-              e.stopPropagation()
+-              form.setValue('sort', null)
+-              form.setValue('dir', null)
+-              form.setValue('currentPage', 1)
+-            }}
+-          >
+-            <Trans id='Clear' />
+-          </Button>
+-        ) : undefined
+-      }
++    // right={
++    //    showReset ? (
++    //      <Button
++    //        color='primary'
++    //        onClick={(e) => {
++    //          e.stopPropagation()
++    //          form.setValue('sort', null)
++    //          form.setValue('dir', null)
++    //          form.setValue('currentPage', 1)
++    //        }}
++    //      >
++    //        <Trans id='Clear' />
++    //      </Button>
++    //    ) : undefined
++    //  } 
++
+     />
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProClearAllAction.ts b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProClearAllAction.ts
+index 195b807..c3a3f86 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProClearAllAction.ts
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProClearAllAction.ts
+@@ -2,7 +2,7 @@ import { useCallback } from 'react'
+ import type { ProductFilterParams } from '../ProductListItems/filterTypes'
+ import { useProductFiltersPro } from './ProductFiltersPro'
+ 
+-export function useProductFiltersProClearAllAction() {
++export function useProductFiltersProClearAllAction({menuList=[]}={}) {
+   const { form, submit } = useProductFiltersPro()
+   const { reset, getValues } = form
+ 
+@@ -12,16 +12,38 @@ export function useProductFiltersProClearAllAction() {
+       Object.keys(currentValues.filters).map((key) => [key, null]),
+     )
+ 
++    let category_uid = getValues('filters.category_uid');
++    let url = getValues('url');
++
++    if(menuList?.length){
++      function findParentUidByChildUrlPath(categories, childUrlPath) {
++        for (const category of categories) {
++          if (category.children.some(child => child.url_path === childUrlPath)) {
++            return category;
++          }
++        }
++        return null;
++      }
++
++      const parentCategory = findParentUidByChildUrlPath(menuList, url);
++
++      if(parentCategory?.uid&&parentCategory?.url_path){
++        form.setValue("filters.category_uid.in",parentCategory?.uid);
++        form.setValue("url",parentCategory?.url_path);
++      }
++    }
++
+     reset(
+       {
+         ...currentValues,
++        url:getValues('url'),
+         pageSize: null,
+         currentPage: 1,
+         dir: null,
+         sort: null,
+         filters: {
+           ...cleanedFilters,
+-          category_uid: getValues('filters.category_uid'),
++          // category_uid: getValues('filters.category_uid'),
+         },
+       },
+       { keepSubmitCount: true, keepIsValid: true },
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProSort.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProSort.tsx
+index d3b392c..dc7e50c 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProSort.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/useProductFiltersProSort.tsx
+@@ -3,26 +3,86 @@ import { useQuery } from '@graphcommerce/graphql'
+ import { StoreConfigDocument } from '@graphcommerce/magento-store'
+ import { filterNonNullableKeys } from '@graphcommerce/next-ui'
+ import { i18n } from '@lingui/core'
+-import { useMemo } from 'react'
++import { use, useEffect, useMemo, useState } from 'react'
+ import type { CategoryDefaultFragment } from '../ProductListItems/CategoryDefault.gql'
+-import type { ProductFilterParams } from '../ProductListItems/filterTypes'
++import { isFilterTypeRange, type ProductFilterParams } from '../ProductListItems/filterTypes'
+ import type { ProductListSortFragment } from '../ProductListSort'
+ import { useProductFiltersPro } from './ProductFiltersPro'
+ import type { ProductListActionSortProps } from './ProductFiltersProSortChip'
+ import { ProductFiltersProSortDirectionArrow } from './ProductFiltersProSortDirectionArrow'
++import { useRouter } from 'next/router'
++import { ProductAttributeFilterInput } from '@graphcommerce/graphql-mesh'
+ 
+ const exclude = ['relevance', 'position']
+ 
+ export type UseProductFiltersProSortProps = ProductListSortFragment & {
+-  category?: CategoryDefaultFragment
++  category?: CategoryDefaultFragment,
++  menu?: any
+ }
+ 
+-export function useProductFiltersProSort(props: ProductListActionSortProps) {
+-  const { sort_fields, category } = props
++type CategoryTree = {
++  __typename: string
++  uid: string
++  id: number
++  include_in_menu: number
++  name: string
++  url_path: string
++  level: number
++  is_anchor: number
++  children: CategoryTree[]
++}
++
++function getCategoryAndParams(
++  input: string,
++  categories: CategoryTree[]
++): { category: CategoryTree | null; params: Record<string, string> } {
++  let targetPath = input
++  let params: Record<string, string> = {}
++
++  const cIndex = input.indexOf('/c/')
++  const qIndex = input.indexOf('/q/')
++
++  // --- Extract category path
++  if (cIndex !== -1 && qIndex !== -1 && qIndex > cIndex) {
++    targetPath = input.substring(cIndex + 3, qIndex) // between /c/ and /q/
++  }
++
++  // remove leading slash
++  targetPath = targetPath.replace(/^\/+/, '')
+ 
+-  const { params, form } = useProductFiltersPro()
+-  const { control, setValue } = form
++  // --- Extract params if /q/ exists
++  if (qIndex !== -1) {
++    const afterQ = input.substring(qIndex + 3)
++    const parts = afterQ.split('/').filter(Boolean)
+ 
++    for (let i = 0; i < parts.length; i += 2) {
++      const key = parts[i]
++      const value = parts[i + 1] ?? ''
++      params[key] = value
++    }
++  }
++
++  // --- Recursive search for category
++  function search(list: CategoryTree[]): CategoryTree | null {
++    for (const category of list) {
++      if (category.url_path === targetPath) return category
++      if (category.children.length > 0) {
++        const found = search(category.children)
++        if (found) return found
++      }
++    }
++    return null
++  }
++
++  return { category: search(categories), params }
++}
++export function useProductFiltersProSort(props: ProductListActionSortProps) {
++  const { sort_fields, category, menu } = props
++  const { params, submit, form } = useProductFiltersPro()
++  const { control, setValue, getValues } = form
++  const router = useRouter()
++  const [openSort, setOpenSort] = useState(false)
++  const [expanded, setSetExpanded] = useState(false)
+   const sortFields = useMemo(
+     () =>
+       filterNonNullableKeys(sort_fields?.options).map((o) =>
+@@ -48,31 +108,153 @@ export function useProductFiltersProSort(props: ProductListActionSortProps) {
+     Boolean(formSort !== defaultSortBy || formDirection === 'DESC')
+   const selected = Boolean(params.sort && (params.sort !== defaultSortBy || params.dir === 'DESC'))
+ 
+-  const options = useMemo(
+-    () =>
+-      sortFields
+-        .filter((o) => availableSortBy.includes(o.value))
+-        .map((option) => {
+-          const value = option.value === defaultSortBy ? null : option.value
+-          const showSort = formSort === value && !exclude.includes(option.value)
+-
+-          return {
+-            ...option,
+-            value,
+-            title: option.label,
+-            ...(showSort && {
+-              onClick: () => setValue('dir', formDirection === 'DESC' ? null : 'DESC'),
+-              price: <ProductFiltersProSortDirectionArrow sortDirection={formDirection} />,
+-            }),
++  useEffect(() => {
++    setOpenSort(Boolean(params.sort && (params.sort !== defaultSortBy || params.dir === 'DESC')))
++  }, [])
++
++  const pathMenu = useMemo(() => {
++    if (menu && router && router.asPath) {
++      const categoryData = getCategoryAndParams(router.asPath, menu)
++      return categoryData
++    }
++    return null
++  }, [menu, router.asPath])
++
++  const options = useMemo(() => {
++    return sortFields
++      .filter((o) => o.value !== 'position' && availableSortBy.includes(o.value))
++      .flatMap((o) => {
++        if (o.value === 'price') {
++          return [
++            {
++              ...o,
++              label: 'Price: Low to High',
++              value: 'Price: Low to High',
++              dir: 'ASC',
++              code: o.value,
++            },
++            {
++              ...o,
++              label: 'Price: High to Low',
++              value: 'Price: High to Low',
++              dir: 'DESC',
++              code: o.value,
++            },
++          ]
++        }
++        if (o.value === 'name') {
++          return [
++            {
++              ...o,
++              label: 'Name: A–Z',
++              value: 'Name: A–Z',
++              dir: 'ASC',
++              code: o.value,
++            },
++            {
++              ...o,
++              label: 'Name: Z–A',
++              value: 'Name: Z–A',
++              dir: 'DESC',
++              code: o.value,
++            },
++          ]
++        }
++
++        return [
++          {
++            ...o,
++            label: `${o.label} ASC`,
++            value: `${o.label} ASC`,
++            dir: 'ASC',
++            code: o.value,
++          },
++          {
++            ...o,
++            label: `${o.label} DESC`,
++            value: `${o.label} DESC`,
++            dir: 'DESC',
++            code: o.value,
++          },
++        ]
++      })
++      .map((option: any) => ({
++        ...option,
++        title: option.label,
++        onClick: (e, value) => {
++
++          if (pathMenu?.category) {
++            setValue('url', pathMenu?.category?.url_path)
++            // setValue('filters.category_id', pathMenu.uid)
++
++            Object.entries(pathMenu?.params ?? {}).forEach(([key, val]) => {
++              if (key === 'price') {
++                const [min, max] = (val as string).split('-')
++                setValue('filters.price', { from: min, to: max })
++              }
++            })
++            // const param = params.filters?.[attrCode]
++            // if (param && !isFilterTypeRange(param)) throw new Error('Invalid filter type')
++            setValue("filters.category_uid", { eq: pathMenu?.category.uid })
+           }
+-        }),
+-    [sortFields, availableSortBy, defaultSortBy, formSort, formDirection, setValue],
+-  )
++          setOpenSort(false)
++          setValue('sort', option?.code)
++          setValue('dir', option?.dir === 'DESC' ? 'DESC' : null)
++
++          setSetExpanded(false)
++          submit()
++        },
++      }))
++  }, [sortFields, availableSortBy, setValue, formSort, formDirection, router.asPath, pathMenu])
++  // const options = useMemo(
++  //   () =>
++  //     sortFields
++  //       .filter((o) => availableSortBy.includes(o.value))
++  //       .map((option) => {
++  //         const value = option.value === defaultSortBy ? option.value : option.value
++  //         const showSort = formSort === value && !exclude.includes(option.value)
++
++  //         return {
++  //           ...option,
++  //           value,
++  //           title: option.label,
++  //           onClick: (e, va) => {
++  //             setOpenSort(false)
++  //             console.log(getValues("url"), "=>dede")
++  //             setValue('sort', va)
++  //             setValue('dir', formDirection === 'DESC' ? null : 'DESC')
++  //             if (!router.asPath.includes("/c/")) {
++  //               setValue('url', router.asPath)
++  //             }
++  //             setSetExpanded(false)
++  //             submit()
++  //           },
++  //           // ...(showSort && {
++  //           //   price: <ProductFiltersProSortDirectionArrow sortDirection={formDirection} />,
++  //           // }),
++  //         }
++  //       }),
++  //   [sortFields, availableSortBy, defaultSortBy, formSort, formDirection, setValue],
++  // )
++
++  const selectedLabel = useMemo(() => {
++    const selectedOption = options.find((option) => option.value === params.sort)
++    const defaultOption = options.find((option) => option.value === defaultSortBy)
++    return selectedOption ? selectedOption.label : defaultOption?.label
++  }, [options, params.sort, defaultSortBy])
++
++  const handleChange = (isExpanded: boolean) => {
++    setSetExpanded(isExpanded);
++  };
++
+   return {
++    expanded,
+     options,
+-    selected,
++    selected: openSort,
+     showReset,
+-    selectedLabel: options.find((option) => option.value === params.sort)?.label,
++    selectedLabel: selectedLabel,
++    handleChange
+   }
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx
+index 68f7cab..0b76b65 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx
+@@ -22,33 +22,37 @@ export function ProductListCount(props: ProductCountProps) {
+     <Box
+       sx={[
+         (theme) => ({
+-          display: 'grid',
++          // display: 'grid',
+           gridAutoFlow: 'column',
+           gridTemplateColumns: '1fr max-content 1fr',
+           columnGap: theme.spacings.xs,
+           maxWidth: '100%',
+-          width: responsiveVal(280, 650),
++          // width: responsiveVal(280, 650),
+           alignItems: 'center',
+-          my: theme.spacings.md,
+-          mx: 'auto',
++          // my: theme.spacings.md,
++          // mx: 'auto',
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+       className={classes.root}
+     >
+-      <Divider component='div' className={classes.line} />
++     
+       <Typography
+         variant='body2'
+         color='text.disabled'
+         className={classes.count}
+-        sx={{ lineHeight: 0 }}
++        sx={{ color: '#441e14 !important',
++                  fontWeight: 300,
++                  fontFamily: "'Bricolage Grotesque', sans-serif",
++                  fontSize: { xs: '15px', md: '16px' },
++                  lineHeight: '130%', }}
+       >
+         {children ? <> {children} </> : null}
+         {total_count === 0 && <Trans id='no products' />}
+-        {total_count === 1 && <Trans id='one product' />}
+-        {(total_count ?? 0) > 1 && <Trans id='{total_count} products' values={{ total_count }} />}
++        {total_count === 1 && <Trans id={`Showing ${total_count} Result` }  values={{ total_count }} />}
++        {(total_count ?? 0) > 1 && <Trans id={`Showing ${total_count} Results`} values={{ total_count }} />}
+       </Typography>
+-      <Divider component='div' className={classes.line} />
++     
+     </Box>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
+index 0b9f236..7593709 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
+@@ -87,6 +87,7 @@ export function ProductListItemReal(props: ProductProps) {
+     sx = [],
+     onClick,
+     slotProps = {},
++    sku
+   } = props
+ 
+   return (
+@@ -133,10 +134,13 @@ export function ProductListItemReal(props: ProductProps) {
+       {!imageOnly && (
+         <>
+           <ProductListItemTitleAndPrice
++          isConfigured = {props?.__typename === 'ConfigurableProduct'}
++          urlKey={props?.url_key ?? ''}
+             classes={classes}
+             titleComponent={titleComponent}
+             title={name}
+             subTitle={subTitle}
++            sku={sku}
+             {...slotProps.titleAndPrice}
+           >
+             <ProductListPrice {...price_range.minimum_price} />
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
+index d1ae621..f84eede 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
+@@ -69,7 +69,7 @@ export function ProductListItemImage(props: ImageOrPlaceholderProps) {
+         className={classes?.image}
+         sx={[
+           {
+-            objectFit: 'contain',
++             objectFit: 'cover',
+             aspectRatio: `${aspectRatio[0] / aspectRatio[1]}`,
+             display: 'block',
+           },
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
+index 9dc2505..f473d5b 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
+@@ -1,18 +1,23 @@
+ import type { SxProps, Theme } from '@mui/material'
+ import { Box, Typography } from '@mui/material'
+ import { productListPrice } from '../ProductListPrice'
++import { AddProductsToCartFab } from '@graphcommerce/magento-product/components/AddProductsToCart'
+ 
+ export type ProductListItemTitleAndPriceProps = {
+   titleComponent?: React.ElementType
+   title: React.ReactNode
+   subTitle?: React.ReactNode
++  isConfigured?:boolean | undefined
++  urlKey?:string| undefined
+   children: React.ReactNode
+   classes: { titleContainer: string; title: string; subtitle: string }
+   sx?: SxProps<Theme>
++  sku?: string | null | undefined
+ }
+ 
++
+ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPriceProps) {
+-  const { titleComponent = 'h2', classes, children, subTitle, title, sx } = props
++  const { titleComponent = 'h2', classes, children, subTitle, title, sx,sku,isConfigured,urlKey } = props
+ 
+   return (
+     <Box
+@@ -20,15 +25,34 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+       sx={[
+         (theme) => ({
+           display: 'grid',
+-          alignItems: 'baseline',
+           marginTop: theme.spacings.xs,
+           columnGap: 1,
++          rowGap: {sm:'4px'}, 
+           gridTemplateAreas: {
+-            xs: '"title title" "subtitle price"',
+-            md: '"title subtitle price"',
++            xs: `
++              "title priceButton"
++              "subtitle priceButton"
++              "price priceButton"
++            `,
++            sm: `
++              "title priceButton"
++              "subtitle priceButton"
++              "price priceButton"
++            `,
++            md: `
++              "title priceButton"
++              "subtitle priceButton"
++              "price priceButton"
++            `,
++          },
++          
++          gridTemplateColumns: {
++            xs: '1fr auto', 
++            md: '1fr auto', 
+           },
+-          gridTemplateColumns: { xs: 'unset', md: 'auto auto 1fr' },
+-          justifyContent: 'space-between',
++           alignItems: 'flex-end', 
++
++          // justifyContent: 'space-between',
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+@@ -40,8 +64,11 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+           display: 'inline',
+           color: 'text.primary',
+           overflowWrap: 'break-word',
+-          maxWidth: '100%',
++          // maxWidth: '100%',
+           gridArea: 'title',
++          fontSize:{ xs: '15px',md: '16px' },
++          maxWidth: { xs: '131px', md: '250px' },
++          minHeight:{xs:'70px', md:'50px'},
+         }}
+         className={classes.title}
+       >
+@@ -49,7 +76,9 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+       </Typography>
+ 
+       {subTitle && (
+-        <Box sx={{ gridArea: 'subtitle' }} className={classes.subtitle}>
++        <Box sx={{ gridArea: 'subtitle',
++          fontSize:{ xs: '15px',md: '16px' },
++          maxWidth: { xs: '131px', md: '252px' },  }} className={classes.subtitle}>
+           {subTitle}
+         </Box>
+       )}
+@@ -58,10 +87,27 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+         component='div'
+         variant='body1'
+         className={productListPrice.classes.root}
+-        sx={{ gridArea: 'price', textAlign: 'right', justifySelf: { sm: 'flex-end' } }}
++        sx={{ gridArea: 'price', textAlign: 'left',lineHeight:'normal', marginBottom:'4px'}}
+       >
+         {children}
+       </Typography>
++
++
++ <Box sx={{ gridArea: 'priceButton', }}>
++   <AddProductsToCartFab sku={sku} isLink={isConfigured} url={urlKey} sx={{
++    height:'50px',
++    width:'50px',
++     '& svg': {
++     fontSize: '25px',
++     stroke: 'unset !important',
++     left: '6px',
++      top: '3px',
++      position:'relative'
++         },
++         
++   }}  />
++ </Box>
++     
+     </Box>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItems.graphql b/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItems.graphql
+index ddf15be..e5a0bd4 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItems.graphql
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItems.graphql
+@@ -2,6 +2,11 @@ fragment ProductListItems on Products {
+   items {
+     __typename
+     uid
++    categories{
++      uid
++      name
++      url_key
++    }
+     ...ProductListItem
+   }
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx
+index 711b3ff..7da8552 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx
+@@ -83,7 +83,7 @@ export function ProductListItemsBase(props: ProductItemsGridProps) {
+   }
+ 
+   const classes = withState({ size })
+-
++  console.log(items, "==>items")
+   return (
+     <AddProductsToCartForm>
+       <Box
+@@ -97,14 +97,14 @@ export function ProductListItemsBase(props: ProductItemsGridProps) {
+               gridTemplateColumns: `repeat(${column.count}, 1fr)`,
+             },
+           })),
+-          { display: 'grid' },
++          { display: 'grid', paddingTop: "20px" },
+           ...(Array.isArray(sx) ? sx : [sx]),
+         ]}
+       >
+         {items?.map((item, idx) =>
+           item ? (
+             <LazyHydrate
+-              key={item.uid ?? ''}
++              key={item.uid}
+               hydrated={loadingEager > idx ? true : undefined}
+               height={responsiveVal(250, 500)}
+             >
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts b/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts
+index 464c244..59e1d4d 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts
+@@ -64,6 +64,7 @@ export async function productListApplyCategoryDefaults(
+   if (!newParams.filters.category_uid?.in?.[0]) {
+     newParams.filters.category_uid = { eq: (await category)?.uid }
+   }
++  console.log(newParams,"==>newParams");
+ 
+   return newParams
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx
+index 1d42a06..c70ff79 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx
+@@ -11,11 +11,12 @@ export const productListPrice = extendableComponent('ProductListPrice', [
+   'discountPrice',
+ ] as const)
+ 
++
+ const { classes, selectors } = productListPrice
+ 
+ export type ProductListPriceProps = ProductListPriceFragment & Pick<TypographyProps, 'sx'>
+ 
+-export function ProductListPrice(props: ProductListPriceProps) {
++export function ProductListPrice(props: ProductListPriceProps ) {
+   const { regular_price, final_price, sx } = props
+ 
+   return (
+@@ -38,6 +39,7 @@ export function ProductListPrice(props: ProductListPriceProps) {
+         className={classes.finalPrice}
+         component='span'
+         skeleton={{ width: '3.5em' }}
++        
+       >
+         <Money {...final_price} />
+       </PrivateQueryMask>
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductPageCategory/ProductPageCategory.graphql b/node_modules/@graphcommerce/magento-product/components/ProductPageCategory/ProductPageCategory.graphql
+index ec78221..6ac84d3 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductPageCategory/ProductPageCategory.graphql
++++ b/node_modules/@graphcommerce/magento-product/components/ProductPageCategory/ProductPageCategory.graphql
+@@ -1,5 +1,6 @@
+ fragment ProductPageCategory on ProductInterface {
+   categories {
++    id
+     uid
+     name
+     url_path
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductPageGallery/ProductPageGallery.tsx b/node_modules/@graphcommerce/magento-product/components/ProductPageGallery/ProductPageGallery.tsx
+index e920423..eaac83f 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductPageGallery/ProductPageGallery.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductPageGallery/ProductPageGallery.tsx
+@@ -1,18 +1,20 @@
+ import type { SidebarGalleryProps, TypeRenderer } from '@graphcommerce/next-ui'
+ import { SidebarGallery, nonNullable } from '@graphcommerce/next-ui'
+ import type { ProductPageGalleryFragment } from './ProductPageGallery.gql'
++import { ProductListItemFragment } from '@graphcommerce/magento-product'
+ 
+ export type ProductPageGalleryRenderers = TypeRenderer<
+   NonNullable<NonNullable<ProductPageGalleryFragment['media_gallery']>[0]>
+ >
+ 
+ export type ProductPageGalleryProps = Omit<SidebarGalleryProps, 'sidebar' | 'images'> & {
+-  product: ProductPageGalleryFragment
++  product: ProductListItemFragment & ProductPageGalleryFragment
+   children?: React.ReactNode
++  wishlistButton?: React.ReactNode
+ }
+ 
+ export function ProductPageGallery(props: ProductPageGalleryProps) {
+-  const { product, children, aspectRatio: [width, height] = [1532, 1678], ...sidebarProps } = props
++  const { product, children, aspectRatio: [width, height] = [682, 682], wishlistButton, ...sidebarProps } = props
+   const { media_gallery } = product
+ 
+   const images =
+@@ -23,15 +25,15 @@ export function ProductPageGallery(props: ProductPageGalleryProps) {
+       .map((item) =>
+         item.__typename === 'ProductImage'
+           ? {
+-              src: item.url ?? '',
+-              alt: item.label || undefined,
+-              width,
+-              height,
+-            }
++            src: item.url ?? '',
++            alt: item.label || undefined,
++            width,
++            height,
++          }
+           : {
+-              src: '',
+-              alt: `{${item.__typename} not yet supported}`,
+-            },
++            src: '',
++            alt: `{${item.__typename} not yet supported}`,
++          },
+       ) ?? []
+ 
+   return (
+@@ -40,6 +42,9 @@ export function ProductPageGallery(props: ProductPageGalleryProps) {
+       sidebar={children}
+       aspectRatio={[width, height]}
+       images={images}
++      disableZoom={true}
++      product={product}
++      wishlistButton={wishlistButton}
+     />
+   )
+ }
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductScroller/ProductScroller.tsx b/node_modules/@graphcommerce/magento-product/components/ProductScroller/ProductScroller.tsx
+index ef066ad..2fb415e 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductScroller/ProductScroller.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductScroller/ProductScroller.tsx
+@@ -42,7 +42,7 @@ export const ProductScroller = forwardRef<HTMLDivElement, ProductScrollerProps>(
+       <Box sx={sx} ref={ref}>
+         <Container maxWidth={false} {...containerProps}>
+           {title && (
+-            <Typography variant='h2' sx={{ marginBottom: theme.spacings.sm }} {...titleProps}>
++            <Typography variant='h2' sx={{ marginBottom: theme.spacings.sm, textAlign:{xs:'center', md:'start'}}} {...titleProps}>
+               {title}
+             </Typography>
+           )}
+diff --git a/node_modules/@graphcommerce/magento-product/components/ProductShortDescription/ProductShortDescription.tsx b/node_modules/@graphcommerce/magento-product/components/ProductShortDescription/ProductShortDescription.tsx
+index 002f6d1..b1dd83e 100644
+--- a/node_modules/@graphcommerce/magento-product/components/ProductShortDescription/ProductShortDescription.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductShortDescription/ProductShortDescription.tsx
+@@ -14,14 +14,14 @@ export function ProductShortDescription(props: ProductShortDescriptionProps) {
+   const { product, sx = [] } = props
+   const { short_description } = product
+ 
+-  if (!short_description?.html) return null
++  // if (!short_description?.html) return null
+ 
+   return (
+     <Typography
+       variant='body1'
+       component='div'
+       className={classes.description}
+-      dangerouslySetInnerHTML={{ __html: short_description?.html ?? '' }}
++      dangerouslySetInnerHTML={{ __html: short_description?.html || "Our cakes are not just desserts—they're edible masterpieces. We specialize in creating highly detailed" }}
+       sx={[
+         {
+           '& > p:first-of-type': { marginTop: 0 },
+diff --git a/node_modules/@graphcommerce/magento-product/hooks/useProductList.ts b/node_modules/@graphcommerce/magento-product/hooks/useProductList.ts
+index 290e572..0c536fd 100644
+--- a/node_modules/@graphcommerce/magento-product/hooks/useProductList.ts
++++ b/node_modules/@graphcommerce/magento-product/hooks/useProductList.ts
+@@ -123,7 +123,7 @@ export function useProductList<
+       )
+ 
+       const shallowNow =
+-        JSON.stringify(vars.filters?.category_uid) === JSON.stringify(params?.filters.category_uid)
++        JSON.stringify(vars?.filters?.category_uid) === JSON.stringify(params?.filters?.category_uid)
+       await prefetchProductList(
+         vars,
+         categoryDefaultsToProductListFilters(vars),
+@@ -136,7 +136,7 @@ export function useProductList<
+ 
+   return {
+     ...props,
+-    filters: filters.data.filters,
++    filters: filters?.data?.filters,
+     ...result.data,
+     params,
+     mask: result.mask,

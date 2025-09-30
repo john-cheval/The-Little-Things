@@ -1,0 +1,1131 @@
+diff --git a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx
+index f94c113..2e770e3 100644
+--- a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx
++++ b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx
+@@ -1,8 +1,10 @@
+ import type { BoxProps, ButtonProps, SxProps, Theme } from '@mui/material'
+-import { alpha, Box, ButtonBase, lighten } from '@mui/material'
+-import React from 'react'
++import { alpha, Box, ButtonBase, Checkbox, FormControl, FormControlLabel, lighten, Radio } from '@mui/material'
++import React, { KeyboardEvent } from 'react'
+ import { extendableComponent, responsiveVal } from '../Styles'
+ import { breakpointVal } from '../Styles/breakpointVal'
++import { Trans } from '@lingui/react'
++import { RadioButtonGroup } from '@graphcommerce/ecommerce-ui'
+ 
+ type Variants = 'outlined' | 'default'
+ type Size = 'large' | 'medium' | 'small' | 'responsive'
+@@ -50,7 +52,7 @@ export type ActionCardProps<C extends React.ElementType = typeof Box> = {
+     reset?: BoxProps
+     end?: BoxProps
+   }
+-}
++} & { isFilter?: boolean,isRadioBtn?:boolean }
+ 
+ const parts = [
+   'root',
+@@ -121,8 +123,13 @@ export function ActionCard<C extends React.ElementType = typeof Box>(props: Acti
+     layout = 'list',
+     error = false,
+     slotProps = {},
++    isFilter = false,
++    isRadioBtn = false
++    // control
++    // isCheckbox = false,
+   } = props
+ 
++
+   const classes = withState({
+     disabled,
+     selected,
+@@ -134,6 +141,44 @@ export function ActionCard<C extends React.ElementType = typeof Box>(props: Acti
+     error,
+   })
+ 
++  if (isFilter) {
++    return (
++      <FormControlLabel
++        className={classes.root}
++        sx={{ fontSize: "15px", '& svg':{
++          color:'#F1A8B6',
++        } ,'.MuiCheckbox-root:hover':{
++          backgroundColor:'transparent'
++        }}}
++        control={<Checkbox
++          onClick={onClick ? (event) => onClick(event, value) : undefined}
++          value={value}
++          checked={selected}
++          disabled={disabled}
++        />}
++        label={title}
++      />
++    )
++  }
++
++ {/*  if(isRadioBtn){
++    return(
++      <FormControlLabel
++        control={
++          <Radio
++            sx={{
++              color: 'red',
++            }}
++            checked={selected}
++            onClick={onClick ? (event) => onClick(event, value) : undefined}
++          />
++        }
++        value={value}
++        label={title}
++      />
++    )
++  }*/}
++
+   return (
+     <ButtonOrBox
+       className={classes.root}
+@@ -305,6 +350,7 @@ export function ActionCard<C extends React.ElementType = typeof Box>(props: Acti
+               alignItems: 'flex-start',
+             }}
+           >
++
+             {title && (
+               <Box
+                 className={classes.title}
+diff --git a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx
+index 323c7e3..6b522ae 100644
+--- a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx
++++ b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx
+@@ -1,22 +1,43 @@
+ import type { SxProps, Theme } from '@mui/material'
+-import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material'
++import { Accordion, AccordionDetails, AccordionSummary, Typography } from '@mui/material'
+ import type { ReactNode } from 'react'
+-import { useState } from 'react'
++import { use, useEffect, useState } from 'react'
+ import { IconSvg } from '../IconSvg'
+ import { iconChevronDown } from '../icons'
++import { StaticImport } from '@graphcommerce/image'
++
+ 
+ export type ActionCardAccordionProps = {
+   summary: ReactNode
+   details: ReactNode
+-  right: ReactNode
++  right?: ReactNode
+   sx?: SxProps<Theme>
+   defaultExpanded?: boolean
++  accordionIcon?: string | StaticImport
++  openAccordionIcon?: string | StaticImport
++  closeAccordionIcon?: string | StaticImport
++  perentExpanded?: boolean
++  onChange?: (expanded: boolean) => void
+ }
+ 
+ export function ActionCardAccordion(props: ActionCardAccordionProps) {
+-  const { summary, details, right, defaultExpanded = true, sx } = props
++  const { summary, details, right, defaultExpanded = true, sx, openAccordionIcon, closeAccordionIcon, perentExpanded,
++    onChange, } = props
+   const [expanded, setExpanded] = useState(defaultExpanded)
+-  const handleChange = () => setExpanded(!expanded)
++  const handleChange = () => {
++    setExpanded(!expanded)
++    if (onChange) {
++      onChange(!expanded)
++    }
++  }
++
++  useEffect(() => {
++    if (perentExpanded !== undefined && perentExpanded === false) {
++      setExpanded(perentExpanded)
++    }
++  }, [perentExpanded])
++
++
+ 
+   return (
+     <Accordion
+@@ -31,15 +52,17 @@ export function ActionCardAccordion(props: ActionCardAccordionProps) {
+           '&.Mui-expanded': { my: 0 },
+           '::before': { display: 'none' },
+           border: 'none',
+-          borderBottom: `1px solid ${theme.palette.divider}`,
+-          '&:not(.Mui-expanded)': { borderBottom: `1px solid ${theme.palette.divider}` },
++          borderBottom: (theme: any) => `1px solid ${theme.palette.custom.borderSecondary}`,
++          '&:not(.Mui-expanded)': { borderBottom: (theme: any) => `1px solid ${theme.palette.custom.borderSecondary}` },
+         }),
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+     >
+       <AccordionSummary
+         onClick={(e) => e.preventDefault()}
+-        expandIcon={<IconSvg src={iconChevronDown} />}
++        expandIcon={(openAccordionIcon && closeAccordionIcon) && <IconSvg src={expanded ? closeAccordionIcon : openAccordionIcon} sx={(theme) => ({
++          width: '30px',
++        })} size='xl' />}
+         sx={{
+           px: 0,
+           typography: 'subtitle1',
+@@ -50,9 +73,22 @@ export function ActionCardAccordion(props: ActionCardAccordionProps) {
+             alignItems: 'center',
+             my: 0,
+           },
++          ['& .MuiAccordionSummary-expandIconWrapper']: {
++            transform: "unset !important",
++            ['& svg']: {
++              stroke: "unset !important",
++            }
++          }
+         }}
+       >
+-        <div>{summary}</div>
++        <Typography component='p' sx={{
++          fontFamily: "'Bricolage Grotesque', sans-serif",
++          fontWeight: 400,
++          color: '#000',
++          fontSize: { xs: '15px', md: '20px' },
++          lineHeight: '120%',
++          marginBottom: theme => theme.spacings.xxs,
++        }}>{summary}</Typography>
+         {right}
+       </AccordionSummary>
+       <AccordionDetails sx={{ p: 0 }}>{details}</AccordionDetails>
+diff --git a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardList.tsx b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardList.tsx
+index c93e224..d388761 100644
+--- a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardList.tsx
++++ b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardList.tsx
+@@ -6,7 +6,7 @@ import { isFragment } from 'react-is'
+ import { Button } from '../Button'
+ import { IconSvg } from '../IconSvg'
+ import { extendableComponent } from '../Styles'
+-import { iconChevronDown } from '../icons'
++import { iconChevronDown, iconChevronLeft } from '../icons'
+ import type { ActionCardProps } from './ActionCard'
+ import { ActionCardLayout } from './ActionCardLayout'
+ 
+@@ -174,7 +174,7 @@ export const ActionCardList = React.forwardRef<HTMLDivElement, ActionCardListPro
+                 transform: show ? 'rotate(180deg)' : 'rotate(0deg)',
+                 transition: 'transform 0.3s ease-in-out',
+               }}
+-              src={iconChevronDown}
++              src={iconChevronLeft}
+             />
+           </Button>
+         )}
+diff --git a/node_modules/@graphcommerce/next-ui/Button/LinkOrButton.tsx b/node_modules/@graphcommerce/next-ui/Button/LinkOrButton.tsx
+index 83831a5..c0260b4 100644
+--- a/node_modules/@graphcommerce/next-ui/Button/LinkOrButton.tsx
++++ b/node_modules/@graphcommerce/next-ui/Button/LinkOrButton.tsx
+@@ -66,6 +66,9 @@ export const LinkOrButton = React.forwardRef<
+               xs: 'none',
+               [breakpoint]: 'inline-flex',
+             },
++            '& svg':{
++              stroke:(theme:any)=>theme.palette.custom?.borderInput
++            }
+           },
+           ...(Array.isArray(buttonSx) ? buttonSx : [buttonSx]),
+         ]}
+diff --git a/node_modules/@graphcommerce/next-ui/Fab/Fab.tsx b/node_modules/@graphcommerce/next-ui/Fab/Fab.tsx
+index c705a8c..4d3370c 100644
+--- a/node_modules/@graphcommerce/next-ui/Fab/Fab.tsx
++++ b/node_modules/@graphcommerce/next-ui/Fab/Fab.tsx
+@@ -36,12 +36,26 @@ export function Fab(props: FabProps) {
+       size={size}
+       {...fabProps}
+       disabled={disabled}
+-      sx={[{ display: 'grid' }, ...(Array.isArray(sx) ? sx : [sx])]}
++      sx={[{ display: 'grid', backgroundColor:'#F6DBE0 !important', boxShadow:'none !important',color:'#441E14 !important' }, ...(Array.isArray(sx) ? sx : [sx])]}
+     >
+       <Box sx={{ display: 'flex', placeContent: 'center', gridArea: '1/1' }}>
++      {loading ? (
++      <CircularProgress
++          size={fabSize}
++          color={color !== 'primary' ? 'primary' : 'inherit'}
++          {...slotProps?.circularProgress}
++          sx={sxx(
++            { display: 'flex', placeContent: 'center', gridArea: '1/1' ,color:'#441E14',width:'20px !important', height:'20px !important', position:'relative',top:'-4px', left:'-6px', animation:'none'},
++            slotProps?.circularProgress?.sx,
++          )}
++        />
++      ) :(
+         <IconSvg src={icon} size='medium' {...slotProps?.icon} />
++      )
++}
+       </Box>
+-      {loading && (
++      { /* loading && (
++       <IconSvg src={icon} size='medium' {...slotProps?.icon} />
+         <CircularProgress
+           size={fabSize}
+           color={color !== 'primary' ? 'primary' : 'inherit'}
+@@ -51,7 +65,7 @@ export function Fab(props: FabProps) {
+             slotProps?.circularProgress?.sx,
+           )}
+         />
+-      )}
++      ) */ }
+     </FabBase>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/next-ui/Form/FormRow.tsx b/node_modules/@graphcommerce/next-ui/Form/FormRow.tsx
+index b47aab6..d0a1343 100644
+--- a/node_modules/@graphcommerce/next-ui/Form/FormRow.tsx
++++ b/node_modules/@graphcommerce/next-ui/Form/FormRow.tsx
+@@ -1,9 +1,10 @@
+ import { styled } from '@mui/material'
+ 
+ export const FormRow = styled('div', { name: 'FormRow' })(({ theme }) => ({
+-  paddingTop: theme.spacings.xxs,
++ // paddingTop: theme.spacings.xxs,
+   paddingBottom: theme.spacings.xxs,
+   display: 'grid',
+   gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+-  gap: `calc(${theme.spacings.xxs} * 2)`,
++ // gap: `calc(${theme.spacings.xxs} * 2)`,
++ gap:'11px'
+ }))
+diff --git a/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx b/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx
+index ca14954..9d1cd4d 100644
+--- a/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx
++++ b/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx
+@@ -3,8 +3,8 @@ import type { MotionImageAspectProps, ScrollerButtonProps } from '@graphcommerce
+ import {
+   MotionImageAspect,
+   Scroller,
+-  ScrollerButton,
+-  ScrollerDots,
++  // ScrollerButton,
++  // ScrollerDots,
+   ScrollerProvider,
+   ScrollerThumbnails,
+   unstable_usePreventScroll as usePreventScroll,
+@@ -15,11 +15,17 @@ import { Box, Fab, styled, Unstable_TrapFocus as TrapFocus, useTheme } from '@mu
+ import { m, useDomEvent, useMotionValue } from 'framer-motion'
+ import { useRouter } from 'next/router'
+ import React, { useEffect, useRef } from 'react'
+-import { iconChevronLeft, iconChevronRight, iconFullscreen, iconFullscreenExit } from '../icons'
++// import { iconChevronLeft, iconChevronRight, iconFullscreen, iconFullscreenExit } from '../icons'
+ import { IconSvg } from '../IconSvg'
+ import { Row } from '../Row/Row'
+ import { extendableComponent } from '../Styles'
+ import { responsiveVal } from '../Styles/responsiveVal'
++import { ProductPageGalleryFragment } from '@graphcommerce/magento-product/components/ProductPageGallery/ProductPageGallery.gql'
++import {
++  ProductWishlistIconButton,
++} from '@graphcommerce/magento-wishlist'
++
++import { AddProductsToCartForm, ProductListItemFragment } from '@graphcommerce/magento-product'
+ 
+ const MotionBox = styled(m.div)({})
+ 
+@@ -63,6 +69,8 @@ export type SidebarGalleryProps = {
+   variantMd?: SidebarGalleryVariant
+   beforeScroller?: React.ReactNode
+   afterScroller?: React.ReactNode
++  product?: ProductListItemFragment & ProductPageGalleryFragment
++  wishlistButton?: React.ReactNode
+ } & Pick<ScrollerButtonProps, 'showButtons'>
+ 
+ export function SidebarGallery(props: SidebarGalleryProps) {
+@@ -78,8 +86,11 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+     variantMd = 'default',
+     beforeScroller,
+     afterScroller,
++    product,
++    wishlistButton
+   } = props
+ 
++
+   const router = useRouter()
+   const prevRoute = usePrevPageRouter()
+   // const classes = useMergedClasses(useStyles({ clientHeight, aspectRatio }).classes, props.classes)
+@@ -140,13 +151,20 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+ 
+   return (
+     <ScrollerProvider scrollSnapAlign='center'>
++
+       <Row
+         maxWidth={zoomed ? 'full' : 'lg'}
+         disableGutters
+         className={classes.row}
+         breakoutLeft={variantMd === 'default' && !theme.appShell.containerSizingContent}
+         sx={[
+-          { bgcolor: theme.palette.mode === 'light' ? 'background.image' : 'background.paper' },
++          {
++            bgcolor: theme.palette.mode === 'light' ? 'background.image' : 'background.paper', paddingInline: {
++              xs: '18px', sm: '25px', md: '35px', xl: "55px", '& .breakoutLeft': {
++                paddingLeft: 'inherit !important'
++              }
++            },
++          },
+           ...(Array.isArray(sx) ? sx : [sx]),
+         ]}
+       >
+@@ -161,9 +179,8 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+               gridTemplate: '"left" "right"',
+               [theme.breakpoints.up('md')]: {
+                 '&:not(.variantMdOneColumn)': {
+-                  gridTemplate: `"left right" / 1fr calc(${responsiveVal(300, 500, undefined, theme.breakpoints.values.lg)} + ${
+-                    theme.page.horizontal
+-                  } * 2)`,
++                  gridTemplate: `"left right" / 1fr 1fr`,
++                  columnGap: '30px'
+                 },
+               },
+ 
+@@ -180,7 +197,9 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+             },
+           ]}
+         >
++          {wishlistButton}
+           <TrapFocus open={zoomed}>
++
+             <MotionBox
+               layout
+               layoutDependency={zoomed}
+@@ -188,22 +207,22 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+               sx={[
+                 {
+                   gridArea: 'left',
+-                  willChange: 'transform',
+-                  height: 0, // https://stackoverflow.com/questions/44770074/css-grid-row-height-safari-bug
++                  // willChange: 'transform',
++                  // height: 0, // https://stackoverflow.com/questions/44770074/css-grid-row-height-safari-bug
+                   backgroundColor: theme.palette.background.image,
+                   position: 'relative',
+-                  paddingTop: `min(${ratio}, ${maxHeight})`,
++                  // paddingTop: `min(${ratio}, ${maxHeight})`,
+                   [theme.breakpoints.down('md')]: {
+                     width: '100%',
+                   },
+-                  [theme.breakpoints.up('md')]: {
+-                    '&:not(.variantMdOneColumn)': {
+-                      height: `max(${dvh(90)}, 40vw)`,
+-                      '&.sticky': {
+-                        position: 'sticky',
+-                        top: theme.appShell.headerHeightMd,
+-                      },
++                  // [theme.breakpoints.up('md')]: {
++                  '&:not(.variantMdOneColumn)': {
++                    height: { xs: '400px', sm: `max(${dvh(90)}, 40vw)` },
++                    '&.sticky': {
++                      position: 'sticky',
++                      top: theme.appShell.headerHeightMd,
+                     },
++                    //  },
+                   },
+                 },
+                 zoomed && {
+@@ -233,6 +252,7 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+                     gridAutoColumns: '100%',
+                     gridTemplateRows: '100%',
+                     cursor: disableZoom ? 'auto' : 'zoom-in',
++                    fontSize:'2px',
+                   },
+                   zoomed && {
+                     height: 'var(--client-size-y)',
+@@ -244,12 +264,12 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+                   <MotionImageAspect
+                     key={typeof image.src === 'string' ? image.src : idx}
+                     layout
+-                    layoutDependency={zoomed}
++                    // layoutDependency={zoomed}
+                     src={image.src}
+                     width={image.width}
+                     height={image.height}
+                     loading={idx === 0 ? 'eager' : 'lazy'}
+-                    sx={{ display: 'block', objectFit: 'contain' }}
++                    sx={{ display: 'block', objectFit: 'contain', borderRadius: '8px' }}
+                     sizes={{
+                       0: '100vw',
+                       [theme.breakpoints.values.md]: zoomed ? '100vw' : '60vw',
+@@ -258,8 +278,44 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+                     dontReportWronglySizedImages
+                   />
+                 ))}
++                {/* {product?.sku && <Box sx={{ position: 'absolute', right: '22px', top: '30px', zIndex: 1000, display: { xs: 'block', lg: 'none' } }}>
++                  wislisticon
++                  <ProductWishlistIconButton
++                      {...product}
++                      sx={{
++                        backgroundColor: (theme) => theme.palette.primary.contrastText,
++                        padding: 0,
++                        height: '40px',
++                        width: '40px',
++                        border: '1px solid #F6DBE0',
++                        transition: 'all 0.4s ease-in-out',
++                        '&:hover': {
++                          backgroundColor: 'transparent',
++                        },
++                        '&:focus': {
++                          backgroundColor: (theme: any) => theme.palette.custom.border,
++                        },
++                        '&:active': {
++                          backgroundColor: (theme: any) => theme.palette.custom.border,
++                        },
++                        '&.Mui-focusVisible': {
++                          backgroundColor: (theme: any) => theme.palette.custom.border,
++                        },
++                        '& .MuiTouchRipple-root': {
++                          color: (theme: any) => theme.palette.custom.border,
++                        },
++                        '& svg': {
++                          stroke: (theme: any) => theme.palette.custom.main,
++                        },
++                        '& svg.ProductWishlistChipBase-wishlistIconActive': {
++                          stroke: (theme: any) => theme.palette.custom.border,
++                        },
++                      }}
++                    />
++                </Box>} */}
+               </Scroller>
+               {afterScroller}
++              {/* 
+               <MotionBox
+                 layout='position'
+                 layoutDependency={zoomed}
+@@ -289,8 +345,9 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+                     )}
+                   </Fab>
+                 )}
+-              </MotionBox>
+-              <Box
++              </MotionBox> */}
++
++              {/*   <Box
+                 className={classes.centerLeft}
+                 sx={{
+                   display: 'grid',
+@@ -332,7 +389,7 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+                 >
+                   <IconSvg src={iconChevronRight} />
+                 </ScrollerButton>
+-              </Box>
++              </Box> */}
+ 
+               <Box
+                 className={classes.bottomCenter}
+@@ -349,14 +406,22 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+                   },
+                 }}
+               >
+-                {import.meta.graphCommerce.sidebarGallery?.paginationVariant ===
++                <ScrollerThumbnails layoutDependency={zoomed} images={images} sx={{
++                  borderRadius: '8px', '& .ScrollerThumbnail-thumbnail.active': {
++                    boxShadow: 'none !important',
++                    borderRadius: '8px !important',
++                    // border:'1px solid black'
++                  }
++                }} />
++                {/*import.meta.graphCommerce.sidebarGallery?.paginationVariant ===
+                 'THUMBNAILS_BOTTOM' ? (
+                   <ScrollerThumbnails layoutDependency={zoomed} images={images} />
+                 ) : (
+                   <ScrollerDots layout />
+-                )}
++                )*/}
+               </Box>
+             </MotionBox>
++
+           </TrapFocus>
+           <Box
+             className={classes.sidebarWrapper}
+@@ -371,12 +436,10 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+               },
+               zoomed && {
+                 [theme.breakpoints.up('md')]: {
+-                  marginLeft: `calc((${responsiveVal(300, 500, undefined, theme.breakpoints.values.lg)} + ${
+-                    theme.page.horizontal
+-                  } * 2) * -1)`,
+-                  left: `calc(${responsiveVal(300, 500, undefined, theme.breakpoints.values.lg)} + ${
+-                    theme.page.horizontal
+-                  } * 2)`,
++                  marginLeft: `calc((${responsiveVal(300, 500, undefined, theme.breakpoints.values.lg)} + ${theme.page.horizontal
++                    } * 2) * -1)`,
++                  left: `calc(${responsiveVal(300, 500, undefined, theme.breakpoints.values.lg)} + ${theme.page.horizontal
++                    } * 2)`,
+                 },
+               },
+             ]}
+@@ -401,6 +464,7 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+           </Box>
+         </MotionBox>
+       </Row>
++
+     </ScrollerProvider>
+   )
+ }
+diff --git a/node_modules/@graphcommerce/next-ui/IconSvg/IconSvg.tsx b/node_modules/@graphcommerce/next-ui/IconSvg/IconSvg.tsx
+index 9088844..74528e2 100644
+--- a/node_modules/@graphcommerce/next-ui/IconSvg/IconSvg.tsx
++++ b/node_modules/@graphcommerce/next-ui/IconSvg/IconSvg.tsx
+@@ -61,28 +61,28 @@ const Svg = styled('svg', { name, target: name })(() => ({
+   userSelect: 'none',
+   width: '1em',
+   height: '1em',
+-  display: 'inline-block',
++  // display: 'inline-block',
+ 
+-  strokeLinecap: 'square',
+-  strokeLinejoin: 'miter',
+-  strokeMiterlimit: 4,
++  // strokeLinecap: 'square',
++  // strokeLinejoin: 'miter',
++  // strokeMiterlimit: 4,
+ 
+   fill: 'none',
+-  stroke: 'currentColor',
++  stroke: '#000000',
+ 
+-  fontSize: '1.3em',
++  fontSize: '24px',
+ 
+-  strokeWidth: svgIconStrokeWidth(28, 148, 1.4, 0.8),
++  // strokeWidth: svgIconStrokeWidth(28, 148, 1.4, 0.8),
+ 
+-  '&.sizeXs': { fontSize: sizes.xs },
+-  '&.sizeSmall': { fontSize: sizes.small },
+-  '&.sizeMedium': { fontSize: sizes.medium },
+-  '&.sizeLarge': { fontSize: sizes.large },
+-  '&.sizeXl': { fontSize: sizes.xl },
+-  '&.sizeXxl': { fontSize: sizes.xxl },
++  // '&.sizeXs': { fontSize: sizes.xs },
++  // '&.sizeSmall': { fontSize: sizes.small },
++  // '&.sizeMedium': { fontSize: sizes.medium },
++  // '&.sizeLarge': { fontSize: sizes.large },
++  // '&.sizeXl': { fontSize: sizes.xl },
++  // '&.sizeXxl': { fontSize: sizes.xxl },
+ 
+   '&.fillIcon': {
+-    fill: 'currentColor',
++    fill: '#000000',
+     stroke: 'none',
+   },
+ }))
+diff --git a/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/CurrencyFormat.tsx b/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/CurrencyFormat.tsx
+index 12d2b28..c1716bc 100644
+--- a/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/CurrencyFormat.tsx
++++ b/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/CurrencyFormat.tsx
+@@ -1,5 +1,6 @@
+ import type { NumberFormatProps } from './NumberFormat'
+ import { NumberFormat } from './NumberFormat'
++import type { SxProps, Theme } from '@mui/material'
+ 
+ // https://en.wikipedia.org/wiki/ISO_4217#List_of_ISO_4217_currency_codes
+ type Currency =
+@@ -185,9 +186,11 @@ type Currency =
+ 
+ export type CurrencyFormatProps = Omit<NumberFormatProps, 'numberStyle'> & {
+   currency: Currency | (string & Record<never, never>)
++    sx?: SxProps<Theme>
++  
+ }
+ 
+ /** @public */
+ export function CurrencyFormat(props: CurrencyFormatProps) {
+-  return <NumberFormat {...props} numberStyle='currency' />
++  return <NumberFormat {...props} numberStyle='currency' sx={props.sx} />
+ }
+diff --git a/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx b/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx
+index af23c02..450f5bf 100644
+--- a/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx
++++ b/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx
+@@ -1,22 +1,60 @@
+-import { Box } from '@mui/material'
+-import { forwardRef } from 'react'
+-import type { UseIntlNumberFormatOptions } from './useIntlNumberFormat'
+-import { useIntlNumberFormat } from './useIntlNumberFormat'
++import { Box } from '@mui/material';
++import { forwardRef } from 'react';
++import type { UseIntlNumberFormatOptions } from './useIntlNumberFormat';
++import { useIntlNumberFormat }
++from './useIntlNumberFormat';
++import type { SxProps, Theme } from '@mui/material';
+ 
+-export type NumberFormatValue = number | bigint | Intl.StringNumericLiteral
++export type NumberFormatValue = number | bigint | Intl.StringNumericLiteral;
+ 
+ export type NumberFormatProps = UseIntlNumberFormatOptions & {
+-  value: NumberFormatValue
+-}
++  value: NumberFormatValue;
++  sx?: SxProps<Theme>;
++ 
++};
+ 
+ /** @public */
+ export const NumberFormat = forwardRef<HTMLSpanElement, NumberFormatProps>((props, ref) => {
+-  const { value, ...options } = props
+-  const formatter = useIntlNumberFormat(options)
++  const { value, sx,  ...options } = props;
++  const formatter = useIntlNumberFormat(options);
++
++  const parts = formatter.formatToParts(value);
+ 
+   return (
+-    <Box component='span' suppressHydrationWarning ref={ref}>
+-      {formatter.format(value)}
++    <Box
++      component='span'
++      suppressHydrationWarning
++      ref={ref}
++      sx={[
++        {
++          fontFamily: "'Bricolage Grotesque', sans-serif",
++          fontSize: { xs: '16px', md: '18px' },
++          fontWeight: 700,
++          color: '#000',
++        },
++        
++        ...(Array.isArray(sx) ? sx : [sx]),
++      ]}
++    >
++      {parts.map((part, index) => {
++        let partStyle: SxProps<Theme> = {};
++        if (part.type === 'currency') {
++          partStyle = { color:'#000' }; 
++        } else if (
++          part.type === 'integer' ||
++          part.type === 'fraction' ||
++          part.type === 'decimal' ||
++          part.type === 'group'
++        ) {
++          partStyle = { color:  '#000' }; 
++        }
++
++        return (
++          <Box component='span' key={index} sx={partStyle}>
++            {part.value}
++          </Box>
++        );
++      })}
+     </Box>
+-  )
+-})
++  );
++});
+\ No newline at end of file
+diff --git a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx
+index 66a1d96..13adc5e 100644
+--- a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx
++++ b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx
+@@ -10,7 +10,7 @@ import { LayoutHeaderContent } from './LayoutHeaderContent'
+ import type { FloatingProps } from './LayoutHeadertypes'
+ 
+ export type LayoutHeaderProps = FloatingProps &
+-  Omit<LayoutHeaderContentProps, 'left' | 'right'> &
++  Omit<LayoutHeaderContentProps,  'right'> &
+   Pick<BackProps, 'disableBackNavigation'> & {
+     /**
+      * Button to display on the left side of the title
+@@ -68,8 +68,11 @@ export const LayoutHeader = React.memo<LayoutHeaderProps>((props) => {
+     hideMd = false,
+     disableBackNavigation,
+   } = props
+-  const showBack = useShowBack() && !hideBackButton
++
++ const showBack = useShowBack() && !hideBackButton
+   const showClose = useShowClose()
++ // const showBack = true
++
+ 
+   const floatFallback = !children
+   let { floatingSm = false, floatingMd = floatFallback } = props
+@@ -133,9 +136,9 @@ export const LayoutHeader = React.memo<LayoutHeaderProps>((props) => {
+             '&.divider': {
+               marginBottom: 0,
+             },
+-            '&.hideSm .LayoutHeaderContent-left': {
+-              display: 'none',
+-            },
++           // '&.hideSm .LayoutHeaderContent-left': {
++           //   display: 'none',
++           // },
+           },
+ 
+           [theme.breakpoints.up('md')]: {
+diff --git a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderBack.tsx b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderBack.tsx
+index d40b712..716a6b6 100644
+--- a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderBack.tsx
++++ b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderBack.tsx
+@@ -32,7 +32,13 @@ export function useShowBack() {
+ }
+ 
+ const buttonSx: SxProps<Theme> = (theme) => ({
+-  '&:not(.Mui-disabled)': { boxShadow: 6 },
++  background:'none',
++  boxShadow:'none',
++  borderRadius:'4px',
++  '&:hover':{
++    background:'none'
++  },
++  '&:not(.Mui-disabled)': { boxShadow: 0 },
+   [theme.breakpoints.down('md')]: {
+     minWidth: 'auto',
+     paddingLeft: responsiveVal(8, 11),
+@@ -65,16 +71,17 @@ export function LayoutHeaderBack(props: BackProps) {
+   if (canClickBack) {
+     return (
+       <LinkOrButton
++      
+         onClick={() => router.back()}
+-        button={{ variant: 'pill', sx: buttonSx }}
++        button={{ sx: buttonSx }}
+         color='inherit'
+         startIcon={backIcon}
+         aria-label={label}
+         {...rest}
+       >
+-        <Box component='span' sx={{ display: { xs: 'none', md: 'inline' } }}>
++       {/*  <Box component='span' sx={{ display: { xs: 'none', md: 'inline' } }}>
+           {label}
+-        </Box>
++        </Box>*/}
+       </LinkOrButton>
+     )
+   }
+@@ -83,15 +90,15 @@ export function LayoutHeaderBack(props: BackProps) {
+     return (
+       <LinkOrButton
+         href={up.href}
+-        button={{ variant: 'pill', sx: buttonSx }}
++        button={{ sx: buttonSx }}
+         startIcon={backIcon}
+         aria-label={up.title}
+         color='inherit'
+         {...rest}
+       >
+-        <Box component='span' sx={{ display: { xs: 'none', md: 'inline' } }}>
++     {/*   <Box component='span' sx={{ display: { xs: 'none', md: 'inline' } }}>
+           {up.title}
+-        </Box>
++        </Box>*/} 
+       </LinkOrButton>
+     )
+ 
+diff --git a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
+index 41c917c..f58a516 100644
+--- a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
++++ b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
+@@ -148,7 +148,7 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+           ...(Array.isArray(sx) ? sx : [sx]),
+         ]}
+       >
+-        {left && (
++       {left && (
+           <Box
+             className={classes.left}
+             sx={(theme) => ({
+diff --git a/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx b/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx
+index 30fc40b..5d190eb 100644
+--- a/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx
++++ b/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx
+@@ -4,9 +4,13 @@ import { Box, SxProps, Theme } from '@mui/material'
+ import { useScroll, useTransform } from 'framer-motion'
+ import { Container } from '../../Container/Container'
+ import { LayoutProvider } from '../../Layout/components/LayoutProvider'
+-import { SkipLink } from '../../SkipLink/SkipLink'
++// import { SkipLink } from '../../SkipLink/SkipLink'
+ import { extendableComponent } from '../../Styles'
+ import { useFabSize } from '../../Theme'
++import { useCustomerSession } from '@graphcommerce/magento-customer'
++import { useApolloClient } from '@apollo/client'
++import { useEffect } from 'react'
++import { signOut } from '@graphcommerce/magento-customer/components/SignOutForm/signOut'
+ 
+ export type LayoutDefaultProps = {
+   className?: string
+@@ -51,6 +55,26 @@ export function LayoutDefault(props: LayoutDefaultProps) {
+   const classes = withState({ noSticky })
+   const fabIconSize = useFabSize('responsive')
+ 
++  const client = useApolloClient()
++  const { loggedIn, createdAt, customer_access_token_lifetime } = useCustomerSession()
++
++  useEffect(() => {
++    if (loggedIn && createdAt && customer_access_token_lifetime) {
++      const checkSession = () => {
++        const loginTime = new Date(createdAt).getTime()
++        const expiryTime = loginTime + customer_access_token_lifetime * 60 * 60 * 1000
++
++        if (Date.now() > expiryTime) {
++          signOut(client)
++        }
++      }
++
++      const interval = setInterval(checkSession, 60 * 1000)
++
++      return () => clearInterval(interval)
++    }
++  }, [loggedIn, createdAt, customer_access_token_lifetime])
++
+   return (
+     <Box
+       className={`${classes.root} ${className ?? ''}`}
+@@ -68,7 +92,7 @@ export function LayoutDefault(props: LayoutDefaultProps) {
+         ...(Array.isArray(sx) ? sx : [sx]),
+       ]}
+     >
+-      <SkipLink />
++      {/* <SkipLink /> */}
+       <LayoutProvider scroll={scrollYOffset}>
+         {beforeHeader}
+         <Container
+@@ -83,6 +107,9 @@ export function LayoutDefault(props: LayoutDefaultProps) {
+             justifyContent: 'center',
+             height: theme.appShell.headerHeightSm,
+             pointerEvents: 'none',
++            position: 'sticky',
++            top: 0,
++            background: "#FFFFFF",
+             '& > *': {
+               pointerEvents: 'all',
+             },
+diff --git a/node_modules/@graphcommerce/next-ui/LayoutOverlay/components/LayoutOverlay.tsx b/node_modules/@graphcommerce/next-ui/LayoutOverlay/components/LayoutOverlay.tsx
+index 3a5a250..20686c4 100644
+--- a/node_modules/@graphcommerce/next-ui/LayoutOverlay/components/LayoutOverlay.tsx
++++ b/node_modules/@graphcommerce/next-ui/LayoutOverlay/components/LayoutOverlay.tsx
+@@ -15,14 +15,13 @@ export type LayoutOverlayProps = Omit<
+ 
+ export function LayoutOverlay(props: LayoutOverlayProps) {
+   const { children, variantSm = 'bottom', variantMd = 'right', ...otherProps } = props
+-
+   const { closeSteps, active, direction } = usePageContext()
+   const onCloseHandler = useGo(closeSteps * -1)
+   const offsetPageY = useMotionValueValue(useScrollOffset(), (v) => v)
+   const [isPresent, safeToRemove] = usePresence()
+ 
+   return (
+-    <ScrollerProvider {...variantsToScrollSnapType(props)} _inititalSnap={false}>
++    <ScrollerProvider {...variantsToScrollSnapType(props)} _inititalSnap={false}  >
+       <OverlayBase
+         active={active}
+         direction={direction}
+diff --git a/node_modules/@graphcommerce/next-ui/LayoutParts/Logo.tsx b/node_modules/@graphcommerce/next-ui/LayoutParts/Logo.tsx
+index bbf6b28..6704b65 100644
+--- a/node_modules/@graphcommerce/next-ui/LayoutParts/Logo.tsx
++++ b/node_modules/@graphcommerce/next-ui/LayoutParts/Logo.tsx
+@@ -25,11 +25,11 @@ const useUtilityClasses = ({ classes }: LogoClassProps) =>
+ 
+ const commonLogoStyles: SxProps<Theme> = {
+   height: '100%',
+-  width: 'max-content',
++  width: {xs:'100%', lg:'max-content'},
+   display: 'flex',
+   alignItems: 'center',
+-  margin: '0 auto',
+-  justifyContent: 'center',
++  margin: {xs:'0', lg:'0 auto'},
++  justifyContent: {xs:'start',lg:'center'},
+   pointerEvents: 'all',
+ }
+ 
+@@ -60,11 +60,10 @@ export const Logo = forwardRef<HTMLAnchorElement, LogoProps>((props, ref) => {
+   )
+ 
+   const shouldRedirect = router.asPath.split('?')[0] !== href
+-
+   return (
+     <Box
+-      component={shouldRedirect ? LogoContainer : 'div'}
+-      href={shouldRedirect ? href : undefined}
++      component={ LogoContainer}
++      href={ href }
+       ref={ref}
+       sx={[...(Array.isArray(sx) ? sx : [sx]), commonLogoStyles]}
+       className={classes.parent}
+diff --git a/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayStickyBottom.tsx b/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayStickyBottom.tsx
+index b792f5c..1aaece7 100644
+--- a/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayStickyBottom.tsx
++++ b/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayStickyBottom.tsx
+@@ -16,7 +16,7 @@ export function OverlayStickyBottom(props: {
+ 
+   return (
+     <MotionDiv
+-      sx={[{ position: 'sticky', zIndex: 1 }, ...(Array.isArray(sx) ? sx : [sx])]}
++      sx={[{ position: 'sticky', zIndex: 1, width:'100%' }, ...(Array.isArray(sx) ? sx : [sx])]}
+       style={{ bottom }}
+       {...divProps}
+     />
+diff --git a/node_modules/@graphcommerce/next-ui/OverlayOrPopperChip/OverlayOrPopperChip.tsx b/node_modules/@graphcommerce/next-ui/OverlayOrPopperChip/OverlayOrPopperChip.tsx
+index 574754c..b4f2c56 100644
+--- a/node_modules/@graphcommerce/next-ui/OverlayOrPopperChip/OverlayOrPopperChip.tsx
++++ b/node_modules/@graphcommerce/next-ui/OverlayOrPopperChip/OverlayOrPopperChip.tsx
+@@ -114,6 +114,7 @@ export function ChipOverlayOrPopper(props: ChipOverlayOrPopperProps) {
+         {...panelProps}
+         title={label}
+         activeEl={activeEl}
++        
+         onReset={
+           onReset
+             ? () => {
+diff --git a/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts b/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts
+index bfb8656..a802323 100644
+--- a/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts
++++ b/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts
+@@ -85,7 +85,7 @@ export const MuiButtonResponsive: ButtonVariants = [
+ export const MuiButtonPill: ButtonVariants = [
+   {
+     props: { variant: 'pill' },
+-    style: { borderRadius: '99em' },
++    style: { borderRadius: '8px' },
+   },
+   {
+     props: { variant: 'pill', size: 'small' },
+@@ -112,36 +112,37 @@ export const MuiButtonPill: ButtonVariants = [
+   {
+     props: { variant: 'pill', color: 'primary' },
+     style: ({ theme }) => ({
+-      backgroundColor: theme.palette.primary.main,
++      backgroundColor: '#441E14',
+       color: theme.palette.primary.contrastText,
+-      '&:hover:not(.Mui-disabled)': { backgroundColor: theme.palette.primary.dark },
++      border:'1px solid #441E14',
++      '&:hover:not(.Mui-disabled)': { backgroundColor: 'transparent', color:'#441E14' },
+     }),
+   },
+   {
+     props: { variant: 'pill', color: 'secondary' },
+     style: ({ theme }) => ({
+-      backgroundColor: theme.palette.secondary.main,
+-      color: theme.palette.secondary.contrastText,
+-      '&:hover:not(.Mui-disabled)': { backgroundColor: theme.palette.secondary.dark },
++      backgroundColor: '#441E14',
++      color: theme.palette.primary.contrastText,
++       border:'1px solid #441E14',
++      '&:hover:not(.Mui-disabled)': { backgroundColor: 'transparent',color:'#441E14'  },
+     }),
+   },
+   {
+     props: { variant: 'pill', color: 'inherit' },
+     style: ({ theme }) => ({
+-      backgroundColor: theme.palette.background.paper,
++      backgroundColor: '#441E14',
+       '&:hover:not(.Mui-disabled)': {
+-        backgroundColor:
+-          theme.palette.mode === 'light'
+-            ? darken(theme.palette.background.default, 0.05)
+-            : lighten(theme.palette.background.default, 0.2),
++        backgroundColor:'transparent',
++        color:'#441E14' 
+       },
+     }),
+   },
+   {
+     props: { variant: 'pill', disabled: true },
+     style: ({ theme }) => ({
+-      backgroundColor: theme.palette.action.disabledBackground,
++      backgroundColor: '#441E14',
+       color: theme.palette.action.disabled,
++      
+     }),
+   },
+ ]
+diff --git a/node_modules/@graphcommerce/next-ui/icons.interceptor.ts b/node_modules/@graphcommerce/next-ui/icons.interceptor.ts
+new file mode 100644
+index 0000000..136f87c
+--- /dev/null
++++ b/node_modules/@graphcommerce/next-ui/icons.interceptor.ts
+@@ -0,0 +1,102 @@
++/* hash:1527960493 */
++/* eslint-disable */
++/* This file is automatically generated for @graphcommerce/next-ui/icons */
++
++import {
++  iconPerson as iconPersonicons,
++  iconSearch as iconSearchicons,
++  iconShoppingBag as iconShoppingBagicons,
++} from '../../../plugins/icons'
++
++/** @see {@link file://./icons.ts} for source of original */
++/** SOURCE_START */
++export { default as iconArrowDown } from './icons/arrow-down.svg'
++export { default as iconArrowBack } from './icons/arrow-left.svg'
++export { default as iconArrowForward } from './icons/arrow-right.svg'
++export { default as iconArrowUp } from './icons/arrow-up.svg'
++export { default as iconShoppingBagDisabled } from './icons/bag.svg'
++export { default as iconBin } from './icons/bin.svg'
++export { default as iconInvoice } from './icons/box-alt.svg'
++export { default as iconBox } from './icons/box.svg'
++export { default as iconOrderBefore } from './icons/calendar.svg'
++export { default as iconCancelAlt } from './icons/cancel-alt.svg'
++export { default as iconCancel } from './icons/cancel.svg'
++export { default as iconCartAdd } from './icons/cart-add.svg'
++export { default as iconCart } from './icons/cart.svg'
++export { default as iconChat } from './icons/chat-alt.svg'
++export { default as iconCustomerService } from './icons/chat.svg'
++export { default as iconChevronDown } from './icons/chevron-down.svg'
++export { default as iconChevronBack, default as iconChevronLeft } from './icons/chevron-left.svg'
++export { default as iconChevronRight } from './icons/chevron-right.svg'
++export { default as iconChevronUp } from './icons/chevron-up.svg'
++export { default as iconCirle } from './icons/circle.svg'
++export { default as iconClose } from './icons/close.svg'
++export { default as iconCompare } from './icons/compare-arrows.svg'
++export { default as iconContrast } from './icons/contrast.svg'
++export { default as iconCreditCard, default as iconId } from './icons/credit-card.svg'
++export { default as iconEllypsis } from './icons/ellypsis.svg'
++export { default as iconEmail, default as iconEmailOutline } from './icons/envelope-alt.svg'
++export { default as iconExit } from './icons/exit.svg'
++export { default as icon404 } from './icons/explore.svg'
++export { default as iconEyeClosed } from './icons/eye-closed.svg'
++export { default as iconEyeCrossed } from './icons/eye-crossed.svg'
++export { default as iconEye } from './icons/eye.svg'
++export { default as iconHeart } from './icons/favourite.svg'
++export { default as iconMenu } from './icons/hamburger.svg'
++export { default as iconParty } from './icons/happy-face.svg'
++export { default as iconAddresses, default as iconHome } from './icons/home-alt.svg'
++export { default as iconLanguage } from './icons/language.svg'
++export { default as iconLocation } from './icons/location.svg'
++export { default as iconLock } from './icons/lock.svg'
++export { default as iconFullscreen } from './icons/maximise.svg'
++export { default as iconFullscreenExit } from './icons/minimise.svg'
++export { default as iconMin } from './icons/minus.svg'
++export { default as iconMoon } from './icons/moon.svg'
++export { default as iconNewspaper } from './icons/news.svg'
++export { default as iconCheckmark } from './icons/ok.svg'
++export { default as iconPersonDisabled } from './icons/person-alt.svg'
++export { default as iconPlay } from './icons/play.svg'
++export { default as iconPlus } from './icons/plus.svg'
++export { default as iconShutdown } from './icons/power.svg'
++export { default as iconRefresh } from './icons/refresh.svg'
++export { default as iconSadFace } from './icons/sad-face.svg'
++export { default as iconSearchDisabled } from './icons/search.svg'
++export { default as iconPhone } from './icons/smartphone.svg'
++export { default as iconStar } from './icons/star.svg'
++export { default as iconSun } from './icons/sun.svg'
++export { default as iconInfo } from './icons/info.svg'
++
++/** SOURCE_END */
++
++/**
++ * Here you see the 'interceptor' that is applying all the configured plugins.
++ *
++ * This file is NOT meant to be modified directly and is auto-generated if the plugins or the
++ * original source changes.
++ *
++ * @see {@link file://./icons.ts} for original source file
++ * @see {iconShoppingBagicons} for replacement of the original source (original source not used)
++ */
++export const iconShoppingBag = iconShoppingBagicons
++
++/**
++ * Here you see the 'interceptor' that is applying all the configured plugins.
++ *
++ * This file is NOT meant to be modified directly and is auto-generated if the plugins or the
++ * original source changes.
++ *
++ * @see {@link file://./icons.ts} for original source file
++ * @see {iconSearchicons} for replacement of the original source (original source not used)
++ */
++export const iconSearch = iconSearchicons
++
++/**
++ * Here you see the 'interceptor' that is applying all the configured plugins.
++ *
++ * This file is NOT meant to be modified directly and is auto-generated if the plugins or the
++ * original source changes.
++ *
++ * @see {@link file://./icons.ts} for original source file
++ * @see {iconPersonicons} for replacement of the original source (original source not used)
++ */
++export const iconPerson = iconPersonicons
