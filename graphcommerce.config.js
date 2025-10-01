@@ -13,8 +13,8 @@ const config = {
     ? { hygraphEndpoint: 'example' }
     : {}),
   // magentoEndpoint: 'https://configurator.reachdigital.dev/graphql',
-  magentoEndpoint: 'https://srv900162.hstgr.cloud/graphql',
   // magentoEndpoint: 'https://srv900162.hstgr.cloud/graphql',
+  magentoEndpoint: 'https://srv1036250.hstgr.cloud/graphql',
   // magentoVersion: 247,
   magentoVersion: 248,
   canonicalBaseUrl: 'https://littlethingsme.com/',

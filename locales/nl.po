@@ -30,8 +30,8 @@ msgid "Newletter"
 msgstr "Nieuwsbrief"
 
 #. js-lingui-generated-id
-msgid "Search all products..."
-msgstr "Zoek alle producten..."
+msgid "Search for products"
+msgstr "Producten zoeken"
 
 #. js-lingui-generated-id
 msgid "Did you mean?"

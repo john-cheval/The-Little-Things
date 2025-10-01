@@ -30,6 +30,14 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1536px;
+
+  /* ==========TLT Colors ================== */
+  --tltMain: #7b1316;
+  --tltSecondary: #d90f13;
+  --tltTertiary: #767676;
+  --tltDark: #313131;
+  --textDarkAlter: #2a2a2a;
+  --tltContrastText: #fff;
 }
 
 /* Common Classes */
@@ -1925,3 +1933,31 @@ input[type='number'] {
 }
 
 /* TLT CSS */
+.marquee-text {
+  overflow: clip;
+}
+
+.marquee-text-track {
+  display: flex;
+  padding-left: 4.8rem;
+  gap: 4.8rem;
+  width: max-content;
+  animation: marquee-move-text var(--speed, 30s) linear infinite var(--direction, forwards);
+}
+
+.marquee-text p {
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+@keyframes marquee-move-text {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.wrapper {
+  width: 100%;
+  color: #fff;
+}

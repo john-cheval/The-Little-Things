@@ -19,6 +19,7 @@ import { Footer } from './Footer'
 import type { LayoutQuery } from './Layout.gql'
 import { Logo } from './Logo'
 import MobileMenu from './MobileMenu/MobileMenu'
+import { InfiniteMarquee } from '../TLTComponents/Shared/InfiniteMarquee'
 
 export type LayoutNavigationProps = LayoutQuery &
   Omit<LayoutDefaultProps, 'footer' | 'header' | 'cartFab' | 'menuFab'>
@@ -43,13 +44,16 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
 
   return (
     <>
+      <InfiniteMarquee text='We do international shipping' />
+
+
       <LayoutDefault
         sx={{
           position: 'sticky',
           top: '0',
           left: '0',
           width: '100%',
-          ['& .LayoutDefault-header']: {
+          '& .LayoutDefault-header': {
             height: { xs: '65px', md: '80px', lg: '90px' },
             paddingInline: { xs: '18px', md: '25px', lg: '55px' },
             boxShadow: { xs: '0px -9px 24px #00000026', md: 'none' },
@@ -62,7 +66,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
           <>
             <Logo isHome />
 
-            <DesktopNavBar>
+            {/* <DesktopNavBar>
               {menu?.items?.[0]?.children
                 ?.filter((item) => item?.include_in_menu === 1)
                 ?.map((menus) => (
@@ -96,7 +100,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                     border: '1px solid #F6DBE0',
                   },
                 }}
-                href={`/events`}
+                href='/events'
               >
                 Corporate & Events
               </DesktopNavItem>
@@ -112,11 +116,97 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                     border: '1px solid #F6DBE0',
                   },
                 }}
-                href={`/courses`}
+                href='/courses'
               >
                 Baking Classes
               </DesktopNavItem>
-            </DesktopNavBar>
+            </DesktopNavBar> */}
+
+            <DesktopNavActions>
+              <SearchField
+                visible
+                isNav
+                formControl={{
+                  sx: {
+                    width: { xs: 'fit-content', sm: '300px', lg: '250px', xl: '350px' },
+                    color: (theme: any) => theme.palette.custom.main,
+                    '& .MuiOutlinedInput-root': {
+                      color: (theme) => theme.palette.custom.main,
+                      fontSize: { xs: '12px', sm: '14px', md: '16px' },
+                      borderRadius: '3px',
+                      background: 'rgba(239, 242, 245, 0.86)',
+                      '& input': {
+                        padding: {
+                          xs: '8px 12px',
+                          sm: '10px 12px',
+                          lg: '10px 14px',
+                          xl: '10px 14px 10px 10px',
+                        },
+                      },
+                      '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
+                        fontSize: { xs: '12px', sm: '14px', md: '16px' },
+                        fontStyle: 'normal',
+                        fontWeight: 400,
+                        lineHeight: '158%',
+                        color: '#2d2d2d',
+                        opacity: 1,
+                      },
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'transparent',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'transparent',
+                      },
+
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'transparent',
+                        // borderWidth: '1px !important',
+                      },
+                      '& .MuiButtonBase-root': {
+                        '&:hover': {
+                          // backgroundColor: (theme) => theme.palette.custom.wishlistColor,
+                        },
+                        '& svg': {
+                          color: (theme) => theme.palette.custom.main,
+                          fontSize: '22px',
+                        },
+                      },
+                    },
+                  },
+                }}
+                searchField={{ productListRenderer }}
+              // fab={{
+              //   sx: {
+              //     backgroundColor: (theme) => theme.palette.custom.border,
+              //     borderRadius: '50%',
+              //     width: { xs: '35px', md: '36px' },
+              //     height: { xs: '30px', md: '35px' },
+              //     display: 'inline-flex',
+              //     alignItems: 'center',
+              //     justifyContent: 'center',
+              //     color: (theme) => theme.palette.custom.main,
+              //     border: (theme) => `1px solid ${theme.palette.custom.border}`,
+              //     transition: 'all 0.4s ease-in-out',
+              //     //  '& .'
+              //     '&:focus': {
+              //       backgroundColor: (theme) => theme.palette.custom.border,
+              //     },
+              //     '&:hover': {
+              //       backgroundColor: 'transparent',
+              //     },
+
+              //     '& .MuiBadge-root': {
+              //       left: '6px',
+              //       top: '5px',
+              //     },
+              //     '&  svg': {
+              //       fontSize: { lg: '24px' },
+              //       stroke: 'unset !important',
+              //     },
+              //   },
+              // }}
+              />
+            </DesktopNavActions>
 
             <DesktopNavActions
               sx={{
@@ -194,7 +284,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                       backgroundColor: 'transparent',
                     },
 
-                    ['& .MuiBadge-root']: {
+                    '& .MuiBadge-root': {
                       left: '6px',
                       top: '5px',
                     },
@@ -259,7 +349,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                   '&:hover': {
                     backgroundColor: 'transparent',
                   },
-                  ['& .MuiBadge-root']: {
+                  '& .MuiBadge-root': {
                     left: '5px',
                     top: '3px',
                     '& .MuiBadge-dot': {
@@ -289,7 +379,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                   '&:hover': {
                     backgroundColor: 'transparent',
                   },
-                  ['& .MuiBadge-root']: {
+                  '& .MuiBadge-root': {
                     left: '6px',
                     top: '2px',
 

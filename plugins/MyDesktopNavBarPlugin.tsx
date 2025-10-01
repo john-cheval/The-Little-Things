@@ -28,7 +28,7 @@ export function DesktopNavBar(props: PluginProps<MenuTabsProps>) {
       display='grid'
       sx={[
         {
-          width: '100%',
+          // width: '100%',
           alignItems: 'center',
           position: 'relative',
           pointerEvents: 'all',

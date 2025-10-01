@@ -30,6 +30,14 @@ type ThemePaletteOptions = PaletteOptions & {
     borderInput?: string
     wishlistColor?: string
     borderSecondary?: string
+
+    // TLT Colors
+    tltMain: string
+    tltSecondary: string
+    tltTertiary: string
+    tltDark: string
+    tltContrastText: string
+    textDarkAlter: string
   }
 }
 
@@ -46,6 +54,14 @@ const lightPalette: ThemePaletteOptions = {
     borderInput: '#D5B1B8',
     wishlistColor: '#F1A8B6',
     borderSecondary: '#d4d4d4',
+
+    // TLT Colors
+    tltMain: '#7B1316',
+    tltSecondary: '#D90F13',
+    tltTertiary: '#767676',
+    tltDark: '#313131',
+    textDarkAlter: '#2a2a2a',
+    tltContrastText: '#fff',
   },
   primary: {
     main: '#441E14',
@@ -90,6 +106,14 @@ const darkPalette: ThemePaletteOptions = {
     borderInput: '#D5B1B8',
     wishlistColor: '#F1A8B6',
     borderSecondary: '#d4d4d4',
+
+    // TLT Colors
+    tltMain: '#7B1316',
+    tltSecondary: '#D90F13',
+    tltTertiary: '#767676',
+    tltDark: '#313131',
+    textDarkAlter: '#2a2a2a',
+    tltContrastText: '#fff',
   },
   primary: {
     main: '#441E14',
