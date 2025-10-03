@@ -1,5 +1,102 @@
+diff --git a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx b/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx
+index 1368a0c..dafb5c7 100644
+--- a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx
++++ b/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx
+@@ -8,10 +8,13 @@ import type {
+   InputBaseProps,
+   OutlinedInputProps,
+ } from '@mui/material'
+-import { FormControl, IconButton, OutlinedInput, useForkRef } from '@mui/material'
++import { Box, Button, FormControl, IconButton, OutlinedInput, useForkRef } from '@mui/material'
+ import { useRouter } from 'next/router'
+ import { useEffect, useRef } from 'react'
+ import { useSearchPageAndParam } from './useSearchPageAndParam'
++import { AiOutlineSearch } from "react-icons/ai";
++import { IoIosMic } from "react-icons/io";
++import { IoMdBarcode } from "react-icons/io";
+ 
+ export function useProductFiltersProSearchInput<
+   P extends InputBaseProps & { buttonProps?: ButtonBaseProps },
+@@ -42,7 +45,7 @@ export function useProductFiltersProSearchInput<
+   const result: P = {
+     ...props,
+     inputRef: ref,
+-    placeholder: t`Search all products...`,
++    placeholder: t`Search for products`,
+     name: 'search',
+     type: 'text',
+     defaultValue: searchParam,
+@@ -97,21 +100,64 @@ export function useProductFiltersProSearchInput<
+ 
+ export type ProductFiltersProSearchInputProps = OutlinedInputProps & {
+   formControl?: FormControlProps
++  isTopNav?: boolean
+   buttonProps?: IconButtonProps
+ }
+ 
+ export function ProductFiltersProSearchOutlinedInput(props: ProductFiltersProSearchInputProps) {
+-  const { buttonProps, formControl, size, ...rest } = useProductFiltersProSearchInput(props)
++  const { buttonProps, formControl, size, isTopNav = false, ...rest } = useProductFiltersProSearchInput(props)
+ 
+   return (
+     <FormControl variant='outlined' size={size} {...formControl}>
+       <OutlinedInput
+         color='primary'
+         size={size}
++        sx={{
++          '& svg.search': {
++            color: '#000',
++            fontSize: { xs: '35px' }
++          }
++        }}
++        startAdornment={
++          <AiOutlineSearch className='search' />
++        }
+         endAdornment={
+-          <IconButton color='inherit' size='small' {...buttonProps}>
+-            <IconSvg src={iconClose} size='large' />
+-          </IconButton>
++          isTopNav ? (
++            <Box component='div' sx={{
++              display: 'flex',
++              alignItems: 'center',
++              marginTop: '5px',
++              '& button': {
++                paddingTop: '0',
++                minWidth: 0,
++                '&:hover': {
++                  backgroundColor: 'transparent'
++                },
++                '& svg': {
++                  color: '#000',
++
++                }
++              }
++
++            }}>
++              <Button sx={{
++                borderRight: '1px solid #000',
++                borderRadius: 0,
++                paddingBlock: ''
++              }}>
++                <IoIosMic />
++              </Button>
++              <Button>
++                <IoMdBarcode />
++              </Button>
++            </Box>
++          ) : (
++            <IconButton color='inherit' size='small' {...buttonProps}>
++              <IconSvg src={iconClose} size='large' />
++            </IconButton>
++          )
++
++
+         }
+         {...rest}
+       />
 diff --git a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/SearchField.tsx b/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/SearchField.tsx
-index e2e243d..08d31bf 100644
+index e2e243d..1b28fd2 100644
 --- a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/SearchField.tsx
 +++ b/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/SearchField.tsx
 @@ -1,4 +1,4 @@
@@ -8,21 +105,46 @@ index e2e243d..08d31bf 100644
  import type { FabProps } from '@mui/material'
  import { Fab } from '@mui/material'
  import dynamic from 'next/dynamic'
-@@ -58,7 +58,16 @@ export function SearchField(props: SearchFieldProps) {
+@@ -9,6 +9,7 @@ import { useSearchPageAndParam } from './useSearchPageAndParam'
+ export type SearchFieldProps = ProductFiltersProSearchInputProps & {
+   fab?: FabProps
+   visible?: boolean
++  isNav?: boolean
+   searchField?: Record<string, unknown>
+ }
+ 
+@@ -17,7 +18,7 @@ const ProductFiltersProSearchInputLazy = dynamic(
+ )
+ 
+ export function SearchField(props: SearchFieldProps) {
+-  const { fab, formControl, visible: incomingVisible } = props
++  const { fab, formControl, visible: incomingVisible, isNav = false } = props
+ 
+   const [searchPage] = useSearchPageAndParam()
+   const [expanded, setExpanded] = useState(searchPage)
+@@ -35,6 +36,7 @@ export function SearchField(props: SearchFieldProps) {
+           formControl={formControl}
+           inputRef={(element: HTMLInputElement) => element?.focus()}
+           // autoFocus
++          isTopNav={isNav}
+           buttonProps={{
+             onClick: () => {
+               setExpanded(false)
+@@ -58,7 +60,16 @@ export function SearchField(props: SearchFieldProps) {
            ...(Array.isArray(fab?.sx) ? fab.sx : [fab?.sx]),
          ]}
        >
 -        <IconSvg src={iconSearch} size='large' />
 +        <DesktopHeaderBadge
-+                // badgeContent={session?.token ? 1 : 0}
-+                // color={session?.valid ? 'primary' : 'error'}
-+                // variant='dot'
-+                // overlap='circular'
-+                // {...BadgeProps}
-+              >
++        // badgeContent={session?.token ? 1 : 0}
++        // color={session?.valid ? 'primary' : 'error'}
++        // variant='dot'
++        // overlap='circular'
++        // {...BadgeProps}
++        >
 +
-+        <IconSvg src={iconSearch} size='large' sx={{width:"35px"}} />
-+              </DesktopHeaderBadge>   
++          <IconSvg src={iconSearch} size='large' sx={{ width: "35px" }} />
++        </DesktopHeaderBadge>
        </Fab>
      </>
    )

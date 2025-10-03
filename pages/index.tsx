@@ -7,25 +7,26 @@ import { PageMeta } from '@graphcommerce/next-ui'
 import type { LayoutNavigationProps } from '../components'
 import { LayoutDocument, LayoutNavigation } from '../components'
 // import { HomePage } from '../components/Home'
-// import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
+import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
-// import { decodeHtmlEntities } from '../utils/htmlUtils'
+import { HomePage } from '../components/Home'
+import { decodeHtmlEntities } from '../utils/htmlUtils'
+// 
+export type CmsBlocksProps = { layoutData?: any; cmsBlocks?: any; }
 
-export type CmsBlocksProps = { cmsBlocks?: any; layoutData?: any; menu?: any }
-
-export type StoryProductsProps = {
-  justInProducts?: any[]
-  statementCakesProducts: any[]
-}
+// export type StoryProductsProps = {
+//   justInProducts?: any[]
+//   statementCakesProducts: any[]
+// }
 
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps>
 
-export type CmsPageRouteProps = LayoutNavigationProps & CmsBlocksProps & StoryProductsProps
+export type CmsPageRouteProps = LayoutNavigationProps & CmsBlocksProps
+function CmsPage(props: CmsPageRouteProps) {
+  const { layoutData, cmsBlocks } = props
 
-function CmsPage(/*  props: CmsPageRouteProps*/) {
-  // const { cmsBlocks, justInProducts, menu, statementCakesProducts } = props
 
-  // const homesHeroData = cmsBlocks.find((block) => block.identifier === 'slider')
+  const homesHeroData = cmsBlocks.find((block) => block.identifier === 'home-section-one')
   // const justInHome = cmsBlocks.find((block) => block.identifier === 'just-in-home')
   // const homeStoryData = cmsBlocks.find((block) => block.identifier === 'home-story-title')
   // const homeOccasionsData = cmsBlocks.find((block) => block.identifier === 'home-occasion-title')
@@ -35,7 +36,7 @@ function CmsPage(/*  props: CmsPageRouteProps*/) {
   // const homeCeleberationsData = cmsBlocks.find((block) => block.identifier === 'home-celeberation')
   // const homeImaginationData = cmsBlocks.find((block) => block.identifier === 'home-imagination')
 
-  // const decodedHomeHero = decodeHtmlEntities(homesHeroData?.content)
+  const decodedHomeHero = decodeHtmlEntities(homesHeroData?.content)
   // const decodedHomeHeroJustIn = decodeHtmlEntities(justInHome?.content)
   // const decodedHomeStory = decodeHtmlEntities(homeStoryData?.content)
   // const decodedHomeOccasions = decodeHtmlEntities(homeOccasionsData?.content)
@@ -44,6 +45,9 @@ function CmsPage(/*  props: CmsPageRouteProps*/) {
   // const decodedHomeCta = decodeHtmlEntities(homeCtaData?.content)
   // const decodedHomeCeleberations = decodeHtmlEntities(homeCeleberationsData?.content)
   // const decodedHomeImagination = decodeHtmlEntities(homeImaginationData?.content)
+
+  const filteredCategory = layoutData?.menu?.items?.[0]?.children
+    ?.filter((item) => item?.include_in_menu === 0);
 
   return (
     <>
@@ -68,7 +72,7 @@ function CmsPage(/*  props: CmsPageRouteProps*/) {
         homeImagination={decodedHomeImagination}
         homeHeroData={decodedHomeHero}
       /> */}
-      <p>HomePage</p>
+      <HomePage categoryData={filteredCategory} sectionOneContent={decodedHomeHero} />
     </>
   )
 }
@@ -93,22 +97,14 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
   //   },
   // })
 
-  // const cmsPageBlocksQuery = staticClient.query({
-  //   query: cmsMultipleBlocksDocument,
-  //   variables: {
-  //     blockIdentifiers: [
-  //       'slider',
-  //       'just-in-home',
-  //       'home-story-title',
-  //       'home-occasion-title',
-  //       'home-mini-bytes',
-  //       'home-collections',
-  //       'home-cta',
-  //       'home-imagination',
-  //       'home-celeberation',
-  //     ],
-  //   },
-  // })
+  const cmsPageBlocksQuery = staticClient.query({
+    query: cmsMultipleBlocksDocument,
+    variables: {
+      blockIdentifiers: [
+        'home-section-one',
+      ],
+    },
+  })
 
   const layout = staticClient.query({
     query: LayoutDocument,
@@ -139,7 +135,7 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
 
   // const result = await cmsPageQuery
   // const cmsPage = result.data.cmsPage
-  // const cmsBlocks = (await cmsPageBlocksQuery)?.data.cmsBlocks?.items
+  const cmsBlocks = (await cmsPageBlocksQuery)?.data.cmsBlocks?.items
   // const justInProducts = (await JustInQuery).data?.products?.items
   // const statementCakesProducts = (await statementCakesQuery).data.products?.items
   const layoutData = (await layout)?.data
@@ -147,7 +143,7 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
   return {
     props: {
       // cmsPage: cmsPage,
-      // cmsBlocks,
+      cmsBlocks,
       // justInProducts,
       // statementCakesProducts,
       ...(await layout).data,

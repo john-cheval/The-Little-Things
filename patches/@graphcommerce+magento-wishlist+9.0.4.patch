@@ -78,7 +78,7 @@ index ad0f044..49b33bd 100644
        {import.meta.graphCommerce.wishlistShowFeedbackMessage && (
          <MessageSnackbar
 diff --git a/node_modules/@graphcommerce/magento-wishlist/components/WishlistFab/WishlistFab.tsx b/node_modules/@graphcommerce/magento-wishlist/components/WishlistFab/WishlistFab.tsx
-index 4c94637..3741f15 100644
+index 4c94637..2544aa0 100644
 --- a/node_modules/@graphcommerce/magento-wishlist/components/WishlistFab/WishlistFab.tsx
 +++ b/node_modules/@graphcommerce/magento-wishlist/components/WishlistFab/WishlistFab.tsx
 @@ -6,10 +6,11 @@ import React from 'react'
@@ -90,7 +90,7 @@ index 4c94637..3741f15 100644
    FabProps?: Omit<FabPropsType, 'children'>
    BadgeProps?: BadgeProps
    sx?: SxProps<Theme>
-+  length?:number
++  length?: number
    activeWishlist: boolean
  }
  
@@ -99,7 +99,7 @@ index 4c94637..3741f15 100644
  
  function WishlistFabContent(props: WishlistFabContentProps) {
 -  const { icon, FabProps, BadgeProps, sx, activeWishlist } = props
-+  const { icon, FabProps, BadgeProps, sx, activeWishlist ,length} = props
++  const { icon, FabProps, BadgeProps, sx, activeWishlist, length } = props
  
    const wishlistIcon = icon ?? <IconSvg src={iconHeart} size='large' />
  
@@ -109,39 +109,39 @@ index 4c94637..3741f15 100644
          {activeWishlist ? (
 -          <DesktopHeaderBadge color='primary' variant='dot' overlap='circular' {...BadgeProps}>
 +          <DesktopHeaderBadge sx={{
-+    '& .MuiBadge-badge': { 
-+      backgroundColor: '#FF0000',
-+      color:'#fff',
-+      display:'flex',
-+      alignItems:'center',
-+     justifyContent:'center',
-+     textAlign:'center',
-+     fontSize:'9px',
-+     minWidth:'12px',
-+     height:'14px',
-+      right:'3px',
-+     top:'4px'
-+    },
-+  }}  badgeContent={length} overlap='circular' {...BadgeProps}>
++            '& .MuiBadge-badge': {
++              backgroundColor: '#FF0000',
++              color: '#fff',
++              display: 'flex',
++              alignItems: 'center',
++              justifyContent: 'center',
++              textAlign: 'center',
++              fontSize: '9px',
++              minWidth: '12px',
++              height: '14px',
++              right: '3px',
++              top: '4px'
++            },
++          }} badgeContent={length} overlap='circular' {...BadgeProps}>
              {wishlistIcon}
            </DesktopHeaderBadge>
          ) : (
 -          wishlistIcon
 +          <DesktopHeaderBadge sx={{
-+    '& .MuiBadge-badge': { 
-+      backgroundColor: '#FF0000',
-+      color:'#fff',
-+      display:'flex',
-+      alignItems:'center',
-+     justifyContent:'center',
-+     textAlign:'center',
-+     fontSize:'9px',
-+     minWidth:'12px',
-+     height:'14px',
-+      right:'3px',
-+     top:'4px'
-+    },
-+  }}  badgeContent={length} overlap='circular' {...BadgeProps}>
++            '& .MuiBadge-badge': {
++              backgroundColor: '#FF0000',
++              color: '#fff',
++              display: 'flex',
++              alignItems: 'center',
++              justifyContent: 'center',
++              textAlign: 'center',
++              fontSize: '9px',
++              minWidth: '12px',
++              height: '14px',
++              right: '3px',
++              top: '4px'
++            },
++          }} badgeContent={length} overlap='circular' {...BadgeProps}>
 +            {wishlistIcon}
 +          </DesktopHeaderBadge>
          )}

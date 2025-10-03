@@ -11,7 +11,7 @@ import {
   IconSvg,
   LayoutDefault,
 } from '@graphcommerce/next-ui'
-import { Box } from '@mui/material'
+import { Box, Link } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { decodeHtmlEntities } from '../../utils/htmlUtils'
 import { productListRenderer } from '../ProductListItems/productListRenderer'
@@ -20,6 +20,11 @@ import type { LayoutQuery } from './Layout.gql'
 import { Logo } from './Logo'
 import MobileMenu from './MobileMenu/MobileMenu'
 import { InfiniteMarquee } from '../TLTComponents/Shared/InfiniteMarquee'
+import { CurrecySelctor } from '../TLTComponents/components/CurrenySelector'
+import { LangauageSelctor } from '../TLTComponents/components/LanguageSelector'
+import popmartImage from '../Assets/popmart.png'
+import Image from 'next/image'
+// import { Image } from '@graphcommerce/image'
 
 export type LayoutNavigationProps = LayoutQuery &
   Omit<LayoutDefaultProps, 'footer' | 'header' | 'cartFab' | 'menuFab'>
@@ -31,6 +36,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
   const menuItemsCmsData = props?.menu?.items?.[0]?.children
   const decodedFooterData = decodeHtmlEntities(footerCmsData?.content)
   const [scroll, setScroll] = useState<boolean>(false)
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,361 +59,243 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
           top: '0',
           left: '0',
           width: '100%',
-          '& .LayoutDefault-header': {
-            height: { xs: '65px', md: '80px', lg: '90px' },
-            paddingInline: { xs: '18px', md: '25px', lg: '55px' },
-            boxShadow: { xs: '0px -9px 24px #00000026', md: 'none' },
 
-            ...(scroll ? { boxShadow: '0px -9px 24px #00000026' } : {}),
+          '& .LayoutDefault-header': {
+            height: { xs: '65px', md: '80px', lg: 'fit-content' },
+            paddingInline: { xs: '18px', md: '25px', lg: '55px' },
+            // boxShadow: { xs: '0px -9px 24px #00000026', md: 'none' },
+            display: { xs: 'block' },
+            boxShadow: '0 4px 6.8px 0 rgba(0, 1, 6, 0.07)',
+
+            ...(scroll ? { boxShadow: '0 4px 6.8px 0 rgba(0, 1, 6, 0.07)' } : {}),
           },
         }}
         {...uiProps}
         header={
-          <>
-            <Logo isHome />
+          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              width: '100%',
+              paddingBlock: { xs: '25px', lg: scroll ? '10px' : '23px' },
+              borderBottom: theme => `1px solid ${theme.palette.custom.tltBorder1}`,
+              transition: 'all 0.4s ease-in-out',
+            }}>
+              <Logo isHome />
+              <DesktopNavActions sx={{
+                width: '100%',
+                alignItems: 'center',
+                marginInline: 'auto',
+                display: 'flex',
+                justifyContent: 'center',
 
-            {/* <DesktopNavBar>
-              {menu?.items?.[0]?.children
-                ?.filter((item) => item?.include_in_menu === 1)
-                ?.map((menus) => (
-                  <DesktopNavItem
-                    sx={{
-                      transition: 'all 0.4s ease',
-                      borderRadius: '999px',
-                      fontSize: '16px',
-                      border: '1px solid transparent',
-                      fontWeight: 300,
-                      lineHeight: 'normal !important',
-                      '&:hover': {
-                        border: '1px solid #F6DBE0',
-                      },
-                    }}
-                    key={menus?.uid}
-                    href={`/${menus?.url_path}`}
-                  >
-                    {menus?.name}
-                  </DesktopNavItem>
-                ))}
-              <DesktopNavItem
-                sx={{
-                  transition: 'all 0.4s ease',
-                  borderRadius: '999px',
-                  fontSize: '16px',
-                  border: '1px solid transparent',
-                  fontWeight: 300,
-                  lineHeight: 'normal !important',
-                  '&:hover': {
-                    border: '1px solid #F6DBE0',
-                  },
-                }}
-                href='/events'
-              >
-                Corporate & Events
-              </DesktopNavItem>
-              <DesktopNavItem
-                sx={{
-                  transition: 'all 0.4s ease',
-                  borderRadius: '999px',
-                  fontSize: '16px',
-                  border: '1px solid transparent',
-                  fontWeight: 300,
-                  lineHeight: 'normal !important',
-                  '&:hover': {
-                    border: '1px solid #F6DBE0',
-                  },
-                }}
-                href='/courses'
-              >
-                Baking Classes
-              </DesktopNavItem>
-            </DesktopNavBar> */}
-
-            <DesktopNavActions>
-              <SearchField
-                visible
-                isNav
-                formControl={{
-                  sx: {
-                    width: { xs: 'fit-content', sm: '300px', lg: '250px', xl: '350px' },
-                    color: (theme: any) => theme.palette.custom.main,
-                    '& .MuiOutlinedInput-root': {
-                      color: (theme) => theme.palette.custom.main,
-                      fontSize: { xs: '12px', sm: '14px', md: '16px' },
-                      borderRadius: '3px',
-                      background: 'rgba(239, 242, 245, 0.86)',
-                      '& input': {
-                        padding: {
-                          xs: '8px 12px',
-                          sm: '10px 12px',
-                          lg: '10px 14px',
-                          xl: '10px 14px 10px 10px',
-                        },
-                      },
-                      '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
+              }}>
+                <SearchField
+                  visible
+                  isNav
+                  formControl={{
+                    sx: {
+                      width: { xs: 'fit-content', sm: '300px', lg: '250px', xl: '500px' },
+                      color: (theme: any) => theme.palette.custom.textDarkAlter,
+                      '& .MuiOutlinedInput-root': {
+                        color: (theme: any) => theme.palette.custom.textDarkAlter,
                         fontSize: { xs: '12px', sm: '14px', md: '16px' },
-                        fontStyle: 'normal',
-                        fontWeight: 400,
-                        lineHeight: '158%',
-                        color: '#2d2d2d',
-                        opacity: 1,
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'transparent',
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'transparent',
-                      },
+                        borderRadius: '3px',
+                        background: 'rgba(239, 242, 245, 0.86)',
+                        paddingRight: '0px',
+                        '& input': {
+                          padding: {
+                            xs: '8px 12px',
+                            sm: '10px 12px',
+                            lg: '10px 14px',
+                            xl: '10px 0px 10px 10px',
+                          },
+                        },
+                        '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
+                          fontSize: { xs: '12px', sm: '14px', md: '16px' },
+                          fontStyle: 'normal',
+                          fontWeight: 400,
+                          lineHeight: '158%',
+                          color: '#2d2d2d',
+                          opacity: 1,
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'transparent',
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'transparent',
+                        },
 
-                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'transparent',
-                        // borderWidth: '1px !important',
-                      },
-                      '& .MuiButtonBase-root': {
-                        '&:hover': {
-                          // backgroundColor: (theme) => theme.palette.custom.wishlistColor,
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: 'transparent',
                         },
-                        '& svg': {
-                          color: (theme) => theme.palette.custom.main,
-                          fontSize: '22px',
-                        },
+
                       },
                     },
+                  }}
+                  searchField={{ productListRenderer }}
+
+                />
+              </DesktopNavActions>
+
+              <DesktopNavActions
+                sx={{
+                  '& .MuiformControl': {
+                    border: 'none',
                   },
                 }}
-                searchField={{ productListRenderer }}
-              // fab={{
-              //   sx: {
-              //     backgroundColor: (theme) => theme.palette.custom.border,
-              //     borderRadius: '50%',
-              //     width: { xs: '35px', md: '36px' },
-              //     height: { xs: '30px', md: '35px' },
-              //     display: 'inline-flex',
-              //     alignItems: 'center',
-              //     justifyContent: 'center',
-              //     color: (theme) => theme.palette.custom.main,
-              //     border: (theme) => `1px solid ${theme.palette.custom.border}`,
-              //     transition: 'all 0.4s ease-in-out',
-              //     //  '& .'
-              //     '&:focus': {
-              //       backgroundColor: (theme) => theme.palette.custom.border,
-              //     },
-              //     '&:hover': {
-              //       backgroundColor: 'transparent',
-              //     },
+              >
 
-              //     '& .MuiBadge-root': {
-              //       left: '6px',
-              //       top: '5px',
-              //     },
-              //     '&  svg': {
-              //       fontSize: { lg: '24px' },
-              //       stroke: 'unset !important',
-              //     },
-              //   },
-              // }}
-              />
-            </DesktopNavActions>
-
-            <DesktopNavActions
-              sx={{
-                '& .MuiformControl': {
-                  border: 'none',
-                },
-              }}
-            >
-              <SearchField
-                formControl={{
-                  sx: {
-                    width: { xs: 'fit-content', sm: '300px', lg: '250px', xl: '350px' },
-                    color: (theme: any) => theme.palette.custom.main,
-                    '& .MuiOutlinedInput-root': {
-                      color: (theme) => theme.palette.custom.main,
-                      fontSize: { xs: '12px', sm: '14px', md: '16px' },
-                      borderRadius: '4px',
-                      '& input': {
-                        padding: {
-                          xs: '8px 12px',
-                          sm: '10px 12px',
-                          lg: '12px 14px',
-                          xl: '15px 14px',
-                        },
-                      },
-                      '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
-                        fontSize: { xs: '12px', sm: '14px', md: '16px' },
-                        fontStyle: 'normal',
-                        fontWeight: 400,
-                        lineHeight: '158%',
-                        color: (theme: any) => theme.palette.custom.main,
-                        opacity: 1,
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: (theme: any) => theme.palette.custom.borderInput,
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: (theme: any) => theme.palette.custom.borderInput,
-                      },
-
-                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: (theme: any) => theme.palette.custom.borderInput,
-                        borderWidth: '1px !important',
-                      },
-                      '& .MuiButtonBase-root': {
-                        '&:hover': {
-                          // backgroundColor: (theme) => theme.palette.custom.wishlistColor,
-                        },
-                        '& svg': {
-                          color: (theme) => theme.palette.custom.main,
-                          fontSize: '22px',
-                        },
-                      },
-                    },
-                  },
-                }}
-                searchField={{ productListRenderer }}
-                fab={{
-                  sx: {
-                    backgroundColor: (theme) => theme.palette.custom.border,
-                    borderRadius: '50%',
-                    width: { xs: '35px', md: '36px' },
-                    height: { xs: '30px', md: '35px' },
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                <CurrecySelctor />
+                <LangauageSelctor />
+                <WishlistFab
+                  sx={{
+                    width: { xs: '36px' },
+                    height: { xs: '30px', md: '36px' },
                     color: (theme) => theme.palette.custom.main,
-                    border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                    transition: 'all 0.4s ease-in-out',
-                    //  '& .'
-                    '&:focus': {
-                      backgroundColor: (theme) => theme.palette.custom.border,
+                    '&  svg': {
+                      fontSize: { xs: '20px' },
+                      strokeWidth: '1.5',
+                    },
+                    ' &:focus ': {
+                      backgroundColor: 'transparent',
                     },
                     '&:hover': {
                       backgroundColor: 'transparent',
                     },
+                  }}
+                  icon={
+                    <IconSvg
+                      src={iconHeart}
+                      size='medium'
+                      sx={{ stroke: (theme) => theme.palette.custom.main }}
+                    />
+                  }
+                />
 
-                    '& .MuiBadge-root': {
-                      left: '6px',
-                      top: '5px',
+                <CartFab
+                  sx={{
+                    display: { xs: 'none', lg: 'inline-flex' },
+                    color: (theme) => theme.palette.custom.textDarkAlter2,
+                    width: { md: 'fit-content' },
+
+                    transition: 'all 0.4s ease-in-out',
+                    '&:focus': {
+                      backgroundColor: 'transparent',
                     },
-                    '&  svg': {
-                      fontSize: { lg: '24px' },
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                    '& .MuiBadge-root': {
+                      left: '5px',
+                      top: '3px',
+
+                      '& .MuiBadge-badge': {
+                        top: '5px',
+                        right: '11px',
+                      },
+                    },
+                    '& svg': {
+                      fontSize: { md: '30px' },
                       stroke: 'unset !important',
                     },
-                  },
-                }}
-              />
-
-              <WishlistFab
-                sx={{
-                  width: { xs: '36px' },
-                  height: { xs: '30px', md: '36px' },
-                  borderRadius: '50%',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: (theme) => theme.palette.custom.main,
-                  backgroundColor: (theme) => theme.palette.custom.border,
-                  border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                  '&  svg': {
-                    fontSize: { xs: '19px' },
-                    strokeWidth: '1.5',
-                  },
-                  ' &:focus ': {
-                    backgroundColor: (theme) => theme.palette.custom.border,
-                  },
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                  },
-                }}
-                icon={
-                  <IconSvg
-                    src={iconHeart}
-                    size='medium'
-                    sx={{ stroke: (theme) => theme.palette.custom.main }}
-                  />
-                }
-              />
-              <CustomerFab
-                sx={{
-                  width: { md: '36px' },
-                  height: { md: '35px' },
-                  borderRadius: '50%',
-                  color: (theme) => theme.palette.custom.main,
-                  display: { xs: 'none', lg: 'inline-flex' },
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  backgroundColor: (theme) => theme.palette.custom.border,
-                  border: (theme) => `1px solid ${theme.palette.custom.border}`,
-
-                  '&  svg': {
-                    // width: '1em',
-                    fontSize: { md: '22px' },
-                    stroke: 'unset !important',
-                  },
-                  '&:focus': {
-                    backgroundColor: (theme) => theme.palette.custom.border,
-                  },
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                  },
-                  '& .MuiBadge-root': {
-                    left: '5px',
-                    top: '3px',
-                    '& .MuiBadge-dot': {
-                      display: 'none',
+                    '& .MuiButtonBase-root': {
+                      height: 'unset !important',
+                      width: 'unset !important',
+                      boxShadow: 'none',
+                      backgroundColor: 'transparent !important',
                     },
-                  },
-                }}
-                guestHref='/account/signin'
-                authHref='/account'
-              />
+                    '& .mui-style-1jnnhmg-MuiButtonBase-root-MuiFab-root': {
+                      minHeight: 'unset',
+                      boxShadow: 'none',
+                      backgroundcolor: 'transparent',
+                      transition: 'unset',
+                    },
+                  }}
+                />
+                <CustomerFab
+                  sx={{
+                    width: { md: '36px' },
+                    height: { md: '35px' },
+                    display: { xs: 'none', lg: 'inline-flex' },
+                    color: (theme) => theme.palette.custom.textDarkAlter2,
 
-              <CartFab
-                sx={{
-                  display: { xs: 'none', lg: 'inline-flex' },
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: (theme) => theme.palette.custom.main,
-                  width: { md: '38px' },
-                  height: { md: '37px' },
-                  borderRadius: '50%',
-                  backgroundColor: (theme) => theme.palette.custom.border,
-                  border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                  transition: 'all 0.4s ease-in-out',
-                  '&:focus': {
-                    backgroundColor: (theme) => theme.palette.custom.border,
-                  },
-                  '&:hover': {
-                    backgroundColor: 'transparent',
-                  },
-                  '& .MuiBadge-root': {
-                    left: '6px',
-                    top: '2px',
-
-                    '& .MuiBadge-badge': {
+                    '&  svg': {
+                      // width: '1em',
+                      fontSize: { md: '25px' },
+                      stroke: 'unset !important',
+                    },
+                    '&:focus': {
+                      backgroundColor: 'transparent',
+                    },
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                    },
+                    '& .MuiBadge-root': {
+                      left: '0px',
                       top: '3px',
-                      right: '11px',
+                      '& .MuiBadge-dot': {
+                        display: 'none',
+                      },
                     },
+                  }}
+                  guestHref='/account/signin'
+                  authHref='/account'
+                />
+
+                <Link href='#' sx={{
+                  // overflow: 'hidden',
+                  transition: 'transform 0.4s ease-in-out',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
                   },
-                  '& svg': {
-                    fontSize: { md: '25px' },
-                    stroke: 'unset !important',
+                  '& img': {
+                    borderRadius: '3px',
+                    height: 'auto',
+                    width: { xs: '120px' },
+                    objectFit: 'cover',
                   },
-                  '& .MuiButtonBase-root': {
-                    height: 'unset !important',
-                    width: 'unset !important',
-                    boxShadow: 'none',
-                    backgroundColor: 'transparent !important',
-                  },
-                  '& .mui-style-1jnnhmg-MuiButtonBase-root-MuiFab-root': {
-                    minHeight: 'unset',
-                    boxShadow: 'none',
-                    backgroundcolor: 'transparent',
-                    transition: 'unset',
-                  },
-                }}
-              />
-            </DesktopNavActions>
-          </>
+
+                }}>
+                  <Image src={popmartImage} alt='popmartImage' /></Link>
+              </DesktopNavActions>
+            </Box>
+            <Box sx={{
+              paddingBlock: { xs: '20px', lg: scroll ? '15px' : '20px' },
+              '& span': {
+                justifyContent: 'space-between',
+              },
+              '& a': {
+                fontSize: { xs: '16px', md: '18px' },
+                fontWeight: 600,
+                lineHeight: '120%',
+                textTransform: 'uppercase',
+                color: theme => theme.palette.custom.tltMain,
+                transition: 'all 0.4s ease',
+                padding: '0 !important',
+                '&:hover': {
+                  color: theme => theme.palette.custom.tltSecondary,
+                },
+
+              },
+            }}>
+
+              <DesktopNavBar>
+                {menu?.items?.[0]?.children
+                  ?.filter((item) => item?.include_in_menu === 1)
+                  ?.map((menus) => (
+                    <DesktopNavItem
+                      key={menus?.uid}
+                      href={`/${menus?.url_path}`}
+                    >
+                      {menus?.name}
+                    </DesktopNavItem>
+                  ))}
+
+              </DesktopNavBar>
+            </Box>
+          </Box>
         }
         footer={<Footer footerContent={decodedFooterData} />}
       >

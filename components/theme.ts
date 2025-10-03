@@ -38,13 +38,15 @@ type ThemePaletteOptions = PaletteOptions & {
     tltDark: string
     tltContrastText: string
     textDarkAlter: string
+    textDarkAlter2: string
+    textPopmart: string
+    tltBorder1: string
   }
 }
 
 const lightPalette: ThemePaletteOptions = {
   mode: 'light',
   custom: {
-    main: '#441E14',
     heading: '#9B7C38',
     secondary: '#6F6F6F',
     tertiary: '#969696',
@@ -56,12 +58,16 @@ const lightPalette: ThemePaletteOptions = {
     borderSecondary: '#d4d4d4',
 
     // TLT Colors
+    main: '#441E14',
     tltMain: '#7B1316',
     tltSecondary: '#D90F13',
     tltTertiary: '#767676',
     tltDark: '#313131',
     textDarkAlter: '#2a2a2a',
+    textDarkAlter2: '#2d2d2d',
     tltContrastText: '#fff',
+    textPopmart: '#DB2F24',
+    tltBorder1: '#DEE5EF',
   },
   primary: {
     main: '#441E14',
@@ -113,7 +119,10 @@ const darkPalette: ThemePaletteOptions = {
     tltTertiary: '#767676',
     tltDark: '#313131',
     textDarkAlter: '#2a2a2a',
+    textDarkAlter2: '#2d2d2d',
     tltContrastText: '#fff',
+    textPopmart: '#DB2F24',
+    tltBorder1: '#DEE5EF',
   },
   primary: {
     main: '#441E14',
@@ -549,6 +558,17 @@ declare module '@mui/material/styles' {
       borderInput?: string
       wishlistColor?: string
       borderSecondary?: string
+
+      // TLT Colors
+      tltMain: string
+      tltSecondary: string
+      tltTertiary: string
+      tltDark: string
+      tltContrastText: string
+      textDarkAlter: string
+      textDarkAlter2: string
+      textPopmart: string
+      tltBorder1: string
     }
   }
 
@@ -564,6 +584,17 @@ declare module '@mui/material/styles' {
       borderInput?: string
       wishlistColor?: string
       borderSecondary?: string
+
+      // TLT Colors
+      tltMain: string
+      tltSecondary: string
+      tltTertiary: string
+      tltDark: string
+      tltContrastText: string
+      textDarkAlter: string
+      textDarkAlter2: string
+      textPopmart: string
+      tltBorder1: string
     }
   }
 }

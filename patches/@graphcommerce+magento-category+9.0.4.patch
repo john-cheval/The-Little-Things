@@ -18,3 +18,13 @@ index 0d018d1..92de014 100644
              ...NavigationItem
            }
          }
+diff --git a/node_modules/@graphcommerce/magento-category/queries/NavigationItem.graphql b/node_modules/@graphcommerce/magento-category/queries/NavigationItem.graphql
+index 9c8e7bf..bcbbf5e 100644
+--- a/node_modules/@graphcommerce/magento-category/queries/NavigationItem.graphql
++++ b/node_modules/@graphcommerce/magento-category/queries/NavigationItem.graphql
+@@ -5,4 +5,5 @@ fragment NavigationItem on CategoryTree {
+   url_path
+   level
+   is_anchor
++  image
+ }
