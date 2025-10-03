@@ -1935,6 +1935,21 @@ input[type='number'] {
 /* ========================================================================== */
 
 /* TLT CSS */
+
+/* === Common Clases === */
+.main-heading {
+  background: linear-gradient(90deg, #2d2d2d 0%, #b4001a 70.88%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%;
+  width: fit-content;
+}
+
+/* === Marquee Amimation === */
 .marquee-text {
   overflow: clip;
 }
@@ -2002,6 +2017,7 @@ input[type='number'] {
   margin: 0;
 }
 
+/* sectionTwo */
 .offer-container-wrapper {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -2045,7 +2061,40 @@ input[type='number'] {
   transform: scale(0.95);
   border-radius: 3px;
 }
-/* ====================  Links ============================ */
+
+/* Section Three */
+.title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Section Four */
+.gradient-border {
+  border-width: 3px;
+  border-style: solid;
+  border-image: linear-gradient(230deg, #000000 4.01%, #ff7300 82.77%);
+  border-image-slice: 1;
+  clip-path: inset(0 round 3px);
+}
+.swiper-top-pick-prev,
+.swiper-top-pick-next {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  z-index: 10;
+  cursor: pointer;
+  color: var(--tltMain);
+  font-size: 30px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 1px solid #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+/* ====================  Link Buttons ============================ */
 .linkButton {
   color: #fff;
   font-weight: 700;
@@ -2067,6 +2116,24 @@ input[type='number'] {
 .linkButton span {
   z-index: 2;
   position: relative;
+}
+
+.viewallBtn {
+  color: #000;
+  text-align: center;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  border-radius: 3px;
+  background: #f5f5f5;
+  padding: 5px 20px;
+  border: 1px solid #f5f5f5;
+  transition: all 0.4s ease-in-out;
+}
+.viewallBtn:hover {
+  background: transparent;
+  color: var(--tltSecondary);
 }
 
 @keyframes marquee-move-text {
