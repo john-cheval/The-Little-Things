@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'configurator.reachdigital.dev' },
       { protocol: 'https', hostname: 'rnb.chevaldemo.xyz' },
       { protocol: 'https', hostname: 'srv900162.hstgr.cloud' },
+      { protocol: 'https', hostname: 'srv1036250.hstgr.cloud' },
     ],
   },
   eslint: {

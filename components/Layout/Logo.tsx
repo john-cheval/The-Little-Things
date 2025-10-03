@@ -12,11 +12,9 @@ export function Logo({ isHome }: LogoProps) {
       sx={{
         '& .GcLogo-logo': {
           width: 'auto',
-          height: { xs: '16px', md: isHome ? '20px' : 'auto' },
-          marginRight: '5px',
-          //paddingLeft: { xs: '10px', md: isHome ? '35px' : '' },
-          marginTop: { xs: 0, md: '-5px' },
-          // filter: (theme) => (theme.palette.mode === 'dark' ? 'invert(100%)' : 'none'),
+          height: { xs: '16px', md: 'auto' },
+
+
         },
       }}
       image={{

@@ -1,6 +1,6 @@
 import { Image } from '@graphcommerce/image'
 import { Box, Typography } from '@mui/material'
-import { saxoGrammaticus } from '../../../../lib/fonts'
+import { dubaiFont } from '../../../../lib/fonts'
 import ImageGallery from './ImageGallery'
 
 function InnerLeft({ coursesData }) {
@@ -9,7 +9,7 @@ function InnerLeft({ coursesData }) {
       <Typography
         variant='h1'
         sx={{
-          fontFamily: `${saxoGrammaticus.style.fontFamily}, sans-serif`,
+          fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
           color: (theme: any) => theme.palette.custom.heading,
         }}
       >

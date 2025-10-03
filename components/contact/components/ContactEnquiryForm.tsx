@@ -8,6 +8,7 @@ import { Controller, useForm } from 'react-hook-form'
 import { AlekseonFormDocument } from '../../../graphql/aleskonForm.gql'
 import { UpdateAlekseonFormDocument } from '../../../graphql/UpdateAleskonForm.gql'
 import ReCaptcha from '../../../utils/ReCaptcha'
+import { dubaiFont } from '../../../lib/fonts'
 
 interface RecaptchaRefType {
   resetCaptcha: () => void
@@ -19,7 +20,7 @@ const inputFieldSx: SxProps<Theme> = {
   height: 'fit-content',
 
   '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
-    fontFamily: '"Bricolage Grotesque"',
+    fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
     fontSize: { xs: '15px', md: '16px' },
     fontStyle: 'normal',
     fontWeight: 400,
@@ -27,7 +28,7 @@ const inputFieldSx: SxProps<Theme> = {
     color: 'inherit',
   },
   '& .MuiOutlinedInput-input::placeholder': {
-    fontFamily: '"Bricolage Grotesque"',
+    fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
     fontSize: { xs: '15px', md: '16px' },
     fontStyle: 'normal',
     fontWeight: 400,
@@ -331,7 +332,7 @@ function ContactEnquiryForm() {
                     },
                     '& textarea': {
                       padding: '10px',
-                      fontFamily: '"Bricolage Grotesque"',
+                      fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
                     },
                   },
                   '& .mui-style-17dy96o-MuiFormLabel-root-MuiInputLabel-root ': {

@@ -16,7 +16,7 @@ import {
 import { alpha, createTheme, Theme } from '@mui/material'
 import type { LinkProps } from '@mui/material/Link'
 import { Components, PaletteOptions } from '@mui/material/styles'
-import { saxoGrammaticus } from '../lib/fonts'
+import { dubaiFont } from '../lib/fonts'
 
 type ThemePaletteOptions = PaletteOptions & {
   custom: {
@@ -30,13 +30,23 @@ type ThemePaletteOptions = PaletteOptions & {
     borderInput?: string
     wishlistColor?: string
     borderSecondary?: string
+
+    // TLT Colors
+    tltMain: string
+    tltSecondary: string
+    tltTertiary: string
+    tltDark: string
+    tltContrastText: string
+    textDarkAlter: string
+    textDarkAlter2: string
+    textPopmart: string
+    tltBorder1: string
   }
 }
 
 const lightPalette: ThemePaletteOptions = {
   mode: 'light',
   custom: {
-    main: '#441E14',
     heading: '#9B7C38',
     secondary: '#6F6F6F',
     tertiary: '#969696',
@@ -46,6 +56,18 @@ const lightPalette: ThemePaletteOptions = {
     borderInput: '#D5B1B8',
     wishlistColor: '#F1A8B6',
     borderSecondary: '#d4d4d4',
+
+    // TLT Colors
+    main: '#441E14',
+    tltMain: '#7B1316',
+    tltSecondary: '#D90F13',
+    tltTertiary: '#767676',
+    tltDark: '#313131',
+    textDarkAlter: '#2a2a2a',
+    textDarkAlter2: '#2d2d2d',
+    tltContrastText: '#fff',
+    textPopmart: '#DB2F24',
+    tltBorder1: '#DEE5EF',
   },
   primary: {
     main: '#441E14',
@@ -90,6 +112,17 @@ const darkPalette: ThemePaletteOptions = {
     borderInput: '#D5B1B8',
     wishlistColor: '#F1A8B6',
     borderSecondary: '#d4d4d4',
+
+    // TLT Colors
+    tltMain: '#7B1316',
+    tltSecondary: '#D90F13',
+    tltTertiary: '#767676',
+    tltDark: '#313131',
+    textDarkAlter: '#2a2a2a',
+    textDarkAlter2: '#2d2d2d',
+    tltContrastText: '#fff',
+    textPopmart: '#DB2F24',
+    tltBorder1: '#DEE5EF',
   },
   primary: {
     main: '#441E14',
@@ -124,7 +157,7 @@ export const fontSize = (from: number, to: number) =>
   breakpointVal('fontSize', from, to, themeBaseDefaults.breakpoints.values)
 
 const commonHeadingProperties = {
-  fontFamily: `${saxoGrammaticus.style.fontFamily}, sans-serif`,
+  fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
   textTransform: 'uppercase' as const,
   fontWeight: 300,
   lineHeight: 'normal',
@@ -138,7 +171,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
     ...themeBaseDefaults,
     shape: { borderRadius: 3 },
     typography: {
-      fontFamily: "'Bricolage Grotesque', sans-serif",
+      fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
       // @see docs typography.md
       h1: {
         ...commonHeadingProperties,
@@ -165,7 +198,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
         lineHeight: 1.55,
       },
       h6: {
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
         ...fontSize(15, 16),
         fontWeight: 400,
         lineHeight: 1.8,
@@ -173,7 +206,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
         color: '#2A110A',
       },
       p: {
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
         lineHeight: '158%',
         fontSize: '16px',
         letterSpacing: '0%',
@@ -181,7 +214,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
       },
 
       navlink: {
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
         fontSize: '16px',
         fontWeight: 400,
         fontVariationSettings: "'wght' 400",
@@ -267,7 +300,7 @@ const createOverrides = (theme: Theme): Components<Theme> => ({
         overflowY: 'scroll',
         backgroundColor: '#fff',
         color: '#000',
-        fontFamily: "'Bricolage Grotesque', sans-serif",
+        fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
       },
       a: {
         textDecoration: 'none',
@@ -525,6 +558,17 @@ declare module '@mui/material/styles' {
       borderInput?: string
       wishlistColor?: string
       borderSecondary?: string
+
+      // TLT Colors
+      tltMain: string
+      tltSecondary: string
+      tltTertiary: string
+      tltDark: string
+      tltContrastText: string
+      textDarkAlter: string
+      textDarkAlter2: string
+      textPopmart: string
+      tltBorder1: string
     }
   }
 
@@ -540,6 +584,17 @@ declare module '@mui/material/styles' {
       borderInput?: string
       wishlistColor?: string
       borderSecondary?: string
+
+      // TLT Colors
+      tltMain: string
+      tltSecondary: string
+      tltTertiary: string
+      tltDark: string
+      tltContrastText: string
+      textDarkAlter: string
+      textDarkAlter2: string
+      textPopmart: string
+      tltBorder1: string
     }
   }
 }

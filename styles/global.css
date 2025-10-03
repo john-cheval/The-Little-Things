@@ -30,25 +30,14 @@
   --breakpoint-md: 768px;
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1536px;
-}
 
-@font-face {
-  font-family: 'Saxo Grammaticus';
-  src: url('../public/fonts/SaxoGrammaticusRegular.woff') format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Saxo Grammaticus';
-  src: url('../public/fonts/SaxoGrammaticusLight.woff2') format('woff2');
-  font-weight: 300;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'Saxo Grammaticus';
-  src: url('../public/fonts/SaxoGrammaticusBold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
+  /* ==========TLT Colors ================== */
+  --tltMain: #7b1316;
+  --tltSecondary: #d90f13;
+  --tltTertiary: #767676;
+  --tltDark: #313131;
+  --textDarkAlter: #2a2a2a;
+  --tltContrastText: #fff;
 }
 
 /* Common Classes */
@@ -67,7 +56,7 @@
 .heading-main {
   color: var(--color-custom-heading);
   font-size: 25px;
-  font-family: 'Saxo Grammaticus', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   text-transform: uppercase;
   font-weight: 300;
   line-height: normal;
@@ -107,7 +96,7 @@
 }
 
 .heading {
-  font-family: 'Saxo Grammaticus', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   text-transform: uppercase;
   font-weight: 300;
   line-height: normal;
@@ -460,7 +449,7 @@
 .about-responsive-heading {
   font-size: 25px;
   max-width: 100%;
-  font-family: 'Saxo Grammaticus', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   color: var(--color-custom-heading);
   text-transform: uppercase;
   font-weight: 300;
@@ -1358,7 +1347,7 @@ ol {
   font-weight: 400;
   line-height: 33px;
   text-decoration: none;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   padding: 0 0 10px 0;
 }
 .footer-link {
@@ -1376,7 +1365,7 @@ ol {
 
 .footer-address {
   color: #2a110a;
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 33px;
@@ -1384,7 +1373,7 @@ ol {
 }
 
 .footer-view-map-btn {
-  font-family: 'Bricolage Grotesque', sans-serif;
+  font-family: var(--font-dubai), sans-serif;
   font-size: 16px;
   font-weight: 400;
   line-height: 31px;
@@ -1941,4 +1930,109 @@ input[type='number'] {
 
 .send-button.is-disabled {
   cursor: not-allowed;
+}
+
+/* ========================================================================== */
+
+/* TLT CSS */
+.marquee-text {
+  overflow: clip;
+}
+
+.marquee-text-track {
+  display: flex;
+  padding-left: 4.8rem;
+  gap: 4.8rem;
+  width: max-content;
+  animation: marquee-move-text var(--speed, 30s) linear infinite var(--direction, forwards);
+}
+
+.marquee-text p {
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+/*=============  Home ================ */
+
+.banner-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.banner-image-container {
+  position: relative;
+}
+.banner-image-container img {
+  width: 100%;
+  border-radius: 3px;
+  overflow: hidden;
+  height: auto;
+}
+.banner-cta-wrapper {
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.89);
+  backdrop-filter: blur(3.9000000953674316px);
+  padding-block: 13px;
+  padding-inline: 20px 15px;
+
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+.banner-cta-wrapper > div {
+  display: flex;
+  justify-content: space-between;
+}
+.banner-cta-content h6 {
+  color: #000;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 120%;
+  text-transform: uppercase;
+  margin: 0;
+}
+.banner-cta-content p {
+  color: #070707;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  margin: 0;
+}
+
+/* ====================  Links ============================ */
+.linkButton {
+  color: #fff;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: center;
+  border-radius: 3px;
+  background-color: var(--tltSecondary);
+  padding: 5px 20px;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.5s ease;
+  width: fit-content;
+  display: block;
+}
+.linkButton:hover {
+  transform: scale(1.05);
+}
+.linkButton span {
+  z-index: 2;
+  position: relative;
+}
+
+@keyframes marquee-move-text {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.wrapper {
+  width: 100%;
+  color: #fff;
 }

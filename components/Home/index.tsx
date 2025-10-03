@@ -1,39 +1,19 @@
-import { HomeBanner } from './components/HomeBanner'
-import { HomeCta } from './components/HomeCta'
-import { HomeJar } from './components/HomeJar'
-import { HomeOccasion } from './components/HomeOccasion'
-import { HomeSectionFour } from './components/HomeSectionFour'
-import { HomeSectionThree } from './components/HomeSectionThree'
-import { HomeStory } from './components/HomeStory'
+import { Box } from '@mui/material'
+import { CategorySwiper } from '../TLTComponents/components/Swiper/CategorySwiper'
+import { HomeSectionTwo } from '../TLTComponents/components/Home/HomeSectionTwo'
 
-export function HomePage({
-  Categories,
-  justinHeading,
-  justInProductList,
-  storyTitle,
-  occasionTitle,
-  miniBytesTitle,
-  CollectionSectionData,
-  homeCta,
-  homeCeleberate,
-  homeImagination,
-  homeHeroData,
-  statementProducts,
-}) {
-  const cakesCategory = Categories?.find((cat) => cat.uid === 'Mw==')
-  const occasionsCategory = Categories?.find((cat) => cat.uid === 'OQ==')
-  const jarsAndMniBytesCategory = Categories?.find((cat) => cat.uid === 'MTA=')
+
+
+type Props = {
+  categoryData: any
+  sectionOneContent: any
+}
+export function HomePage({ categoryData, sectionOneContent }: Props) {
   return (
-    <>
-      <HomeBanner content={homeHeroData} productList={justInProductList} title={justinHeading} />
-      <HomeStory title={storyTitle} cakesCategories={cakesCategory} />
-      <HomeSectionThree content={homeImagination} />
-      <HomeOccasion title={occasionTitle} occasionCategories={occasionsCategory} />
-      <HomeSectionFour content={homeCeleberate} products={statementProducts} />
-      <HomeCta content={homeCta} />
-      {CollectionSectionData && <div dangerouslySetInnerHTML={{ __html: CollectionSectionData }} />}
-
-      <HomeJar title={miniBytesTitle} jarsAndMniBytesCategories={jarsAndMniBytesCategory} />
-    </>
+    <Box component='div' className='container-wrapper'>
+      <CategorySwiper swiperData={categoryData} />
+      <HomeSectionTwo content={sectionOneContent} />
+      <p>hhhh</p>
+    </Box>
   )
 }
