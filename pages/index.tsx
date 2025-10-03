@@ -9,7 +9,7 @@ import { LayoutDocument, LayoutNavigation } from '../components'
 // import { HomePage } from '../components/Home'
 import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
-import { HomePage } from '../components/Home'
+import { HomePage } from '../components/TLTComponents/components/Home'
 import { decodeHtmlEntities } from '../utils/htmlUtils'
 // 
 export type CmsBlocksProps = { layoutData?: any; cmsBlocks?: any; }
@@ -27,7 +27,7 @@ function CmsPage(props: CmsPageRouteProps) {
 
 
   const homesHeroData = cmsBlocks.find((block) => block.identifier === 'home-section-one')
-  // const justInHome = cmsBlocks.find((block) => block.identifier === 'just-in-home')
+  const HomeSectionTwo = cmsBlocks.find((block) => block.identifier === 'home-section-two')
   // const homeStoryData = cmsBlocks.find((block) => block.identifier === 'home-story-title')
   // const homeOccasionsData = cmsBlocks.find((block) => block.identifier === 'home-occasion-title')
   // const homeMinibytsData = cmsBlocks.find((block) => block.identifier === 'home-mini-bytes')
@@ -37,7 +37,7 @@ function CmsPage(props: CmsPageRouteProps) {
   // const homeImaginationData = cmsBlocks.find((block) => block.identifier === 'home-imagination')
 
   const decodedHomeHero = decodeHtmlEntities(homesHeroData?.content)
-  // const decodedHomeHeroJustIn = decodeHtmlEntities(justInHome?.content)
+  const decodedHomeHomeSectionTwo = decodeHtmlEntities(HomeSectionTwo?.content)
   // const decodedHomeStory = decodeHtmlEntities(homeStoryData?.content)
   // const decodedHomeOccasions = decodeHtmlEntities(homeOccasionsData?.content)
   // const decodedHomeMinibyts = decodeHtmlEntities(homeMinibytsData?.content)
@@ -72,7 +72,11 @@ function CmsPage(props: CmsPageRouteProps) {
         homeImagination={decodedHomeImagination}
         homeHeroData={decodedHomeHero}
       /> */}
-      <HomePage categoryData={filteredCategory} sectionOneContent={decodedHomeHero} />
+      <HomePage
+        categoryData={filteredCategory}
+        sectionOneContent={decodedHomeHero}
+        sectionTwoconent={decodedHomeHomeSectionTwo}
+      />
     </>
   )
 }
@@ -102,6 +106,7 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
     variables: {
       blockIdentifiers: [
         'home-section-one',
+        'home-section-two',
       ],
     },
   })
