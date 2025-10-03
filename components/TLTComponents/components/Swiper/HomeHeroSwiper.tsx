@@ -72,8 +72,8 @@ export function HomeHeroSwiper() {
                     </Typography>
                     <Link href='/shop' component='a' className='linkButton' sx={{
                       marginTop: { xs: '20px', md: '15px' },
-
-                    }}><span>Shop Now</span></Link>
+                    }}><span>Shop Now</span>
+                    </Link>
                   </Box>
                 ) : (
                   <Link href='/shop' component='a' className='linkButton'>Shop Now</Link>

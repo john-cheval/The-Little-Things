@@ -49,16 +49,18 @@ export function CategorySwiper({ swiperData }: SwiperProps) {
       grabCursor
     >
       {clonedData?.map((item, index) => (
-        <SwiperSlide key={item?.uid || index + 1}>
-          <Link href={`/${item?.url_path}`}>
-            <Image src={item?.image} alt={item?.name} width={135} height={120} sx={{
-              width: '100%',
-              height: 'auto',
-              objectFit: 'cover',
-              maxWidth: '130px',
-            }} />
-          </Link>
-        </SwiperSlide>
+        item?.image && (
+          <SwiperSlide key={item?.uid || index + 1}>
+            <Link href={`/${item?.url_path}`}>
+              <Image src={item?.image} alt={item?.name} width={135} height={120} sx={{
+                width: '100%',
+                height: 'auto',
+                objectFit: 'cover',
+                maxWidth: '130px',
+              }} />
+            </Link>
+          </SwiperSlide>
+        )
       ))}
 
     </Swiper>
