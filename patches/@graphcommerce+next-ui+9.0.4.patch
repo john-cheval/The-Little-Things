@@ -627,7 +627,7 @@ index 12d2b28..c1716bc 100644
 +  return <NumberFormat {...props} numberStyle='currency' sx={props.sx} />
  }
 diff --git a/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx b/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx
-index af23c02..450f5bf 100644
+index af23c02..22606ae 100644
 --- a/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx
 +++ b/node_modules/@graphcommerce/next-ui/Intl/NumberFormat/NumberFormat.tsx
 @@ -1,22 +1,60 @@
@@ -639,7 +639,7 @@ index af23c02..450f5bf 100644
 +import { forwardRef } from 'react';
 +import type { UseIntlNumberFormatOptions } from './useIntlNumberFormat';
 +import { useIntlNumberFormat }
-+from './useIntlNumberFormat';
++  from './useIntlNumberFormat';
 +import type { SxProps, Theme } from '@mui/material';
  
 -export type NumberFormatValue = number | bigint | Intl.StringNumericLiteral
@@ -650,14 +650,14 @@ index af23c02..450f5bf 100644
 -}
 +  value: NumberFormatValue;
 +  sx?: SxProps<Theme>;
-+ 
++
 +};
  
  /** @public */
  export const NumberFormat = forwardRef<HTMLSpanElement, NumberFormatProps>((props, ref) => {
 -  const { value, ...options } = props
 -  const formatter = useIntlNumberFormat(options)
-+  const { value, sx,  ...options } = props;
++  const { value, sx, ...options } = props;
 +  const formatter = useIntlNumberFormat(options);
 +
 +  const parts = formatter.formatToParts(value);
@@ -670,27 +670,27 @@ index af23c02..450f5bf 100644
 +      suppressHydrationWarning
 +      ref={ref}
 +      sx={[
-+        {
-+          fontFamily: "'Bricolage Grotesque', sans-serif",
-+          fontSize: { xs: '16px', md: '18px' },
-+          fontWeight: 700,
-+          color: '#000',
-+        },
-+        
++        // {
++        //   fontFamily: "'Bricolage Grotesque', sans-serif",
++        //   fontSize: { xs: '16px', md: '18px' },
++        //   fontWeight: 700,
++        //   color: '#000',
++        // },
++
 +        ...(Array.isArray(sx) ? sx : [sx]),
 +      ]}
 +    >
 +      {parts.map((part, index) => {
 +        let partStyle: SxProps<Theme> = {};
 +        if (part.type === 'currency') {
-+          partStyle = { color:'#000' }; 
++          partStyle = { color: 'inherit' };
 +        } else if (
 +          part.type === 'integer' ||
 +          part.type === 'fraction' ||
 +          part.type === 'decimal' ||
 +          part.type === 'group'
 +        ) {
-+          partStyle = { color:  '#000' }; 
++          partStyle = { color: 'inherit' };
 +        }
 +
 +        return (

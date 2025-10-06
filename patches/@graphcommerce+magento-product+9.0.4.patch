@@ -127,7 +127,7 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
 old mode 100644
 new mode 100755
-index 2050980..41e2af9
+index 2050980..a75df8d
 --- a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
 @@ -2,18 +2,23 @@ import { useCartEnabled } from '@graphcommerce/magento-cart'
@@ -144,15 +144,15 @@ index 2050980..41e2af9
  export type AddProductsToCartFabProps = {
    sx?: SxProps<Theme>
    icon?: FabProps['icon']
-+  isButton?:boolean
-+  isLink?:boolean
-+  url?:string | undefined
++  isButton?: boolean
++  isLink?: boolean
++  url?: string | undefined
  } & Pick<FabProps, 'color' | 'size'> &
    UseAddProductsToCartActionProps
  
  export function AddProductsToCartFab(props: AddProductsToCartFabProps) {
 -  const { icon = iconShoppingBag, product, sku, ...rest } = props
-+  const { icon = iconShoppingBag, product,isButton=false, sku,isLink,url, ...rest } = props
++  const { icon = iconShoppingBag, product, isButton = false, sku, isLink, url, ...rest } = props
    const { showSuccess, ...action } = useAddProductsToCartAction(props)
  
    const cartEnabled = useCartEnabled()
@@ -161,75 +161,81 @@ index 2050980..41e2af9
  
    return (
 -    <Fab
+-      type='submit'
+-      {...rest}
+-      {...action}
+-      icon={showSuccess && !action.loading ? iconCheckmark : icon}
+-      aria-label={t`Add to Cart`}
+-    />
 +    <>
-+    {isButton ? (
-+     <Button
-+      type="submit" 
-+     // {...action}   
-+       onClick={action.onClick}
-+      sx={{
-+       fontWeight: 400,
-+        lineHeight: '170%',
-+        fontSize: {xs:'15px !important', md:'15px !important'},
-+        color: '#302100',
-+        textDecoration: 'underline',
-+        display: 'flex',
-+        alignItems: 'center',
-+        columnGap: '4px',
-+        justifyContent: 'flex-end',
-+        marginLeft: 'auto',
-+        cursor: action.loading ? 'not-allowed' : 'pointer',
-+        pointerEvents: action.loading ? 'none' : 'auto',
-+        '& .arrow-icon': {
-+          transition: 'transform 0.3s ease-in-out',
-+        },
-+        '&:hover .arrow-icon': {
-+          transform: 'translateX(5px)',
-+        },
-+         background: 'none',
-+    border: 'none',
-+    padding: 0,
-+    fontFamily: 'inherit',
-+    textAlign: 'inherit',
-+    width: 'fit-content',
-+    '&:hover':{
-+      background:'transparent'
-+    }
-+     }}> {action.loading? 'Adding':'Cart'}   <Box
-+        component="span"
-+        className="arrow-icon" 
-+        sx={{ 
-+          display: 'flex',
-+          alignItems: 'center',
-+        }}
-+      >
-+       {action.loading ? (
-+      <CircularProgress size={20} color="inherit" />
-+    ) : (
-+      <IoArrowForwardSharp />
-+    )}
-+      </Box></Button>
-+    ):url ? <Link href={`/p/${url}`}>
-+      <Fab
-+      type='submit'
-+      {...rest}
-+      // {...action}
-+      icon={icon}
-+      aria-label={t`Add to Cart`}
-+      
-+    />
-+    </Link>:(
-+      (
-+<Fab
-       type='submit'
-       {...rest}
-       {...action}
-       icon={showSuccess && !action.loading ? iconCheckmark : icon}
-       aria-label={t`Add to Cart`}
-+      
-     />
-+    )
-+    )}
++      {isButton ? (
++        <Button
++          type="submit"
++          // {...action}   
++          onClick={action.onClick}
++          sx={{
++            fontWeight: 400,
++            lineHeight: '170%',
++            fontSize: { xs: '15px !important', md: '15px !important' },
++            color: '#302100',
++            textDecoration: 'underline',
++            display: 'flex',
++            alignItems: 'center',
++            columnGap: '4px',
++            justifyContent: 'flex-end',
++            marginLeft: 'auto',
++            cursor: action.loading ? 'not-allowed' : 'pointer',
++            pointerEvents: action.loading ? 'none' : 'auto',
++            '& .arrow-icon': {
++              transition: 'transform 0.3s ease-in-out',
++            },
++            '&:hover .arrow-icon': {
++              transform: 'translateX(5px)',
++            },
++            background: 'none',
++            border: 'none',
++            padding: 0,
++            fontFamily: 'inherit',
++            textAlign: 'inherit',
++            width: 'fit-content',
++            '&:hover': {
++              background: 'transparent'
++            }
++          }}> {action.loading ? 'Adding' : 'Cart'}   <Box
++            component="span"
++            className="arrow-icon"
++            sx={{
++              display: 'flex',
++              alignItems: 'center',
++            }}
++          >
++            {action.loading ? (
++              <CircularProgress size={20} color="inherit" />
++            ) : (
++              <IoArrowForwardSharp />
++            )}
++          </Box></Button>
++      ) : url ? <Link href={`/p/${url}`}>
++        <Fab
++          type='submit'
++          {...rest}
++          // {...action}
++          icon={icon}
++          aria-label={t`Add to Cart`}
++
++        />
++      </Link> : (
++        (
++          <Fab
++            type='submit'
++            {...rest}
++            {...action}
++            icon={showSuccess && !action.loading ? iconCheckmark : icon}
++            aria-label={t`Add to Cart`}
++
++          />
++        )
++      )}
 +    </>
    )
  }
@@ -1968,59 +1974,240 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 old mode 100644
 new mode 100755
-index 0b9f236..7593709
+index 0b9f236..05821b9
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
-@@ -87,6 +87,7 @@ export function ProductListItemReal(props: ProductProps) {
+@@ -1,7 +1,7 @@
+ import type { ImageProps } from '@graphcommerce/image'
+ import { extendableComponent } from '@graphcommerce/next-ui'
+ import type { SxProps, Theme } from '@mui/material'
+-import { Skeleton, useEventCallback } from '@mui/material'
++import { Box, Skeleton, Typography, useEventCallback } from '@mui/material'
+ import React from 'react'
+ import type { ProductListItemFragment } from '../../Api/ProductListItem.gql'
+ import { productLink } from '../../hooks/useProductLink'
+@@ -17,6 +17,8 @@ import { ProductImageContainer, ProductListItemImageAreas } from './ProductListI
+ import { ProductListItemLinkOrDiv, ProductListItemLinkOrDivProps } from './ProductListItemLinkOrDiv'
+ import type { ProductListItemTitleAndPriceProps } from './ProductListItemTitleAndPrice'
+ import { ProductListItemTitleAndPrice } from './ProductListItemTitleAndPrice'
++import { AddProductsToCartButton, AddProductsToCartFab } from '@graphcommerce/magento-product/components/AddProductsToCart'
++import { Trans } from '@lingui/macro'
+ 
+ const { classes, selectors } = extendableComponent('ProductListItem', [
+   'root',
+@@ -87,64 +89,111 @@ export function ProductListItemReal(props: ProductProps) {
      sx = [],
      onClick,
      slotProps = {},
-+    sku
++    sku,
    } = props
- 
+-
    return (
-@@ -133,10 +134,13 @@ export function ProductListItemReal(props: ProductProps) {
-       {!imageOnly && (
-         <>
-           <ProductListItemTitleAndPrice
-+          isConfigured = {props?.__typename === 'ConfigurableProduct'}
-+          urlKey={props?.url_key ?? ''}
+-    <ProductListItemLinkOrDiv
+-      href={productLink(props)}
+-      className={classes.root}
+-      onClick={(e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => onClick?.(e, props)}
+-      {...slotProps.root}
+-      sx={[
+-        ...(Array.isArray(sx) ? sx : [sx]),
+-        ...(Array.isArray(slotProps.root?.sx) ? slotProps.root.sx : [slotProps.root?.sx]),
+-      ]}
+-      ref={slotProps.root?.ref as React.Ref<HTMLAnchorElement | HTMLDivElement>}
+-    >
+-      <ProductImageContainer className={classes.imageContainer}>
+-        <ProductListItemImage
+-          classes={classes}
+-          src={small_image?.url}
+-          alt={small_image?.label}
+-          aspectRatio={aspectRatio}
+-          loading={loading}
+-          sizes={sizes}
+-          dontReportWronglySizedImages={dontReportWronglySizedImages}
+-          {...slotProps.image}
+-        />
+-
+-        {!imageOnly && (
+-          <ProductListItemImageAreas
+-            topRight={topRight}
+-            bottomLeft={bottomLeft}
+-            bottomRight={bottomRight}
++    <div>
++      <ProductListItemLinkOrDiv
++        href={productLink(props)}
++        className={classes.root}
++        onClick={(e: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>) => onClick?.(e, props)}
++        {...slotProps.root}
++        sx={[
++          ...(Array.isArray(sx) ? sx : [sx]),
++          ...(Array.isArray(slotProps.root?.sx) ? slotProps.root.sx : [slotProps.root?.sx]),
++        ]}
++        ref={slotProps.root?.ref as React.Ref<HTMLAnchorElement | HTMLDivElement>}
++      >
++        <ProductImageContainer className={classes.imageContainer}>
++          <ProductListItemImage
              classes={classes}
-             titleComponent={titleComponent}
-             title={name}
-             subTitle={subTitle}
-+            sku={sku}
-             {...slotProps.titleAndPrice}
+-            topLeft={
+-              <>
+-                <ProductDiscountLabel className={classes.discount} price_range={price_range} />
+-                {topLeft}
+-              </>
+-            }
+-            {...slotProps.imageAreas}
++            src={small_image?.url}
++            alt={small_image?.label}
++            aspectRatio={aspectRatio}
++            loading={loading}
++            sizes={sizes}
++            dontReportWronglySizedImages={dontReportWronglySizedImages}
++            {...slotProps.image}
+           />
++
++          {!imageOnly && (
++            <ProductListItemImageAreas
++              topRight={topRight}
++              bottomLeft={bottomLeft}
++              bottomRight={bottomRight}
++              classes={classes}
++              topLeft={
++                <>
++                  <ProductDiscountLabel className={classes.discount} price_range={price_range} />
++                  {topLeft}
++                </>
++              }
++              {...slotProps.imageAreas}
++            />
++          )}
++        </ProductImageContainer>
++
++        {!imageOnly && (
++          <>
++            <ProductListItemTitleAndPrice
++              isConfigured={props?.__typename === 'ConfigurableProduct'}
++              urlKey={props?.url_key ?? ''}
++              classes={classes}
++              titleComponent={titleComponent}
++              title={name}
++              subTitle={subTitle}
++              sku={sku}
++              {...slotProps.titleAndPrice}
++            >
++              <ProductListPrice {...price_range.minimum_price} />
++            </ProductListItemTitleAndPrice>
++            {children}
++          </>
+         )}
+-      </ProductImageContainer>
++      </ProductListItemLinkOrDiv>
+ 
+       {!imageOnly && (
+-        <>
+-          <ProductListItemTitleAndPrice
+-            classes={classes}
+-            titleComponent={titleComponent}
+-            title={name}
+-            subTitle={subTitle}
+-            {...slotProps.titleAndPrice}
++        <Box component='div' sx={{ marginTop: '10px' }}>
++          <AddProductsToCartButton
++            sx={{
++              background: 'linear-gradient(90deg, #d90f13 0%, #73080a 100%) !important',
++              borderRadius: '3px',
++              padding: '5px',
++              display: 'flex',
++              width: '100%',
++              border: 'none',
++              justifyContent: 'start',
++              textAlign: 'center',
++            }}
++            isIcon={false}
++            product={props}
++
            >
-             <ProductListPrice {...price_range.minimum_price} />
+-            <ProductListPrice {...price_range.minimum_price} />
+-          </ProductListItemTitleAndPrice>
+-          {children}
+-        </>
++            <AddProductsToCartFab
++              sku={props?.sku}
++              isLink={props?.__typename === 'ConfigurableProduct'}
++              url={props?.urlKey}
++              sx={{
++                height: '40px',
++                width: '40px',
++                backgroundColor: 'white !important',
++                borderRadius: '3px !important',
++                '& svg': {
++                  fontSize: '28px',
++                  stroke: 'unset !important',
++                  left: { xs: '5px', md: '6px' },
++                  top: { xs: '1px', md: '4px' },
++                  position: 'relative',
++                },
++              }}
++            />
++            <Typography className='addTocartText'>  <Trans>Add to Cart</Trans></Typography>
++
++          </AddProductsToCartButton>
++        </Box>
+       )}
+-    </ProductListItemLinkOrDiv>
++
++    </div>
+   )
+ }
+ 
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
 old mode 100644
 new mode 100755
-index d1ae621..f84eede
+index d1ae621..a082d50
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
-@@ -69,7 +69,7 @@ export function ProductListItemImage(props: ImageOrPlaceholderProps) {
+@@ -69,9 +69,10 @@ export function ProductListItemImage(props: ImageOrPlaceholderProps) {
          className={classes?.image}
          sx={[
            {
 -            objectFit: 'contain',
-+             objectFit: 'cover',
++            objectFit: 'cover',
              aspectRatio: `${aspectRatio[0] / aspectRatio[1]}`,
              display: 'block',
++
            },
+           ...(Array.isArray(sx) ? sx : [sx]),
+         ]}
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImageContainer.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImageContainer.tsx
 old mode 100644
 new mode 100755
+index a20a9d8..5cf6ccf
+--- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImageContainer.tsx
++++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImageContainer.tsx
+@@ -14,13 +14,11 @@ export function ProductImageContainer(props: ProductImageContainerProps) {
+         (theme) => ({
+           display: 'grid',
+           bgcolor: 'background.image',
+-          ...breakpointVal(
+-            'borderRadius',
+-            theme.shape.borderRadius * 2,
+-            theme.shape.borderRadius * 3,
+-            theme.breakpoints.values,
+-          ),
++          borderRadius: '3px',
++          border: '1px solid #E8E8E8',
++          backdropFilter: 'blur(3.75px)',
+           overflow: 'hidden',
++          position: 'relative',
+           padding: responsiveVal(8, 12),
+           '& > picture, & > .ProductListItem-placeholder': {
+             gridArea: '1 / 1 / 3 / 3',
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemLinkOrDiv.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemLinkOrDiv.tsx
 old mode 100644
 new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
 old mode 100644
 new mode 100755
-index 9dc2505..f473d5b
+index 9dc2505..0d17ce3
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
-@@ -1,18 +1,23 @@
+@@ -1,34 +1,30 @@
  import type { SxProps, Theme } from '@mui/material'
  import { Box, Typography } from '@mui/material'
  import { productListPrice } from '../ProductListPrice'
@@ -2030,8 +2217,8 @@ index 9dc2505..f473d5b
    titleComponent?: React.ElementType
    title: React.ReactNode
    subTitle?: React.ReactNode
-+  isConfigured?:boolean | undefined
-+  urlKey?:string| undefined
++  isConfigured?: boolean | undefined
++  urlKey?: string | undefined
    children: React.ReactNode
    classes: { titleContainer: string; title: string; subtitle: string }
    sx?: SxProps<Theme>
@@ -2041,100 +2228,79 @@ index 9dc2505..f473d5b
 +
  export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPriceProps) {
 -  const { titleComponent = 'h2', classes, children, subTitle, title, sx } = props
-+  const { titleComponent = 'h2', classes, children, subTitle, title, sx,sku,isConfigured,urlKey } = props
++  const { titleComponent = 'h2', classes, children, subTitle, title, sx, sku, isConfigured, urlKey } = props
  
    return (
      <Box
-@@ -20,15 +25,34 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+       className={classes.titleContainer}
        sx={[
          (theme) => ({
-           display: 'grid',
+-          display: 'grid',
 -          alignItems: 'baseline',
            marginTop: theme.spacings.xs,
-           columnGap: 1,
-+          rowGap: {sm:'4px'}, 
-           gridTemplateAreas: {
+-          columnGap: 1,
+-          gridTemplateAreas: {
 -            xs: '"title title" "subtitle price"',
 -            md: '"title subtitle price"',
-+            xs: `
-+              "title priceButton"
-+              "subtitle priceButton"
-+              "price priceButton"
-+            `,
-+            sm: `
-+              "title priceButton"
-+              "subtitle priceButton"
-+              "price priceButton"
-+            `,
-+            md: `
-+              "title priceButton"
-+              "subtitle priceButton"
-+              "price priceButton"
-+            `,
-+          },
-+          
-+          gridTemplateColumns: {
-+            xs: '1fr auto', 
-+            md: '1fr auto', 
-           },
+-          },
 -          gridTemplateColumns: { xs: 'unset', md: 'auto auto 1fr' },
 -          justifyContent: 'space-between',
-+           alignItems: 'flex-end', 
-+
-+          // justifyContent: 'space-between',
          }),
          ...(Array.isArray(sx) ? sx : [sx]),
        ]}
-@@ -40,8 +64,11 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
-           display: 'inline',
-           color: 'text.primary',
-           overflowWrap: 'break-word',
+@@ -36,20 +32,17 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+       <Typography
+         component={titleComponent}
+         variant='subtitle1'
+-        sx={{
+-          display: 'inline',
+-          color: 'text.primary',
+-          overflowWrap: 'break-word',
 -          maxWidth: '100%',
-+          // maxWidth: '100%',
-           gridArea: 'title',
-+          fontSize:{ xs: '15px',md: '16px' },
-+          maxWidth: { xs: '131px', md: '250px' },
-+          minHeight:{xs:'70px', md:'50px'},
-         }}
-         className={classes.title}
+-          gridArea: 'title',
+-        }}
+-        className={classes.title}
++        className='product-title'
        >
-@@ -49,7 +76,9 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+         {title}
        </Typography>
  
        {subTitle && (
 -        <Box sx={{ gridArea: 'subtitle' }} className={classes.subtitle}>
-+        <Box sx={{ gridArea: 'subtitle',
-+          fontSize:{ xs: '15px',md: '16px' },
-+          maxWidth: { xs: '131px', md: '252px' },  }} className={classes.subtitle}>
++        <Box sx={{
++          gridArea: 'subtitle',
++          fontSize: { xs: '15px', md: '16px' },
++          maxWidth: { xs: '131px', md: '252px' },
++        }} className={classes.subtitle}>
            {subTitle}
          </Box>
        )}
-@@ -58,10 +87,27 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+@@ -58,10 +51,27 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
          component='div'
          variant='body1'
          className={productListPrice.classes.root}
 -        sx={{ gridArea: 'price', textAlign: 'right', justifySelf: { sm: 'flex-end' } }}
-+        sx={{ gridArea: 'price', textAlign: 'left',lineHeight:'normal', marginBottom:'4px'}}
++        sx={{ gridArea: 'price', textAlign: 'left', lineHeight: 'normal', marginBottom: '4px' }}
        >
          {children}
        </Typography>
 +
 +
-+ <Box sx={{ gridArea: 'priceButton', }}>
-+   <AddProductsToCartFab sku={sku} isLink={isConfigured} url={urlKey} sx={{
-+    height:'50px',
-+    width:'50px',
-+     '& svg': {
-+     fontSize: '25px',
-+     stroke: 'unset !important',
-+     left: '6px',
-+      top: '3px',
-+      position:'relative'
-+         },
-+         
-+   }}  />
-+ </Box>
-+     
++      {/* <Box component='div' sx={{ gridArea: 'priceButton', }} className='product-cartBtn'>
++        <AddProductsToCartFab sku={sku} isLink={isConfigured} url={urlKey} sx={{
++          height: '40px',
++          width: '40px',
++          '& svg': {
++            fontSize: '28px',
++            stroke: 'unset !important',
++            left: '7px',
++            top: '4px',
++            position: 'relative'
++          },
++
++        }} />
++      </Box> */}
++
      </Box>
    )
  }
@@ -2238,10 +2404,22 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx
 old mode 100644
 new mode 100755
-index 1d42a06..c70ff79
+index 1d42a06..f8a2be9
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListPrice/ProductListPrice.tsx
-@@ -11,11 +11,12 @@ export const productListPrice = extendableComponent('ProductListPrice', [
+@@ -2,8 +2,10 @@ import { PrivateQueryMask } from '@graphcommerce/graphql'
+ import { Money } from '@graphcommerce/magento-store'
+ import { extendableComponent } from '@graphcommerce/next-ui'
+ import type { TypographyProps } from '@mui/material'
+-import { Typography } from '@mui/material'
++import { Box, Typography } from '@mui/material'
+ import type { ProductListPriceFragment } from './ProductListPrice.gql'
++import { MdOutlineArrowDropDown } from "react-icons/md";
++
+ 
+ export const productListPrice = extendableComponent('ProductListPrice', [
+   'root',
+@@ -11,36 +13,46 @@ export const productListPrice = extendableComponent('ProductListPrice', [
    'discountPrice',
  ] as const)
  
@@ -2250,19 +2428,57 @@ index 1d42a06..c70ff79
  
  export type ProductListPriceProps = ProductListPriceFragment & Pick<TypographyProps, 'sx'>
  
--export function ProductListPrice(props: ProductListPriceProps) {
-+export function ProductListPrice(props: ProductListPriceProps ) {
-   const { regular_price, final_price, sx } = props
- 
+ export function ProductListPrice(props: ProductListPriceProps) {
+-  const { regular_price, final_price, sx } = props
+-
++  const { regular_price, final_price, discount, sx } = props
    return (
-@@ -38,6 +39,7 @@ export function ProductListPrice(props: ProductListPriceProps) {
-         className={classes.finalPrice}
-         component='span'
-         skeleton={{ width: '3.5em' }}
-+        
-       >
-         <Money {...final_price} />
-       </PrivateQueryMask>
+     <Typography component='div' variant='body1' className={classes.root} sx={sx}>
+-      {regular_price.value !== final_price.value && (
++      {regular_price.value !== final_price.value ? (
+         <PrivateQueryMask
+           component='span'
+           sx={{
+-            textDecoration: 'line-through',
+             color: 'text.disabled',
+-            marginRight: '8px',
++            position: 'relative'
+           }}
+           skeleton={{ width: '3.5em' }}
+           className={classes.discountPrice}
+         >
+           <Money {...regular_price} />
+         </PrivateQueryMask>
+-      )}
+-      <PrivateQueryMask
+-        className={classes.finalPrice}
+-        component='span'
+-        skeleton={{ width: '3.5em' }}
+-      >
+-        <Money {...final_price} />
+-      </PrivateQueryMask>
++      ) : <Box className='empty'></Box>}
++      <Box sx={{ display: 'flex', columnGap: '5px', alignItems: 'flex-end-' }}>
++        <PrivateQueryMask
++          className={classes.finalPrice}
++          component='span'
++          skeleton={{ width: '3.5em' }}
++
++        >
++          <Money {...final_price} />
++        </PrivateQueryMask>
++        {
++          (discount?.percent_off && discount.percent_off > 0) ? (
++            <Typography typography='p' className='discount-per'>
++              {Math.floor(discount.percent_off)}% <MdOutlineArrowDropDown />
++            </Typography>
++          ) : null
++        }
++      </Box>
++
+     </Typography>
+   )
+ }
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListPrice/index.ts b/node_modules/@graphcommerce/magento-product/components/ProductListPrice/index.ts
 old mode 100644
 new mode 100755
