@@ -1,12 +1,12 @@
 diff --git a/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx b/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx
-index ad0f044..49b33bd 100644
+index ad0f044..5395acf 100644
 --- a/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx
 +++ b/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx
 @@ -18,6 +18,7 @@ export type ProductWishlistChipProps = ProductListItemFragment & {
    sx?: SxProps<Theme>
    buttonProps?: IconButtonProps
    iconSvgProps?: Partial<IconSvgProps>
-+  bigButton?:boolean
++  bigButton?: boolean
  }
  
  const compName = 'ProductWishlistChipBase'
@@ -15,18 +15,18 @@ index ad0f044..49b33bd 100644
  
  export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((props) => {
 -  const { buttonProps, iconSvgProps, sx = [], ...product } = props
-+  const { buttonProps, iconSvgProps, sx = [],bigButton = false , ...product } = props
++  const { buttonProps, iconSvgProps, sx = [], bigButton = false, ...product } = props
    const enabled = useWishlistEnabled()
    const { current, onClick, cancelBubble, showSuccess, hideShowSuccess } =
      useAddProductToWishlistAction({ product, index: 0 })
-@@ -34,14 +35,20 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
+@@ -34,14 +35,38 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
  
    return (
      <Box>
 -      <IconButton
 +      {bigButton ? (
-+        <Button   onClick={onClick} sx={sx}>Buy Now</Button>
-+      ): <IconButton
++        <Button onClick={onClick} sx={sx}>Buy Now</Button>
++      ) : <IconButton
          onClick={onClick}
 -        onMouseDown={cancelBubble}
 -        onTouchStart={cancelBubble}
@@ -36,24 +36,48 @@ index ad0f044..49b33bd 100644
          className={classes.wishlistButton}
          {...buttonProps}
 -        sx={[(theme) => ({ padding: theme.spacings.xxs }), ...(Array.isArray(sx) ? sx : [sx])]}
-+        sx={[(theme) => ({  backgroundColor:(theme:any)=>theme.palette.primary.contrastText, padding:'10px ', backdropFilter:'blur(4px)',marginTop:{sm:'10px',md:'10px'}, marginRight:{sm:'10px',md:'10px'},'&:hover':{
-+          backgroundColor:(theme:any)=>theme.palette.primary.contrastText,
-+        },'&:focus':{
-+          backgroundColor:(theme:any)=>theme.palette.primary.contrastText,
-+        } }), ...(Array.isArray(sx) ? sx : [sx])]}
++        sx={[(theme) => ({
++          backgroundColor: (theme: any) => theme.palette.custom.tltContrastText,
++          padding: '8px ',
++          backdropFilter: 'blur(4px)',
++          marginTop: { sm: '10px', md: '10px' },
++          marginRight: { sm: '10px', md: '10px' },
++          border: (theme: any) => `1px solid ${theme.palette.custom.tltMain}`,
++          transition: 'all 0.4s ease-in-out',
++
++          '& .ProductWishlistChipBase-wishlistIconActive': {
++            fontSize: '18px',
++          },
++          '&:hover': {
++            backgroundColor: '#EFF2F5DB',
++            border: (theme: any) => `1px solid #EFF2F5DB`,
++            '& svg': {
++              fill: (theme: any) => theme.palette.custom.tltMain,
++            }
++          },
++          '&:focus': {
++            backgroundColor: (theme: any) => theme.palette.primary.contrastText,
++          }
++        }), ...(Array.isArray(sx) ? sx : [sx])]}
          title={
            current ? i18n._(/* i18n */ 'Remove from wishlist') : i18n._(/* i18n */ 'Add to wishlist')
          }
-@@ -54,7 +61,7 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
+@@ -54,7 +79,13 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
              src={iconHeart}
              size='medium'
              className={classes.wishlistIconActive}
 -            sx={(theme) => ({ color: theme.palette.primary.main, fill: 'currentcolor' })}
-+            sx={(theme) => ({ color: (theme:any)=>theme.palette.custom.wishlistColor, fill: (theme:any)=>theme.palette.custom.wishlistColor ,stroke: (theme:any)=>theme.palette.custom.wishlistColor})}
++            sx={(theme) => ({
++              color: (theme: any) => theme.palette.custom.tltMain,
++              fill: (theme: any) => theme.palette.custom.tltMain,
++              stroke: (theme: any) => theme.palette.custom.tltMain,
++              transition: 'all 0.4s ease-in-out',
++
++            })}
              {...iconSvgProps}
            />
          ) : (
-@@ -63,10 +70,9 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
+@@ -63,10 +94,10 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
              size='medium'
              className={classes.wishlistIcon}
              sx={(theme) => ({
@@ -61,19 +85,20 @@ index ad0f044..49b33bd 100644
 -                theme.palette.mode === 'light'
 -                  ? theme.palette.text.secondary
 -                  : theme.palette.background.paper,
-+             
-+              stroke: (theme:any)=>theme.palette.custom.wishlistColor,
-+              fontSize:'18px',
++
++              stroke: (theme: any) => theme.palette.custom.tltMain,
++              fontSize: '18px',
++              transition: 'all 0.4s ease-in-out',
                '.SidebarGallery-root &': {
                  // todo
                  color:
-@@ -78,7 +84,8 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
+@@ -78,7 +109,8 @@ export const ProductWishlistIconButton = React.memo<ProductWishlistChipProps>((p
              {...iconSvgProps}
            />
          )}
 -      </IconButton>
 +      </IconButton>}
-+     
++
  
        {import.meta.graphCommerce.wishlistShowFeedbackMessage && (
          <MessageSnackbar

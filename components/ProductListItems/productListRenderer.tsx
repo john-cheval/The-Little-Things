@@ -9,6 +9,11 @@ import { ProductListItemVirtual } from '@graphcommerce/magento-product-virtual'
 import { ProductReviewSummary } from '@graphcommerce/magento-review'
 import { ProductWishlistChip } from '@graphcommerce/magento-wishlist'
 
+// interface itemsRenders { productItem?: any }
+
+// type Porps = itemsRenders & ProductListItemRenderer
+
+
 export const productListRenderer: ProductListItemRenderer = {
   Skeleton: (props) => <ProductListItem {...props} aspectRatio={[1, 1]} />,
   SimpleProduct: (props) => {
@@ -19,7 +24,8 @@ export const productListRenderer: ProductListItemRenderer = {
         aspectRatio={[1, 1]}
         bottomLeft={<ProductReviewSummary {...props} />}
         topRight={<ProductWishlistChip {...props} />}
-        // bottomRight={<AddProductsToCartFab sku={sku} />}
+        product={props?.productItem}
+      // bottomRight={<AddProductsToCartFab sku={sku} />}
       />
     )
   },
@@ -35,6 +41,7 @@ export const productListRenderer: ProductListItemRenderer = {
       }}
       bottomLeft={<ProductReviewSummary {...props} />}
       topRight={<ProductWishlistChip {...props} />}
+
     />
   ),
   BundleProduct: (props) => (

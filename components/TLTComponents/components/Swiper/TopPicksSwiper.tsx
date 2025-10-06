@@ -26,7 +26,8 @@ export function TopPickSwiper({ productList }) {
       sx={{
         position: 'relative',
         '& .swiper': {
-          overflow: 'visible',
+          overflowY: 'visible',
+          // overflowX: 'hidden',
         },
       }}
     >
@@ -92,9 +93,14 @@ export function TopPickSwiper({ productList }) {
           return (
             <SwiperSlide key={`index-${index + 1}`} style={{
               position: 'relative',
+              // overflowY: 'visible',
             }}>
-              <Box >
-                <Box component='div' className='gradient-border' >
+              <Box sx={{
+                position: 'relative',
+              }}>
+                <Box component='div' className='gradient-border' sx={{
+                  marginTop: '50px',
+                }} >
                   <Image src={item?.small_image?.url} alt={item?.name} width={250} height={150} />
                 </Box>
                 <Typography component='p' sx={{
@@ -110,7 +116,7 @@ export function TopPickSwiper({ productList }) {
                 </Typography>
                 <Box sx={{
                   position: 'absolute',
-                  top: { xs: '-50px', md: firsttThreeCards ? '-55px' : '-30px' },
+                  top: { xs: '-50px', md: firsttThreeCards ? '-50px' : '-30px' },
                   left: '50%',
                   transform: 'translateX(-50%)',
                 }}>

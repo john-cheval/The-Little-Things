@@ -17,36 +17,37 @@ export type CmsBlocksProps = { layoutData?: any; cmsBlocks?: any; }
 export type StoryProductsProps = {
   mostViewedProducts?: any[]
   topPicksProducts: any[]
+  arrivingSoonProducts: any[]
+  unlockProducts: any[]
 }
 
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps>
 
 export type CmsPageRouteProps = LayoutNavigationProps & CmsBlocksProps & StoryProductsProps
 function CmsPage(props: CmsPageRouteProps) {
-  const { layoutData, cmsBlocks, mostViewedProducts, topPicksProducts } = props
+  const { layoutData, cmsBlocks, mostViewedProducts, topPicksProducts, arrivingSoonProducts, unlockProducts } = props
 
 
   const homesHeroData = cmsBlocks.find((block) => block.identifier === 'home-section-one')
   const HomeSectionTwo = cmsBlocks.find((block) => block.identifier === 'home-section-two')
-  const HomeSectionThree = cmsBlocks.find((block) => block.identifier === 'home-section-three')
-  const HomeSectionFour = cmsBlocks.find((block) => block.identifier === 'home-section-four')
-  // const homeOccasionsData = cmsBlocks.find((block) => block.identifier === 'home-occasion-title')
-  // const homeMinibytsData = cmsBlocks.find((block) => block.identifier === 'home-mini-bytes')
-  // const homeCollectionsData = cmsBlocks.find((block) => block.identifier === 'home-collections')
-  // const homeCtaData = cmsBlocks.find((block) => block.identifier === 'home-cta')
-  // const homeCeleberationsData = cmsBlocks.find((block) => block.identifier === 'home-celeberation')
-  // const homeImaginationData = cmsBlocks.find((block) => block.identifier === 'home-imagination')
+  const HomeSectionThree = cmsBlocks.find((block) => block.identifier === 'most-viewed-collectables')
+  const HomeSectionFour = cmsBlocks.find((block) => block.identifier === 'top-picks')
+  const HomeSectionFive = cmsBlocks.find((block) => block.identifier === 'arriving-soon-section')
+  const homeUnlockData = cmsBlocks.find((block) => block.identifier === 'unlock-section')
+  const homeRecentlyAddedData = cmsBlocks.find((block) => block.identifier === 'recently-added')
+
+  const homeCtaData = cmsBlocks.find((block) => block.identifier === 'home-cta')
+
 
   const decodedHomeHero = decodeHtmlEntities(homesHeroData?.content)
   const decodedHomeHomeSectionTwo = decodeHtmlEntities(HomeSectionTwo?.content)
   const decodedHomeSectionThree = decodeHtmlEntities(HomeSectionThree?.content)
   const decodedHomeSectionFour = decodeHtmlEntities(HomeSectionFour?.content)
-  // const decodedHomeOccasions = decodeHtmlEntities(homeOccasionsData?.content)
-  // const decodedHomeMinibyts = decodeHtmlEntities(homeMinibytsData?.content)
-  // const decodedHomeCollections = decodeHtmlEntities(homeCollectionsData?.content)
-  // const decodedHomeCta = decodeHtmlEntities(homeCtaData?.content)
-  // const decodedHomeCeleberations = decodeHtmlEntities(homeCeleberationsData?.content)
-  // const decodedHomeImagination = decodeHtmlEntities(homeImaginationData?.content)
+  const decodedHomeSectionFive = decodeHtmlEntities(HomeSectionFive?.content)
+  const decodedunLockSection = decodeHtmlEntities(homeUnlockData?.content)
+  const decodedHomeRecentlyAdded = decodeHtmlEntities(homeRecentlyAddedData?.content)
+  const decodedHomeCta = decodeHtmlEntities(homeCtaData?.content)
+
 
   const filteredCategory = layoutData?.menu?.items?.[0]?.children
     ?.filter((item) => item?.include_in_menu === 0);
@@ -67,6 +68,13 @@ function CmsPage(props: CmsPageRouteProps) {
         sectionProductList={mostViewedProducts}
         sectionFourContent={decodedHomeSectionFour}
         topPicksProductList={topPicksProducts}
+        arrivingSoonContent={decodedHomeSectionFive}
+        arrivingSoonProduct={arrivingSoonProducts}
+        unlockSectionContent={decodedunLockSection}
+        unlockSectionProducts={unlockProducts}
+        recentlyAddedContent={decodedHomeRecentlyAdded}
+        recentlyAddedProduct={arrivingSoonProducts}
+        homeCtadataContent={decodedHomeCta}
       />
 
     </>
@@ -99,8 +107,12 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
       blockIdentifiers: [
         'home-section-one',
         'home-section-two',
-        'home-section-three',
-        'home-section-four',
+        'most-viewed-collectables',
+        'top-picks',
+        'arriving-soon-section',
+        'unlock-section',
+        'recently-added',
+        'home-cta',
       ],
     },
   })
@@ -130,6 +142,28 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
       },
     },
   })
+  const arrivingSoonQuery = await staticClient.query({
+    query: ProductListDocument,
+    variables: {
+      pageSize: 10,
+      currentPage: 1,
+      filters: {
+        category_id: { eq: '37' },
+      },
+    },
+  })
+
+  const unlockQuery = await staticClient.query({
+    query: ProductListDocument,
+    variables: {
+      pageSize: 10,
+      currentPage: 1,
+      filters: {
+        category_id: { eq: '38' },
+      },
+    },
+  })
+
 
   // const statementCakesQuery = await staticClient.query({
   //   query: ProductListDocument,
@@ -148,7 +182,8 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
   const cmsBlocks = (await cmsPageBlocksQuery)?.data.cmsBlocks?.items
   const mostViewedProducts = mostViewedQuery.data?.products?.items
   const topPicksProducts = topPicksQuery.data?.products?.items
-  // const statementCakesProducts = (await statementCakesQuery).data.products?.items
+  const arrivingSoonProducts = arrivingSoonQuery.data?.products?.items
+  const unlockProducts = unlockQuery.data.products?.items
   const layoutData = (await layout)?.data
 
   return {
@@ -157,7 +192,8 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
       cmsBlocks,
       mostViewedProducts,
       topPicksProducts,
-      // statementCakesProducts,
+      arrivingSoonProducts,
+      unlockProducts,
       ...(await layout).data,
       layoutData,
       apolloState: await conf.then(() => client.cache.extract()),

@@ -7,7 +7,7 @@ export function TopPicks({ content, productList }) {
       <Box component='section'
         className='container-wrapper'
         sx={{
-          marginBlock: { xs: '20px', md: '30px', lg: '50px' },
+          marginTop: { xs: '20px', md: '30px', lg: '50px' },
         }}>
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </Box>
