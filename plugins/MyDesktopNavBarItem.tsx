@@ -29,6 +29,10 @@ export function DesktopNavItem(
 ) {
   const router = useRouter()
 
+
+  const coloredUid = ['MjQ=', 'MjU=']
+  const coloredItem = coloredUid?.some((item) => item === props?.itemId)
+
   if (!isLinkProps(props)) {
     // Button-like behavior
     const { onClick, children, sx = [], active, ...linkProps } = props
@@ -38,7 +42,7 @@ export function DesktopNavItem(
         className={classes.root}
         component='div'
         variant='h6'
-        color='#2A110A'
+        // color='#2A110A'
         underline='none'
         {...linkProps}
         onClick={onClick}
@@ -69,9 +73,20 @@ export function DesktopNavItem(
         {
           whiteSpace: 'nowrap',
           padding: activeValue ? '7px 16px' : { lg: '9px 12px', xl: '9px 20px' },
-          background: activeValue && '#F6DBE0',
-          borderRadius: activeValue && '999px',
           fontSize: { xs: '15px', lg: '15px', xl: '16px' },
+          // color: activeValue ? 'green#FF7300' : 'inherit',
+          // color: (theme: any) => (activeValue ? theme.palette.custom.activeColor : theme.palette.custom.tltMain),
+          color: (theme) => {
+            if (activeValue) {
+              return theme.palette.custom.activeColor;
+            }
+
+            if (coloredItem) {
+              return theme.palette.custom.tltSecondary;
+            }
+
+            return theme.palette.custom.tltMain;
+          },
         },
         ...(Array.isArray(sx) ? sx : [sx]),
       ]}

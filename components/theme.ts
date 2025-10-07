@@ -41,6 +41,7 @@ type ThemePaletteOptions = PaletteOptions & {
     textDarkAlter2: string
     textPopmart: string
     tltBorder1: string
+    activeColor: string
   }
 }
 
@@ -68,6 +69,7 @@ const lightPalette: ThemePaletteOptions = {
     tltContrastText: '#fff',
     textPopmart: '#DB2F24',
     tltBorder1: '#DEE5EF',
+    activeColor: '#FF7300',
   },
   primary: {
     main: '#441E14',
@@ -106,7 +108,6 @@ const darkPalette: ThemePaletteOptions = {
     heading: '#9B7C38',
     secondary: '#6F6F6F',
     tertiary: '#969696',
-    dark: '#000',
     border: '#F6DBE0',
     smallHeading: '#2A110A',
     borderInput: '#D5B1B8',
@@ -118,11 +119,13 @@ const darkPalette: ThemePaletteOptions = {
     tltSecondary: '#D90F13',
     tltTertiary: '#767676',
     tltDark: '#313131',
+    dark: '#000',
     textDarkAlter: '#2a2a2a',
     textDarkAlter2: '#2d2d2d',
     tltContrastText: '#fff',
     textPopmart: '#DB2F24',
     tltBorder1: '#DEE5EF',
+    activeColor: '#FF7300',
   },
   primary: {
     main: '#441E14',
@@ -569,6 +572,7 @@ declare module '@mui/material/styles' {
       textDarkAlter2: string
       textPopmart: string
       tltBorder1: string
+      activeColor: string
     }
   }
 
@@ -595,6 +599,7 @@ declare module '@mui/material/styles' {
       textDarkAlter2: string
       textPopmart: string
       tltBorder1: string
+      activeColor: string
     }
   }
 }

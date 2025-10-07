@@ -271,11 +271,10 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                 fontWeight: 600,
                 lineHeight: '120%',
                 textTransform: 'uppercase',
-                color: theme => theme.palette.custom.tltMain,
                 transition: 'all 0.4s ease',
                 padding: '0 !important',
                 '&:hover': {
-                  color: theme => theme.palette.custom.tltSecondary,
+                  color: theme => theme.palette.custom.activeColor,
                 },
 
               },
@@ -288,6 +287,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                     <DesktopNavItem
                       key={menus?.uid}
                       href={`/${menus?.url_path}`}
+                      itemId={menus?.uid}
                     >
                       {menus?.name}
                     </DesktopNavItem>
