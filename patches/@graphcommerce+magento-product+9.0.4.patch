@@ -1,6 +1,16 @@
 diff --git a/node_modules/@graphcommerce/magento-product/Api/ProductListItem.graphql b/node_modules/@graphcommerce/magento-product/Api/ProductListItem.graphql
 old mode 100644
 new mode 100755
+index be7f746..82e0f7c
+--- a/node_modules/@graphcommerce/magento-product/Api/ProductListItem.graphql
++++ b/node_modules/@graphcommerce/magento-product/Api/ProductListItem.graphql
+@@ -11,4 +11,6 @@ fragment ProductListItem on ProductInterface {
+       ...ProductListPrice
+     }
+   }
++  new_from_date
++  new_to_date
+ }
 diff --git a/node_modules/@graphcommerce/magento-product/Api/ProductPageItem.graphql b/node_modules/@graphcommerce/magento-product/Api/ProductPageItem.graphql
 old mode 100644
 new mode 100755
@@ -1083,10 +1093,10 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx
 old mode 100644
 new mode 100755
-index 80912c1..6411d79
+index 80912c1..d4710ab
 --- a/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductFiltersPro/ProductFiltersProCategorySection.tsx
-@@ -10,99 +10,165 @@ import {
+@@ -10,99 +10,178 @@ import {
    iconChevronLeft,
    IconSvg,
    responsiveVal,
@@ -1133,7 +1143,7 @@ index 80912c1..6411d79
 +  const handleAccordionToggle = () => {
 +    setExpandeds(!expandeds)
 +  }
-+  console.log(urlPath, 'thi si urlPath')
++  // console.log(categoryTree, '==> categioryTree')
    return (
 -    <ActionCardAccordion
 -      sx={[
@@ -1178,16 +1188,16 @@ index 80912c1..6411d79
 +        perentExpanded={expandeds}
 +        onChange={handleAccordionToggle}
 +        summary={<Link href={urlPath} sx={{
-+          fontFamily: "'Bricolage Grotesque', sans-serif",
-+          fontSize: { xs: '18px', md: '20px' },
-+          fontWeight: 400,
-+          lineHeight: '120%',
-+          color: (theme: any) => theme.palette.custom.dark,
++          fontSize: { xs: '18px', md: '22px' },
++          fontWeight: 500,
++          lineHeight: '128%',
++          color: (theme: any) => theme.palette.custom.textDarkAlter2,
 +          display: 'flex',
 +          alignItems: 'center',
 +          gap: '8px',
 +          paddingTop: '15px',
-+          textDecoration: 'none'
++          textDecoration: 'none',
++          fontFamily: 'inherit'
 +        }}>
 +          {categoryTitle}</Link>}
 +        right={
@@ -1195,7 +1205,7 @@ index 80912c1..6411d79
 +            position: 'relative',
 +            top: '10px',
 +            '& svg': {
-+              stroke: (theme: any) => theme.palette.custom.wishlistColor
++              stroke: (theme: any) => theme.palette.custom.dark
 +            }
 +          }}>
 +            <IconSvg
@@ -1261,8 +1271,21 @@ index 80912c1..6411d79
 +                  {...item}
 +                  size='responsive'
 +                  title={
-+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: (theme: any) => theme.palette.custom.dark, }}>
-+                      <Box sx={{ marginRight: 1, fontSize: { xs: '15px', md: '16px' } }}>
++                    <Box
++                      sx={{
++                        display: 'flex',
++                        alignItems: 'center',
++                        gap: 1,
++
++                      }}>
++                      <Box
++                        sx={{
++                          // marginRight: 1,
++                          fontSize: { xs: '15px', md: '18px' },
++                          fontWeight: 500,
++                          lineHeight: '120%',
++                          color: (theme: any) => theme.palette.custom.textDarkAlter2,
++                        }}>
 +                        {isBack ? (
 +                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
 +                            <IconSvg src={iconChevronLeft} size='medium' />
@@ -1894,10 +1917,10 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx
 old mode 100644
 new mode 100755
-index 68f7cab..0b76b65
+index 68f7cab..1e678e3
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListCount/ProductListCount.tsx
-@@ -22,33 +22,37 @@ export function ProductListCount(props: ProductCountProps) {
+@@ -22,33 +22,32 @@ export function ProductListCount(props: ProductCountProps) {
      <Box
        sx={[
          (theme) => ({
@@ -1920,27 +1943,24 @@ index 68f7cab..0b76b65
        className={classes.root}
      >
 -      <Divider component='div' className={classes.line} />
-+     
++
        <Typography
-         variant='body2'
+-        variant='body2'
++        // variant='body2'
          color='text.disabled'
-         className={classes.count}
+-        className={classes.count}
 -        sx={{ lineHeight: 0 }}
-+        sx={{ color: '#441e14 !important',
-+                  fontWeight: 300,
-+                  fontFamily: "'Bricolage Grotesque', sans-serif",
-+                  fontSize: { xs: '15px', md: '16px' },
-+                  lineHeight: '130%', }}
++      // className={classes.count}
        >
          {children ? <> {children} </> : null}
          {total_count === 0 && <Trans id='no products' />}
 -        {total_count === 1 && <Trans id='one product' />}
 -        {(total_count ?? 0) > 1 && <Trans id='{total_count} products' values={{ total_count }} />}
-+        {total_count === 1 && <Trans id={`Showing ${total_count} Result` }  values={{ total_count }} />}
-+        {(total_count ?? 0) > 1 && <Trans id={`Showing ${total_count} Results`} values={{ total_count }} />}
++        {total_count === 1 && <Trans id={`${total_count} Product`} values={{ total_count }} />}
++        {(total_count ?? 0) > 1 && <Trans id={`${total_count} Products`} values={{ total_count }} />}
        </Typography>
 -      <Divider component='div' className={classes.line} />
-+     
++
      </Box>
    )
  }
@@ -1974,7 +1994,7 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 old mode 100644
 new mode 100755
-index 0b9f236..05821b9
+index 0b9f236..02a9154
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 @@ -1,7 +1,7 @@
@@ -1986,22 +2006,29 @@ index 0b9f236..05821b9
  import React from 'react'
  import type { ProductListItemFragment } from '../../Api/ProductListItem.gql'
  import { productLink } from '../../hooks/useProductLink'
-@@ -17,6 +17,8 @@ import { ProductImageContainer, ProductListItemImageAreas } from './ProductListI
+@@ -17,6 +17,9 @@ import { ProductImageContainer, ProductListItemImageAreas } from './ProductListI
  import { ProductListItemLinkOrDiv, ProductListItemLinkOrDivProps } from './ProductListItemLinkOrDiv'
  import type { ProductListItemTitleAndPriceProps } from './ProductListItemTitleAndPrice'
  import { ProductListItemTitleAndPrice } from './ProductListItemTitleAndPrice'
 +import { AddProductsToCartButton, AddProductsToCartFab } from '@graphcommerce/magento-product/components/AddProductsToCart'
 +import { Trans } from '@lingui/macro'
++import dayjs from 'dayjs';
  
  const { classes, selectors } = extendableComponent('ProductListItem', [
    'root',
-@@ -87,64 +89,111 @@ export function ProductListItemReal(props: ProductProps) {
+@@ -87,64 +90,124 @@ export function ProductListItemReal(props: ProductProps) {
      sx = [],
      onClick,
      slotProps = {},
 +    sku,
++    new_from_date,
++    new_to_date
    } = props
--
+ 
++  const dateFormat = 'YYYY-MM-DD HH:mm:ss'
++  const startDate = dayjs(new_from_date, dateFormat)
++  const endDate = dayjs(new_to_date, dateFormat)
++  console.log(startDate, endDate, '==>this is the endDate')
    return (
 -    <ProductListItemLinkOrDiv
 -      href={productLink(props)}
@@ -2118,6 +2145,12 @@ index 0b9f236..05821b9
 +              border: 'none',
 +              justifyContent: 'start',
 +              textAlign: 'center',
++              '&.MuiLoadingButton-root': {
++                '& .MuiCircularProgress-root': {
++                  color: (theme: any) => theme.palette.custom?.tltContrastText,
++                  marginInline: 'auto',
++                }
++              }
 +            }}
 +            isIcon={false}
 +            product={props}
@@ -2137,7 +2170,7 @@ index 0b9f236..05821b9
 +                backgroundColor: 'white !important',
 +                borderRadius: '3px !important',
 +                '& svg': {
-+                  fontSize: '28px',
++                  fontSize: '30px',
 +                  stroke: 'unset !important',
 +                  left: { xs: '5px', md: '6px' },
 +                  top: { xs: '1px', md: '4px' },
@@ -2159,9 +2192,18 @@ index 0b9f236..05821b9
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
 old mode 100644
 new mode 100755
-index d1ae621..a082d50
+index d1ae621..4029dc7
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemImage.tsx
+@@ -40,7 +40,7 @@ export function ProductListItemImageSkeleton(props: ProductListItemImageProps) {
+         animation='wave'
+         sx={{
+           width: '100%',
+-          aspectRatio: `${aspectRatio[0] / aspectRatio[1]}`,
++          // aspectRatio: `${aspectRatio[0] / aspectRatio[1]}`,
+           transform: 'none',
+         }}
+       />
 @@ -69,9 +69,10 @@ export function ProductListItemImage(props: ImageOrPlaceholderProps) {
          className={classes?.image}
          sx={[
@@ -2331,24 +2373,23 @@ index ddf15be..e5a0bd4
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx
 old mode 100644
 new mode 100755
-index 711b3ff..7da8552
+index 711b3ff..dc6b26f
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItems/ProductListItemsBase.tsx
-@@ -83,7 +83,7 @@ export function ProductListItemsBase(props: ProductItemsGridProps) {
+@@ -83,7 +83,6 @@ export function ProductListItemsBase(props: ProductItemsGridProps) {
    }
  
    const classes = withState({ size })
 -
-+  console.log(items, "==>items")
    return (
      <AddProductsToCartForm>
        <Box
-@@ -97,14 +97,14 @@ export function ProductListItemsBase(props: ProductItemsGridProps) {
+@@ -97,14 +96,14 @@ export function ProductListItemsBase(props: ProductItemsGridProps) {
                gridTemplateColumns: `repeat(${column.count}, 1fr)`,
              },
            })),
 -          { display: 'grid' },
-+          { display: 'grid', paddingTop: "20px" },
++          { display: 'grid', paddingTop: "30px" },
            ...(Array.isArray(sx) ? sx : [sx]),
          ]}
        >
@@ -2375,17 +2416,6 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts b/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts
 old mode 100644
 new mode 100755
-index 464c244..59e1d4d
---- a/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts
-+++ b/node_modules/@graphcommerce/magento-product/components/ProductListItems/productListApplyCategoryDefaults.ts
-@@ -64,6 +64,7 @@ export async function productListApplyCategoryDefaults(
-   if (!newParams.filters.category_uid?.in?.[0]) {
-     newParams.filters.category_uid = { eq: (await category)?.uid }
-   }
-+  console.log(newParams,"==>newParams");
- 
-   return newParams
- }
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItems/renderer.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItems/renderer.tsx
 old mode 100644
 new mode 100755

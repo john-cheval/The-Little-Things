@@ -41,7 +41,7 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
   } = props
 
   if (!params || !products?.items || !filterTypes) return null
-  const { total_count, sort_fields, page_info } = products
+  const { total_count, sort_fields } = products
 
   const configuration = useLayoutConfiguration(true)
 
@@ -129,7 +129,6 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
   }
 
   const productLength = total_count ?? 0
-
   return (
     <ProductFiltersPro
       params={params}
@@ -140,12 +139,13 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
       handleSubmit={handleSubmit}
     >
       <Container
+        className='container-wrapper'
         maxWidth={false}
         sx={(theme) => ({
           [theme.breakpoints.up('xs')]: {
             gridTemplateColumns: '1fr',
           },
-          ['@media (max-width: 1199px) and (min-width: 769px)']: {
+          '@media (max-width: 1199px) and (min-width: 769px)': {
             gridTemplateColumns: '250px 1fr',
           },
           [theme.breakpoints.up('lg')]: {
@@ -156,20 +156,10 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
           rowGap: isShopPage ? '0' : { xs: 0, md: theme.spacings.md },
           columnGap: isShopPage ? '0' : { xs: '30px', md: '50px', lg: '60px' },
           mb: theme.spacings.xl,
-          // pt: isShopPage ? '0' : { xs: '20px', md: '20px', lg: '30px' },
-          // gridTemplate: {
-          //   xs: '"title" "horizontalFilters"  "items" ',
-          //   md: `
-          //    "sidebar count"      auto
-          //    "sidebar items"      auto
-          //    /${configuration.sidebarWidth}   auto
-          //    `,
-          // },
           gridTemplateAreas: {
             xs: isShopPage ? 'items' : "'sidebar' 'horizontalFilters' 'items'",
             md: isShopPage ? 'items' : "'sidebar items'",
           },
-          paddingInline: { xs: '18px', md: '25px', lg: '55px' },
         })}
       >
         {productLength > 0 ? (
@@ -189,45 +179,6 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                   md: isSearch ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',
                   lg: isSearch ? 'repeat(4, 1fr)' : 'repeat(3, 1fr)',
                   xl: isSearch ? 'repeat(5, 1fr)' : 'repeat(4, 1fr)',
-                },
-                '& .ProductListItem-topLeft': {
-                  gridArea: 'unset',
-                },
-
-                '& .ProductListItem-titleContainer .MuiButtonBase-root': {
-                  width: '40px',
-                  height: '40px',
-                },
-              },
-              '& .ProductListItem-imageContainer .ProductListItem-topRight .MuiButtonBase-root': {
-                padding: { xs: '8px', xl: '9px' },
-                transition: 'all 0.4s ease-in-out',
-                '& svg.ProductWishlistChipBase-wishlistIconActive': {
-                  fontSize: '18px',
-                },
-                '&:hover ': {
-                  '& svg': {
-                    fill: (theme) => theme.palette.custom.wishlistColor,
-                  },
-                },
-              },
-              '& .ProductListItem-titleContainer': {
-                rowGap: { xs: '2px', md: '0' },
-                '& .ProductListItem-title': {
-                  color: (theme) => theme.palette.custom.dark,
-                  //  minHeight: '50px',
-                  fontSize: { xs: '15px', md: '16px' },
-                  lineHeight: '158%',
-                },
-                '& .MuiButtonBase-root': {
-                  width: '45px',
-                  height: '45px',
-
-                  '& svg': {
-                    fontSize: { xs: '25px', md: '28px' },
-                    left: { xs: '5px', md: '7px' },
-                    top: '4px',
-                  },
                 },
               },
             }}
@@ -250,7 +201,6 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
             )}
             <Box
               ref={loaderRef}
-              //sx={{ height: 80, width: '100%', background: 'red' }}
               component='div'
             >
               {isLoading && <Loading />}
@@ -269,7 +219,7 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
               sx={{
                 textAlign: 'center',
                 fontSize: { xs: '15px', lg: '20px' },
-                color: (theme) => theme.palette.custom.main,
+                color: (theme) => theme.palette.custom.tltMain,
               }}
             >
               No Products Found For this Category
@@ -295,7 +245,7 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                   padding: '0 !important',
                   width: '100%',
                   marginBottom: { xs: '20px', sm: '25px' },
-                  //top: '68px !important',
+                  // top: '68px !important',
                   position: 'sticky',
                   top: '65px !important',
                   backgroundColor: '#fff',
@@ -425,7 +375,7 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                         backgroundColor: 'transparent',
 
                         '& span .MuiTypography-root': {
-                          color: (theme: any) => theme.palette.custom.main,
+                          color: theme.palette.custom.main,
                           fontSize: { xs: '15px', md: '16px' },
                           fontWeight: 500,
                           lineHeight: 500,
@@ -435,7 +385,7 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                   })}
                 >
                   {/* <ProductFiltersProAggregations renderer={productFiltersProChipRenderer} />*/}
-                  {/*products.items.length > 0 && (
+                  {/* products.items.length > 0 && (
                 <>
                   <ProductFiltersProSortChip
                     total_count={total_count}
@@ -583,10 +533,9 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                     <Box
                       sx={{
                         display: 'flex',
-                        //  alignItems: 'center',
                         justifyContent: 'space-between',
                         borderBottom: (theme) =>
-                          `1px solid ${theme.palette.custom.borderSecondary}`,
+                          `1px solid ${theme.palette.custom.tltBorder1}`,
                         paddingBottom: '15px',
                         '& .MuiButtonBase-root': {
                           fontSize: { xs: '15px', md: '16px' },
@@ -601,18 +550,18 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                           gap: '8px',
 
                           '& picture': {
-                            width: '24px',
-                            height: '24px',
+                            width: '30px',
+                            height: '30px',
                           },
                         }}
                       >
-                        <Image src={mix} alt='mix_alter' sx={{ width: '24px', height: '24px' }} />{' '}
+                        <Image src={mix} alt='mix_alter' sx={{ width: '30px', height: '30px' }} />{' '}
                         <Typography
                           sx={{
-                            fontSize: { xs: '15px', sm: '16px', md: '20px' },
-                            fontWeight: 500,
-                            lineHeight: '120%',
-                            color: (theme: any) => theme.palette.custom.dark,
+                            fontSize: { xs: '15px', sm: '16px', md: '25px' },
+                            fontWeight: 700,
+                            lineHeight: '128%',
+                            color: (theme: any) => theme.palette.custom.textDarkAlter2,
                           }}
                         >
                           Filter
@@ -622,33 +571,34 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                       <ProductFiltersProClearAll
                         sx={{
                           alignSelf: 'center',
-                          background: 'transparent',
-                          padding: 0,
-                          borderRadius: '0 !important',
-                          color: (theme: any) => theme.palette.custom.tertiary,
+                          background: '#ffe7e7',
+                          border: '1px solid #ffe7e7',
+                          padding: '2px 13px',
+                          borderRadius: '8px',
+                          color: (theme: any) => theme.palette.custom.tltMain,
                           width: 'fit-content',
-                          textDecoration: 'underline',
                           minWidth: 'unset',
                           fontSize: '15px',
                           '&:hover:not(.Mui-disabled)': {
                             backgroundColor: 'transparent',
+
                           },
                         }}
                         title='Clear'
                         menuList={menuList}
                       />
                     </Box>
-                    <ProductFiltersProAggregations renderer={productFiltersProSectionRenderer} />
+                    {/* <ProductFiltersProAggregations renderer={productFiltersProSectionRenderer} /> */}
                     <Typography
                       sx={{
-                        fontSize: { xs: '15px', sm: '16px', md: '20px' },
+                        fontSize: { xs: '15px', sm: '16px', md: '22px' },
                         fontWeight: 500,
-                        lineHeight: '120%',
-                        color: (theme: any) => theme.palette.custom.dark,
+                        lineHeight: '128%',
+                        color: (theme: any) => theme.palette.custom.textDarkAlter2,
                         paddingTop: isSearch ? '0px' : '20px',
                         paddingBottom: '15px',
                         borderBottom: (theme) =>
-                          `1px solid ${theme.palette.custom.borderSecondary}`,
+                          `1px solid ${theme.palette.custom.tltBorder1}`,
                       }}
                     >
                       Categories

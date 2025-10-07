@@ -27,7 +27,6 @@ import {
 import { redirectOrNotFound, redirectTo, StoreConfigDocument } from '@graphcommerce/magento-store'
 import type { GetStaticProps } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
-import { Box, Typography } from '@mui/material'
 import type { GetStaticPaths } from 'next'
 import type { LayoutNavigationProps } from '../components'
 import { LayoutDocument, LayoutNavigation, ProductListLayoutSidebar } from '../components'
@@ -60,9 +59,9 @@ function CategoryPage(props: CategoryProps) {
   const isLanding = category?.display_mode === 'PAGE'
   const isCategory = params && category && products?.items
 
-  const isShop = false
 
-  const productsLength = products?.total_count ?? 0
+
+  // const productsLength = products?.total_count ?? 0
 
   const contexProps = {
     ...productList,
@@ -70,9 +69,9 @@ function CategoryPage(props: CategoryProps) {
     title: category?.name ?? '',
     isFilter: true,
     id: category?.uid,
-    category: category,
-    isShopPage: isShop,
+    category,
   }
+
 
   return (
     <PrivateQueryMaskProvider mask={productList.mask}>
@@ -92,10 +91,9 @@ function CategoryPage(props: CategoryProps) {
             {...productList}
             count={products?.total_count}
             title={category.name ?? ''}
-            isFilter={true}
+            isFilter
             id={category.uid}
             category={category}
-            isShopPage={isShop}
             menu={menu?.items[0]?.children}
           />
         )}
@@ -111,7 +109,6 @@ function CategoryPage(props: CategoryProps) {
                   category={category}
                   menuList={menu?.items[0]?.children}
                   conf={apolloState}
-                  isShopPage={isShop}
                 />
               )}
           </>
@@ -188,7 +185,7 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
         (await conf).data,
         category,
       ),
-      fetchPolicy: "network-only",
+      fetchPolicy: 'network-only',
     })
     : undefined
 

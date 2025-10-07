@@ -1,3 +1,26 @@
+diff --git a/node_modules/@graphcommerce/magento-category/components/CategoryBreadcrumb/CategoryBreadcrumb.graphql b/node_modules/@graphcommerce/magento-category/components/CategoryBreadcrumb/CategoryBreadcrumb.graphql
+index 841f4be..03e5e88 100644
+--- a/node_modules/@graphcommerce/magento-category/components/CategoryBreadcrumb/CategoryBreadcrumb.graphql
++++ b/node_modules/@graphcommerce/magento-category/components/CategoryBreadcrumb/CategoryBreadcrumb.graphql
+@@ -3,6 +3,7 @@ fragment CategoryBreadcrumb on CategoryInterface {
+   name
+   url_path
+   include_in_menu
++  product_count
+   breadcrumbs {
+     category_uid
+     category_name
+diff --git a/node_modules/@graphcommerce/magento-category/components/CategoryChildren/CategoryChildren.graphql b/node_modules/@graphcommerce/magento-category/components/CategoryChildren/CategoryChildren.graphql
+index 461586b..599b372 100644
+--- a/node_modules/@graphcommerce/magento-category/components/CategoryChildren/CategoryChildren.graphql
++++ b/node_modules/@graphcommerce/magento-category/components/CategoryChildren/CategoryChildren.graphql
+@@ -1,5 +1,6 @@
+ fragment CategoryChildren on CategoryTree {
+   uid
++  product_count
+   children {
+     ...NavigationItem
+   }
 diff --git a/node_modules/@graphcommerce/magento-category/queries/MenuQueryFragment.graphql b/node_modules/@graphcommerce/magento-category/queries/MenuQueryFragment.graphql
 index 0d018d1..92de014 100644
 --- a/node_modules/@graphcommerce/magento-category/queries/MenuQueryFragment.graphql
@@ -28,3 +51,15 @@ index 9c8e7bf..bcbbf5e 100644
    is_anchor
 +  image
  }
+diff --git a/node_modules/@graphcommerce/magento-category/utils/useCategoryTree.tsx b/node_modules/@graphcommerce/magento-category/utils/useCategoryTree.tsx
+index b947335..c2a720f 100644
+--- a/node_modules/@graphcommerce/magento-category/utils/useCategoryTree.tsx
++++ b/node_modules/@graphcommerce/magento-category/utils/useCategoryTree.tsx
+@@ -22,7 +22,6 @@ export type CategoryTreeItem = {
+ 
+ export function useCategoryTree(props: UseCategoryTreeProps): CategoryTreeItem[] | null {
+   const { category, params, hideBreadcrumbs } = props
+-
+   if (!params || !category || !category.url_path || !category.name) return null
+ 
+   const parents = filterNonNullableKeys(category?.breadcrumbs, [

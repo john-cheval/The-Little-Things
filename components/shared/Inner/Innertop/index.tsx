@@ -1,21 +1,16 @@
-import { Image } from '@graphcommerce/image'
+
 import {
-  ProductFiltersPro,
   ProductFiltersProSortSection,
   ProductListCount,
 } from '@graphcommerce/magento-product'
-import { Box, SelectChangeEvent, SxProps, Theme, Typography } from '@mui/material'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
+import { Box, Link, SxProps, Theme, Typography } from '@mui/material'
+
 import {
   iconArrowDropDown,
   iconArrowDropDownUp,
-  iconCloseAccordion,
-  iconOpenAccordion,
 } from '../../../../plugins/icons'
 import { ProductListLayoutProps } from '../../../ProductListLayout'
-import rightArrow from './arrow_right.svg'
+import { useRouter } from 'next/router'
 
 type InnerTopBaseProps = {
   count?: number | null
@@ -26,6 +21,10 @@ type InnerTopBaseProps = {
   isShopPage?: boolean
   isFilters?: boolean
   menu?: any
+  params?: any
+  products?: any
+  filterTypes?: any
+  category?: any
 }
 type InnerTopWithFiltersProps = InnerTopBaseProps &
   ProductListLayoutProps & {
@@ -37,44 +36,41 @@ type InnerTopWithoutFiltersProps = InnerTopBaseProps & {
 export type InnerTopProps = InnerTopWithFiltersProps | InnerTopWithoutFiltersProps
 
 export function InnerTop(props: InnerTopProps) {
+  const router = useRouter()
   const {
     count,
     title,
     isFilter,
     mainTitle,
     responsiveTitle,
-    isShopPage = false,
     sx,
     isFilters = false,
     menu,
+    params,
+    products,
+    filterTypes,
+    category,
   } = props
-  const router = useRouter()
 
-  // const nestedRoutes = Array.isArray(router.query.url)
-  //   ? router.query.url
-  //   : router.query.url
-  //     ? [router.query.url]
-  //     : []
+  const isSubCategory = category?.children?.length > 0
 
-  const nestedRoutess = router?.asPath?.split('/').filter(Boolean)
-
+  const currentPath = router.asPath?.split('/')?.filter(Boolean)[1]
   return (
-    <Box sx={{ paddingInline: { xs: '18px', md: '25px', lg: '55px' } }}>
+    <Box component='section' className='container-wrapper'>
       <Box
         sx={[
           (theme) => ({
-            borderTop: `1px solid ${theme.palette.custom.borderSecondary}`,
             paddingBlock: { xs: '10px', lg: '15px' },
 
             ...((isFilter || mainTitle || isFilters) && {
               borderBottom: {
                 xs:
                   mainTitle || isFilters
-                    ? `1px solid ${theme.palette.custom.borderSecondary}` // show if mainTitle=true
-                    : 0, // hide if only isFilter=true
+                    ? `1px solid ${theme.palette.custom.tltBorder1}`
+                    : 0,
               },
               [theme.breakpoints.up('md')]: {
-                borderBottom: `1px solid ${theme.palette.custom.borderSecondary}`, // always show on md+
+                borderBottom: `1px solid ${theme.palette.custom.tltBorder1}`,
               },
             }),
           }),
@@ -82,158 +78,45 @@ export function InnerTop(props: InnerTopProps) {
           ...(Array.isArray(sx) ? sx : [sx]),
         ]}
       >
-        <Box sx={{ marginBottom: '15px' }}>
-          <Box
-            aria-label='breadcrumb'
-            sx={{
-              display: 'flex',
-              columnGap: { xs: '3px', sm: '5px', md: '10px' },
-              alignItems: 'center',
-              overflowX: { xs: 'auto', md: 'none' },
-              whiteSpace: 'nowrap',
-              '&::-webkit-scrollbar': {
-                display: 'none',
-              },
-              scrollbarWidth: 'none',
-              '-ms-overflow-style': 'none',
-            }}
-          >
-            <Typography
-              component='p'
-              sx={{
-                color: (theme: any) => theme.palette.custom.tertiary,
-                fontWeight: 400,
-                fontSize: { xs: '15px', md: '16px' },
-              }}
-            >
-              <Link href='/'>Home</Link>
-            </Typography>
-
-            {title && (
-              <>
-                <Image
-                  src={rightArrow}
-                  width={18}
-                  height={18}
-                  sizes='100vw'
+        {/* SubCategory Section */}
+        {isSubCategory && (
+          <Box component='div' sx={{
+            display: 'flex',
+            columnGap: '16px',
+          }}>
+            {category?.children?.map((item: any, index) => {
+              const splittedUrl = item?.url_path?.split('/').filter(Boolean)?.[1]
+              const activeButton = currentPath === splittedUrl
+              return (
+                <Link href={item?.url_path} key={`index-${index + 1}`}
                   sx={{
-                    width: '18px',
-                    height: 'auto',
-                    verticalAlign: 'middle',
-                    flexShrink: 0,
-                  }}
-                />
+                    background: theme => activeButton ? theme.palette.custom.tltMain : theme.palette.custom.tltSecondary,
+                    color: theme => theme.palette.custom.tltContrastText,
+                    borderRadius: '3px',
+                    textAlign: 'center',
+                    fontsize: { xs: '16px', md: '20px', lg: '25px' },
+                    fontWeight: 700,
+                    lineHeight: '120%',
+                    padding: '25px 30px',
+                    minWidth: { xs: '150px', md: '215px' },
+                    textDecoration: 'none',
+                    transition: 'all 0.4s ease-in-out',
+                    borderColor: theme => activeButton ? theme.palette.custom.tltMain : theme.palette.custom.tltSecondary,
+                    borderWidth: '1px',
+                    borderStyle: 'solid',
 
-                <Typography
-                  component='p'
-                  sx={{
-                    color: (theme: any) => theme.palette.custom.tertiary,
-                    fontWeight: 400,
-                    fontSize: { xs: '15px', md: '16px' },
-                  }}
-                >
-                  {title}
-                </Typography>
-              </>
-            )}
+                    '&:hover': {
+                      background: 'transparent',
+                      borderColor: theme => activeButton ? theme.palette.custom.tltMain : theme.palette.custom.tltSecondary,
+                      color: theme => activeButton ? theme.palette.custom.tltMain : theme.palette.custom.tltSecondary,
+                    },
 
-            {!title &&
-              nestedRoutess?.length > 0 &&
-              nestedRoutess.map((link, index) => {
-                const formattedLink = link
-                  .split('-')
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(' ')
-
-                const linkPath = `/courses`
-
-                return (
-                  <Box
-                    key={index}
-                    sx={{
-                      display: 'flex',
-                      columnGap: { xs: '3px', sm: '5px', md: '10px' },
-                      alignItems: 'center',
-                    }}
-                  >
-                    {index !== 0 && (
-                      <Image
-                        src={rightArrow}
-                        width={18}
-                        height={18}
-                        sizes='100vw'
-                        sx={{
-                          width: '18px',
-                          height: 'auto',
-                          verticalAlign: 'middle',
-                          flexShrink: 0,
-                        }}
-                      />
-                    )}
-
-                    {index === 0 ? null : index === 1 ? (
-                      <Link href={linkPath} passHref>
-                        <Typography
-                          component='p'
-                          sx={{
-                            color: (theme: any) => theme.palette.custom.tertiary,
-                            fontWeight: 400,
-                            fontSize: { xs: '15px', md: '16px' },
-                          }}
-                        >
-                          {formattedLink}
-                        </Typography>
-                      </Link>
-                    ) : (
-                      <Typography
-                        component='p'
-                        sx={{
-                          color: (theme: any) => theme.palette.custom.tertiary,
-                          fontWeight: 400,
-                          fontSize: { xs: '15px', md: '16px' },
-                        }}
-                      >
-                        {formattedLink}
-                      </Typography>
-                    )}
-                  </Box>
-                )
-              })}
+                  }}>{item?.name}</Link>
+              )
+            })}
           </Box>
-        </Box>
-
-        {mainTitle && (
-          <Typography component='h2' variant='h2' sx={{}}>
-            {mainTitle}
-          </Typography>
         )}
 
-        {/*isFilters && (
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              columnGap: '40px',
-              justifyContent: { xs: 'space-between', md: 'start' },
-              width: { xs: '100%', md: 'fit-content' },
-            }}
-          >
-            <Typography component='h2' variant='h2' sx={{}}>
-              {title}
-            </Typography>
-
-            <ProductListCount
-              total_count={count}
-              sx={{
-                gridArea: 'count',
-                width: '100%',
-                my: 0,
-                height: '1em-',
-                textAlign: { xs: 'right', md: 'left' },
-              }}
-            />
-          </Box>
-        )*/}
 
         {isFilter && (
           <Box
@@ -241,6 +124,7 @@ export function InnerTop(props: InnerTopProps) {
               display: 'flex',
               justifyContent: { xs: 'unset', md: 'space-between' },
               alignItems: 'center',
+              marginTop: { xs: '20px', md: '25px' },
             }}
           >
             <Box
@@ -254,11 +138,9 @@ export function InnerTop(props: InnerTopProps) {
             >
               <Typography
                 component='h2'
-                variant='h2'
+                className='main-heading'
                 sx={{
                   whiteSpace: 'nowrap',
-                  // overflow: 'hidden',
-                  //  textOverflow: 'ellipsis',
                 }}
               >
                 {title}
@@ -271,87 +153,85 @@ export function InnerTop(props: InnerTopProps) {
                   width: '100%',
                   my: 0,
                   height: '1em-',
-                  textAlign: { xs: 'right', md: 'left' },
+                  '& p': {
+                    textAlign: { xs: 'right', md: 'left' },
+                    color: '#747474',
+                    fontSize: { xs: '16px', md: '18px' },
+                    lineHeight: '120%',
+                    fontWeight: 400,
+                  },
+
                 }}
               />
             </Box>
 
-            {!isShopPage && (
-              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                {props.params && props.products?.items && props.filterTypes && (
-                  // <ProductFiltersPro
-                  //   params={props.params}
-                  //   aggregations={props.filters?.aggregations}
-                  //   appliedAggregations={props.products?.aggregations}
-                  //   filterTypes={props.filterTypes}
-                  //   autoSubmitMd
-                  //   handleSubmit={props.handleSubmit}
-                  // >
-                  <ProductFiltersProSortSection
-                    menu={menu}
-                    sort_fields={props.products?.sort_fields}
-                    total_count={props.products?.total_count}
-                    category={props.category}
-                    openAccordionIcon={iconArrowDropDown}
-                    closeAccordionIcon={iconArrowDropDownUp}
-                    sx={{
-                      borderBottom: 'none !important',
-                      '& .MuiAccordionSummary-content .MuiTypography-body1': {
-                        color: (theme: any) => theme.palette.custom.main,
-                        fontWeight: 500,
-                        fontSize: { xs: '15px', md: '16px' },
-                        marginBottom: '0 !important',
-                        position: 'relative',
-                      },
-                      '& .MuiAccordionDetails-root > div': {
-                        position: 'absolute',
-                        backgroundColor: '#fff',
-                        width: '100%',
-                        borderRadius: '4px',
-                        zIndex: 1000,
-                        minWidth: '200px',
-                        border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                        '& .ActionCard-root': {
-                          borderRadius: '0',
-                        },
-                        '& .ActionCardLayout-root ': {
-                          border: (theme) => theme.palette.custom.border,
-                          borderRadius: '4px',
-                          '& .MuiButtonBase-root': {
-                            borderBottom: (theme) => `1px solid ${theme.palette.custom.border}`,
 
-                            '& .ActionCard-title': {
-                              fontSize: { xs: '15px', md: '16px' },
-                              fontWeight: 400,
-                            },
-                            '& .ActionCard-end': {
-                              display: 'none',
-                            },
-                          },
-                        },
-                        '& .ActionCard-root.selected': {
-                          backgroundColor: (theme) => theme.palette.custom.border,
-                        },
+            <Box sx={{ display: { xs: 'none', md: 'block' } }}>
+              {params && products?.items && filterTypes && (
+                <ProductFiltersProSortSection
+                  menu={menu}
+                  sort_fields={products?.sort_fields}
+                  total_count={products?.total_count}
+                  category={category}
+                  openAccordionIcon={iconArrowDropDown}
+                  closeAccordionIcon={iconArrowDropDownUp}
+                  sx={{
+                    borderBottom: 'none !important',
+                    '& .MuiAccordionSummary-content .MuiTypography-body1': {
+                      color: (theme: any) => theme.palette.custom.dark,
+                      fontSize: { xs: '15px', md: '18px' },
+                      marginBottom: '0 !important',
+                      position: 'relative',
+                    },
+                    '& .MuiAccordionDetails-root > div': {
+                      position: 'absolute',
+                      backgroundColor: '#fff',
+                      width: '100%',
+                      borderRadius: '4px',
+                      zIndex: 1000,
+                      minWidth: '200px',
+                      border: (theme) => `1px solid ${theme.palette.custom.tltSecondary}`,
+                      '& .ActionCard-root': {
+                        borderRadius: '0',
                       },
                       '& .ActionCardLayout-root ': {
-                        backgroundColor: 'white',
+                        border: (theme) => theme.palette.custom.border,
+                        borderRadius: '3px',
+                        '& .MuiButtonBase-root': {
+                          '&:not(:last-child)': {
+                            borderBottom: (theme) => `1px solid ${theme.palette.custom.tltSecondary}`,
+                          },
+                          '& .ActionCard-title': {
+                            fontSize: { xs: '15px', md: '16px' },
+                            fontWeight: 400,
+                          },
+                          '& .ActionCard-end': {
+                            display: 'none',
+                          },
+                        },
                       },
                       '& .ActionCard-root.selected': {
                         backgroundColor: (theme) => theme.palette.custom.border,
                       },
-                      '& .MuiAccordionSummary-expandIconWrapper': {
-                        position: 'relative',
-                        top: '8px',
-                        marginLeft: '5px',
-                      },
-                    }}
-                  // isDropdown={true}
-                  // isButton={true}
-                  />
-                  // </ProductFiltersPro>
-                )}
-              </Box>
-            )}
+                    },
+                    '& .ActionCardLayout-root ': {
+                      backgroundColor: 'white',
+                    },
+                    '& .ActionCard-root.selected': {
+                      backgroundColor: (theme) => theme.palette.custom.border,
+                    },
+                    '& .MuiAccordionSummary-expandIconWrapper': {
+                      position: 'relative',
+                      top: '8px',
+                      marginLeft: '5px',
+                    },
+                  }}
+
+                />
+
+              )}
+            </Box>
+
           </Box>
         )}
 

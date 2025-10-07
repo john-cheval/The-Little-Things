@@ -1,5 +1,5 @@
 diff --git a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx
-index f94c113..2e770e3 100644
+index f94c113..a7401cb 100644
 --- a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx
 +++ b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCard.tsx
 @@ -1,8 +1,10 @@
@@ -20,7 +20,7 @@ index f94c113..2e770e3 100644
      end?: BoxProps
    }
 -}
-+} & { isFilter?: boolean,isRadioBtn?:boolean }
++} & { isFilter?: boolean, isRadioBtn?: boolean }
  
  const parts = [
    'root',
@@ -38,7 +38,7 @@ index f94c113..2e770e3 100644
    const classes = withState({
      disabled,
      selected,
-@@ -134,6 +141,44 @@ export function ActionCard<C extends React.ElementType = typeof Box>(props: Acti
+@@ -134,6 +141,48 @@ export function ActionCard<C extends React.ElementType = typeof Box>(props: Acti
      error,
    })
  
@@ -46,11 +46,15 @@ index f94c113..2e770e3 100644
 +    return (
 +      <FormControlLabel
 +        className={classes.root}
-+        sx={{ fontSize: "15px", '& svg':{
-+          color:'#F1A8B6',
-+        } ,'.MuiCheckbox-root:hover':{
-+          backgroundColor:'transparent'
-+        }}}
++        sx={{
++          fontSize: "15px",
++          '& svg': {
++            color: (theme: any) => theme.palette.custom.tltMain,
++          }
++          , '.MuiCheckbox-root:hover': {
++            backgroundColor: 'transparent'
++          }
++        }}
 +        control={<Checkbox
 +          onClick={onClick ? (event) => onClick(event, value) : undefined}
 +          value={value}
@@ -62,7 +66,7 @@ index f94c113..2e770e3 100644
 +    )
 +  }
 +
-+ {/*  if(isRadioBtn){
++  {/*  if(isRadioBtn){
 +    return(
 +      <FormControlLabel
 +        control={
@@ -83,7 +87,7 @@ index f94c113..2e770e3 100644
    return (
      <ButtonOrBox
        className={classes.root}
-@@ -305,6 +350,7 @@ export function ActionCard<C extends React.ElementType = typeof Box>(props: Acti
+@@ -305,6 +354,7 @@ export function ActionCard<C extends React.ElementType = typeof Box>(props: Acti
                alignItems: 'flex-start',
              }}
            >
@@ -92,7 +96,7 @@ index f94c113..2e770e3 100644
                <Box
                  className={classes.title}
 diff --git a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx
-index 323c7e3..6b522ae 100644
+index 323c7e3..d0b0489 100644
 --- a/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx
 +++ b/node_modules/@graphcommerce/next-ui/ActionCard/ActionCardAccordion.tsx
 @@ -1,22 +1,43 @@
@@ -150,8 +154,8 @@ index 323c7e3..6b522ae 100644
            border: 'none',
 -          borderBottom: `1px solid ${theme.palette.divider}`,
 -          '&:not(.Mui-expanded)': { borderBottom: `1px solid ${theme.palette.divider}` },
-+          borderBottom: (theme: any) => `1px solid ${theme.palette.custom.borderSecondary}`,
-+          '&:not(.Mui-expanded)': { borderBottom: (theme: any) => `1px solid ${theme.palette.custom.borderSecondary}` },
++          borderBottom: (theme: any) => `1px solid ${theme.palette.custom.tltBorder1}`,
++          '&:not(.Mui-expanded)': { borderBottom: (theme: any) => `1px solid ${theme.palette.custom.tltBorder1}` },
          }),
          ...(Array.isArray(sx) ? sx : [sx]),
        ]}
@@ -165,7 +169,7 @@ index 323c7e3..6b522ae 100644
          sx={{
            px: 0,
            typography: 'subtitle1',
-@@ -50,9 +73,22 @@ export function ActionCardAccordion(props: ActionCardAccordionProps) {
+@@ -50,9 +73,21 @@ export function ActionCardAccordion(props: ActionCardAccordionProps) {
              alignItems: 'center',
              my: 0,
            },
@@ -179,7 +183,6 @@ index 323c7e3..6b522ae 100644
        >
 -        <div>{summary}</div>
 +        <Typography component='p' sx={{
-+          fontFamily: "'Bricolage Grotesque', sans-serif",
 +          fontWeight: 400,
 +          color: '#000',
 +          fontSize: { xs: '15px', md: '20px' },
@@ -901,6 +904,40 @@ index 3a5a250..20686c4 100644
        <OverlayBase
          active={active}
          direction={direction}
+diff --git a/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavBarItem.tsx b/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavBarItem.tsx
+index b8d990d..86e06d1 100644
+--- a/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavBarItem.tsx
++++ b/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavBarItem.tsx
+@@ -7,10 +7,12 @@ const { classes, selectors } = extendableComponent('DesktopNavItem', ['root', 'l
+ 
+ export type DesktopNavItemLinkProps = LinkProps<'a'> & {
+   active?: boolean
++  itemId?: string | number;
+ }
+ export type DesktopNavItemButtonProps = LinkProps<'div'> & {
+   onClick: LinkProps<'button'>['onClick']
+   active?: boolean
++  itemId?: string | number;
+ }
+ 
+ function isLinkProps(
+@@ -56,9 +58,14 @@ export function DesktopNavItem(props: DesktopNavItemLinkProps | DesktopNavItemBu
+       color='text.primary'
+       underline='none'
+       {...linkProps}
+-      sx={[{ whiteSpace: 'nowrap', paddingTop: '6px' }, ...(Array.isArray(sx) ? sx : [sx])]}
++      sx={[{
++        whiteSpace: 'nowrap',
++        paddingTop: '6px',
++        color: (theme: any) => (activeValue ? theme.palette.custom.activeColor : 'red'),
++      },
++      ...(Array.isArray(sx) ? sx : [sx])]}
+     >
+-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>{children}</Box>
++      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'red' }}>{children}</Box>
+       <Box
+         component='span'
+         className={classes.line}
 diff --git a/node_modules/@graphcommerce/next-ui/LayoutParts/Logo.tsx b/node_modules/@graphcommerce/next-ui/LayoutParts/Logo.tsx
 index bbf6b28..d37891c 100644
 --- a/node_modules/@graphcommerce/next-ui/LayoutParts/Logo.tsx
@@ -961,7 +998,7 @@ index 574754c..b4f2c56 100644
            onReset
              ? () => {
 diff --git a/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts b/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts
-index bfb8656..a802323 100644
+index bfb8656..3368f0a 100644
 --- a/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts
 +++ b/node_modules/@graphcommerce/next-ui/Theme/MuiButton.ts
 @@ -85,7 +85,7 @@ export const MuiButtonResponsive: ButtonVariants = [
@@ -969,54 +1006,59 @@ index bfb8656..a802323 100644
    {
      props: { variant: 'pill' },
 -    style: { borderRadius: '99em' },
-+    style: { borderRadius: '8px' },
++    style: { borderRadius: '3px' },
    },
    {
      props: { variant: 'pill', size: 'small' },
-@@ -112,36 +112,37 @@ export const MuiButtonPill: ButtonVariants = [
+@@ -111,37 +111,38 @@ export const MuiButtonPill: ButtonVariants = [
+   },
    {
      props: { variant: 'pill', color: 'primary' },
-     style: ({ theme }) => ({
+-    style: ({ theme }) => ({
 -      backgroundColor: theme.palette.primary.main,
-+      backgroundColor: '#441E14',
++    style: ({ theme }:any) => ({
++      backgroundColor:theme.palette.custom.tltSecondary,
        color: theme.palette.primary.contrastText,
 -      '&:hover:not(.Mui-disabled)': { backgroundColor: theme.palette.primary.dark },
-+      border:'1px solid #441E14',
-+      '&:hover:not(.Mui-disabled)': { backgroundColor: 'transparent', color:'#441E14' },
++      border:`1px solid ${theme.palette.custom.tltSecondary}`,
++      '&:hover:not(.Mui-disabled)': { backgroundColor: 'transparent', color:theme.palette.custom.tltSecondary },
      }),
    },
    {
      props: { variant: 'pill', color: 'secondary' },
-     style: ({ theme }) => ({
+-    style: ({ theme }) => ({
 -      backgroundColor: theme.palette.secondary.main,
 -      color: theme.palette.secondary.contrastText,
 -      '&:hover:not(.Mui-disabled)': { backgroundColor: theme.palette.secondary.dark },
-+      backgroundColor: '#441E14',
++    style: ({ theme }:any) => ({
++      backgroundColor:theme.palette.custom.tltSecondary,
 +      color: theme.palette.primary.contrastText,
-+       border:'1px solid #441E14',
-+      '&:hover:not(.Mui-disabled)': { backgroundColor: 'transparent',color:'#441E14'  },
++      border:`1px solid ${theme.palette.custom.tltSecondary}`,
++      '&:hover:not(.Mui-disabled)': { backgroundColor: 'transparent',color:theme.palette.custom.tltSecondary  },
      }),
    },
    {
      props: { variant: 'pill', color: 'inherit' },
-     style: ({ theme }) => ({
+-    style: ({ theme }) => ({
 -      backgroundColor: theme.palette.background.paper,
-+      backgroundColor: '#441E14',
++    style: ({ theme }:any) => ({
++      backgroundColor:theme.palette.custom.tltSecondary,
        '&:hover:not(.Mui-disabled)': {
 -        backgroundColor:
 -          theme.palette.mode === 'light'
 -            ? darken(theme.palette.background.default, 0.05)
 -            : lighten(theme.palette.background.default, 0.2),
 +        backgroundColor:'transparent',
-+        color:'#441E14' 
++        color:theme.palette.custom.tltSecondary
        },
      }),
    },
    {
      props: { variant: 'pill', disabled: true },
-     style: ({ theme }) => ({
+-    style: ({ theme }) => ({
 -      backgroundColor: theme.palette.action.disabledBackground,
-+      backgroundColor: '#441E14',
++    style: ({ theme }:any) => ({
++       backgroundColor:theme.palette.custom.tltSecondary,
        color: theme.palette.action.disabled,
 +      
      }),
