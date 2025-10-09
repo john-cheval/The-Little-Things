@@ -7,7 +7,7 @@
  * @param limit - Number of characters allowed
  * @returns Truncated string
  */
-export function truncateByChars(text: string, limit: number): string {
+export function truncateByChars(text: string | null | undefined, limit: number): string {
   if (!text) return ''
   if (text.length <= limit) return text
   return text.slice(0, limit) + '...'

@@ -13,7 +13,6 @@
   /* Primary Colors */
   --color-primary-main: #441e14;
   --color-primary-contrastText: #ffffff;
-  --color-primary-dark: #000000;
 
   /* Background Colors */
   --color-background-default: #f9f9fa;
@@ -38,6 +37,7 @@
   --tltDark: #313131;
   --textDarkAlter: #2a2a2a;
   --tltContrastText: #fff;
+  --color-primary-dark: #000000;
 }
 
 /* Common Classes */
@@ -2415,6 +2415,26 @@ input[type='number'] {
 .backToTop {
   text-align: right;
   cursor: pointer;
+}
+
+/* ====== sideBars (wishlist, cart) */
+.sidebar-wrapper {
+  padding-inline: 50px;
+}
+.wishlist_card_price span {
+  font-family: 'Inter', sans-serif;
+  color: var(--color-primary-dark);
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.wishlist_card_price span span:first-child {
+  background: url(../components/Assets/aed.svg) 0px no-repeat;
+  background-size: 25px auto;
+  color: transparent !important;
+  width: 30px;
+  display: inline-block;
 }
 
 /* ====== Animations ========== */
