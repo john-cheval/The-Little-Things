@@ -807,18 +807,113 @@ index d40b712..716a6b6 100644
      )
  
 diff --git a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
-index 41c917c..f58a516 100644
+index 41c917c..0cbedaf 100644
 --- a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
 +++ b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
-@@ -148,7 +148,7 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
-           ...(Array.isArray(sx) ? sx : [sx]),
-         ]}
-       >
--        {left && (
-+       {left && (
+@@ -116,20 +116,20 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+             inset: 0,
+             width: '100%',
+             display: 'grid',
+-            gridTemplateAreas: '"left center right"',
+-            gridTemplateColumns: '1fr auto 1fr',
++            // gridTemplateAreas: '"left center right"',
++            // gridTemplateColumns: '1fr auto 1fr',
++            // gap: theme.page.horizontal,
+             alignItems: 'center',
+-            gap: theme.page.horizontal,
+             height: theme.appShell.headerHeightSm,
+             [theme.breakpoints.up('md')]: {
+               height: theme.appShell.appBarHeightMd,
+             },
+             '&.sizeSmall': {
+               height: theme.appShell.headerHeightSm,
+-              px: 2,
+-              [theme.breakpoints.up('md')]: {
+-                px: 2,
+-              },
++              // px: 2,
++              // [theme.breakpoints.up('md')]: {
++              //   px: 2,
++              // },
+             },
+ 
+             '&.floatingSm': {
+@@ -156,7 +156,7 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+               display: 'grid',
+               gridAutoFlow: 'column',
+               gap: theme.spacings.sm,
+-              gridArea: 'left',
++              // gridArea: 'left',
+               justifyContent: 'start',
+             })}
+           >
+@@ -168,16 +168,24 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+         <Box
+           className={classes.center}
+           sx={(theme) => ({
+-            display: 'grid',
+-            gridAutoFlow: 'column',
+-            gap: theme.spacings.sm,
+-            gridArea: 'center',
+-            justifyContent: 'start',
++            // display: 'grid',
++            // gridAutoFlow: 'column',
++            // gap: theme.spacings.sm,
++            //gridArea: 'center',
++            //justifyContent: 'start',
++            // justifySelf: 'center',
+             overflow: 'hidden',
+-            justifySelf: 'center',
+-
++            width: '100%',
+             transition: 'opacity 150ms',
+             opacity: 0,
++            '&.sizeSmall': {
++              height: theme.appShell.headerHeightSm,
++              px: 2,
++              [theme.breakpoints.up('md')]: {
++                px: 2,
++              },
++            },
++
+             '&.scrolled': {
+               opacity: 1,
+               '& > *': { pointerEvents: 'all' },
+@@ -207,11 +215,14 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+               pointerEvents: 'all',
+               width: 'min-content',
+             },
+-            display: 'grid',
+-            gridAutoFlow: 'column',
+-            gap: theme.spacings.sm,
+-            gridArea: 'right',
+-            justifyContent: 'end',
++            position: 'absolute',
++            top: '10px',
++            right: '20px',
++            // display: 'grid',
++            // gridAutoFlow: 'column',
++            // gap: theme.spacings.sm,
++            // gridArea: 'right',
++            // justifyContent: 'end',
+           })}
+         >
+           <MotionDiv layout={layout} layoutDependency={layoutDependency}>
+@@ -222,10 +233,10 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
            <Box
-             className={classes.left}
+             className={classes.divider}
              sx={(theme) => ({
+-              position: 'absolute',
+-              bottom: 0,
+-              left: 0,
+-              right: 0,
++              // position: 'absolute',
++              // bottom: 0,
++              // left: 0,
++              // right: 0,
+ 
+               '&.floatingSm': {
+                 [theme.breakpoints.down('md')]: {
 diff --git a/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx b/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx
 index 30fc40b..5d190eb 100644
 --- a/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx

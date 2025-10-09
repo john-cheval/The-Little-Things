@@ -8,6 +8,7 @@ import { ProductListItemSimple } from '@graphcommerce/magento-product-simple'
 import { ProductListItemVirtual } from '@graphcommerce/magento-product-virtual'
 import { ProductReviewSummary } from '@graphcommerce/magento-review'
 import { ProductWishlistChip } from '@graphcommerce/magento-wishlist'
+import newArivalBadge from '../TLTComponents/assets/new_arrival.svg'
 
 // interface itemsRenders { productItem?: any }
 
@@ -15,7 +16,7 @@ import { ProductWishlistChip } from '@graphcommerce/magento-wishlist'
 
 
 export const productListRenderer: ProductListItemRenderer = {
-  Skeleton: (props) => <ProductListItem {...props} aspectRatio={[1, 1]} />,
+  Skeleton: (props) => <ProductListItem {...props} aspectRatio={[1, 1]} isNewImage={newArivalBadge} />,
   SimpleProduct: (props) => {
     const { sku } = props
     return (
@@ -25,6 +26,7 @@ export const productListRenderer: ProductListItemRenderer = {
         bottomLeft={<ProductReviewSummary {...props} />}
         topRight={<ProductWishlistChip {...props} />}
         product={props?.productItem}
+        isNewImage={newArivalBadge}
       // bottomRight={<AddProductsToCartFab sku={sku} />}
       />
     )
@@ -70,6 +72,8 @@ export const productListRenderer: ProductListItemRenderer = {
       aspectRatio={[1, 1]}
       bottomLeft={<ProductReviewSummary {...props} />}
       topRight={<ProductWishlistChip {...props} />}
+      isNewImage={newArivalBadge}
+
     />
   ),
   GroupedProduct: (props) => (
@@ -78,6 +82,8 @@ export const productListRenderer: ProductListItemRenderer = {
       aspectRatio={[1, 1]}
       bottomLeft={<ProductReviewSummary {...props} />}
       topRight={<ProductWishlistChip {...props} />}
+      isNewImage={newArivalBadge}
+
     />
   ),
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

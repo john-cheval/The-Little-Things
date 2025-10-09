@@ -1994,11 +1994,12 @@ new mode 100755
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 old mode 100644
 new mode 100755
-index 0b9f236..02a9154
+index 0b9f236..48d473e
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
-@@ -1,7 +1,7 @@
- import type { ImageProps } from '@graphcommerce/image'
+@@ -1,12 +1,12 @@
+-import type { ImageProps } from '@graphcommerce/image'
++import { Image, StaticImport, type ImageProps } from '@graphcommerce/image'
  import { extendableComponent } from '@graphcommerce/next-ui'
  import type { SxProps, Theme } from '@mui/material'
 -import { Skeleton, useEventCallback } from '@mui/material'
@@ -2006,30 +2007,43 @@ index 0b9f236..02a9154
  import React from 'react'
  import type { ProductListItemFragment } from '../../Api/ProductListItem.gql'
  import { productLink } from '../../hooks/useProductLink'
-@@ -17,6 +17,9 @@ import { ProductImageContainer, ProductListItemImageAreas } from './ProductListI
+ import { ProductListPrice } from '../ProductListPrice/ProductListPrice'
+-import { ProductDiscountLabel } from './ProductDiscountLabel'
++// import { ProductDiscountLabel } from './ProductDiscountLabel'
+ import type { ProductListItemImageProps } from './ProductListItemImage'
+ import { ProductListItemImage, ProductListItemImageSkeleton } from './ProductListItemImage'
+ import type {
+@@ -17,6 +17,11 @@ import { ProductImageContainer, ProductListItemImageAreas } from './ProductListI
  import { ProductListItemLinkOrDiv, ProductListItemLinkOrDivProps } from './ProductListItemLinkOrDiv'
  import type { ProductListItemTitleAndPriceProps } from './ProductListItemTitleAndPrice'
  import { ProductListItemTitleAndPrice } from './ProductListItemTitleAndPrice'
 +import { AddProductsToCartButton, AddProductsToCartFab } from '@graphcommerce/magento-product/components/AddProductsToCart'
 +import { Trans } from '@lingui/macro'
 +import dayjs from 'dayjs';
++import isBetween from 'dayjs/plugin/isBetween';
++dayjs.extend(isBetween);
  
  const { classes, selectors } = extendableComponent('ProductListItem', [
    'root',
-@@ -87,64 +90,124 @@ export function ProductListItemReal(props: ProductProps) {
+@@ -44,6 +49,7 @@ export type BaseProps = {
+   imageOnly?: boolean
+   children?: React.ReactNode
+   sx?: SxProps<Theme>
++  isNewImage?: string | StaticImport | undefined
+   onClick?: (
+     event: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>,
+     item: ProductListItemFragment,
+@@ -87,64 +93,138 @@ export function ProductListItemReal(props: ProductProps) {
      sx = [],
      onClick,
      slotProps = {},
 +    sku,
 +    new_from_date,
-+    new_to_date
++    new_to_date,
++    isNewImage,
    } = props
  
-+  const dateFormat = 'YYYY-MM-DD HH:mm:ss'
-+  const startDate = dayjs(new_from_date, dateFormat)
-+  const endDate = dayjs(new_to_date, dateFormat)
-+  console.log(startDate, endDate, '==>this is the endDate')
-   return (
+-  return (
 -    <ProductListItemLinkOrDiv
 -      href={productLink(props)}
 -      className={classes.root}
@@ -2052,12 +2066,17 @@ index 0b9f236..02a9154
 -          dontReportWronglySizedImages={dontReportWronglySizedImages}
 -          {...slotProps.image}
 -        />
--
++  const dateFormat = 'YYYY-MM-DD HH:mm:ss'
++  const startDate = dayjs(new_from_date, dateFormat)
++  const endDate = dayjs(new_to_date, dateFormat)
++  const isNew = startDate.isValid() && endDate.isValid() ? dayjs().isBetween(startDate, endDate, undefined, '[]') : false
+ 
 -        {!imageOnly && (
 -          <ProductListItemImageAreas
 -            topRight={topRight}
 -            bottomLeft={bottomLeft}
 -            bottomRight={bottomRight}
++  return (
 +    <div>
 +      <ProductListItemLinkOrDiv
 +        href={productLink(props)}
@@ -2097,7 +2116,16 @@ index 0b9f236..02a9154
 +              classes={classes}
 +              topLeft={
 +                <>
-+                  <ProductDiscountLabel className={classes.discount} price_range={price_range} />
++                  {/* <ProductDiscountLabel className={classes.discount} price_range={price_range} /> */}
++                  <Image
++                    src={isNewImage ?? '/_next/static/media/new_arrival.a17948ef.svg'}
++                    alt='NewBadge'
++                    sx={{
++                      maxWidth: { xs: '40px', md: '60px', lg: '70px' },
++                      height: 'auto',
++                      display: isNew ? 'block' : 'none',
++                    }}
++                  />
 +                  {topLeft}
 +                </>
 +              }
@@ -2146,9 +2174,12 @@ index 0b9f236..02a9154
 +              justifyContent: 'start',
 +              textAlign: 'center',
 +              '&.MuiLoadingButton-root': {
++                minHeight: '50px',
 +                '& .MuiCircularProgress-root': {
 +                  color: (theme: any) => theme.palette.custom?.tltContrastText,
 +                  marginInline: 'auto',
++                  height: '100%',
++                  // padding: '5px',
 +                }
 +              }
 +            }}

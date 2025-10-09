@@ -36,11 +36,16 @@ type ThemePaletteOptions = PaletteOptions & {
     tltSecondary: string
     tltTertiary: string
     tltDark: string
+    tltGray1: string
+    tltlGray2: string
     tltContrastText: string
     textDarkAlter: string
     textDarkAlter2: string
     textPopmart: string
     tltBorder1: string
+    tltBorder2: string
+    tltBorder3: string
+    tltBorder4: string
     activeColor: string
   }
 }
@@ -63,12 +68,17 @@ const lightPalette: ThemePaletteOptions = {
     tltMain: '#7B1316',
     tltSecondary: '#D90F13',
     tltTertiary: '#767676',
+    tltGray1: '#686868',
+    tltlGray2: '#f8f8f8',
     tltDark: '#313131',
     textDarkAlter: '#2a2a2a',
     textDarkAlter2: '#2d2d2d',
     tltContrastText: '#fff',
     textPopmart: '#DB2F24',
     tltBorder1: '#DEE5EF',
+    tltBorder2: '#A8A8A8',
+    tltBorder3: '#e8e8e8',
+    tltBorder4: '#D5D5D5',
     activeColor: '#FF7300',
   },
   primary: {
@@ -120,11 +130,16 @@ const darkPalette: ThemePaletteOptions = {
     tltTertiary: '#767676',
     tltDark: '#313131',
     dark: '#000',
+    tltGray1: '#686868',
+    tltlGray2: '#f8f8f8',
     textDarkAlter: '#2a2a2a',
     textDarkAlter2: '#2d2d2d',
     tltContrastText: '#fff',
     textPopmart: '#DB2F24',
     tltBorder1: '#DEE5EF',
+    tltBorder2: '#A8A8A8',
+    tltBorder3: '#e8e8e8',
+    tltBorder4: '#D5D5D5',
     activeColor: '#FF7300',
   },
   primary: {
@@ -568,10 +583,15 @@ declare module '@mui/material/styles' {
       tltTertiary: string
       tltDark: string
       tltContrastText: string
+      tltGray1: string
+      tltlGray2: string
       textDarkAlter: string
       textDarkAlter2: string
       textPopmart: string
       tltBorder1: string
+      tltBorder2: string
+      tltBorder3: string
+      tltBorder4: string
       activeColor: string
     }
   }
@@ -594,11 +614,16 @@ declare module '@mui/material/styles' {
       tltSecondary: string
       tltTertiary: string
       tltDark: string
+      tltGray1: string
+      tltlGray2: string
       tltContrastText: string
       textDarkAlter: string
       textDarkAlter2: string
       textPopmart: string
       tltBorder1: string
+      tltBorder2: string
+      tltBorder3: string
+      tltBorder4: string
       activeColor: string
     }
   }

@@ -1013,6 +1013,10 @@ msgid "Add to Cart"
 msgstr "Añadir al carrito"
 
 #. js-lingui-generated-id
+msgid "Clear"
+msgstr "Borrar"
+
+#. js-lingui-generated-id
 msgid "Shipping address"
 msgstr "Dirección de envío"
 
