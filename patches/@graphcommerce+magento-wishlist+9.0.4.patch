@@ -292,7 +292,7 @@ index a533979..227120e 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx b/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx
-index 81c7382..2a3174c 100644
+index 81c7382..51694ad 100644
 --- a/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx
 +++ b/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx
 @@ -1,16 +1,17 @@
@@ -370,7 +370,7 @@ index 81c7382..2a3174c 100644
                    : typographySizes[size],
                mb: { xs: 0.5, sm: 0 },
              },
-@@ -128,52 +131,112 @@ export function WishlistItemActionCard(props: WishlistItemActionCardProps) {
+@@ -128,52 +131,113 @@ export function WishlistItemActionCard(props: WishlistItemActionCardProps) {
                layout='fill'
                src={product?.small_image?.url}
                sx={{
@@ -485,11 +485,12 @@ index 81c7382..2a3174c 100644
 +            // color='secondary'
              size='medium'
              type='button'
++            disableRipple
 +            sx={{
 +              backgroundColor: (theme: any) => theme.palette.custom.tltlGray2,
 +              color: (theme: any) => theme.palette.custom.tltGray1,
 +              textAlign: 'center',
-+              fontSize: '14px !important',
++              fontSize: '16px !important',
 +              borderRadius: '3px',
 +              padding: '5px 10px',
 +              minWidth: 'unset',
@@ -503,7 +504,7 @@ index 81c7382..2a3174c 100644
              {...actionButtonProps}
            >
 -            <Trans id='Remove' />
-+            <Trans id='Clear' />
++            <Trans id='Delete' />
            </Button>
          }
          size={size}

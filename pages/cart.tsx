@@ -11,7 +11,7 @@ import {
 import { CartPageDocument } from '@graphcommerce/magento-cart-checkout'
 import { CouponAccordion } from '@graphcommerce/magento-cart-coupon'
 import { CartCrosssellsScroller, CartItemsActionCards } from '@graphcommerce/magento-cart-items'
-import { Money, PageMeta, StoreConfigDocument } from '@graphcommerce/magento-store'
+import { PageMeta, StoreConfigDocument } from '@graphcommerce/magento-store'
 import type { GetStaticProps } from '@graphcommerce/next-ui'
 import {
   FullPageMessage,
@@ -21,7 +21,7 @@ import {
 } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
-import { CircularProgress, Container, Divider, Typography } from '@mui/material'
+import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material'
 import type { LayoutOverlayProps } from '../components'
 import { LayoutOverlay, productListRenderer } from '../components'
 import { graphqlSharedClient } from '../lib/graphql/graphqlSsrClient'
@@ -41,6 +41,8 @@ function CartPage() {
     (data?.cart?.total_quantity ?? 0) > 0 &&
     typeof data?.cart?.prices?.grand_total?.value !== 'undefined'
 
+  const cartQuantity = data?.cart?.total_quantity ?? 0
+
   return (
     <>
       <PageMeta
@@ -49,31 +51,104 @@ function CartPage() {
       />
       <LayoutOverlayHeader
         sx={{
-          '& .MuiButtonBase-root': {
-            color: (theme: any) => theme.palette.custom.dark,
-          },
+
           '& .MuiButtonBase-root svg': {
-            color: (theme: any) => theme.palette.custom.dark,
-            fontSize: '30px',
+            color: (theme: any) => theme.palette.custom.textDarkAlter,
+            fontSize: { xs: '25px', lg: '28px' },
           },
-          ['& .LayoutHeaderContent-center']: {
+          '& .LayoutHeaderContent-center': {
             opacity: '1 !important',
-            gridArea: 'left',
             justifySelf: 'flex-start',
+            px: 2,
+          },
+          '& .LayoutHeaderContent-right': {
+            position: 'absolute',
+            top: '-50px',
+            right: '20px',
+            '.MuiButtonBase-root': {
+              background: 'transparent',
+              boxShadow: 'none',
+              color: (theme) => theme.palette.custom.textDarkAlter,
+              '&:hover': {
+                background: 'transparent',
+                boxShadow: 'none',
+              },
+              '&:active': {
+                background: 'transparent',
+                boxShadow: 'none',
+              },
+              '&:focus': {
+                background: 'transparent',
+                boxShadow: 'none',
+              },
+            },
           },
         }}
         divider={
           <Container>
-            <Divider sx={{ background: 'rgba(199, 202, 205, 0.42)' }} />
+            <Divider
+              sx={{
+                background: (theme) => theme.palette.custom.tltBorder2,
+                borderColor: (theme) => `1px solid ${theme.palette.custom.tltBorder2}`,
+              }} />
           </Container>
         }
       >
-        <LayoutTitle size='small' component='span'>
-          <Typography variant='h2' component='h2'>
+        <LayoutTitle size='small' component='span'
+          sx={{
+            '& span': {
+              display: 'flex',
+              alignItems: 'center',
+              columnGap: '10px',
+              justifyContent: 'space-between',
+              width: '100%',
+            },
+          }}>
+          <Typography component='span' className='main-heading-2'>
             Cart
           </Typography>
+
+          {cartQuantity > 0 && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                columnGap: '5px',
+              }}>
+              <Typography
+                component='p'
+                sx={{
+                  backgroundColor: (theme: any) => theme.palette.custom.tltGray2,
+                  borderRadius: '3px',
+                  color: (theme: any) => theme.palette.custom.tltGray1,
+                  textAlign: 'center',
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  lineHeight: 'normal',
+                  padding: '3px 9px',
+                }}>{cartQuantity} {cartQuantity === 1 ? 'Product' : 'Products'}</Typography>
+
+              <Typography
+                component='p'
+
+                sx={{
+                  backgroundColor: '#FFF0F3',
+                  borderRadius: '3px',
+                  color: '#D0011F',
+                  textAlign: 'center',
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  lineHeight: 'normal',
+                  padding: '3px 12px',
+                  cursor: 'pointer',
+
+                }}
+              // onClick={handleRemoveAllItems}
+              >Clear</Typography>
+            </Box>
+          )}
         </LayoutTitle>
-      </LayoutOverlayHeader>
+      </LayoutOverlayHeader >
 
       <WaitForQueries
         waitFor={cart}
@@ -89,7 +164,6 @@ function CartPage() {
               // maxWidth='md'
               sx={{
                 flexGrow: 1,
-                // minHeight: { xs: '200px', lg: '500px' },
                 minHeight: 'calc(100vh - 360px)',
 
                 overflowY: 'scroll',
@@ -99,21 +173,16 @@ function CartPage() {
                 pl: { xs: '15px', sm: '20px', lg: '30px' },
 
                 '&::-webkit-scrollbar': {
-                  //   width: '6px',
-                  //   borderRadius: '0px',
-                  //   backgroundColor: '#EBEBEB',
+
                   display: 'none',
                   width: 0,
                   background: 'transparent',
                 },
                 '&::-webkit-scrollbar-track': {
-                  //   backgroundColor: '#EBEBEB',
-                  //    borderRadius: '0px',
+
                   display: 'none',
                 },
                 '&::-webkit-scrollbar-thumb': {
-                  //     backgroundColor: (theme) => theme.palette.primary.main,
-                  //     borderRadius: '0px',
                   display: 'none',
                 },
 
@@ -128,56 +197,38 @@ function CartPage() {
                 sx={{
                   position: 'relative',
                   zIndex: 1,
-
-                  '& .ActionCard-title a': {
-                    color: (theme: any) => theme.palette.custom.dark,
-                    fontSize: { xs: '15px', md: '16px' },
-                    fontWeight: 600,
-                    lineHeight: '120%',
-                  },
-                  '& .ActionCard-image img': {
-                    width: { xs: '110px', sm: '125px' },
-                    height: { xs: '110px', sm: '125px' },
-                    // width: '100% !important',
-                  },
-                  '& .ActionCard-details ': {
-                    display: 'grid',
-                    gridTemplateColumns: 'auto auto',
-                    color: (theme: any) => theme.palette.custom.smallHeading,
-                    fontSize: { xs: '15px', md: '16px' },
-                    fontWeight: 'normal',
-                    colummGap: '2px',
-                    marginTop: '5px',
-                  },
-                  '& .ActionCard-action': {
-                    marginBottom: 0,
-                  },
-                  '& .ActionCard-end .ActionCard-action .edit-actions': {
-                    display: 'flex',
-                    flexDirection: 'row',
-                    '& form .MuiButtonBase-root': {
-                      marginTop: '-5px',
+                  '& .ActionCard-image': {
+                    '& picture': {
+                      width: { xs: '150px', md: '160px' },
+                    },
+                    '& img': {
+                      borderRadius: '3px',
+                      marginRight: '10px',
+                      width: '100%',
+                      height: 'auto',
+                      border: theme => `1px solid ${theme.palette.custom.tltBorder3}`,
                     },
                   },
-                  '& .ActionCard-end .ActionCard-action .MuiBox-root:nth-child(2)': {
-                    display: { xs: 'none', md: 'inline-flex' },
+                  '& .ActionCard-title a': {
+                    color: (theme: any) => theme.palette.custom.dark,
+                    fontSize: { xs: '15px', md: '18px', lg: '20px' },
+                    fontWeight: 400,
+                    lineHeight: '127%',
+                    textDecoration: 'none',
+                    '&:hover': {
+                      textDecoration: 'none',
+                    },
                   },
+
                   '& .ActionCard-secondaryAction': {
                     marginTop: 'auto',
                     '&  .MuiBox-root .MuiBox-root': {
                       display: { xs: 'inline-flex', md: 'none' },
                     },
                   },
-
-                  '& .ActionCard-end .ActionCard-price span': (theme) => ({
-                    color: (theme: any) => theme.palette.custom.dark,
-                    fontSize: { xs: '16px', md: '20px' },
-                    fontWeight: '700 !important',
-                    lineHeight: '120%',
-                  }),
                 }}
               />
-              <CouponAccordion key='couponform' sx={(theme) => ({ mt: theme.spacings.md })} />
+              <CouponAccordion key='couponform' />
 
               <ApolloCartErrorAlert error={error} />
             </Container>
@@ -190,14 +241,10 @@ function CartPage() {
                 pt: 0.1,
                 pb: { xs: '10px', md: '20px', lg: '30px' },
                 px: { xs: '15px', sm: '20px', lg: '30px' },
-                //boxShadow: '1px 3px 8px #000',
-
                 bottom: 0,
-                //position: 'absolute',
-                backgroundColor: (theme: any) => theme.palette.primary.contrastText,
+                backgroundColor: (theme: any) => theme.palette.custom.tltContrastText,
                 width: '100%',
-                // bottom: '0',
-                //  bottom: 'unset !important',
+
                 '& .CartTotals-root ': {
                   backgroundColor: 'transparent',
                   borderRadius: 0,
@@ -208,68 +255,10 @@ function CartPage() {
               }}
             >
               <CartTotals
-                //containerMargin
+                // containerMargin
                 sx={{
                   typography: 'body1',
-                  '& .CartTotals-costsRow': {
-                    color: (theme: any) => theme.palette.custom.smallHeading,
-                    '& .MuiBox-root.mui-style-0': {
-                      color: (theme: any) => theme.palette.custom.smallHeading,
-                      fontSize: { xs: '15px', md: '16px' },
-                      fontWeight: 400,
-                      lineHeight: 'normal',
-                    },
-                    '& .CartTotals-money.MuiBox-root': {
-                      '& span span': {
-                        color: (theme: any) => theme.palette.custom.smallHeading,
-                        fontWeight: 600,
-                        fontSize: { xs: '15px', md: '16px' },
-                        textTransform: 'capitalize',
-                      },
-                    },
-                  },
-                  '& .CartTotals-costsRow:nth-child(2)': {
-                    color: (theme: any) => theme.palette.custom.smallHeading,
-                    fontWeight: '600 !important',
-                    fontSize: '16px !important',
-                  },
-                  '& .MuiBox-root': {
-                    '& .MuiBox-root.mui-style-0': {
-                      color: (theme: any) => theme.palette.custom.smallHeading,
-                      fontSize: { xs: '15px', md: '16px' },
-                      fontWeight: 400,
-                      lineHeight: 'normal',
-                      textTransform: 'capitalize',
-                    },
-                    '& .CartTotals-money.MuiBox-root': {
-                      '& span span': {
-                        color: (theme: any) => theme.palette.custom.smallHeading,
-                        fontWeight: 600,
-                        fontSize: { xs: '15px', md: '16px' },
-                      },
-                    },
-                  },
 
-                  '& .CartTotals-costsGrandTotal': {
-                    '& .MuiBox-root.mui-style-0': {
-                      color: (theme: any) => theme.palette.custom.smallHeading,
-                      fontSize: { xs: '16px', md: '20px' },
-                      fontWeight: 700,
-                      lineHeight: 'normal',
-                      textTransform: 'capitalize',
-                    },
-                    '& .CartTotals-money.MuiBox-root': {
-                      '& span span:first-child': {
-                        backgroundPosition: '0px  center',
-                      },
-                      '& span span': {
-                        color: (theme: any) => theme.palette.custom.smallHeading,
-                        fontWeight: 700,
-                        fontSize: { xs: '16px', md: '20px' },
-                        textTransform: 'capitalize',
-                      },
-                    },
-                  },
                 }}
               />
               <CartStartCheckout
@@ -348,7 +337,7 @@ const pageOptions: PageOptions<LayoutOverlayProps> = {
         },
         position: 'relative',
         '& .LayoutOverlayBase-background': {
-          paddingTop: '20px',
+          paddingTop: { xs: '20px', md: '30px', lg: '60px' },
         },
       },
       '& .LayoutOverlayBase-beforeOverlay': {
