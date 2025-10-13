@@ -1017,6 +1017,14 @@ msgid "Clear"
 msgstr "Clear"
 
 #. js-lingui-generated-id
+msgid "Delete"
+msgstr "Delete"
+
+#. js-lingui-generated-id
+msgid "Sub Total"
+msgstr "Sub Total"
+
+#. js-lingui-generated-id
 msgid "Shipping address"
 msgstr "Shipping address"
 

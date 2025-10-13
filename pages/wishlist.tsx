@@ -64,7 +64,7 @@ function WishlistPage() {
             '.MuiButtonBase-root': {
               background: 'transparent',
               boxShadow: 'none',
-              color: (theme) => theme.palette.custom.main,
+              color: (theme) => theme.palette.custom.textDarkAlter,
               '&:hover': {
                 background: 'transparent',
                 boxShadow: 'none',
@@ -159,19 +159,23 @@ function WishlistPage() {
           sx={{
 
             '& .AddProductsToCartForm': {
-              '& .ActionCard-image img': {
-                borderRadius: '3px',
-                marginRight: '10px',
-                // objectFit: 'cover',
-                width: '100%',
-                height: { xs: 'auto', md: 'auto' },
-                border: theme => `1px solid ${theme.palette.custom.tltBorder3}`,
+              '& .ActionCard-image': {
+                '& picture': {
+                  width: { xs: '150px', md: '160px' },
+                },
+                '& img': {
+                  borderRadius: '3px',
+                  marginRight: '10px',
+                  width: '100%',
+                  height: 'auto',
+                  border: theme => `1px solid ${theme.palette.custom.tltBorder3}`,
+                },
               },
               '& .ActionCard-title': {
                 '& .MuiFormControl-root .MuiInputBase-root': {
                   marginTop: '10px',
                   border: theme => `1px solid ${theme.palette.custom.tltBorder4}`,
-                  padding: '5px',
+                  padding: '2px',
                   borderRadius: '3px',
                   color: theme => theme.palette.custom.textDarkAlter2,
                   fontsize: { xs: '15px', lg: '16px' },
@@ -189,57 +193,13 @@ function WishlistPage() {
                   },
                 },
               },
-              // '& .ActionCard-secondaryAction': {
-              //   '& .MuiBox-root': {
-              //     alignItems: 'center',
-              //     columnGap: '10px',
-
-              //     '&:nth-child(2)': {
-              //       marginTop: { xs: '5px', md: '10px' },
-              //       display: { xs: 'inline-flex', md: 'none' },
-              //     },
-              //   },
-
-              // },
-              // '& .ActionCard-end .ActionCard-action .MuiButtonBase-root': {
-              //   '&:hover': {
-              //     backgroundColor: 'transparent',
-              //   },
-              //   '&:active': {
-              //     backgroundColor: 'transparent',
-              //   },
-
-              //   '&.Mui-focusVisible': {
-              //     backgroundColor: 'transparent',
-              //   },
-
-              //   '&:focus': {
-              //     backgroundColor: 'transparent',
-              //     outline: 'none',
-              //   },
-              // },
-              // '& .ActionCard-secondaryAction [aria-label="Add to Cart"] svg ': {
-              //   fontSize: { xs: '26px', md: '30px' },
-              //   top: '3px',
-              //   right: '8px',
-              // },
               '& .ActionCard-title.sizeResponsive': {
                 fontSize: { xs: '15px', md: '18px', lg: '20px' },
                 fontWeight: 400,
-                color: '#000',
+                color: (theme: any) => theme.palette.custom.dark,
                 lineHeight: '127%',
               },
-              // '& .ActionCard-secondaryAction a': {
-              //   color: (theme) => theme.palette.custom.main,
-              //   backgroundColor: 'transparent',
-              //   marginBlock: 0,
-              //   paddingBlock: 0,
-              //   transition: 'all 0.4s ease-in-out',
 
-              //   '&:hover span svg': {
-              //     transform: 'translateX(5px)',
-              //   },
-              // },
               '& .ActionCard-title a': {
                 textDecoration: 'none',
                 '&:hover': {
@@ -252,9 +212,7 @@ function WishlistPage() {
                   marginBottom: '0px',
                 },
               },
-              // '& .ActionCard-end .ActionCard-action .MuiButtonBase-root svg': {
-              //   color: '#9d9d9d',
-              // },
+
             },
           }}
         >
