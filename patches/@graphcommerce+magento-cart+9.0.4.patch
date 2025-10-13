@@ -50,15 +50,15 @@ index 2cb4e6f..567bda0 100644
            [theme.breakpoints.down('md')]: {
              opacity: '1 !important',
 diff --git a/node_modules/@graphcommerce/magento-cart/components/CartStartCheckout/CartStartCheckout.tsx b/node_modules/@graphcommerce/magento-cart/components/CartStartCheckout/CartStartCheckout.tsx
-index 0b04f2c..5a63da3 100644
+index 0b04f2c..f724e9e 100644
 --- a/node_modules/@graphcommerce/magento-cart/components/CartStartCheckout/CartStartCheckout.tsx
 +++ b/node_modules/@graphcommerce/magento-cart/components/CartStartCheckout/CartStartCheckout.tsx
 @@ -13,6 +13,8 @@ export type CartStartCheckoutProps = {
    buttonProps?: ButtonProps<'button'>
    disabled?: boolean
    cart?: CartStartCheckoutFragment | null | undefined
-+  title?:string
-+  isCheckout?:boolean
++  title?: string
++  isCheckout?: boolean
    onStart?: (
      e: React.MouseEvent<HTMLButtonElement>,
      cart: CartStartCheckoutFragment | null | undefined,
@@ -66,8 +66,8 @@ index 0b04f2c..5a63da3 100644
      disabled,
      sx = [],
      cart,
-+    title='Proceed to Checkout',
-+    isCheckout=false
++    title = 'Proceed to Buy',
++    isCheckout = false
    } = props
  
    const shouldLoginToContinue = useCheckoutShouldLoginToContinue()
@@ -76,7 +76,7 @@ index 0b04f2c..5a63da3 100644
  
        <Button
 -        href='/checkout'
-+        href={isCheckout?'/checkout/payment':'/checkout'}
++        href={isCheckout ? '/checkout/payment' : '/checkout'}
          id='cart-start-checkout'
          variant='pill'
          color='secondary'

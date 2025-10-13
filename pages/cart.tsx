@@ -2,7 +2,6 @@ import { WaitForQueries } from '@graphcommerce/ecommerce-ui'
 import type { PageOptions } from '@graphcommerce/framer-next-pages'
 import {
   ApolloCartErrorAlert,
-  CartStartCheckout,
   CartTotals,
   EmptyCart,
   getCartDisabled,
@@ -21,11 +20,12 @@ import {
 } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
-import { Box, CircularProgress, Container, Divider, Typography } from '@mui/material'
+import { Box, CircularProgress, Container, Divider, Link, Typography } from '@mui/material'
 import type { LayoutOverlayProps } from '../components'
 import { LayoutOverlay, productListRenderer } from '../components'
 import { graphqlSharedClient } from '../lib/graphql/graphqlSsrClient'
 import { iconDelete } from '../plugins/icons'
+import { useClearCart } from '../hooks/useClearCart'
 
 type Props = Record<string, unknown>
 type GetPageStaticProps = GetStaticProps<LayoutOverlayProps, Props>
@@ -36,12 +36,17 @@ function CartPage() {
     fetchPolicy: 'cache-and-network',
   })
   const { error, data } = cart
-  const hasError = Boolean(error)
+  // const hasError = Boolean(error)
   const hasItems =
     (data?.cart?.total_quantity ?? 0) > 0 &&
     typeof data?.cart?.prices?.grand_total?.value !== 'undefined'
 
   const cartQuantity = data?.cart?.total_quantity ?? 0
+  const {
+    submit: handleClearCart,
+    // formState,
+    // error: clearCartError
+  } = useClearCart();
 
   return (
     <>
@@ -143,7 +148,11 @@ function CartPage() {
                   cursor: 'pointer',
 
                 }}
-              // onClick={handleRemoveAllItems}
+                // onClick={() => {
+                //   console.log('==> clicked')
+                //   handleClearCart
+                // }}
+                onClick={handleClearCart}
               >Clear</Typography>
             </Box>
           )}
@@ -261,30 +270,43 @@ function CartPage() {
 
                 }}
               />
-              <CartStartCheckout
-                sx={{
-                  margin: '0 !important',
-                  '& .MuiButtonBase-root': {
-                    width: '100%',
-                    borderRadius: '4px',
-                    backgroundColor: (theme: any) => theme.palette.custom.heading,
-                    border: '1px solid #9B7C38',
-                    color: '#fff',
-                    // fontSize: { xs: '12px', sm: '15px', md: '16px' },
+
+              <Box sx={{
+                display: 'flex',
+                columnGap: { xs: '10px', md: '10px' },
+                width: '100%',
+              }}>
+                <Link href='/' className='cart_buttons'
+                  sx={{
+                    backgroundColor: theme => theme.palette.custom.tltMain,
+                    color: theme => theme.palette.custom.tltContrastText,
+                    border: theme => `1px solid ${theme.palette.custom.tltMain}`,
                     '&:hover': {
                       backgroundColor: 'transparent',
-                      color: (theme: any) => theme.palette.custom.smallHeading,
+                      color: (theme: any) => theme.palette.custom.tltMain,
                     },
-                    '&:hover:not(.Mui-disabled)': {
+
+                  }}
+                >
+                  <Trans id='Continue shopping' />
+                </Link>
+                <Link href='/checkout' className='cart_buttons'
+                  sx={{
+                    backgroundColor: theme => theme.palette.custom.tltSecondary,
+                    color: theme => theme.palette.custom.tltContrastText,
+                    border: theme => `1px solid ${theme.palette.custom.tltSecondary}`,
+                    '&:hover': {
                       backgroundColor: 'transparent',
-                      color: (theme: any) => theme.palette.custom.smallHeading,
-                      boxShadow: 'none',
+                      color: (theme: any) => theme.palette.custom.tltSecondary,
                     },
-                  },
-                }}
-                cart={data.cart}
-                disabled={hasError}
-              />
+
+                  }}
+
+                >
+                  <Trans id='Proceed to Buy' />
+                </Link>
+              </Box>
+
             </OverlayStickyBottom>
           </>
         ) : (
@@ -293,11 +315,26 @@ function CartPage() {
               minHeight: '100vh',
               margin: 'auto',
               display: 'flex',
+              '& .FullPageMessage-subject': {
+                marginTop: 0,
+                '& .MuiTypography-h3': {
+                  color: (theme) => theme.palette.custom.tltMain,
+                  marginBottom: 0,
+                },
+                '& .MuiBox-root': {
+                  color: (theme) => theme.palette.custom.textDarkAlter,
+                },
+              },
               '&  .FullPageMessage-button .MuiButtonBase-root': {
-                backgroundColor: (theme: any) => theme.palette.custom.heading,
-                borderRadius: '8px',
+                backgroundColor: (theme: any) => theme.palette.custom.tltSecondary,
+                borderRadius: '3px',
                 color: 'white',
                 boxShadow: 'none !important',
+                border: (theme) => `1px solid ${theme.palette.custom.tltSecondary}`,
+                '&:hover': {
+                  backgroundColor: 'transparent',
+                  color: (theme) => theme.palette.custom.tltSecondary,
+                },
               },
               '& svg': {
                 fontSize: '40px',
@@ -345,6 +382,9 @@ const pageOptions: PageOptions<LayoutOverlayProps> = {
       },
       '& .LayoutHeaderContent-left .MuiButtonBase-root .MuiButton-icon  svg': {
         display: 'none',
+      },
+      '& .LayoutHeader-root': {
+        pointerEvents: 'auto',
       },
     },
   },
