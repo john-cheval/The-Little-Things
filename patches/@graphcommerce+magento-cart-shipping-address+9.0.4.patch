@@ -11,7 +11,7 @@ index 6f4add4..f5be44e 100644
    const cartShippingId =
      findCustomerAddressFromCartAddress(customerAddresses, cartShipping)?.id || null
 diff --git a/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx b/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
-index a128fe9..b30f433 100644
+index a128fe9..ca4c05c 100644
 --- a/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
 +++ b/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
 @@ -1,6 +1,7 @@
@@ -106,7 +106,7 @@ index a128fe9..b30f433 100644
        return {
          ...variables,
          telephone: variables.telephone || '000 - 000 0000',
-@@ -124,32 +128,148 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
+@@ -124,24 +128,124 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
        }
      },
    })
@@ -185,18 +185,13 @@ index a128fe9..b30f433 100644
 -        name={['postcode', 'countryCode', 'regionId']}
 +        name={['postcode', 'countryCode', 'regionId', 'city']}
        />
- 
+-
++      <AddressFields form={form} countryFirst isTop />
        <CompanyFields form={form} />
        <NameFields form={form} />
--      <AddressFields form={form} />
--
-       <FormRow>
--        <TelephoneElement
--          control={form.control}
--          name='telephone'
--          variant='outlined'
--          required={required.telephone}
--          showValid
++
+       <AddressFields form={form} />
++      {/* <FormRow>
 +        <EmailForm
 +          step={1}
 +          sx={{
@@ -214,7 +209,8 @@ index a128fe9..b30f433 100644
 +                display: 'none',
 +              },
 +            },
-+
+ 
+-      <FormRow>
 +            '& .MuiOutlinedInput-root': {
 +              border: (theme) => `1px solid ${theme.palette.custom.border}`,
 +              borderRadius: '4px',
@@ -231,38 +227,62 @@ index a128fe9..b30f433 100644
 +              },
 +            },
 +          }}
++        />
++ </FormRow> */}
++      <FormRow sx={{
++        paddingTop: 0,
++        paddingBottom: 0,
++      }}>
+         <TelephoneElement
+           control={form.control}
+           name='telephone'
+@@ -150,16 +254,45 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
+           showValid
          />
-+
-+        <FormRow sx={{
-+          paddingTop: 0,
-+          paddingBottom: 0,
-+        }}>
-+          <TelephoneElement
-+            control={form.control}
-+            name='telephone'
-+            variant='outlined'
-+            required={required.telephone}
-+            showValid
-+          />
-+        </FormRow>
        </FormRow>
+-      {customerQuery?.customer && (
 +
 +      <Box>
-+        <Typography sx={{
-+          color: (theme) => theme.palette.custom.dark,
-+          fontSize: { xs: '16px', md: '20px' },
-+          marginTop: '15px',
-+          marginBottom: { xs: '10px', md: '15px' },
-+          textTransform: 'capitalize',
-+          fontWeight: 400,
-+          fontVariationSettings: '"wght" 400',
-+        }}>Your Address</Typography>
-+
-+        <AddressFields form={form} />
 +      </Box>
 +
 +
 +
-       {customerQuery?.customer && (
++      {/* {customerQuery?.customer && ( */}
++      <Box sx={{
++        display: 'flex',
++        flexDirection: 'column',
++        gap: { xs: '10px', md: '15px' },
++        marginTop: { xs: '10px', md: '25px' },
++        '& .MuiFormControlLabel-root': {
++          '& .MuiButtonBase-root': {
++            color: '#000 !important',
++            padding: '0 7px',
++          },
++          '& .MuiTypography-body1': {
++            color: (theme: any) => theme.palette.custom.textDarkAlter2,
++            fontSize: { xs: '16px', md: '18px' },
++          }
++        }
++      }}>
          <CheckboxElement
            control={form.control}
+           name='saveInAddressBook'
+-          label={<Trans>Save in address book</Trans>}
++          label={<Trans>Save this information for next time</Trans>}
+         />
+-      )}
++        <CheckboxElement
++          control={form.control}
++          name='saveInAddressBook'
++          label={<Trans>Text me with news and offers</Trans>}
++        />
++      </Box>
++
++      {/* )} */}
+ 
+       {!isVirtual && import.meta.graphCommerce.customerAddressNoteEnable && (
+-        <FormRow>
++        <FormRow >
+           <TextFieldElement
+             control={form.control}
+             name='customerNote'

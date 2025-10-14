@@ -1619,9 +1619,9 @@ ol {
 }
 .orderProduct span span:first-child {
   background: url(../components/Assets/aed.svg) 2px center no-repeat;
-  background-size: 18px auto;
+  background-size: 25px auto;
   color: transparent;
-  width: 20px;
+  width: 32px;
   display: inline-block;
 }
 .OrderItem-itemPrice span span:first-child,
@@ -2096,7 +2096,7 @@ input[type='number'] {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 6px;
+  border-radius: 3px;
   padding: 1px;
   background: linear-gradient(80deg, #d90f13 80.01%, #73080a 24.77%);
   -webkit-mask:
@@ -2526,6 +2526,78 @@ input[type='number'] {
   width: 100%;
   transition: all 0.4s ease-in-out;
   padding-block: 17px;
+}
+
+/* ========= Checkout =========== */
+.checkout-headings {
+  background: linear-gradient(90deg, #2d2d2d 0%, #b4001a 42.27%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 120%;
+}
+
+/* Checkout Popup */
+
+.pop-title,
+.pop-title2 {
+  background: linear-gradient(90deg, #2d2d2d 0%, #b4001a 42.27%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: fit-content;
+  margin: 0;
+  font-size: 25px;
+  font-style: normal;
+  line-height: 175%; /* 43.75px */
+}
+.content-wrapper {
+  height: 300px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  padding-right: 20px;
+}
+.content-wrapper::-webkit-scrollbar {
+  width: 4px;
+  border-radius: 0;
+  /* background-color: #ededed; */
+  background: linear-gradient(90deg, #b4001a 0%, #4e000b 100%);
+}
+.content-wrapper::-webkit-scrollbar-track {
+  background-color: #ededed;
+  border-radius: 0px;
+}
+.content-wrapper::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #b4001a 0%, #4e000b 100%);
+  border-radius: 0px;
+}
+.processing {
+  color: #2d2d2d;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 120%;
+  margin: 0;
+  padding-top: 15px;
+  border-bottom: 1px solid #cbcbcb;
+  padding-bottom: 20px;
+}
+.content {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.content p {
+  margin: 0;
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 127%; /* 25.4px */
 }
 
 /* ====== Animations ========== */

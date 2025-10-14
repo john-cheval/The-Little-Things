@@ -1,76 +1,71 @@
 import { Box, Link, Typography } from '@mui/material'
-import { dubaiFont } from '../../../lib/fonts'
+import { Image } from '@graphcommerce/image'
+import gpay from '../../TLTComponents/assets/chekout/gpay.png'
 
-function TopBannerMesasge() {
+export function TopBannerMesasge() {
   return (
-    <Box
-      sx={{
-        paddingBlock: { xs: '20px', md: '36px' },
-        width: '100%',
-        borderRadius: '4px',
-        background: 'linear-gradient(90deg, #5F2A1C 0%, #2A110A 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-      }}
-    >
-      <Typography
-        component='p'
-        sx={{
-          color: '#fff',
-          fontSize: { xs: '18px', md: '20px', lg: '30px' },
-          fontWeight: 300,
-          textAlign: 'center',
-          fontFamily: `${dubaiFont.style.fontFamily}, sans-serif`,
-          lineHeight: '1.5',
-          textTransform: 'uppercase',
-        }}
-      >
-        A sweet start <br /> - Enjoy 20% off your first order.{' '}
-      </Typography>
-
+    <Box>
       <Box
-        sx={{
-          marginTop: { xs: '10px', md: '10px' },
-          display: 'flex',
-          gap: { xs: '10px', md: '8px' },
-        }}
-      >
-        <Link
-          href='/account/signin?tab=signin'
-          sx={{
-            backgroundColor: (theme) => theme.palette.custom.heading,
-            borderRadius: '4px',
-            fontSize: { xs: '15px', md: '16px' },
-            fontWeight: 'normal',
-            lineHeight: '158%',
-            color: '#fff',
-            padding: { xs: '8px 30px', md: '10px 40px' },
-            textDecoration: 'none',
-          }}
-        >
-          Login
-        </Link>
 
-        <Link
-          href='/account/signin?tab=signup'
+      >
+        <Link href='/account/signin?tab=signin'
           sx={{
-            backgroundColor: (theme) => theme.palette.custom.heading,
-            borderRadius: '4px',
-            fontSize: { xs: '15px', md: '16px' },
-            fontWeight: 'normal',
-            lineHeight: '158%',
             color: '#fff',
-            padding: { xs: '10px 30px', md: '10px 40px' },
+            fontSize: { xs: '18px', md: '18px' },
+            fontWeight: 700,
+            textAlign: 'center',
+            lineHeight: '120%',
+            textTransform: 'uppercase',
+            marginInline: 'auto',
             textDecoration: 'none',
+            display: 'block',
+            background: 'linear-gradient(90deg, #6B000F 0%, #D0011F 100%)',
+            paddingBlock: { xs: '20px', md: '20px' },
+            width: '100%',
+            borderRadius: '3px',
           }}
         >
-          Signup
+          Login/signup
+        </Link>
+        <Link href='#' sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderRadius: '3px',
+          border: theme => `1px solid ${theme.palette.custom.tltBorder2}`,
+          background: theme => theme.palette.custom.tltContrastText,
+          paddingBlock: { xs: '6px', md: '6px' },
+          paddingInline: { xs: '10px', md: '25px' },
+          textDecoration: 'none',
+          marginTop: { xs: '10px', md: '16px' },
+
+        }}>
+          <Typography
+            sx={{
+              color: '#000',
+              fontSize: { xs: '16px', md: '18px' },
+              lineHeight: '120%',
+            }}>
+            Express Checkout
+          </Typography>
+
+          <Image
+            src={gpay}
+            alt='gPay'
+            sx={{
+              // width: '100%',
+              // height: 'auto',
+              // objectFit: 'cover',
+              // maxWidth: '60px',
+              marginTop: { xs: '10px', md: '10px' },
+              width: 'revert-layer',
+            }} />
         </Link>
       </Box>
+
+
     </Box>
+
   )
 }
 
-export default TopBannerMesasge

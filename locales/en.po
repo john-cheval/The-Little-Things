@@ -1017,8 +1017,20 @@ msgid "Clear"
 msgstr "Clear"
 
 #. js-lingui-generated-id
+msgid "Text me with news and offers"
+msgstr "Text me with news and offers"
+
+#. js-lingui-generated-id
 msgid "Delete"
 msgstr "Delete"
+
+#. js-lingui-generated-id
+msgid "Pay Now"
+msgstr "Pay Now"
+
+#. js-lingui-generated-id
+msgid "Save this information for next time"
+msgstr "Save this information for next time"
 
 #. js-lingui-generated-id
 msgid "Sub Total"

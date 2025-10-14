@@ -46,6 +46,7 @@ type ThemePaletteOptions = PaletteOptions & {
     tltBorder2: string
     tltBorder3: string
     tltBorder4: string
+    tltBorder5?: string
     activeColor: string
   }
 }
@@ -61,7 +62,6 @@ const lightPalette: ThemePaletteOptions = {
     borderInput: '#D5B1B8',
     wishlistColor: '#F1A8B6',
     borderSecondary: '#d4d4d4',
-
     // TLT Colors
     main: '#441E14',
     tltMain: '#7B1316',
@@ -79,6 +79,7 @@ const lightPalette: ThemePaletteOptions = {
     tltBorder2: '#A8A8A8',
     tltBorder3: '#e8e8e8',
     tltBorder4: '#D5D5D5',
+    tltBorder5: '#CBCBCB',
     activeColor: '#FF7300',
   },
   primary: {
@@ -140,6 +141,7 @@ const darkPalette: ThemePaletteOptions = {
     tltBorder2: '#A8A8A8',
     tltBorder3: '#e8e8e8',
     tltBorder4: '#D5D5D5',
+    tltBorder5: '#CBCBCB',
     activeColor: '#FF7300',
   },
   primary: {
@@ -592,6 +594,7 @@ declare module '@mui/material/styles' {
       tltBorder2: string
       tltBorder3: string
       tltBorder4: string
+      tltBorder5?: string
       activeColor: string
     }
   }
@@ -624,6 +627,7 @@ declare module '@mui/material/styles' {
       tltBorder2: string
       tltBorder3: string
       tltBorder4: string
+      tltBorder5?: string
       activeColor: string
     }
   }

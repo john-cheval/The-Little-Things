@@ -1,8 +1,7 @@
 import { Image } from '@graphcommerce/image'
 import { actionCardImageSizes } from '@graphcommerce/next-ui'
 import { Box } from '@mui/material'
-import CartActions from './CartActions'
-import CartTop from './CartTop'
+import { CartTop } from './CartTop'
 
 export type CartItemsProps = {
   items?: any
@@ -11,16 +10,20 @@ export type CartItemsProps = {
   index?: number
 }
 
-function CartItems({ items, size = 'responsive', length, index }: CartItemsProps) {
+export function CartItems({ items, size = 'responsive', length, index }: CartItemsProps) {
   return (
     <Box
       sx={{
         display: 'flex',
         columnGap: { xs: '10px', md: '15px' },
-        borderBottom: {
-          xs: index !== (length ?? 0) - 1 ? '1px solid #c7cacd6b' : 'none',
-          md: '1px solid #c7cacd6b',
-        },
+        borderBottom: (theme) => ({
+          xs:
+
+            index !== (length ?? 0) - 1
+              ? `1px solid ${theme.palette.custom.tltBorder5}`
+              : 'none',
+          md: `1px solid ${theme.palette.custom.tltBorder5}`,
+        }),
         paddingBlock: { xs: '10px', md: '18px' },
         width: '100%',
       }}
@@ -30,31 +33,20 @@ function CartItems({ items, size = 'responsive', length, index }: CartItemsProps
           layout='fill'
           src={items?.product?.thumbnail?.url}
           sx={{
-            // width: actionCardImageSizes[size],
-            // height: actionCardImageSizes[size],
-            // height: '100%',
-            // width: '100%',
             display: 'block',
-            borderRadius: '8px',
+            borderRadius: '3px',
             objectFit: 'cover',
-            marginRight: '10px',
             minWidth: '100px',
-            maxHeight: '100px',
-            maxWidth: '120px',
+            maxWidth: '150px',
+            border: theme => `1px solid ${theme.palette.custom.tltBorder3}`,
           }}
           sizes={actionCardImageSizes[size]}
         />
       </Box>
       <Box sx={{ flexGrow: 1, minWidth: 0, marginLeft: '10px' }}>
         <CartTop item={items} />
-        <Box
-          sx={{ display: { xs: 'none', md: 'block' }, marginRight: 'auto', width: 'fit-content' }}
-        >
-          <CartActions product={items} />
-        </Box>
       </Box>
     </Box>
   )
 }
 
-export default CartItems

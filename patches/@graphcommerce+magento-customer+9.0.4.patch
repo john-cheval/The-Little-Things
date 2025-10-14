@@ -375,6 +375,19 @@ index 495d466..1cc4bc1 100644
          </Box>
        )}
        {mode === 'signup' && !canSignUp && (
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressAddition.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressAddition.tsx
+index 08751b5..f9b0e2b 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressAddition.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressAddition.tsx
+@@ -18,7 +18,7 @@ export function AddressAddition<
+       variant='outlined'
+       type='text'
+       required={required[name.addition]}
+-      label={<Trans id='Addition' />}
++      label={<Trans id='City' />}
+       autoComplete='address-line3'
+       showValid
+       InputProps={{ readOnly }}
 diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCity.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCity.tsx
 index 93fd266..6012393 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCity.tsx
@@ -498,7 +511,7 @@ index 93fd266..6012393 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
-index 7bebe6d..9f03e20 100644
+index 7bebe6d..8b9eff4 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
 +++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
 @@ -4,9 +4,12 @@ import { useQuery } from '@graphcommerce/graphql'
@@ -526,12 +539,16 @@ index 7bebe6d..9f03e20 100644
    const regionList = useMemo(
      () =>
        filterNonNullableKeys(
-@@ -46,8 +53,13 @@ export function AddressCountryRegion<
+@@ -44,10 +51,16 @@ export function useAddressCountryRegion<
+ export function AddressCountryRegion<
+   TFieldValues extends FieldValues = FieldValues,
    TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
- >(props: AddressFieldsOptions<TFieldValues, TName>) {
+->(props: AddressFieldsOptions<TFieldValues, TName>) {
++>(props: AddressFieldsOptions<TFieldValues, TName> & { isRegion?: boolean }) {
    const form = useAddressCountryRegion<TFieldValues, TName>(props)
 -  const { control, name, readOnly, required, countryList, regionList, loading } = form
 -
++  const { isRegion = false } = props;
 +  const { control, name, readOnly, required, countryList, regionList, loading, defaultVariables } = form
 +  // slotListconsole.log("defaultVariables::", defaultVariables)
 +  // slotListconsole.log("name::", name)
@@ -542,7 +559,7 @@ index 7bebe6d..9f03e20 100644
    if (loading) {
      return (
        <FormRow>
-@@ -58,40 +70,158 @@ export function AddressCountryRegion<
+@@ -58,40 +71,169 @@ export function AddressCountryRegion<
            name={name.countryCode}
            showValid
            InputProps={{ readOnly }}
@@ -579,88 +596,102 @@ index 7bebe6d..9f03e20 100644
 -          label: country.full_name_locale,
 -        }))}
 -      />
-+    <>
-+      <FormRow sx={{
-+        '& .MuiInputLabel-root.MuiInputLabel-animated': {
-+          padding: '0 6px',
-+        },
-+        '& .MuiOutlinedInput-root .MuiSelect-icon': {
-+          color: (theme: any) => theme.palette.custom.wishlistColor,
-+        },
-+        '& .MuiOutlinedInput-root .InputCheckmark': {
-+          display: 'none'
-+        }
-+      }}>
-+        <AddressPostcode {...props} />
- 
+-
 -      {regionList.length > 0 && (
-         <SelectElement
-           control={control}
+-        <SelectElement
+-          control={control}
 -          name={name.regionId}
-+          name={name.countryCode}
-+          SelectProps={{
-+            MenuProps: {
-+              PaperProps: {
-+                sx: {
-+                  backgroundColor: (theme: any) => theme.palette.custom.border,
-+                  color: (theme: any) => theme.palette.custom.main,
-+                  "&::-webkit-scrollbar": {
-+                    width: '6px',
-+                    borderRadius: 0,
-+                    backgroundColor: '#ebebeb',
-+                  },
-+                  '&::-webkit-scrollbar-track': {
-+                    baxkgroundColor: '#ebebeb',
-+                    borderRadius: '0px'
-+                  },
-+                  "&::-webkit-scrollbar-thumb": {
-+                    backgroundColor: (theme: any) => theme.palette.custom.main,
-+                    borderRadius: '0px'
-+                  },
-+                  // scrollbarWidth:'none',
-+                  // msOverflowStyle:'none',
-+                  '& .MuiMenuItem-root': {
-+                    color: (theme: any) => theme.palette.custom.main,
-+                    transition: 'background-color 0.3s ease',
-+                    '&:hover': {
-+                      backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
-+                    },
-+                    '&.Mui-selected': {
-+                      backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
-+                    },
-+                  }
-+                }
-+              }
-+            },
-+            // autoWidth: true
-+            fullWidth: true,
-+            value: countryList?.[0]?.two_letter_abbreviation,
-+            defaultValue: countryList?.[0]?.two_letter_abbreviation,
-+          }}
-           variant='outlined'
+-          variant='outlined'
 -          label={<Trans id='Region' />}
 -          required
-+          label={<Trans id='Country' />}
-+          required={required[name.countryCode]}
-           showValid
-           InputProps={{ readOnly }}
+-          showValid
+-          InputProps={{ readOnly }}
 -          options={regionList.map((region) => ({ ...region, label: region.name }))}
-+          options={countryList.map((country) => ({
-+            id: country.two_letter_abbreviation,
-+            label: country.full_name_locale,
-+          }))}
-+          defaultChecked={true}
-         />
--      )}
+-        />
++    <>
++      {!isRegion && (
++        <FormRow sx={{
++          '& .MuiInputLabel-root.MuiInputLabel-animated': {
++            padding: '0 6px',
++          },
++          '& .MuiOutlinedInput-root .MuiSelect-icon': {
++            color: (theme: any) => theme.palette.custom.textDarkAlter2,
++            fill: (theme: any) => theme.palette.custom.textDarkAlter2,
++            fontSize: { xs: '20px', md: '25px' },
++          },
++          '& .MuiOutlinedInput-root .InputCheckmark': {
++            display: 'none'
++          }
++        }}>
++          {/* <AddressPostcode {...props} /> */}
++
++          <SelectElement
++            control={control}
++            name={name.countryCode}
++            SelectProps={{
++              MenuProps: {
++                PaperProps: {
++                  sx: {
++                    backgroundColor: (theme: any) => theme.palette.custom.tltlGray2,
++                    color: (theme: any) => theme.palette.custom.tltMain,
++                    "&::-webkit-scrollbar": {
++                      width: '6px',
++                      borderRadius: 0,
++                      backgroundColor: '#ebebeb',
++                    },
++                    '&::-webkit-scrollbar-track': {
++                      baxkgroundColor: '#ebebeb',
++                      borderRadius: '0px'
++                    },
++                    "&::-webkit-scrollbar-thumb": {
++                      backgroundColor: (theme: any) => theme.palette.custom.tltSecondary,
++                      borderRadius: '0px'
++                    },
++                    // scrollbarWidth:'none',
++                    // msOverflowStyle:'none',
++                    '& .MuiMenuItem-root': {
++                      color: (theme: any) => theme.palette.custom.tltMain,
++                      transition: 'background-color 0.3s ease',
++                      '&:hover': {
++                        backgroundColor: (theme: any) => theme.palette.custom.textPopmart,
++                        color: (theme: any) => theme.palette.custom.tltContrastText,
++                      },
++                      '&.Mui-selected': {
++                        backgroundColor: (theme: any) => theme.palette.custom.textPopmart,
++                        color: (theme: any) => theme.palette.custom.tltContrastText
++                      },
++                    }
++                  }
++                }
++              },
++              // autoWidth: true
++              fullWidth: true,
++              value: countryList?.[0]?.two_letter_abbreviation,
++              defaultValue: countryList?.[0]?.two_letter_abbreviation,
++            }}
++            variant='outlined'
++            label={<Trans id='Country' />}
++            required={required[name.countryCode]}
++            showValid
++            InputProps={{ readOnly }}
++            options={countryList.map((country) => ({
++              id: country.two_letter_abbreviation,
++              label: country.full_name_locale,
++            }))}
++            defaultChecked={true}
++          />
++        </FormRow>
+       )}
 -    </FormRow>
-+      </FormRow>
++
++
 +
 +      <FormRow sx={{
 +        '& .MuiInputLabel-root.MuiInputLabel-animated': {
 +          padding: '0 6px',
 +        },
 +        '& .MuiOutlinedInput-root .MuiSelect-icon': {
-+          color: (theme: any) => theme.palette.custom.wishlistColor,
++          color: (theme: any) => 'red',
 +        },
 +        '& .MuiOutlinedInput-root .InputCheckmark': {
 +          display: 'none'
@@ -692,7 +723,7 @@ index 7bebe6d..9f03e20 100644
 +                      borderRadius: '0px'
 +                    },
 +                    "&::-webkit-scrollbar-thumb": {
-+                      backgroundColor: (theme: any) => theme.palette.custom.main,
++                      backgroundColor: (theme: any) => theme.palette.custom.tltSecondary,
 +                      borderRadius: '0px'
 +                    },
 +                    // scrollbarWidth:'none',
@@ -720,21 +751,49 @@ index 7bebe6d..9f03e20 100644
 +
 +
 +      </FormRow>
++
++
++
 +    </>
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx
-index 400ed2c..7abe436 100644
+index 400ed2c..b9f8da9 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx
 +++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressFields.tsx
-@@ -25,12 +25,23 @@ export function AddressFields<
-       <FormRow>
-         <AddressStreet {...props} />
-         <AddressHousenumber {...props} />
--        <AddressAddition {...props} />
-+        {/*  <AddressAddition {...props} /> */}
-       </FormRow>
+@@ -11,27 +11,43 @@ import type { AddressFieldsOptions } from './useAddressFieldsForm'
+ export type AddressFieldsProps<
+   TFieldValues extends FieldValues = FieldValues,
+   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+-> = AddressFieldsOptions<TFieldValues, TName> & { countryFirst?: boolean }
++> = AddressFieldsOptions<TFieldValues, TName> & { countryFirst?: boolean, isTop?: boolean }
+ 
+ export function AddressFields<
+   TFieldValues extends FieldValues = FieldValues,
+   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+ >(props: AddressFieldsProps<TFieldValues, TName>) {
+-  const { countryFirst } = props
++  const { countryFirst, isTop } = props
+ 
+   return (
+     <>
+       {countryFirst && <AddressCountryRegion {...props} />}
 -      <FormRow>
+-        <AddressStreet {...props} />
+-        <AddressHousenumber {...props} />
+-        <AddressAddition {...props} />
+-      </FormRow>
+-      <FormRow>
++      {!isTop && (
++        <FormRow sx={{
++          gridTemplateColumns: '1fr',
++        }}>
++          <AddressStreet {...props} />
++          <AddressHousenumber {...props} />
++          <AddressAddition {...props} />
++        </FormRow>
++      )}
++
 +      {/* <FormRow sx={{
 +        '& .MuiInputLabel-root.MuiInputLabel-animated': {
 +          padding: '0 6px',
@@ -750,10 +809,38 @@ index 400ed2c..7abe436 100644
 +
          <AddressCity {...props} />
 -      </FormRow>
+-      {!countryFirst && <AddressCountryRegion {...props} />}
 +      </FormRow> */}
-       {!countryFirst && <AddressCountryRegion {...props} />}
++      {(!countryFirst) && <AddressCountryRegion {...props} isRegion />}
      </>
    )
+ }
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressHouseNumber.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressHouseNumber.tsx
+index ac7a57a..e958d06 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressHouseNumber.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressHouseNumber.tsx
+@@ -24,7 +24,7 @@ export function AddressHousenumber<
+       }}
+       variant='outlined'
+       type='text'
+-      label={<Trans id='Housenumber' />}
++      label={<Trans id='Apartment, suite,etc (Optional)' />}
+       autoComplete='address-line2'
+       showValid
+       InputProps={{ readOnly }}
+diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressStreet.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressStreet.tsx
+index 800f7ce..33592e9 100644
+--- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressStreet.tsx
++++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressStreet.tsx
+@@ -17,7 +17,7 @@ export function AddressStreet<
+       required={required[name.street]}
+       name={name.street}
+       type='text'
+-      label={<Trans id='Street' />}
++      label={<Trans id='Address' />}
+       autoComplete='address-line1'
+       showValid
+       InputProps={{ readOnly }}
 diff --git a/node_modules/@graphcommerce/magento-customer/components/ApolloCustomerError/ApolloCustomerErrorFullPage.tsx b/node_modules/@graphcommerce/magento-customer/components/ApolloCustomerError/ApolloCustomerErrorFullPage.tsx
 index fe2fe28..906ac8d 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/ApolloCustomerError/ApolloCustomerErrorFullPage.tsx
@@ -1414,10 +1501,10 @@ index 3cba4b8..9daef9f 100644
 + 
 \ No newline at end of file
 diff --git a/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx b/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
-index 24faf9f..4c206d0 100644
+index 24faf9f..755dfce 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
 +++ b/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
-@@ -43,7 +43,7 @@ export function NameFields(props: NameFieldProps) {
+@@ -43,12 +43,14 @@ export function NameFields(props: NameFieldProps) {
              name='prefix'
              label={<Trans id='Prefix' />}
              showValid
@@ -1426,7 +1513,15 @@ index 24faf9f..4c206d0 100644
              options={prefixes.map((option) => ({ id: option, label: option }))}
            />
          </FormRow>
-@@ -59,6 +59,7 @@ export function NameFields(props: NameFieldProps) {
+       )}
+-      <FormRow>
++      <FormRow sx={{
++        gridTemplateColumns: '1fr',
++      }}>
+         <TextFieldElement
+           control={control}
+           name='firstname'
+@@ -59,6 +61,7 @@ export function NameFields(props: NameFieldProps) {
            InputProps={{ readOnly }}
            showValid
          />
