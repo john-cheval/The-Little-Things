@@ -1012,6 +1012,41 @@ msgstr "Return to home"
 msgid "Add to Cart"
 msgstr "Add to Cart"
 
+msgid "Phone Number"
+msgstr "Phone Number
+
+msgid "SIGN-UP"
+msgstr "SIGN-UP"
+
+#. js-lingui-generated-id
+msgid "Login"
+msgstr "Login"
+
+#. js-lingui-generated-id
+msgid "Don't have an account?"
+msgstr "Don't have an account?"
+
+#. js-lingui-generated-id
+msgid "Login"
+msgstr "Login
+
+msgid "Already have an account?"
+msgstr "Already have an account?"
+
+msgid "Sign up"
+msgstr "Sign up"
+
+msgid "Re-Enter Password"
+msgstr "Re-Enter Password"
+
+#. js-lingui-generated-id
+msgid "Register Now"
+msgstr "Register Now"
+
+#. js-lingui-generated-id
+msgid "Welcome Back, Please enter your details"
+msgstr "Welcome Back, Please enter your details"
+
 #. js-lingui-generated-id
 msgid "Clear"
 msgstr "Clear"

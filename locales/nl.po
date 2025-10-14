@@ -667,6 +667,33 @@ msgstr "Phone"
 msgid "Please login to add products to your cart"
 msgstr "Log in om producten aan uw winkelwagen toe te voegen"
 
+#. js-lingui-generated-id
+msgid "Login"
+msgstr "Inloggen"
+
+#. js-lingui-generated-id
+msgid "Register Now"
+msgstr "Nu registreren"
+
+msgid "Already have an account?"
+msgstr "Heeft u al een account?"
+
+msgid "SIGN-UP"
+msgstr "AANMELDEN"
+
+msgid "Phone Number"
+msgstr "Telefoonnummer"
+
+#. js-lingui-generated-id
+msgid "Don't have an account?"
+msgstr "Nog geen account?"
+
+msgid "Sign up"
+msgstr "Aanmelden"
+
+msgid "Re-Enter Password"
+msgstr "Wachtwoord opnieuw invoeren"
+
 msgid "Recently viewed products"
 msgstr "Recent bekeken producten"
 
@@ -1017,8 +1044,16 @@ msgid "Clear"
 msgstr "Wissen"
 
 #. js-lingui-generated-id
+msgid "Login"
+msgstr "Inloggen"
+
+#. js-lingui-generated-id
 msgid "Delete"
 msgstr "Verwijderen"
+
+#. js-lingui-generated-id
+msgid "Welcome Back, Please enter your details"
+msgstr "Welkom terug, vul uw gegevens in"
 
 #. js-lingui-generated-id
 msgid "Pay Now"

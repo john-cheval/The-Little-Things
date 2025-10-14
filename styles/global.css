@@ -2600,6 +2600,38 @@ input[type='number'] {
   line-height: 127%; /* 25.4px */
 }
 
+/* ==== Privacy Policy===== */
+.privacy_wrapper {
+  margin-top: 65px;
+  margin-bottom: 75px;
+}
+.privacy_wrapper h1 {
+  margin: 0 auto;
+  margin-bottom: 25px;
+}
+.privacy_content p {
+  color: #000;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 134%; /* 24.12px */
+  margin: 0;
+}
+.privacy_content p:not(:last-child) {
+  margin-bottom: 20px;
+}
+.privacy_content h5 {
+  color: #000;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 128%; /* 25.6px */
+  margin: 0;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
 /* ====== Animations ========== */
 
 .desktop-links ul li a:hover,

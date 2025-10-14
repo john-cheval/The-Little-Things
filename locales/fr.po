@@ -1013,8 +1013,21 @@ msgid "Add to Cart"
 msgstr "Ajouter au panier"
 
 #. js-lingui-generated-id
+msgid "Login"
+msgstr "Connexion"
+
+#. js-lingui-generated-id
 msgid "Clear"
 msgstr "Effacer"
+
+#. js-lingui-generated-id
+msgid "Welcome Back, Please enter your details"
+msgstr "Bienvenue, veuillez entrer vos coordonnées"
+
+
+#. js-lingui-generated-id
+msgid "Login"
+msgstr "Connexion"
 
 
 #. js-lingui-generated-id
@@ -1036,6 +1049,29 @@ msgstr "Supprimer"
 #. js-lingui-generated-id
 msgid "Sub Total"
 msgstr "Sous-total"
+
+msgid "Already have an account?"
+msgstr "Vous avez déjà un compte ?"
+
+msgid "SIGN-UP"
+msgstr "S'INSCRIRE"
+
+#. js-lingui-generated-id
+msgid "Don't have an account?"
+msgstr "Vous n'avez pas de compte ?"
+
+msgid "Sign up"
+msgstr "S'inscrire"
+
+msgid "Phone Number"
+msgstr "Numéro de téléphone"
+
+msgid "Re-Enter Password"
+msgstr "Confirmer le mot de passe"
+
+#. js-lingui-generated-id
+msgid "Register Now"
+msgstr "S'inscrire maintenant"
 
 #. js-lingui-generated-id
 msgid "Shipping address"

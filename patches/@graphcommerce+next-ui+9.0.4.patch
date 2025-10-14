@@ -1067,6 +1067,28 @@ index bbf6b28..d37891c 100644
        ref={ref}
        sx={[...(Array.isArray(sx) ? sx : [sx]), commonLogoStyles]}
        className={classes.parent}
+diff --git a/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayBase.tsx b/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayBase.tsx
+index c41d4e4..4b19457 100644
+--- a/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayBase.tsx
++++ b/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayBase.tsx
+@@ -183,7 +183,7 @@ export function OverlayBase(incomingProps: LayoutOverlayBaseProps) {
+   useIsomorphicLayoutEffect(() => {
+     const scroller = scrollerRef.current
+     if (!scroller || !beforeRef.current || !overlayRef.current || !overlayPaneRef.current)
+-      return () => {}
++      return () => { }
+ 
+     const calcPositions = () => {
+       const { x, y } = getScrollSnapPositions()
+@@ -395,7 +395,7 @@ export function OverlayBase(incomingProps: LayoutOverlayBaseProps) {
+   // Measure the offset of the overlay in the scroller.
+   const offsetY = useMotionValue(0)
+   useEffect(() => {
+-    if (!overlayRef.current) return () => {}
++    if (!overlayRef.current) return () => { }
+     const ro = new ResizeObserver(([entry]) => offsetY.set(entry.contentRect.top))
+     ro.observe(overlayRef.current)
+     return () => ro.disconnect()
 diff --git a/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayStickyBottom.tsx b/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayStickyBottom.tsx
 index b792f5c..1aaece7 100644
 --- a/node_modules/@graphcommerce/next-ui/Overlay/components/OverlayStickyBottom.tsx
