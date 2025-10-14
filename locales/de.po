@@ -1016,6 +1016,19 @@ msgstr "In den Warenkorb"
 msgid "Clear"
 msgstr "Löschen"
 
+
+#. js-lingui-generated-id
+msgid "Pay Now"
+msgstr "Jetzt bezahlen"
+
+#. js-lingui-generated-id
+msgid "Text me with news and offers"
+msgstr "Sende mir Nachrichten und Angebote per SMS"
+
+#. js-lingui-generated-id
+msgid "Save this information for next time"
+msgstr "Diese Information für das nächste Mal speichern"
+
 #. js-lingui-generated-id
 msgid "Delete"
 msgstr "Löschen"

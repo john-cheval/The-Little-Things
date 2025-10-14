@@ -316,7 +316,7 @@ function CartPage() {
               margin: 'auto',
               display: 'flex',
               '& .FullPageMessage-subject': {
-                marginTop: 0,
+                marginTop: '10px',
                 '& .MuiTypography-h3': {
                   color: (theme) => theme.palette.custom.tltMain,
                   marginBottom: 0,

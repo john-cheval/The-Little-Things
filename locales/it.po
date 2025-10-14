@@ -1016,6 +1016,21 @@ msgstr "Aggiungi al carrello"
 msgid "Clear"
 msgstr "Cancella"
 
+
+#. js-lingui-generated-id
+msgid "Pay Now"
+msgstr "Paga ora"
+
+
+#. js-lingui-generated-id
+msgid "Text me with news and offers"
+msgstr "Inviami notizie e offerte via SMS"
+
+#. js-lingui-generated-id
+msgid "Save this information for next time"
+msgstr "Salva queste informazioni per la prossima volta"
+
+
 #. js-lingui-generated-id
 msgid "Delete"
 msgstr "Elimina"

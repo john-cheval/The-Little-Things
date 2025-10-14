@@ -1021,8 +1021,21 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #. js-lingui-generated-id
+msgid "Pay Now"
+msgstr "Nu betalen"
+
+
+#. js-lingui-generated-id
+msgid "Text me with news and offers"
+msgstr "Stuur mij nieuws en aanbiedingen via sms"
+
+#. js-lingui-generated-id
 msgid "Sub Total"
 msgstr "Subtotaal"
+
+#. js-lingui-generated-id
+msgid "Save this information for next time"
+msgstr "Deze informatie bewaren voor de volgende keer""
 
 #. js-lingui-generated-id
 msgid "Shipping address"

@@ -1013,8 +1013,21 @@ msgid "Add to Cart"
 msgstr "Añadir al carrito"
 
 #. js-lingui-generated-id
+msgid "Save this information for next time"
+msgstr "Guardar esta información para la próxima vez"
+
+#. js-lingui-generated-id
 msgid "Clear"
 msgstr "Borrar"
+
+
+#. js-lingui-generated-id
+msgid "Pay Now"
+msgstr "Pagar ahora"
+
+#. js-lingui-generated-id
+msgid "Text me with news and offers"
+msgstr "Envíenme noticias y ofertas por mensaje de texto"
 
 #. js-lingui-generated-id
 msgid "Delete"
