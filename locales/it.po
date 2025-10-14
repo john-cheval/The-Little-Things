@@ -1016,24 +1016,57 @@ msgstr "Aggiungi al carrello"
 msgid "Clear"
 msgstr "Cancella"
 
+#. js-lingui-generated-id
+msgid "Don't have an account?"
+msgstr "Non hai un account?"
+
+#. js-lingui-generated-id
+msgid "Login"
+msgstr "Accedi"
+
+#. js-lingui-generated-id
+msgid "Login"
+msgstr "Accedi"
+
+#. js-lingui-generated-id
+msgid "Register Now"
+msgstr "Registrati ora"
+
+#. js
+msgid "Welcome Back, Please enter your details"
+msgstr "Bentornato, inserisci i tuoi dettagli
 
 #. js-lingui-generated-id
 msgid "Pay Now"
 msgstr "Paga ora"
+
+msgid "Already have an account?"
+msgstr "Hai già un account?"
 
 
 #. js-lingui-generated-id
 msgid "Text me with news and offers"
 msgstr "Inviami notizie e offerte via SMS"
 
+msgid "SIGN-UP"
+msgstr "ISCRIVITI"
+
 #. js-lingui-generated-id
 msgid "Save this information for next time"
 msgstr "Salva queste informazioni per la prossima volta"
 
+msgid "Phone Number"
+msgstr "Numero di telefono"
 
 #. js-lingui-generated-id
 msgid "Delete"
 msgstr "Elimina"
+
+msgid "Re-Enter Password"
+msgstr "Reinserisci la password"
+
+msgid "Sign up"
+msgstr "Iscriviti"
 
 #. js-lingui-generated-id
 msgid "Sub Total"

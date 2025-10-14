@@ -490,11 +490,23 @@ msgstr "Kategorien"
 msgid "Name"
 msgstr "Name"
 
+msgid "SIGN-UP"
+msgstr "REGISTRIEREN"
+
+msgid "Already have an account?"
+msgstr "Sie haben bereits ein Konto?"
+
 msgid "Navigate to item {0}"
 msgstr "Zum Artikel {0} navigieren"
 
 msgid "New address"
 msgstr "Neue Adresse"
+
+msgid "Phone Number"
+msgstr "Telefonnummer"
+
+msgid "Re-Enter Password"
+msgstr "Passwort erneut eingeben"
 
 msgid "New email"
 msgstr "Neue E-Mail"
@@ -663,6 +675,9 @@ msgstr "Ergebnisse für ‘{search}’"
 msgid "Phone"
 msgstr "Phone"
 
+msgid "Sign up"
+msgstr "Registrieren"
+
 #. js-lingui-generated-id
 msgid "Please login to add products to your cart"
 msgstr "Bitte loggen Sie sich ein, um Produkte zu Ihrem Warenkorb hinzuzufügen"
@@ -759,6 +774,8 @@ msgstr "Anmelden oder ein Kundenkonto erstellen!"
 
 msgid "Sign out"
 msgstr "Abmelden"
+
+
 
 msgid "Sign up for our newsletter and stay updated"
 msgstr "Abonnieren Sie unseren Newsletter und bleiben Sie auf dem Laufenden"
@@ -1009,12 +1026,33 @@ msgid "Return to home"
 msgstr "Zurück zur Startseite"
 
 #. js-lingui-generated-id
+msgid "Login"
+msgstr "Anmelden"
+
+#. js-lingui-generated-id
 msgid "Add to Cart"
 msgstr "In den Warenkorb"
 
 #. js-lingui-generated-id
+msgid "Register Now"
+msgstr "Jetzt registrieren"
+
+#. js-lingui-generated-id
+msgid "Don't have an account?"
+msgstr "Sie haben noch kein Konto?"
+
+#. js-lingui-generated-id
+msgid "Welcome Back, Please enter your details"
+msgstr "Willkommen zurück. Bitte geben Sie Ihre Daten ein"
+
+#. js-lingui-generated-id
 msgid "Clear"
 msgstr "Löschen"
+
+
+#. js-lingui-generated-id
+msgid "Login"
+msgstr "Anmelden"
 
 
 #. js-lingui-generated-id

@@ -3,7 +3,6 @@ import { cacheFirst } from '@graphcommerce/graphql'
 import { StoreConfigDocument } from '@graphcommerce/magento-store'
 import { GetStaticProps, PageMeta } from '@graphcommerce/next-ui'
 import { LayoutDocument, LayoutNavigation, LayoutNavigationProps } from '../components'
-import { InnerTop } from '../components/shared/Inner/Innertop'
 import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
 import { decodeHtmlEntities } from '../utils/htmlUtils'
@@ -24,10 +23,10 @@ function PrivacyPolicyPage(props: CmsBlocksProps) {
         // metaRobots={page?.metaRobots.toLowerCase().split('_') as MetaRobots[] | undefined}
         canonical='/privacy-policy'
       />
-      <InnerTop title={'Privacy Policy'} isFilter={false} />
       {decodedPrivacyPolicyContent && (
         <div dangerouslySetInnerHTML={{ __html: decodedPrivacyPolicyContent }} />
       )}
+
     </>
   )
 }
