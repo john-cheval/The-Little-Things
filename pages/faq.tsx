@@ -1,0 +1,8 @@
+
+
+function FaqPage() {
+  return (
+    <>
+    </>
+  )
+}
