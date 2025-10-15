@@ -2607,7 +2607,7 @@ input[type='number'] {
 }
 .privacy_wrapper h1 {
   margin: 0 auto;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 .privacy_content p {
   color: #000;
@@ -2786,6 +2786,52 @@ input[type='number'] {
 .faq_accordion_details.is-expanded {
   max-height: 500px;
   transition: max-height 0.3s ease-in;
+}
+
+/* ===== About ==== */
+.about-wrapper {
+  position: relative;
+}
+.about-wrapper .main_image {
+  width: 100%;
+}
+.ironManImage {
+  position: absolute;
+  right: -20%;
+  top: 10px;
+  max-width: 900px;
+}
+.about-wrapper h1 {
+  margin-top: 30px;
+}
+.about_content-container {
+  max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.about_content {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center;
+  justify-content: center; */
+  gap: 15px;
+}
+.about_content p {
+  color: #000;
+  text-align: center;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 134%;
+  margin: 0;
+}
+.about_content-container img {
+  margin-block: 50px;
+  border-radius: 3px;
+  margin-inline: 50px;
+  overflow: hidden;
 }
 
 /* ====== Animations ========== */
