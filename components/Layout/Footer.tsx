@@ -201,7 +201,7 @@ export function Footer({ footerContent }) {
 
       {/* copyright */}
       <div className='footer-copyright container-wrapper'>
-        <p>Designed & Developed by <a href='https://chevalme.com/' rel="noreferrer" target='_blank'>Cheval</a></p>
+        <p>Designed & Developed by <a href='https://chevalme.ae/' rel="noreferrer" target='_blank'>Cheval</a></p>
         <p>The Little Things All Rights Reserved</p>
         <p onClick={handleBacktoTop} className='backToTop'>Back to Top</p>
       </div>
