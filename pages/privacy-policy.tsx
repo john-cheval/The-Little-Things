@@ -1,8 +1,8 @@
-import { PageOptions } from '@graphcommerce/framer-next-pages'
+import type { PageOptions } from '@graphcommerce/framer-next-pages'
 import { cacheFirst } from '@graphcommerce/graphql'
 import { StoreConfigDocument } from '@graphcommerce/magento-store'
-import { GetStaticProps, PageMeta } from '@graphcommerce/next-ui'
-import { LayoutDocument, LayoutNavigation, LayoutNavigationProps } from '../components'
+import { type GetStaticProps, PageMeta } from '@graphcommerce/next-ui'
+import { LayoutDocument, LayoutNavigation, type LayoutNavigationProps } from '../components'
 import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
 import { decodeHtmlEntities } from '../utils/htmlUtils'
@@ -18,8 +18,8 @@ function PrivacyPolicyPage(props: CmsBlocksProps) {
   return (
     <>
       <PageMeta
-        title='Privacy Policy | Ribbon and Balloons'
-        metaDescription='Custom cakes, handcrafted desserts — made for your moment.'
+        title='Privacy Policy | The Little Things - Haven For Anime & Cartoon Figurine Collectibles'
+        metaDescription="Unlock Worlds You've Never Seen! | The Little Things Trading LLC is a unique retail experience - with the flagship store situated in one of the biggest shopping mall in the world, The Dubai Mall - that carries a wide selection of collectible anime figurines, Manga, comics, video-gaming related products, and more!"
         // metaRobots={page?.metaRobots.toLowerCase().split('_') as MetaRobots[] | undefined}
         canonical='/privacy-policy'
       />
@@ -37,7 +37,7 @@ PrivacyPolicyPage.pageOptions = {
 export default PrivacyPolicyPage
 
 export const getStaticProps: GetPageStaticProps = async (context) => {
-  const { params, locale } = context
+  // const { params, locale } = context
   const client = graphqlSharedClient(context)
   const conf = client.query({ query: StoreConfigDocument })
 

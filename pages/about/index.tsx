@@ -33,8 +33,8 @@ function AboutPage(props: CmsBlocksProps) {
   return (
     <>
       <PageMeta
-        title='About | Ribbon and Balloons'
-        metaDescription='Custom cakes, handcrafted desserts — made for your moment.'
+        title='About | The Little Things - Haven For Anime & Cartoon Figurine Collectibles'
+        metaDescription="Unlock Worlds You've Never Seen! | The Little Things Trading LLC is a unique retail experience - with the flagship store situated in one of the biggest shopping mall in the world, The Dubai Mall - that carries a wide selection of collectible anime figurines, Manga, comics, video-gaming related products, and more!"
         // metaRobots={page?.metaRobots.toLowerCase().split('_') as MetaRobots[] | undefined}
         canonical='/about'
       />

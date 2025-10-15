@@ -32,17 +32,17 @@ export function Footer({ footerContent }) {
             <h6>Locations</h6>
             <ul>
               <li>
-                <a href='#' target='_blank'>TLT | The Dubai Mall - Level 2
+                <a href='https://maps.google.com?daddr=The Little Things - Financial Center Road - Dubai - United Arab Emirates' target='_blank' rel="noreferrer">TLT | The Dubai Mall - Level 2
                   <Image src={checkright} alt='footer_logo' />
                 </a>
               </li>
               <li>
-                <a href='#' target='_blank'>The Little Things - Bluewaters
+                <a href='https://maps.google.com?daddr=Bluewaters Island - Dubai' target='_blank' rel="noreferrer">The Little Things - Bluewaters
                   <Image src={checkright} alt='footer_logo' />
                 </a>
               </li>
               <li>
-                <a href='#' target='_blank'>TLT | Mall of the Emirates - Level 1
+                <a href='https://maps.google.com?daddr=The Little Things - Mall of the Emirates - Sheikh Zayed Rd - Al Barsha - Al Barsha 1 - Dubai' target='_blank' rel="noreferrer">TLT | Mall of the Emirates - Level 1
                   <Image src={checkright} alt='footer_logo' />
                 </a>
               </li>
@@ -131,18 +131,27 @@ export function Footer({ footerContent }) {
 
               <ul>
                 <li>
-                  <a href='#' target='_blank'><Image src={facebook} alt='facebook'
-                  />
+                  <a href='https://www.facebook.com/thelittlethingsmee' target='_blank'
+                    title="The Little Things on Facebook"
+                    rel="noreferrer">
+                    <Image src={facebook} alt='facebook'
+                    />
                   </a>
                 </li>
                 <li>
-                  <a href='#' target='_blank'><Image src={instagram} alt='instagram'
-                  />
+                  <a href='https://instagram.com/thelittlethingsme'
+                    title="The Little Things on Instagram"
+                    target='_blank' rel="noreferrer"><Image src={instagram} alt='instagram'
+                    />
                   </a>
                 </li>
                 <li>
-                  <a href='#' target='_blank'><Image src={tiktok} alt='tiktok'
-                  />
+                  <a href="https://www.tiktok.com/@thelittlethingsme"
+                    title="The Little Things on TikTok"
+                    target='_blank'
+                    rel="noreferrer">
+                    <Image src={tiktok} alt='tiktok'
+                    />
                   </a>
                 </li>
               </ul>
