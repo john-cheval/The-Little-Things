@@ -2,11 +2,8 @@ import { m } from 'framer-motion';
 import { Box, useTheme, Link, styled } from '@mui/material';
 import Image from 'next/image';
 import image1 from './megamenu.png'
+import { megaMenuVariations, menuItemVariantons } from '../../constants/animationVariation';
 
-export const variants = {
-  hidden: { opacity: 0, y: -10, transition: { duration: 0.2 } },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-};
 
 const MotionDiv = styled(m.div)({})
 export function MegaMenu({ item, isActive, isMegaMenu, onLinkClick }) {
@@ -31,7 +28,7 @@ export function MegaMenu({ item, isActive, isMegaMenu, onLinkClick }) {
     <MotionDiv
       initial="hidden"
       animate={isActive ? 'visible' : 'hidden'}
-      variants={variants}
+      variants={megaMenuVariations}
       sx={{
         position: 'absolute',
         top: '100%',
@@ -61,31 +58,42 @@ export function MegaMenu({ item, isActive, isMegaMenu, onLinkClick }) {
 
                 }}>
                 {collectionData?.map((item) => (
-                  <Link
-                    onClick={onLinkClick}
-                    key={item.uid}
-                    href={`/${item.url_path}`}
+                  <MotionDiv key={item.uid} variants={menuItemVariantons}
                     sx={{
                       borderRadius: '3px',
-                      color: theme.palette.custom.tltSecondary,
-                      textAlign: 'center',
-                      fontWeight: 700,
-                      fontSize: { xs: '16px', md: '16px' },
-                      textTransform: 'uppercase',
                       backgroundColor: '#f5f5f5',
-                      lineHeight: '120%',
                       paddingBlock: { xs: '15px', md: '18px ' },
-                      textDecoration: 'none',
                       border: '1px solid #f5f5f5',
                       transition: 'all 0.4s ease-in-out',
+                      textAlign: 'center',
+                      display: 'flex',
+                      justifyContent: 'center',
                       '&:hover': {
                         borderColor: theme.palette.custom.tltSecondary,
                         color: theme.palette.custom.tltMain,
                       },
-                    }}
-                  >
-                    {item.name}
-                  </Link>
+                    }}>
+                    <Link
+                      onClick={onLinkClick}
+
+                      href={`/${item.url_path}`}
+                      sx={{
+
+                        color: theme.palette.custom.tltSecondary,
+                        fontWeight: 700,
+                        fontSize: { xs: '16px', md: '16px' },
+                        textTransform: 'uppercase',
+                        lineHeight: '120%',
+                        textDecoration: 'none',
+
+                      }}
+                    >
+                      {item.name}
+                    </Link>
+                  </MotionDiv>
+
+
+
                 ))}
               </Box>
             )}
@@ -138,25 +146,28 @@ export function MegaMenu({ item, isActive, isMegaMenu, onLinkClick }) {
                       marginTop: { xs: '10px', md: '15px' },
                     }}>
                       {section?.children && section?.children?.map((link) => (
-                        <Link
-                          onClick={onLinkClick}
-                          key={link.uid}
-                          sx={{
-                            color: theme.palette.custom.dark,
-                            fontSize: { xs: '16px', md: '18px' },
-                            fontWeight: 400,
-                            lineHeight: '120%',
-                            textTransform: 'capitalize',
-                            transition: 'all 0.2s ease-in-out',
-                            textDecoration: 'none',
-                            '&:hover': {
-                              color: theme.palette.custom.tltSecondary,
-                              textDecoration: 'underline',
-                            },
-                          }}
-                        >
-                          {link.name}
-                        </Link>
+                        <MotionDiv key={link.uid} variants={menuItemVariantons}>
+                          <Link
+                            onClick={onLinkClick}
+                            href={`/${link.url_path}`}
+                            sx={{
+                              color: theme.palette.custom.dark,
+                              fontSize: { xs: '16px', md: '18px' },
+                              fontWeight: 400,
+                              lineHeight: '120%',
+                              textTransform: 'capitalize',
+                              transition: 'all 0.2s ease-in-out',
+                              textDecoration: 'none',
+                              '&:hover': {
+                                color: theme.palette.custom.tltSecondary,
+                                textDecoration: 'underline',
+                              },
+                            }}
+                          >
+                            {link.name}
+                          </Link>
+                        </MotionDiv>
+
                       ))}
                     </Box>
                   </Box>
