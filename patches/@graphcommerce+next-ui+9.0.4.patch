@@ -214,6 +214,53 @@ index c93e224..d388761 100644
              />
            </Button>
          )}
+diff --git a/node_modules/@graphcommerce/next-ui/Breadcrumbs/Breadcrumbs.tsx b/node_modules/@graphcommerce/next-ui/Breadcrumbs/Breadcrumbs.tsx
+index a5da2d1..1fbef1f 100644
+--- a/node_modules/@graphcommerce/next-ui/Breadcrumbs/Breadcrumbs.tsx
++++ b/node_modules/@graphcommerce/next-ui/Breadcrumbs/Breadcrumbs.tsx
+@@ -22,6 +22,7 @@ import { Button } from '../Button'
+ import { IconSvg } from '../IconSvg'
+ import { iconClose, iconEllypsis } from '../icons'
+ import type { BreadcrumbsType } from './types'
++import { truncateByChars } from '../../../../utils/truncate'
+ 
+ const BreadcrumbsPopper = dynamic(
+   async () => (await import('./BreadcrumbsPopper')).BreadcrumbsPopper,
+@@ -36,6 +37,8 @@ export type BreadcrumbsProps = BreadcrumbsType &
+     itemSx?: SxProps<Theme>
+     linkProps?: Omit<LinkProps, 'href'>
+     disableHome?: boolean
++    productPage?: boolean
++    productName?: string
+   }
+ 
+ export function Breadcrumbs(props: BreadcrumbsProps) {
+@@ -49,6 +52,8 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
+     itemSx = [],
+     linkProps,
+     disableHome = false,
++    productPage = false,
++    productName,
+     ...rest
+   } = props
+   const [anchorElement, setAnchorElement] = useState<HTMLButtonElement | null>(null)
+@@ -185,6 +190,16 @@ export function Breadcrumbs(props: BreadcrumbsProps) {
+           {breadcrumb.name}
+         </Link>
+       ))}
++      {productPage && (
++        <Typography
++          component='span'
++          noWrap
++          color='inherit'
++          sx={[, ...(Array.isArray(itemSx) ? itemSx : [itemSx])]}
++        >
++          {truncateByChars(productName, 20)}
++        </Typography>
++      )}
+ 
+       {last && (
+         <Typography
 diff --git a/node_modules/@graphcommerce/next-ui/Button/LinkOrButton.tsx b/node_modules/@graphcommerce/next-ui/Button/LinkOrButton.tsx
 index 83831a5..c0260b4 100644
 --- a/node_modules/@graphcommerce/next-ui/Button/LinkOrButton.tsx
@@ -288,7 +335,7 @@ index b47aab6..d0a1343 100644
 + gap:'11px'
  }))
 diff --git a/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx b/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx
-index ca14954..9d1cd4d 100644
+index ca14954..144229d 100644
 --- a/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx
 +++ b/node_modules/@graphcommerce/next-ui/FramerScroller/SidebarGallery.tsx
 @@ -3,8 +3,8 @@ import type { MotionImageAspectProps, ScrollerButtonProps } from '@graphcommerce
@@ -317,7 +364,7 @@ index ca14954..9d1cd4d 100644
 +  ProductWishlistIconButton,
 +} from '@graphcommerce/magento-wishlist'
 +
-+import { AddProductsToCartForm, ProductListItemFragment } from '@graphcommerce/magento-product'
++import { ProductListItemFragment } from '@graphcommerce/magento-product'
  
  const MotionBox = styled(m.div)({})
  
@@ -380,7 +427,7 @@ index ca14954..9d1cd4d 100644
              },
            ]}
          >
-+          {wishlistButton}
++          {/* {wishlistButton} */}
            <TrapFocus open={zoomed}>
 +
              <MotionBox
@@ -423,7 +470,7 @@ index ca14954..9d1cd4d 100644
                      gridAutoColumns: '100%',
                      gridTemplateRows: '100%',
                      cursor: disableZoom ? 'auto' : 'zoom-in',
-+                    fontSize:'2px',
++                    fontSize: '2px',
                    },
                    zoomed && {
                      height: 'var(--client-size-y)',
@@ -438,33 +485,37 @@ index ca14954..9d1cd4d 100644
                      height={image.height}
                      loading={idx === 0 ? 'eager' : 'lazy'}
 -                    sx={{ display: 'block', objectFit: 'contain' }}
-+                    sx={{ display: 'block', objectFit: 'contain', borderRadius: '8px' }}
++                    sx={{ display: 'block', objectFit: 'contain', }}
                      sizes={{
                        0: '100vw',
                        [theme.breakpoints.values.md]: zoomed ? '100vw' : '60vw',
-@@ -258,8 +278,44 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+@@ -258,8 +278,48 @@ export function SidebarGallery(props: SidebarGalleryProps) {
                      dontReportWronglySizedImages
                    />
                  ))}
-+                {/* {product?.sku && <Box sx={{ position: 'absolute', right: '22px', top: '30px', zIndex: 1000, display: { xs: 'block', lg: 'none' } }}>
-+                  wislisticon
-+                  <ProductWishlistIconButton
++                {wishlistButton}
++
++                {/* {product?.sku &&
++                  <Box sx={{ position: 'absolute', right: '22px', top: '30px', zIndex: 1000, display: { xs: 'block', lg: 'block' } }}>
++                    <ProductWishlistIconButton
 +                      {...product}
 +                      sx={{
 +                        backgroundColor: (theme) => theme.palette.primary.contrastText,
 +                        padding: 0,
 +                        height: '40px',
 +                        width: '40px',
-+                        border: '1px solid #F6DBE0',
++                        border: (theme: any) => `1px solid ${theme.palette.custom.tltMain}`,
 +                        transition: 'all 0.4s ease-in-out',
++
 +                        '&:hover': {
 +                          backgroundColor: 'transparent',
++                          border: (theme: any) => `1px solid ${theme.palette.custom.tltMain}`,
 +                        },
 +                        '&:focus': {
-+                          backgroundColor: (theme: any) => theme.palette.custom.border,
++                          backgroundColor: (theme: any) => theme.palette.custom.tltMain,
 +                        },
 +                        '&:active': {
-+                          backgroundColor: (theme: any) => theme.palette.custom.border,
++                          backgroundColor: (theme: any) => theme.palette.custom.tltMain,
 +                        },
 +                        '&.Mui-focusVisible': {
 +                          backgroundColor: (theme: any) => theme.palette.custom.border,
@@ -480,14 +531,14 @@ index ca14954..9d1cd4d 100644
 +                        },
 +                      }}
 +                    />
-+                </Box>} */}
++                  </Box>} */}
                </Scroller>
                {afterScroller}
 +              {/* 
                <MotionBox
                  layout='position'
                  layoutDependency={zoomed}
-@@ -289,8 +345,9 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+@@ -289,8 +349,9 @@ export function SidebarGallery(props: SidebarGalleryProps) {
                      )}
                    </Fab>
                  )}
@@ -499,7 +550,7 @@ index ca14954..9d1cd4d 100644
                  className={classes.centerLeft}
                  sx={{
                    display: 'grid',
-@@ -332,7 +389,7 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+@@ -332,7 +393,7 @@ export function SidebarGallery(props: SidebarGalleryProps) {
                  >
                    <IconSvg src={iconChevronRight} />
                  </ScrollerButton>
@@ -508,7 +559,7 @@ index ca14954..9d1cd4d 100644
  
                <Box
                  className={classes.bottomCenter}
-@@ -349,14 +406,22 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+@@ -349,14 +410,22 @@ export function SidebarGallery(props: SidebarGalleryProps) {
                    },
                  }}
                >
@@ -533,7 +584,7 @@ index ca14954..9d1cd4d 100644
            </TrapFocus>
            <Box
              className={classes.sidebarWrapper}
-@@ -371,12 +436,10 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+@@ -371,12 +440,10 @@ export function SidebarGallery(props: SidebarGalleryProps) {
                },
                zoomed && {
                  [theme.breakpoints.up('md')]: {
@@ -550,7 +601,7 @@ index ca14954..9d1cd4d 100644
                  },
                },
              ]}
-@@ -401,6 +464,7 @@ export function SidebarGallery(props: SidebarGalleryProps) {
+@@ -401,6 +468,7 @@ export function SidebarGallery(props: SidebarGalleryProps) {
            </Box>
          </MotionBox>
        </Row>
