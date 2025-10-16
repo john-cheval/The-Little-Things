@@ -57,14 +57,6 @@ import { IoMdArrowForward, IoMdStar } from 'react-icons/io'
 import { MdLocalFireDepartment } from 'react-icons/md';
 import tabbyImage from './assets/tabby.png'
 import tamaraImage from './assets/tamara.png'
-import image1 from './assets/1.png'
-import image2 from './assets/2.png'
-import image3 from './assets/3.png'
-import image4 from './assets/4.png'
-import image5 from './assets/5.png'
-import image6 from './assets/6.png'
-import image7 from './assets/7.png'
-import image8 from './assets/8.png'
 import Image from 'next/image'
 import { IoBagHandleOutline } from 'react-icons/io5'
 // import { Image } from '@graphcommerce/image'
@@ -734,18 +726,7 @@ function ProductPage(props: Props) {
                     },
                   },
                 }}>
-                {/* <p>Checkout safely using your preferred payment method
-                </p>
-                <div>
-                  <Image src={image1} alt='image1' />
-                  <Image src={image2} alt='image2' />
-                  <Image src={image3} alt='image3' />
-                  <Image src={image4} alt='image4' />
-                  <Image src={image5} alt='image5' />
-                  <Image src={image6} alt='image6' />
-                  <Image src={image7} alt='image7' />
-                  <Image src={image8} alt='image8' />
-                </div> */}
+
                 <div dangerouslySetInnerHTML={{ __html: decodedpaymentMethodContent }} />
               </Box>
             </Box>
