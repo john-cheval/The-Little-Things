@@ -3,10 +3,10 @@ import {
   cacheFirst,
   mergeDeep,
   PrivateQueryMaskProvider,
-  useApolloClient,
   usePrivateQuery,
+  // useApolloClient,
 } from '@graphcommerce/graphql'
-import { CartStartCheckout, useCartQuery } from '@graphcommerce/magento-cart'
+import { /* CartStartCheckout ,*/ useCartQuery } from '@graphcommerce/magento-cart'
 import { CartPageDocument } from '@graphcommerce/magento-cart-checkout'
 import type { AddProductsToCartFormProps } from '@graphcommerce/magento-product'
 import {
@@ -15,7 +15,6 @@ import {
   getProductStaticPaths,
   jsonLdProduct,
   jsonLdProductOffer,
-  ProductListDocument,
   ProductListPrice,
   ProductPageAddToCartActionsRow,
   ProductPageBreadcrumbs,
@@ -24,7 +23,8 @@ import {
   ProductPageJsonLd,
   ProductPageMeta,
   ProductPageName,
-  ProductShortDescription,
+  // ProductListDocument,
+  // ProductShortDescription,
 } from '@graphcommerce/magento-product'
 import { defaultConfigurableOptionsSelection } from '@graphcommerce/magento-product-configurable'
 import { jsonLdProductReview } from '@graphcommerce/magento-review'
@@ -36,30 +36,31 @@ import { i18n } from '@lingui/core'
 import { Box, Button, Link, Typography } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import type { GetStaticPaths } from 'next'
-// import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { /* useEffect,*/ useState } from 'react'
 import type { LayoutNavigationProps } from '../../components'
 import { LayoutDocument, LayoutNavigation } from '../../components'
 import { AddProductsToCartView } from '../../components/ProductView/AddProductsToCartView'
-import { InnerTop } from '../../components/shared/Inner/Innertop'
-import { linkStyle } from '../../components/shared/swiper/ProductSwiper'
-import RelativeProductListMobile from '../../components/shared/swiper/RelatedProdcutSwiperMobile'
-import { RelativeProductSwiper } from '../../components/shared/swiper/RelativeproductSwiper'
+
 import { fontSize } from '../../components/theme'
 import { cmsMultipleBlocksDocument } from '../../graphql/CmsMultipleBlocks.gql'
 import type { ProductPage2Query } from '../../graphql/ProductPage2.gql'
 import { ProductPage2Document } from '../../graphql/ProductPage2.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../../lib/graphql/graphqlSsrClient'
 import { decodeHtmlEntities } from '../../utils/htmlUtils'
-import { AnimatePresence } from 'framer-motion'
-import CustomisedCakeForm from '../../components/Form/CustomisedCakeForm'
+
 import { IoMdArrowForward, IoMdStar } from 'react-icons/io'
 import { MdLocalFireDepartment } from 'react-icons/md';
 import tabbyImage from './assets/tabby.png'
 import tamaraImage from './assets/tamara.png'
 import Image from 'next/image'
 import { IoBagHandleOutline } from 'react-icons/io5'
-// import { Image } from '@graphcommerce/image'
+// import { InnerTop } from '../../components/shared/Inner/Innertop'
+// import { useRouter } from 'next/router'
+// import { linkStyle } from '../../components/shared/swiper/ProductSwiper'
+// import RelativeProductListMobile from '../../components/shared/swiper/RelatedProdcutSwiperMobile'
+// import { RelativeProductSwiper } from '../../components/shared/swiper/RelativeproductSwiper'
+// import { AnimatePresence } from 'framer-motion'
+// import CustomisedCakeForm from '../../components/Form/CustomisedCakeForm'
 
 
 
