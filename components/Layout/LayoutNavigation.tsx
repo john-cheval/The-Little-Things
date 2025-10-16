@@ -24,6 +24,9 @@ import { CurrecySelctor } from '../TLTComponents/components/CurrenySelector'
 import { LangauageSelctor } from '../TLTComponents/components/LanguageSelector'
 import popmartImage from '../Assets/popmart.png'
 import Image from 'next/image'
+import { megaMenu } from '../../constants/Navbar'
+import { MegaMenu } from './MegaMenu'
+import { PopoverMenu } from './PopoverMenu'
 // import { Image } from '@graphcommerce/image'
 
 export type LayoutNavigationProps = LayoutQuery &
@@ -36,6 +39,40 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
   const menuItemsCmsData = props?.menu?.items?.[0]?.children
   const decodedFooterData = decodeHtmlEntities(footerCmsData?.content)
   const [scroll, setScroll] = useState<boolean>(false)
+  const [subMenuItem, setSubMenuItem] = useState<any>()
+  const [menuActive, setMenuActive] = useState<boolean>(false)
+  const [isMegaMenu, setIsMegaMenu] = useState<any>(false);
+  const [menuPosition, setMenuPosition] = useState<number | 'center' | any>('center')
+
+
+  const handleMouseOver = (item, event) => {
+    setSubMenuItem(item)
+    const hasSubContent = (item?.subMenu && item.subMenu !== false);
+    if (hasSubContent) {
+      setMenuActive(true)
+      const isFull = item.collections && item.collections !== false;
+      setIsMegaMenu(isFull);
+
+      if (!isFull && event && event.currentTarget) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        setMenuPosition(rect.left + rect.width / 2);
+      } else {
+        setMenuPosition('center');
+      }
+    } else {
+      setMenuActive(false)
+      setIsMegaMenu(false);
+      setMenuPosition('center');
+    }
+
+  }
+
+  const handleMouseLeaveNav = () => {
+    setTimeout(() => {
+      setMenuActive(false);
+    }, 100);
+  };
+
 
 
   useEffect(() => {
@@ -261,27 +298,31 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                   <Image src={popmartImage} alt='popmartImage' /></Link>
               </DesktopNavActions>
             </Box>
-            <Box sx={{
-              paddingBlock: { xs: '20px', lg: scroll ? '15px' : '20px' },
-              '& span': {
-                justifyContent: 'space-between',
-              },
-              '& a': {
-                fontSize: { xs: '16px', md: '18px' },
-                fontWeight: 600,
-                lineHeight: '120%',
-                textTransform: 'uppercase',
-                transition: 'all 0.4s ease',
-                padding: '0 !important',
-                '&:hover': {
-                  color: theme => theme.palette.custom.activeColor,
+            <Box
+              onMouseLeave={handleMouseLeaveNav}
+              sx={{
+                // position: 'relative',
+                paddingBlock: { xs: '20px', lg: scroll ? '15px' : '20px' },
+                '& span': {
+                  justifyContent: 'space-between',
                 },
+                '& .MuiTypography-h6.MuiLink-root': {
+                  fontSize: { xs: '16px', md: '18px' },
+                  fontWeight: 600,
+                  lineHeight: '120%',
+                  textTransform: 'uppercase',
+                  transition: 'all 0.4s ease',
+                  padding: '0',
+                  position: 'relative',
+                  '&:hover': {
+                    color: theme => theme.palette.custom.activeColor,
+                  },
 
-              },
-            }}>
+                },
+              }}>
 
               <DesktopNavBar>
-                {menu?.items?.[0]?.children
+                {/* {menu?.items?.[0]?.children
                   ?.filter((item) => item?.include_in_menu === 1)
                   ?.map((menus) => (
                     <DesktopNavItem
@@ -291,9 +332,36 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                     >
                       {menus?.name}
                     </DesktopNavItem>
-                  ))}
+                  ))} */}
 
+                {megaMenu?.map((menus) => (
+                  <DesktopNavItem
+                    key={menus?.uid}
+                    href={`/${menus?.url_path}`}
+                    itemId={menus?.uid}
+                    onMouseEnter={(e) => {
+                      handleMouseOver(menus, e)
+                    }}
+                    onClick={handleMouseLeaveNav}
+                  >
+                    {menus?.name}
+
+                  </DesktopNavItem>
+                ))}
               </DesktopNavBar>
+
+              <PopoverMenu
+                item={subMenuItem}
+                isActive={menuActive}
+                isMegaMenu={isMegaMenu}
+                menuPosition={menuPosition}
+                onLinkClick={handleMouseLeaveNav} />
+              <MegaMenu
+                item={subMenuItem}
+                isActive={menuActive}
+                isMegaMenu={isMegaMenu}
+                onLinkClick={handleMouseLeaveNav}
+              />
             </Box>
           </Box>
         }
