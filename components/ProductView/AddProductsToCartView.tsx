@@ -3,13 +3,9 @@ import { useCartEnabled } from '@graphcommerce/magento-cart'
 import {
   AddProductsToCartError,
   AddProductsToCartQuantity,
-  AddToCartItemSelector,
-  ProductCustomizable,
+  type AddToCartItemSelector,
   ProductListPrice,
   ProductPageAddToCartQuantityRow,
-  // ProductPagePrice,
-  // ProductPagePriceTiers,                                                         
-  // ProductSidebarDelivery,
   useFormAddProductsToCart,
 } from '@graphcommerce/magento-product'
 import { BundleProductOptions } from '@graphcommerce/magento-product-bundle'
@@ -20,11 +16,11 @@ import {
 import { DownloadableProductOptions } from '@graphcommerce/magento-product-downloadable'
 import { GroupedProducts } from '@graphcommerce/magento-product-grouped'
 import { isTypename } from '@graphcommerce/next-ui'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useWatch } from 'react-hook-form'
 import type { ProductPage2Query } from '../../graphql/ProductPage2.gql'
 import { fontSize } from '../theme'
-import { IoMdArrowForward } from 'react-icons/io';
+import { IoShareSocialOutline } from 'react-icons/io5'
 
 
 
@@ -35,7 +31,7 @@ export type AddProductsToCartViewProps = AddToCartItemSelector & {
 
 export function AddProductsToCartView(props: AddProductsToCartViewProps) {
 
-  const { product, openForm, index = 0 } = props
+  const { product, index = 0 } = props
   const cartEnabled = useCartEnabled()
   const { configured } = useConfigurableOptionsSelection({ url_key: product?.url_key, index })
 
@@ -74,12 +70,7 @@ export function AddProductsToCartView(props: AddProductsToCartViewProps) {
       : undefined,
   }
 
-
-
-  const customizableProduct = product?.categories && product?.categories?.length > 0 && product?.categories?.some((item) => item?.id === 11)
-
-
-
+  // const customizableProduct = product?.categories && product?.categories?.length > 0 && product?.categories?.some((item) => item?.id === 11)
 
   return (
     <>
@@ -99,113 +90,138 @@ export function AddProductsToCartView(props: AddProductsToCartViewProps) {
           {/* <Divider />*/}
           <ProductPageAddToCartQuantityRow
             product={product}
-            sx={{ flexDirection: 'column', alignItems: 'start' }}
+            sx={{
+              flexDirection: 'column',
+              alignItems: 'start',
+            }}
           >
             <AddProductsToCartError>
               <Typography component='div' variant='h3' lineHeight='1'>
                 <ProductListPrice
                   {...displayPrice}
+                  detailedPage={true}
                   sx={{
-                    '& .ProductListPrice-finalPrice .MuiBox-root:nth-child(1)': {
-                      // marginRight: '2px',
-                      '& .mui-style-7b7t20': {
-                        backgroundSize: '22px auto',
-                        marginTop: '8px',
-                      },
+                    display: 'flex',
+                    alignItems: 'flex-end',
+                    gap: { xs: '10px', md: '15px' },
+                    '& .ProductListPrice-discountPrice span': {
+                      color: '#C5C5C5',
+                      fontSize: { xs: '16px', md: '18px' },
+                      fontWeight: 600,
+                      lineHeight: 'normal',
                     },
+
+                    '& .ProductListPrice-finalPrice span span:first-child': {
+                      backgroundSize: { xs: '25px auto', md: '27px auto' },
+                      backgroundPosition: { xs: '-2px center', md: '-2px 14px' },
+                      width: { xs: '20px', md: '30px' },
+                    },
+
                     '& .ProductListPrice-finalPrice .MuiBox-root:not(:nth-child(1))': {
                       ...fontSize(25, 40),
                     },
+
+                    '& .mui-style-e8n57i': {
+                      gap: { xs: '10px', md: '15px' },
+                    },
+                    '& .discount-per': {
+                      '& svg': {
+                        display: 'none',
+                      },
+                    },
+
                   }}
                 />
               </Typography>
             </AddProductsToCartError>
 
-            {customizableProduct && (
-              <Box sx={{
-                borderTop: '1px solid #c7cacd6b',
-                width: '100%',
-                marginTop: { xs: '10px' },
-                paddingTop: { xs: '25px' },
-              }}><Button
-                onClick={() => openForm(true)}
-                sx={{
-                  borderRadius: '8px',
-                  border: (theme) => `1px solid ${theme.palette.custom.main}`,
-                  background: theme => theme.palette.custom.border,
-                  fontSize: { xs: '16px', md: '18px' },
-                  color: theme => theme.palette.custom.smallHeading,
-                  fontWeight: 600,
-                  width: '100%',
-                  paddingBlock: { xs: '16px' },
-                  textAlign: 'center',
-                  marginBottom: '25px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  columnGap: '10px',
-                  transition: 'transform 0.3s ease-in-out',
-                  '& svg': {
-                    transform: 'translateX(0)',
-                    transition: 'transform 0.3s ease-in-out',
-                  },
-                  '&:hover': {
-                    background: theme => theme.palette.custom.border,
-                    '& svg': {
-                      transform: 'translateX(5px)',
-                    },
-                  },
-
-                }}>Contact us for your customised cake <IoMdArrowForward color='#1C1B1F' />
-                </Button> </Box>
-            )}
-
-            {cartEnabled && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: { xs: 'row', md: 'column' },
-                  columnGap: { xs: '12px', md: 0 },
-                  rowGap: { xs: 0, md: '15px' },
-                  alignItems: { xs: 'center', md: 'start' },
-                }}
-              >
-                <Typography
-                  component='p'
+            <Box sx={{
+              marginTop: { xs: '20px', md: '25px', lg: '30px' },
+              width: '100%',
+            }}>
+              {cartEnabled && (
+                <Box
                   sx={{
-                    color: '#2A110A',
-                    fontSize: { xs: '15px', md: '16px' },
-                    fontWeight: 500,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    rowGap: { xs: 0, md: '0' },
+                    justifyContent: 'space-between',
                   }}
                 >
-                  Quantity :
-                </Typography>
-                <AddProductsToCartQuantity
-                  sx={{
-                    flexShrink: '0',
-                    '& .MuiOutlinedInput-root': {
-                      color: '#333',
-                      borderRadius: '8px',
-                      padding: '4px',
-                      '& svg': {
-                        fontSize: '19px',
-                      },
-                    },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#F6DBE0 ',
-                    },
-                    '&:hover .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#F6DBE0 ',
-                    },
-                    '& .mui-style-srbfbn-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline':
-                    {
-                      borderColor: '#F6DBE0 ',
-                    },
-                  }}
-                />
-              </Box>
-            )}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      columnGap: { xs: '12px', md: '15px' },
+                      alignItems: 'center',
+                    }}>
+                    <Typography
+                      component='p'
+                      sx={{
+                        color: '#000',
+                        fontSize: { xs: '15px', md: '18px' },
+                        fontWeight: 700,
+                      }}
+                    >
+                      Quantity
+                    </Typography>
+                    <AddProductsToCartQuantity
+                      sx={{
+                        flexShrink: '0',
+                        '& .MuiOutlinedInput-root': {
+                          color: (theme) => theme.palette.custom.dark,
+                          borderRadius: '3px',
+                          padding: '4px',
+                          '& svg': {
+                            fontSize: '19px',
+                            stroke: (theme) => theme.palette.custom.tltSecondary,
+                            strokeWidth: '1.5px',
+                          },
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: (theme) => theme.palette.custom.tltBorder4,
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: (theme) => theme.palette.custom.tltBorder4,
+                        },
+                        '& .mui-style-srbfbn-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline':
+                        {
+                          borderColor: (theme) => theme.palette.custom.tltBorder4,
+                          borderWidth: '1px',
+                        },
+                        '& .mui-style-1c59ycn-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderWidth: '1px',
+                        },
+                      }}
+                    />
+                  </Box>
+
+                  <Box
+                    sx={{
+                      borderRadius: '3px',
+                      border: (theme: any) => `1px solid ${theme.palette.custom.tltBorder4}`,
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: { xs: '8px 15px', md: '12px 15px' },
+                    }}>
+                    <Typography sx={{
+                      color: (theme: any) => theme.palette.custom.tltSecondary,
+                      fontSize: { xs: '16px', md: '18px' },
+                      fontWeight: 500,
+                      lineHeight: '120%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: { xs: '5px', md: '8px' },
+                    }}>
+                      Share <IoShareSocialOutline />
+                    </Typography>
+                  </Box>
+
+                </Box>
+              )}
+            </Box>
           </ProductPageAddToCartQuantityRow>
-          <Box
+          {/* <Box
             sx={{
               marginTop: { xs: '10px', md: '25px' },
               display: 'flex',
@@ -237,7 +253,7 @@ export function AddProductsToCartView(props: AddProductsToCartViewProps) {
             }}
           >
             <ProductCustomizable product={product} />
-          </Box>
+          </Box> */}
           {/*  <ProductPagePriceTiers product={product} /> */}
           {/* cartEnabled && <ProductSidebarDelivery product={product} /> */}
         </>

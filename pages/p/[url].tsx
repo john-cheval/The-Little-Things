@@ -33,10 +33,9 @@ import { ProductWishlistIconButton } from '@graphcommerce/magento-wishlist'
 import type { GetStaticProps } from '@graphcommerce/next-ui'
 import { OverlayStickyBottom } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Link, Typography } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import type { GetStaticPaths } from 'next'
-import Link from 'next/link'
 // import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import type { LayoutNavigationProps } from '../../components'
@@ -54,6 +53,23 @@ import { graphqlSharedClient, graphqlSsrClient } from '../../lib/graphql/graphql
 import { decodeHtmlEntities } from '../../utils/htmlUtils'
 import { AnimatePresence } from 'framer-motion'
 import CustomisedCakeForm from '../../components/Form/CustomisedCakeForm'
+import { IoMdArrowForward, IoMdStar } from 'react-icons/io'
+import { MdLocalFireDepartment } from 'react-icons/md';
+import tabbyImage from './assets/tabby.png'
+import tamaraImage from './assets/tamara.png'
+import image1 from './assets/1.png'
+import image2 from './assets/2.png'
+import image3 from './assets/3.png'
+import image4 from './assets/4.png'
+import image5 from './assets/5.png'
+import image6 from './assets/6.png'
+import image7 from './assets/7.png'
+import image8 from './assets/8.png'
+import Image from 'next/image'
+import { IoBagHandleOutline } from 'react-icons/io5'
+// import { Image } from '@graphcommerce/image'
+
+
 
 export type CmsBlocksProps = { cmsBlocks?: any }
 
@@ -67,11 +83,14 @@ type GetPageStaticProps = GetStaticProps<LayoutNavigationProps, Props, RouteProp
 
 function ProductPage(props: Props) {
   const { defaultValues, urlKey, cmsBlocks } = props
-  const cmsRelativeProducts = cmsBlocks?.find((block) => block.identifier === 'relative-products')
+  const weOfferContent = cmsBlocks?.find((block) => block.identifier === 'detail-page-we-offer')
+  const paymentMethodContent = cmsBlocks?.find((block) => block.identifier === 'product-detail-payment-method')
 
-  const decodedRelativeProductsTitle = decodeHtmlEntities(cmsRelativeProducts?.content)
 
-  const [openContactForm, setOpenContactForm] = useState(false)
+  const decodedWeOfferContent = decodeHtmlEntities(weOfferContent?.content)
+  const decodedpaymentMethodContent = decodeHtmlEntities(paymentMethodContent?.content)
+
+  // const [openContactForm, setOpenContactheme.palette.custom.tltBorder4tForm] = useState(false)
 
   const scopedQuery = usePrivateQuery(
     ProductPage2Document,
@@ -79,9 +98,9 @@ function ProductPage(props: Props) {
     props,
   )
   const { products, relatedUpsells } = scopedQuery.data
-  const client = useApolloClient()
-  const [isLoading, setIsLoading] = useState(false)
-  const [relatedProducts, setRelatedProducts] = useState<any>([])
+  // const client = useApolloClient()
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [relatedProducts, setRelatedProducts] = useState<any>([])
   const [isBuyNow, setIsBuyNow] = useState<boolean>(false)
 
   const product = mergeDeep(
@@ -92,12 +111,12 @@ function ProductPage(props: Props) {
     errorPolicy: 'all',
     fetchPolicy: 'cache-and-network',
   })
-  const { error, data } = cart
-  const hasError = Boolean(error)
+  const { data } = cart
+  // const hasError = Boolean(error)
   const cartItems = data?.cart?.items
-  const hasItems =
-    (data?.cart?.total_quantity ?? 0) > 0 &&
-    typeof data?.cart?.prices?.grand_total?.value !== 'undefined'
+  // const hasItems =
+  //   (data?.cart?.total_quantity ?? 0) > 0 &&
+  //   typeof data?.cart?.prices?.grand_total?.value !== 'undefined'
   const isLargeScreen = useMediaQuery('(max-width:1250px)')
 
 
@@ -106,48 +125,46 @@ function ProductPage(props: Props) {
 
 
 
-  const fetchProducts = async (categoryId) => {
-    setIsLoading(true)
+  // const fetchProducts = async (categoryId) => {
+  //   setIsLoading(true)
 
-    const pageProducts = await client.query({
-      query: ProductListDocument,
-      variables: {
-        pageSize: 10,
-        currentPage: 1,
-        filters: {
-          category_id: { eq: categoryId },
-        },
-      },
-    })
-    setRelatedProducts([...(pageProducts.data.products?.items ?? [])])
-    setIsLoading(false)
-  }
+  //   const pageProducts = await client.query({
+  //     query: ProductListDocument,
+  //     variables: {
+  //       pageSize: 10,
+  //       currentPage: 1,
+  //       filters: {
+  //         category_id: { eq: categoryId },
+  //       },
+  //     },
+  //   })
+  //   setRelatedProducts([...(pageProducts.data.products?.items ?? [])])
+  //   setIsLoading(false)
+  // }
 
-  useEffect(() => {
-    if (product?.categories && product.categories.length > 0) {
-      const categoryId = product.categories[0]?.id
-      if (categoryId) {
-        fetchProducts(String(categoryId))
-      }
-    }
-  }, [])
+  // useEffect(() => {
+  //   if (product?.categories && product.categories.length > 0) {
+  //     const categoryId = product.categories[0]?.id
+  //     if (categoryId) {
+  //       fetchProducts(String(categoryId))
+  //     }
+  //   }
+  // }, [])
 
   const matchedCartItem = cartItems?.find((cart) => cart?.product?.sku === product?.sku)
 
-
-
-
+  // console.log(product, '==>this is the product')
 
   return (
     <>
       <PrivateQueryMaskProvider mask={scopedQuery.mask}>
-        <InnerTop title={product?.name ?? ''} isFilter={false} />
         <Box
           sx={{
             display: { xs: 'flex', lg: 'none' },
             flexDirection: 'column',
             paddingInline: { xs: '18px', md: '25px' },
             marginBottom: { xs: '15px', md: '30px' },
+
           }}
         >
           <Typography
@@ -182,6 +199,7 @@ function ProductPage(props: Props) {
           key={product.uid}
           defaultValues={defaultValues}
           sx={{
+            marginTop: { xs: '30px', md: '60px' },
             '& .SidebarGallery-row': {
               marginBottom: {
                 xs: product?.related_products?.length === 0 ? '30px' : 0,
@@ -189,17 +207,25 @@ function ProductPage(props: Props) {
               },
             },
             '& .SidebarGallery-scrollerContainer': {
-              overflow: 'hidden',
+              // overflow: 'hidden',
+              // height: 'unset',
               '& .Scroller-root .MotionImageAspect picture': {
                 aspectRatio: 'unset !important',
                 overflow: 'hidden',
-                borderRadius: '8px',
+                borderRadius: '3px',
+                // top: 0,
+                // transform: 'translate(-50%, 0%)',
+                border: theme => `1px solid ${theme.palette.custom.tltBorder4}`,
                 '& img': {
                   transform: 'none !important',
+                  borderRadius: '0',
+                  // width: 'unset',
+                  // height: 'unset',
+                  margin: '0 auto',
                 },
               },
               '& .SidebarGallery-bottomCenter': {
-                bottom: { xs: '20px', md: '30px', lg: isLargeScreen ? '100px' : '50px', xl: '40px' },
+                bottom: { xs: '20px', md: '30px', lg: isLargeScreen ? '100px' : '50px', xl: '-100px' },
 
                 '& .ScrollerThumbnail-thumbnail  img': {
                   minHeight: { xs: '50px', lg: '70px' },
@@ -236,9 +262,6 @@ function ProductPage(props: Props) {
                   },
                 },
               },
-              '& .ProductListPrice-root': {
-                marginTop: '10px',
-              },
               '& .mui-style-1v4a0za': {
                 flexDirection: { xs: 'row', lg: 'column' },
                 alignItems: { xs: 'center', lg: 'flex-start' },
@@ -272,78 +295,49 @@ function ProductPage(props: Props) {
 
           <ProductPageMeta product={product} />
 
-          {import.meta.graphCommerce.breadcrumbs && (
-            <ProductPageBreadcrumbs
-              product={product}
-              sx={(theme) => ({
-                py: `calc(${theme.spacings.xxs} / 2)`,
-                pl: theme.page.horizontal,
-                background: theme.palette.background.paper,
-                [theme.breakpoints.down('md')]: {
-                  '& .MuiBreadcrumbs-ol': { justifyContent: 'center' },
-                },
-              })}
-            />
-          )}
+          <ProductPageBreadcrumbs
+            className='container-wrapper'
+            product={product}
+            isProduct
+            sx={{
+              color: '#747474',
+              fontSize: { xs: '16px', md: '18px' },
+              fontWeight: 400,
+              lineHeight: '120%',
+              marginBottom: { xs: '10px', md: '15px' },
+              '& li': {
+                overflow: 'hidden',
+              },
+
+            }}
+
+          />
 
           <ProductPageGallery
             product={product}
-            sx={(theme) => ({
+            sx={{
               '& .SidebarGallery-sidebar': {
                 display: 'grid',
               },
-            })}
+            }}
             disableSticky
             wishlistButton={
               <Box
                 sx={{
                   position: 'absolute',
-                  right: { xs: '20px', sm: '15px' },
-                  top: { xs: '20px', sm: '15px' },
+                  right: { xs: '20px', sm: '15px', lg: '40px' },
+                  top: { xs: '20px', sm: '15px', lg: '40px' },
                   zIndex: 1000,
                   alignItems: 'center',
                   justifyContent: 'flex-end',
-                  display: { xs: 'flex', lg: 'none' },
+                  display: { xs: 'flex', lg: 'flex' },
                 }}
               >
                 <ProductWishlistIconButton
                   {...product}
                   sx={{
-                    backgroundColor: (theme) => theme.palette.primary.contrastText,
-                    padding: 0,
                     height: '40px',
                     width: '40px',
-                    transition: 'all 0.4s ease-in-out',
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                    },
-                    '&:focus': {
-                      backgroundColor: (theme: any) => theme.palette.primary.contrastText,
-                    },
-                    '&:active': {
-                      backgroundColor: (theme: any) => theme.palette.primary.contrastText,
-                    },
-                    '&.Mui-focusVisible': {
-                      backgroundColor: (theme: any) => theme.palette.primary.contrastText,
-                    },
-                    '& .MuiTouchRipple-root': {
-                      color: (theme: any) => theme.palette.primary.contrastText,
-                    },
-                    '& svg': {
-                      fontSize: '18px',
-                      stroke: (theme: any) => theme.palette.custom.main,
-                    },
-                    '& .ProductWishlistChipBase-wishlistButton': {
-                      '&hover': {
-                        '& svg': {
-                          fill: (theme: any) => theme.palette.custom.wishlistColor,
-                        },
-                      },
-                    },
-
-                    '& svg.ProductWishlistChipBase-wishlistIconActive': {
-                      stroke: (theme: any) => theme.palette.custom.border,
-                    },
                   }}
                 />
               </Box>
@@ -354,7 +348,7 @@ function ProductPage(props: Props) {
                 flexGrow: 1,
                 overflowY: 'scroll',
                 overflowX: 'hidden',
-                paddingBottom: { xs: '15px', md: '30px', lg: '40px' },
+                paddingBottom: { xs: '15px', md: '30px', lg: '35px' },
 
                 '&::-webkit-scrollbar': {
                   display: 'none',
@@ -373,102 +367,189 @@ function ProductPage(props: Props) {
                 msOverflowStyle: 'none',
               }}
             >
-              <div>
-                <Box
-                  sx={{ display: { xs: 'none', lg: 'flex' }, flexDirection: 'column', rowGap: '3px' }}
-                >
+              <Box
+                sx={{
+                  display: { xs: 'none', lg: 'flex' },
+                  flexDirection: 'column',
+                  // rowGap: '3px',
+                  marginTop: { xs: '10px', md: '20px' },
+                }}
+              >
+                {product?.categories && product?.categories?.length > 0 && (
                   <Typography
-                    variant='h3'
-                    component='div'
-                    gutterBottom
-                    sx={{
-                      color: (theme: any) => theme.palette.custom.dark,
-                      fontWeight: 400,
+                    sx={(theme) => ({
+                      color: theme.palette.custom.tltSecondary,
+                      fontSize: '16px',
+                      fontWeight: 500,
                       lineHeight: '120%',
-                      margin: 0,
-                    }}
-                  >
-                    <ProductPageName product={product} />
+                      letterSpacing: '4px',
+                      textTransform: 'uppercase',
+                    })}>
+                    {product?.categories?.[0]?.name}
                   </Typography>
-                  <Box
-                    sx={{
+                )}
+
+                <Typography
+                  component='h1'
+                  sx={(theme) => ({
+                    color: theme.palette.custom.dark,
+                    fontSize: { xs: '20px', md: '25px', lg: '30px', xl: '35px' },
+                    fontWeight: 700,
+                    lineHeight: '128%',
+                    marginTop: { xs: '10px', md: '15px' },
+                  })}
+                >
+                  <ProductPageName product={product} />
+                </Typography>
+
+                {product?.sku && (
+                  <Box sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: { xs: '10px', md: '15px', lg: '20px' },
+                  }}>
+                    <Typography
+                      component='h1'
+                      sx={(theme) => ({
+                        color: theme.palette.custom.dark,
+                        fontSize: { xs: '15px', md: '16px' },
+                        lineHeight: '128%',
+
+                        backgroundColor: theme.palette.custom.tltlGray2,
+                        borderRadius: '3px',
+                        padding: '5px 10px',
+                      })}
+                    >
+                      sku: {product?.sku}
+                    </Typography>
+
+                    {/* {product?.rating_summary > 0 && ( */}
+                    <Box sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      justifyContent: 'space-between',
-                      paddingBottom: '5px',
-                      borderBottom: '1px solid rgba(199, 202, 205, 0.42)',
-                    }}
-                  >
-                    <ProductListPrice
-                      {...product.price_range.minimum_price}
-                      sx={{
-                        '& .ProductListPrice-finalPrice .MuiBox-root:nth-child(1)': {
-                          // marginRight: '2px',
-                          '& .mui-style-7b7t20': {
-                            backgroundSize: '22px auto',
-                            backgroundPosition: 'center 25px',
-                            // marginTop: '8px',
-                          },
-                        },
-                        '& .ProductListPrice-finalPrice .MuiBox-root:not(:nth-child(1))': {
-                          ...fontSize(25, 40),
-                        },
-                      }}
-                    />
-                    <ProductWishlistIconButton
-                      {...product}
-                      sx={{
-                        backgroundColor: (theme: any) => theme.palette.custom.border,
-                        padding: 0,
-                        height: '40px',
-                        width: '40px',
-                        border: '1px solid #F6DBE0',
-                        transition: 'all 0.4s ease-in-out',
-                        '&:hover': {
-                          backgroundColor: 'transparent',
-                        },
-                        '&:focus': {
-                          backgroundColor: (theme: any) => theme.palette.custom.border,
-                        },
-                        '&:active': {
-                          backgroundColor: (theme: any) => theme.palette.custom.border,
-                        },
-                        '&.Mui-focusVisible': {
-                          backgroundColor: (theme: any) => theme.palette.custom.border,
-                        },
-                        '& .MuiTouchRipple-root': {
-                          color: (theme: any) => theme.palette.custom.border,
-                        },
-                        '& svg': {
-                          stroke: (theme: any) => theme.palette.custom.main,
-                        },
-                        '& svg.ProductWishlistChipBase-wishlistIconActive': {
-                          stroke: (theme: any) => theme.palette.custom.border,
-                        },
-                      }}
-                    />
+                      gap: '5px',
+                    }}>
+                      <IoMdStar color='#D90F13' size={20} />
+                      <Typography
+                        component='p'
+                        sx={(theme) => ({
+                          color: theme.palette.custom.dark,
+                          fontSize: { xs: '15px', md: '16px' },
+                          display: 'flex',
+                          gap: '3px',
+                        })}
+                      >
+                        <span>{Number(product?.rating_summary || 4.0).toFixed(1)}</span>
+                        <span>({product?.rating_summary || 17}  Reviews)</span>
+                      </Typography>
+                    </Box>
+                    {/* )} */}
                   </Box>
-                </Box>
-                <ProductShortDescription
-                  sx={(theme) => ({
-                    mb: theme.spacings.xs,
-                    color: '#6F6F6F',
-                    fontSize: { xs: '15px', md: '16px' },
-                    lineHeight: '170%',
-                    paddingTop: '15px',
-                  })}
-                  product={product}
-                />
-              </div>
+                )}
 
-              <AddProductsToCartView product={product} openForm={setOpenContactForm} />
+                {/* {product?.only_x_left_in_stock && product?.only_x_left_in_stock >= 3 && ( */}
+                <Box
+                  sx={{
+                    background: 'linear-gradient(90deg, #B4001A 0%, #D90F13 100%)',
+                    borderRadius: '3px',
+                    padding: { xs: '5px 10px', md: '10px 15px' },
+                    marginTop: { xs: '20px', md: '30px' },
+                  }}>
+                  <Typography sx={{
+                    color: '#fff',
+                    display: 'flex',
+                    alingItens: 'center',
+                    gap: '5px',
+                    fontSize: '16px',
+                    fontWeight: 500,
+                    lineHeight: '120%',
+                  }}>
+                    <MdLocalFireDepartment
+                      color='#FFFFFF'
+                      size={20} />
+                    Grab it before its gone!{product?.only_x_left_in_stock || 3} units left in stock!</Typography>
+
+                </Box>
+                {/* )} */}
+
+                <Box
+                  sx={{
+                    marginTop: { xs: '20px', md: '25px', lg: '30px' },
+                    paddingBottom: { xs: '20px', md: '25px', lg: '30px' },
+                    borderBottom: '1px solid rgba(199, 202, 205, 0.42)',
+
+                  }}
+                >
+                  <AddProductsToCartView product={product} />
+                </Box>
+              </Box>
+
+              {/* Static Content (need to integare API) */}
+              <Box sx={{
+                marginTop: { xs: '15px', md: '25px' },
+              }}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: { xs: '5px', md: '10px' },
+                  }}>
+                  <Typography
+                    sx={{
+                      border: (theme) => `1px solid ${theme.palette.custom.tltBorder4}`,
+                      borderRadius: '3px',
+                      padding: { xs: '10px', md: '13px' },
+                      color: (theme) => theme.palette.custom.dark,
+                      fontSize: { xs: '16px', md: '18px' },
+                      lineHeight: '127%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: { xs: '10px', md: '20px' },
+
+                    }}>
+                    <Image src={tabbyImage} alt='tabbyImage' />
+                    Split your purchase into monthly payments. Learn more
+                  </Typography>
+                  <Typography
+                    sx={{
+                      border: (theme) => `1px solid ${theme.palette.custom.tltBorder4}`,
+                      borderRadius: '3px',
+                      padding: { xs: '10px', md: '13px' },
+                      color: (theme) => theme.palette.custom.dark,
+                      fontSize: { xs: '16px', md: '18px' },
+                      lineHeight: '127%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: { xs: '10px', md: '20px' },
+
+                    }}>
+                    <Image src={tamaraImage} alt='tamaraImage' />
+                    Or split in 4 payments of AED 249.75 No late fees, Sharia compliant! Learn more
+                  </Typography>
+                </Box>
+
+                <Typography
+                  sx={{
+                    color: (theme) => theme.palette.custom.dark,
+                    fontSize: { xs: '16px', md: '18px' },
+                    fontWeight: 500,
+                    lineHeight: '127%',
+                    marginTop: { xs: '10px', md: '20px' },
+                  }}>
+                  Tax included. <Link href='/checkout' sx={{
+                    color: (theme) => theme.palette.custom.dark,
+                  }}>Shipping</Link> calculated at checkout.
+                </Typography>
+              </Box>
             </Box>
-            {/* Buttons */}
+
             <OverlayStickyBottom
               sx={{
                 py: 0.1,
                 backgroundColor: '#fff',
                 zIndex: 99999,
+                position: 'static',
                 // bottom: 'unset !important',
                 '& .CartTotals-root ': {
                   backgroundColor: 'transparent',
@@ -488,7 +569,7 @@ function ProductPage(props: Props) {
                   rowGap: { xs: '10px', md: 0 },
                   width: '100%',
                   '& .MuiBox-root': {
-                    width: { xs: '100%', sm: '50%' },
+                    width: { xs: '100%', sm: '100%' },
                     paddingRight: 0,
                   },
                   '& .MuiBox-root .MuiButtonBase-root': {
@@ -502,119 +583,177 @@ function ProductPage(props: Props) {
                   },
                 }}
               >
+
                 <AddProductsToCartButton
-                  // fullWidth
                   onClick={() => setIsBuyNow(false)}
                   product={product}
                   sx={{
-                    backgroundColor: '#FFE09D',
-                    color: '#441E14',
-                    fontSize: { xs: '15px', md: '16px' },
-                    fontWeight: 500,
-                    lineHeight: '158%',
-                    borderRadius: '4px',
-                    border: '1px solid #FFE09D ',
-                    transition: 'all 0.3s ease',
-                    flexGrow: 1,
-                    // paddingBlock: { xs: '15px', md: '18px' },
+                    width: '100%',
+                    justifyContent: 'start',
+                    borderRadius: '3px',
                     boxShadow: 'none !important',
-                    width: { xs: '100%' },
-                    // paddingRight: 0,
-                    '&:hover': {
-                      backgroundColor: 'white !important',
+                    padding: '8px',
+                    backgroundColor: theme => theme.palette.custom.tltMain,
+                    '& span': {
+                      color: theme => theme.palette.custom.tltMain,
+                      backgroundColor: theme => theme.palette.custom.tltContrastText,
+                      padding: '10px',
+                      borderRadius: '3px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      border: theme => `1px solid ${theme.palette.custom.tltContrastText}`,
+                      transition: 'all 0.4s ease-in-out',
+                    },
+                    '& .MuiTypography-body1': {
+                      color: theme => theme.palette.custom.tltContrastText,
+                      textAlign: 'center',
+                      fontSize: '16px',
+                      fontWeight: 700,
+                      lineHeight: '120%',
+                      textTransform: 'uppercase',
+                      width: '100%',
+                      transition: 'all 0.4s ease-in-out',
+                    },
+                    '&:hover span': {
+                      border: theme => `1px solid ${theme.palette.custom.tltMain}`,
+                    },
+                    '&:hover .MuiTypography-body1': {
+                      color: theme => theme.palette.custom.tltMain,
                     },
                   }}
-                />
+                >
+                  <span>
+                    <IoBagHandleOutline />
+                  </span>
 
-                {/*  <CartStartCheckout
-                title='Buy Now'
-                sx={{
-                  '& .MuiButtonBase-root': {
-                    width: '100%',
-                    borderRadius: '4px',
-                    backgroundColor: '#9B7C38',
-                    border: '1px solid #9B7C38',
-                    color: '#fff',
-                    fontSize: { xs: '15px', md: '16px' },
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                      color: '#2A110A',
-                    },
-                    '&:hover:not(.Mui-disabled)': {
-                      backgroundColor: 'transparent',
-                      color: '#2A110A',
-                      boxShadow: 'none',
-                    },
-                  },
-                }}
-                cart={data?.cart}
-                disabled={hasError}
-              /> */}
+                  <Typography>
+                    Add to Cart
+                  </Typography>
+                </AddProductsToCartButton>
 
-                <Box sx={{ width: '100% !important' }}>
+                <Box
+                  sx={(theme) => ({
+                    width: '100% !important',
+                    '& button': {
+                      backgroundColor: theme.palette.custom.tltSecondary,
+                      borderRadius: '3px',
+                      boxShadow: 'none !important',
+                      width: '100%',
+                      height: '100%',
+                      flexGrow: 1,
+                      padding: '8px',
+                      justifyContent: 'start',
+                      '& span': {
+                        color: theme.palette.custom.tltSecondary,
+                        backgroundColor: theme.palette.custom.tltContrastText,
+                        padding: '10px',
+                        borderRadius: '3px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        border: `1px solid ${theme.palette.custom.tltContrastText}`,
+                        transition: 'all 0.4s ease-in-out',
+                      },
+                      '& .MuiTypography-body1': {
+                        color: theme.palette.custom.tltContrastText,
+                        textAlign: 'center',
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        lineHeight: '120%',
+                        textTransform: 'uppercase',
+                        width: '100%',
+                        transition: 'all 0.4s ease-in-out',
+                      },
+                      '&:hover span': {
+                        border: `1px solid ${theme.palette.custom.tltSecondary}`,
+                      },
+                      '&:hover .MuiTypography-body1': {
+                        color: theme.palette.custom.tltSecondary,
+                      },
+                    },
+                  })}
+                >
                   {matchedCartItem ? (
                     <Link href='/checkout'>
-                      <Button
-                        sx={{
-                          backgroundColor: (theme: any) => theme.palette.custom.heading,
-                          color: '#FFFFFF',
-                          fontSize: { xs: '15px', md: '16px' },
-                          borderRadius: '4px',
-                          border: '1px solid #9B7C38 ',
-                          paddingBlock: { xs: '9px', md: '12px' },
-                          boxShadow: 'none !important',
-                          width: '100%',
-                          height: '100%',
-                          flexGrow: 1,
-                          '&:hover': {
-                            backgroundColor: 'white !important',
-                            color: (theme: any) => theme.palette.custom.main,
-                          },
-                        }}
-                      >
-                        Buy Now
+                      <Button>
+                        <span>
+                          <IoMdArrowForward />
+                        </span>
+                        <Typography>
+                          Proceed to Buy
+                        </Typography>
                       </Button>
                     </Link>
                   ) : (
-                    // <AddProductsToCartForm key={product.uid} onSuccess={handleBuyNowSuccess}>
                     <AddProductsToCartButton
-                      // fullWidth
-                      sx={{
-                        backgroundColor: (theme: any) => theme.palette.custom.heading,
-                        color: '#FFFFFF',
-                        fontSize: { xs: '15px', md: '16px' },
-                        borderRadius: '4px',
-                        border: '1px solid #9B7C38 ',
-                        // paddingBlock: { xs: '5px' },
-                        boxShadow: 'none !important',
-                        width: '100%',
-                        flexGrow: 1,
-                        '&:hover': {
-                          backgroundColor: 'white !important',
-                          color: (theme: any) => theme.palette.custom.main,
-                        },
-                      }}
                       product={product}
-                      // onClick={() => {
-                      //   console.log('checkout', '==>checkout')
-
-                      //   router?.push('/checkout')
-                      // }}
-
                       onClick={() => setIsBuyNow(true)}
                     >
-                      Buy Now
+                      <span>
+                        <IoMdArrowForward />
+                      </span>
+                      <Typography>
+                        Proceed to Buy
+                      </Typography>
                     </AddProductsToCartButton>
-                    // </AddProductsToCartForm>
                   )}
                 </Box>
               </ProductPageAddToCartActionsRow>
             </OverlayStickyBottom>
+
+            {/* Static Content */}
+            <Box sx={{
+              marginTop: { xs: '10px', md: '20px', lg: '25px' },
+            }}>
+              <div dangerouslySetInnerHTML={{ __html: decodedWeOfferContent }} />
+              <Box
+                component='div'
+                className='product_payments'
+                sx={{
+                  borderTop: theme => `1px solid ${theme.palette.custom.tltBorder2}`,
+                  paddingTop: { xs: '10px', md: '20px', lg: '25px' },
+                  marginTop: { xs: '10px', md: '20px', lg: '25px' },
+                  '& p': {
+                    color: theme => theme.palette.custom.textDarkAlter2,
+                    fontSize: { xs: '17px', md: '18px' },
+                    fontWeight: 500,
+                    lineHeight: '120%',
+                    margin: 0,
+                    marginBottom: { xs: '10px', md: '15px', lg: '15px' },
+                  },
+                  '& div.card-wrappers': {
+                    display: 'flex',
+                    gap: { xs: '5px', md: '10px' },
+
+                    '& img': {
+                      maxWidth: '65px',
+                      height: 'auto',
+                      border: theme => `1px solid ${theme.palette.custom.tltBorder4}`,
+                      borderRadius: '3px',
+                    },
+                  },
+                }}>
+                {/* <p>Checkout safely using your preferred payment method
+                </p>
+                <div>
+                  <Image src={image1} alt='image1' />
+                  <Image src={image2} alt='image2' />
+                  <Image src={image3} alt='image3' />
+                  <Image src={image4} alt='image4' />
+                  <Image src={image5} alt='image5' />
+                  <Image src={image6} alt='image6' />
+                  <Image src={image7} alt='image7' />
+                  <Image src={image8} alt='image8' />
+                </div> */}
+                <div dangerouslySetInnerHTML={{ __html: decodedpaymentMethodContent }} />
+              </Box>
+            </Box>
           </ProductPageGallery>
         </AddProductsToCartForm>
 
         {/* Relative Products */}
-        {relatedProducts && relatedProducts?.length > 0 && (
+        {/* {relatedProducts && relatedProducts?.length > 0 && (
           <Box
             sx={{
               paddingInline: { xs: '18px', md: '25px', lg: '55px' },
@@ -651,11 +790,11 @@ function ProductPage(props: Props) {
               <RelativeProductListMobile count={4} productList={relatedProducts ?? []} />
             </Box>
           </Box>
-        )}
+        )} */}
       </PrivateQueryMaskProvider>
-      <AnimatePresence>
+      {/* <AnimatePresence>
         {openContactForm && <CustomisedCakeForm key="custom-cake-form" setIsOpen={setOpenContactForm} product={product?.sku} uid={product?.uid} />}
-      </AnimatePresence>
+      </AnimatePresence> */}
     </>
   )
 }
@@ -707,7 +846,11 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
   const cmsPageBlocksQuery = staticClient.query({
     query: cmsMultipleBlocksDocument,
     variables: {
-      blockIdentifiers: ['relative-products'],
+      blockIdentifiers: [
+        // 'relative-products',
+        'detail-page-we-offer',
+        'product-detail-payment-method',
+      ],
     },
   })
 
