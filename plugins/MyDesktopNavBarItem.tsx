@@ -51,7 +51,7 @@ export function DesktopNavItem(
           ...(Array.isArray(sx) ? sx : [sx]),
         ]}
       >
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>{children}</Box>
+        <Box className='hello' sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>{children}</Box>
       </Link>
     )
   }
@@ -68,6 +68,7 @@ export function DesktopNavItem(
       variant='h6'
       color='#2A110A'
       underline='none'
+      target='_self'
       {...linkProps}
       sx={[
         {
