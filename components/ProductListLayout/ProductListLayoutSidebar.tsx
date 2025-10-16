@@ -1,16 +1,16 @@
 import { Image } from '@graphcommerce/image'
 import {
   ProductFiltersPro,
-  ProductFiltersProAggregations,
   ProductFiltersProAllFiltersChip,
   ProductFiltersProCategorySection,
   ProductFiltersProClearAll,
   ProductFiltersProNoResults,
-  productFiltersProSectionRenderer,
   ProductFiltersProSortSection,
   productListApplyCategoryDefaults,
   ProductListDocument,
   ProductListFiltersContainer,
+  // ProductFiltersProAggregations,
+  // productFiltersProSectionRenderer,
 } from '@graphcommerce/magento-product'
 import { Container, MediaQuery, memoDeep, StickyBelowHeader } from '@graphcommerce/next-ui'
 import { useApolloClient } from '@apollo/client'

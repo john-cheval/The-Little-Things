@@ -339,9 +339,9 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                     key={menus?.uid}
                     href={`/${menus?.url_path}`}
                     itemId={menus?.uid}
-                    onMouseEnter={(e) => {
-                      handleMouseOver(menus, e)
-                    }}
+                    // onMouseEnter={(e) => {
+                    //   handleMouseOver(menus, e)
+                    // }}
                     onClick={handleMouseLeaveNav}
                   >
                     {menus?.name}
