@@ -13,7 +13,7 @@ import {
   responsiveVal,
   themeBaseDefaults,
 } from '@graphcommerce/next-ui'
-import { alpha, createTheme, Theme } from '@mui/material'
+import { alpha, createTheme, type Theme } from '@mui/material'
 import type { LinkProps } from '@mui/material/Link'
 import { Components, PaletteOptions } from '@mui/material/styles'
 import { dubaiFont } from '../lib/fonts'
@@ -307,6 +307,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
         sm: 641,
         md: 769,
         lg: 1025,
+        xls: 1280,
         xl: 1536,
       },
     },
@@ -451,18 +452,18 @@ const createOverrides = (theme: Theme): Components<Theme> => ({
         '& .MuiOutlinedInput-root': {
           borderRadius: '4px',
           fontSize: { xs: '15px', md: '16px' },
-          color: '#441E14',
+          color: '#000',
           '& .MuiSelect-icon': {
-            color: '#F1A8B6',
-            fill: '#F1A8B6',
+            color: '#000',
+            fill: '#000',
           },
         },
         '& fieldset, .mui-style-1dmcmbw-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline, .mui-style-ioqfy8-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline':
           {
-            borderColor: '#D5B1B8',
+            borderColor: '#c7c7c7',
           },
         '& .MuiFormLabel-root': {
-          color: '#441e14',
+          color: '#000',
         },
       },
     },
@@ -630,5 +631,14 @@ declare module '@mui/material/styles' {
       tltBorder5?: string
       activeColor: string
     }
+  }
+
+  interface BreakpointOverrides {
+    xs: true
+    sm: true
+    md: true
+    lg: true
+    xl: true
+    xls: true
   }
 }

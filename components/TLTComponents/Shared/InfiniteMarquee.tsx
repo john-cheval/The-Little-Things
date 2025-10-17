@@ -12,6 +12,7 @@ export function InfiniteMarquee({ text }) {
         whiteSpace: 'nowrap',
         width: '100%',
         boxSizing: 'border-box',
+        display: { xs: 'none', md: 'block' },
       }}
     >
 

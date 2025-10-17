@@ -12,13 +12,13 @@ export const config: PluginConfig = {
 }
 
 export const DesktopNavActions = styled('div')<MyDesktopNavActionsProps>(({ theme }) => ({
-  //display: 'none',
+  // display: 'none',
   marginLeft: '5px',
   // paddingRight: '35px',
   display: 'grid',
   alignItems: 'center',
   gridAutoFlow: 'column',
-  columnGap: '15px',
+  // columnGap: '15px',
   '& > *': {
     pointerEvents: 'all',
   },

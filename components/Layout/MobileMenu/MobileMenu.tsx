@@ -13,11 +13,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useState } from 'react'
 import { AiOutlineShopping } from 'react-icons/ai'
-import { FaWhatsapp } from 'react-icons/fa6'
-import { GoHome } from 'react-icons/go'
+import { FaWhatsapp, FaUserLarge } from 'react-icons/fa6'
+import { GoHomeFill } from 'react-icons/go'
 import { IoMenuSharp } from 'react-icons/io5'
 import { MdOutlineInterests } from 'react-icons/md'
 import MenuDrawer from './MenuDrawer'
+import { useCustomerQuery, UseCustomerValidateTokenDocument } from '@graphcommerce/magento-customer'
 
 // import ShopMenuDrawer from './ShopMenuDrawer'
 
@@ -36,12 +37,12 @@ const moreMenu = [
 
 function MobileMenu({ ShopCategories }) {
   const [openDrawer, setOpenDrawer] = useState(false)
+  const customerEmailQuery = useCustomerQuery(UseCustomerValidateTokenDocument)
+  const { email } = customerEmailQuery.data?.customer ?? {}
   //  const [openshopMenu, setOpenShopMenu] = useState(false)
   const router = useRouter()
   const currentPath = router?.pathname
-  const isMatch = moreMenu.some((menu) => {
-    return currentPath.startsWith(menu.link)
-  })
+
 
   const handleMoreMenuOpen = () => {
     setOpenDrawer(!openDrawer)
@@ -67,13 +68,13 @@ function MobileMenu({ ShopCategories }) {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            rowGap: '4px',
+            rowGap: '6px',
             alignItems: 'center',
             cursor: 'pointer',
-            color: currentPath === '/' ? '#D23552' : '#441E14',
+            color: currentPath === '/' ? '#D90F13' : '#1C1B1F',
           }}
         >
-          <GoHome size={20} />
+          <GoHomeFill size={20} />
           <Typography sx={{ fontSize: { xs: '15px', md: '16px' } }}>Home</Typography>
         </Box>
       </Link>
@@ -83,10 +84,10 @@ function MobileMenu({ ShopCategories }) {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            rowGap: '4px',
+            rowGap: '6px',
             alignItems: 'center',
             cursor: 'pointer',
-            color: router?.asPath === '/shop' ? '#D23552' : '#441E14',
+            color: router?.asPath === '/shop' ? '#D90F13' : '#1C1B1F',
           }}
         >
           <MdOutlineInterests size={20} />
@@ -100,10 +101,10 @@ function MobileMenu({ ShopCategories }) {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              rowGap: '4px',
+              rowGap: '6px',
               alignItems: 'center',
               cursor: 'pointer',
-              color: router.asPath === '/cart' ? '#D23552' : '#441E14',
+              color: router.asPath === '/cart' ? '#D90F13' : '#1C1B1F',
               '& .MuiBadge-badge': {
                 backgroundColor: '#FF0000',
                 color: '#fff',
@@ -129,15 +130,32 @@ function MobileMenu({ ShopCategories }) {
         </Box>
       </Link>
 
+
+      <Link href={email ? '/account/addresses' : '/account/signin'} onClick={handleCloseAllOtherPopups}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: '6px',
+            alignItems: 'center',
+            cursor: 'pointer',
+            color: router?.asPath.includes('account') ? '#D90F13' : '#1C1B1F',
+          }}
+        >
+          <FaUserLarge size={20} />
+          <Typography sx={{ fontSize: { xs: '15px', md: '16px' } }}>My Account</Typography>
+        </Box>
+      </Link>
+
       <Box onClick={handleMoreMenuOpen}>
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            rowGap: '4px',
+            rowGap: '6px',
             alignItems: 'center',
             cursor: 'pointer',
-            //  color: isMatch ? '#D23552' : '#441E14',
+            //  color: isMatch ? '#D90F13' : '#441E14',
           }}
         >
           <IoMenuSharp size={20} />

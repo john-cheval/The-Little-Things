@@ -1,8 +1,8 @@
 diff --git a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx b/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx
-index 1368a0c..dafb5c7 100644
+index 1368a0c..dd78860 100644
 --- a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx
 +++ b/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/ProductFiltersProSearchInput.tsx
-@@ -8,10 +8,13 @@ import type {
+@@ -8,10 +8,17 @@ import type {
    InputBaseProps,
    OutlinedInputProps,
  } from '@mui/material'
@@ -12,12 +12,16 @@ index 1368a0c..dafb5c7 100644
  import { useEffect, useRef } from 'react'
  import { useSearchPageAndParam } from './useSearchPageAndParam'
 +import { AiOutlineSearch } from "react-icons/ai";
-+import { IoIosMic } from "react-icons/io";
-+import { IoMdBarcode } from "react-icons/io";
++// import { IoIosMic } from "react-icons/io";
++// import { IoMdBarcode } from "react-icons/io";
++import barCodeScanner from "../../../../../components/Assets/barcode_scanner.svg"
++import mic from "../../../../../components/Assets/mic.svg"
++import Image from 'next/image'
++
  
  export function useProductFiltersProSearchInput<
    P extends InputBaseProps & { buttonProps?: ButtonBaseProps },
-@@ -42,7 +45,7 @@ export function useProductFiltersProSearchInput<
+@@ -42,7 +49,7 @@ export function useProductFiltersProSearchInput<
    const result: P = {
      ...props,
      inputRef: ref,
@@ -26,7 +30,7 @@ index 1368a0c..dafb5c7 100644
      name: 'search',
      type: 'text',
      defaultValue: searchParam,
-@@ -97,21 +100,64 @@ export function useProductFiltersProSearchInput<
+@@ -97,24 +104,100 @@ export function useProductFiltersProSearchInput<
  
  export type ProductFiltersProSearchInputProps = OutlinedInputProps & {
    formControl?: FormControlProps
@@ -40,61 +44,105 @@ index 1368a0c..dafb5c7 100644
  
    return (
      <FormControl variant='outlined' size={size} {...formControl}>
-       <OutlinedInput
-         color='primary'
-         size={size}
-+        sx={{
-+          '& svg.search': {
-+            color: '#000',
-+            fontSize: { xs: '35px' }
-+          }
-+        }}
-+        startAdornment={
-+          <AiOutlineSearch className='search' />
-+        }
-         endAdornment={
+-      <OutlinedInput
+-        color='primary'
+-        size={size}
+-        endAdornment={
 -          <IconButton color='inherit' size='small' {...buttonProps}>
 -            <IconSvg src={iconClose} size='large' />
 -          </IconButton>
-+          isTopNav ? (
-+            <Box component='div' sx={{
-+              display: 'flex',
-+              alignItems: 'center',
-+              marginTop: '5px',
-+              '& button': {
-+                paddingTop: '0',
-+                minWidth: 0,
-+                '&:hover': {
-+                  backgroundColor: 'transparent'
-+                },
-+                '& svg': {
-+                  color: '#000',
+-        }
+-        {...rest}
+-      />
+-    </FormControl>
++      <Box sx={{
++        width: '100%',
++        display: 'flex',
++        gap: { xs: '4px', sm: '8px', md: '0' }
++      }}>
++        <OutlinedInput
++          color='primary'
++          size={size}
++          sx={{
++            '& svg.search': {
++              color: '#000',
++              fontSize: { xs: '27px', md: '25px' }
++            }
++          }}
++          startAdornment={
++            <AiOutlineSearch className='search' />
++          }
++          endAdornment={
++            isTopNav ? (
++              <Box component='div' sx={{
++                display: 'flex',
++                alignItems: 'center',
++                marginTop: '5px',
++                '& button': {
++                  paddingTop: '0',
++                  minWidth: 0,
++                  '&:hover': {
++                    backgroundColor: 'transparent'
++                  },
++                  '& svg': {
++                    color: '#000',
++                    fontSize: { xs: '21px', md: '18px' }
 +
++                  }
 +                }
-+              }
 +
-+            }}>
-+              <Button sx={{
-+                borderRight: '1px solid #000',
-+                borderRadius: 0,
-+                paddingBlock: ''
 +              }}>
-+                <IoIosMic />
-+              </Button>
-+              <Button>
-+                <IoMdBarcode />
-+              </Button>
-+            </Box>
-+          ) : (
-+            <IconButton color='inherit' size='small' {...buttonProps}>
-+              <IconSvg src={iconClose} size='large' />
-+            </IconButton>
-+          )
++                <Button sx={{
++                  borderRight: { xs: 0, md: '1px solid #000' },
++                  borderRadius: 0,
++                  cursor: 'pointer',
++                }}>
++                  <Image src={mic} alt='mic' />
++                </Button>
++                <Button sx={{
++                  display: { xs: 'none', md: 'flex' },
++                  cursor: 'pointer',
++                  alignItems: 'center',
++                  justifyContent: 'center',
++                  '& img': {
++                    width: '23px'
++                  }
++                }}>
++                  <Image src={barCodeScanner} alt='barCodeScanner' />
++                </Button>
++              </Box>
++            ) : (
++              <IconButton color='inherit' size='small' {...buttonProps}>
++                <IconSvg src={iconClose} size='large' />
++              </IconButton>
++            )
 +
 +
-         }
-         {...rest}
-       />
++          }
++          {...rest}
++        />
++
++        <Button
++          sx={{
++            display: { xs: 'flex', md: 'none' },
++            cursor: 'pointer',
++            borderRadius: '3px',
++            border: (theme: any) => `1px solid ${theme.palette.custom.tltBorder4}`,
++            alignItems: 'center',
++            justifyContent: 'center',
++            padding: 0,
++            '& img': {
++              width: '25px',
++            }
++          }}>
++          {/* <IoMdBarcode /> */}
++          <Image src={barCodeScanner} alt='barCodeScanner' />
++        </Button>
++      </Box>
++
++    </FormControl >
+   )
+ }
 diff --git a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/SearchField.tsx b/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/SearchField.tsx
 index e2e243d..1b28fd2 100644
 --- a/node_modules/@graphcommerce/magento-search/components/ProductFiltersPro/SearchField.tsx

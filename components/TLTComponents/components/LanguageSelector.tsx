@@ -96,9 +96,9 @@ export function LangauageSelctor() {
             <MenuItem
               value={option.value}
               key={option.value}
-              sx={{
-                background: 'red',
-              }}
+            // sx={{
+            //   background: 'red',
+            // }}
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {option.value}

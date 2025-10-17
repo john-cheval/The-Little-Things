@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import { FormControl, InputLabel, MenuItem, Select, Box } from '@mui/material';
 import { useState } from 'react';
-import Image, { StaticImageData } from 'next/image';
+import Image, { type StaticImageData } from 'next/image';
 import France from '../../../constants/images/flags/france.png'
 import Allemagne from '../../../constants/images/flags/germany.png';
 import Suisse from '../../../constants/images/flags/switzerland.png';
@@ -110,10 +110,16 @@ export function CurrecySelctor() {
           }}
           renderValue={() => (
             <Box sx={{
-              display: 'flex', alignItems: 'center', gap: 1, '& span': {
+              display: 'flex',
+              alignItems: 'center',
+              gap: { xs: 0, lg: 1 },
+              '& span': {
                 color: '#000',
                 fontWeight: '600',
                 fontSize: { xs: '14px' },
+              },
+              '& img': {
+                display: { xs: 'none', lg: 'block' },
               },
             }}>
               {/* Display the Flag Image */}
@@ -133,7 +139,14 @@ export function CurrecySelctor() {
               value={option.value}
               key={option.value}
             >
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: { xs: 0, lg: 1 },
+                '& img': {
+                  display: { xs: 'none', lg: 'block' },
+                },
+              }}>
                 <Image
                   src={option.src}
                   alt={option.label}

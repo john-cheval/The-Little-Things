@@ -88,8 +88,6 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
   return (
     <>
       <InfiniteMarquee text='We do international shipping' />
-
-
       <LayoutDefault
         sx={{
           position: 'sticky',
@@ -98,42 +96,49 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
           width: '100%',
 
           '& .LayoutDefault-header': {
-            height: { xs: '65px', md: '80px', lg: 'fit-content' },
-            paddingInline: { xs: '18px', md: '25px', lg: '55px' },
+            // height: { xs: '65px', md: 'fit-content', lg: 'fit-content' },
+            height: 'fit-content',
+            paddingInline: { xs: '13px', sm: '18px', md: '25px', lg: '40px', xl: '55px' },
             // boxShadow: { xs: '0px -9px 24px #00000026', md: 'none' },
             display: { xs: 'block' },
-            boxShadow: '0 4px 6.8px 0 rgba(0, 1, 6, 0.07)',
+            boxShadow: { xs: 'none', md: '0 4px 6.8px 0 rgba(0, 1, 6, 0.07)' },
 
             ...(scroll ? { boxShadow: '0 4px 6.8px 0 rgba(0, 1, 6, 0.07)' } : {}),
           },
         }}
         {...uiProps}
         header={
-          <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            paddingBlock: { xs: '20px', md: 0 },
+          }}>
             <Box sx={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              paddingBlock: { xs: '25px', lg: scroll ? '10px' : '23px' },
-              borderBottom: theme => `1px solid ${theme.palette.custom.tltBorder1}`,
+              paddingBlock: { xs: '0px', md: '5px', lg: scroll ? '10px' : '23px' },
+              // borderBottom: theme => `1px solid ${theme.palette.custom.tltBorder1}`,
+              borderBottom: { xs: 0, lg: theme => `1px solid ${theme.palette.custom.tltBorder1}` },
               transition: 'all 0.4s ease-in-out',
             }}>
               <Logo isHome />
-              <DesktopNavActions sx={{
-                width: '100%',
-                alignItems: 'center',
-                marginInline: 'auto',
-                display: 'flex',
-                justifyContent: 'center',
+              <DesktopNavActions
+                sx={{
+                  width: '100%',
+                  alignItems: 'center',
+                  marginInline: 'auto',
+                  justifyContent: 'center',
+                  display: { xs: 'none', md: 'flex' },
 
-              }}>
+                }}>
                 <SearchField
                   visible
                   isNav
                   formControl={{
                     sx: {
-                      width: { xs: 'fit-content', sm: '300px', lg: '250px', xl: '500px' },
+                      width: { xs: 'fit-content', sm: '300px', md: '400px', lg: '350px', xls: '450px', xl: '500px' },
                       color: (theme: any) => theme.palette.custom.textDarkAlter,
                       '& .MuiOutlinedInput-root': {
                         color: (theme: any) => theme.palette.custom.textDarkAlter,
@@ -141,6 +146,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                         borderRadius: '3px',
                         background: 'rgba(239, 242, 245, 0.86)',
                         paddingRight: '0px',
+                        width: '100%',
                         '& input': {
                           padding: {
                             xs: '8px 12px',
@@ -281,27 +287,103 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                   authHref='/account'
                 />
 
-                <Link href='#' sx={{
-                  // overflow: 'hidden',
-                  transition: 'transform 0.4s ease-in-out',
-                  '&:hover': {
-                    transform: 'scale(1.05)',
-                  },
-                  '& img': {
-                    borderRadius: '3px',
-                    height: 'auto',
-                    width: { xs: '120px' },
-                    objectFit: 'cover',
-                  },
+                <Link
+                  href='/popmart'
+                  sx={{
+                    display: { xs: 'none', lg: 'block' },
+                    // overflow: 'hidden',
+                    transition: 'transform 0.4s ease-in-out',
+                    '&:hover': {
+                      transform: 'scale(1.05)',
+                    },
+                    '& img': {
+                      borderRadius: '3px',
+                      height: 'auto',
+                      width: { xs: '120px' },
+                      objectFit: 'cover',
+                    },
 
-                }}>
+                  }}>
                   <Image src={popmartImage} alt='popmartImage' /></Link>
               </DesktopNavActions>
             </Box>
+
+            {/* Search field for small Screens */}
+            <DesktopNavActions
+              sx={{
+                width: '100%',
+                display: { xs: 'flex', md: 'none' },
+
+              }}>
+              <SearchField
+                visible
+                isNav
+                formControl={{
+                  sx: {
+                    width: '100%',
+                    color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                    '& .MuiOutlinedInput-root': {
+                      color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                      fontSize: '14px',
+                      borderRadius: '3px',
+                      background: 'transparent',
+                      paddingRight: '0px',
+                      width: '100%',
+                      '& input': {
+                        padding: '15px 12px',
+                      },
+                      '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
+                        fontSize: '14px',
+                        fontStyle: 'normal',
+                        fontWeight: 400,
+                        lineHeight: '158%',
+                        color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                        opacity: 1,
+                      },
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                      },
+
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                      },
+
+                    },
+                  },
+                }}
+                searchField={{ productListRenderer }}
+
+              />
+            </DesktopNavActions>
+
+            {/* Small screen International shipping Banner */}
+            <Box sx={(theme) => ({
+              borderRadius: '3px',
+              backgroundColor: theme.palette.custom.tltMain,
+              color: theme.palette.custom.tltContrastText,
+              fontFamily: "'Inter', sans-serif",
+              textAlign: 'center',
+              fontWeight: 500,
+              textTransform: 'uppercase',
+              letterSpacing: '1.68px',
+              fontSize: { xs: '12px', sm: '14px' },
+              marginTop: '10px',
+              padding: '10px',
+              marginLeft: '5px',
+              display: { xs: 'block', md: 'none' },
+            })}>
+              we do international shipping
+            </Box>
+
+
+            {/* Menu Items */}
             <Box
               onMouseLeave={handleMouseLeaveNav}
               sx={{
-                // position: 'relative',
+                display: { xs: 'none', lg: 'block' },
                 paddingBlock: { xs: '20px', lg: scroll ? '15px' : '20px' },
                 '& span': {
                   justifyContent: 'space-between',
@@ -363,17 +445,19 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                 onLinkClick={handleMouseLeaveNav}
               />
             </Box>
-          </Box>
+          </Box >
         }
-        footer={<Footer footerContent={decodedFooterData} />}
+        // footer={<Footer footerContent={decodedFooterData} />}
+        footer={<p> Footer Responsive</p>}
       >
         {children}
-      </LayoutDefault>
+      </LayoutDefault >
 
       <Box
         sx={{
-          backgroundColor: '#f6e1e5',
-          paddingInline: { xs: '18px', md: '25px', lg: '55px' },
+          paddingInline: { xs: '25px', md: '30px' },
+          background: 'rgba(255, 255, 255, 0.91)',
+          backdropFilter: 'blur(8.75px)',
           display: { xs: 'flex', lg: 'none' },
           paddingBlock: { xs: '16px', md: '20px' },
           color: (theme: any) => theme.palette.custom.main,

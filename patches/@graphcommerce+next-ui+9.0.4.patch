@@ -1050,6 +1050,18 @@ index 3a5a250..20686c4 100644
        <OverlayBase
          active={active}
          direction={direction}
+diff --git a/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavActions.tsx b/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavActions.tsx
+index a00717a..3ab321e 100644
+--- a/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavActions.tsx
++++ b/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavActions.tsx
+@@ -10,6 +10,6 @@ export const DesktopNavActions = styled('div', { name: 'DesktopNavActions' })(({
+     },
+     alignItems: 'center',
+     gridAutoFlow: 'column',
+-    columnGap: 6,
++    columnGap: '15px',
+   },
+ }))
 diff --git a/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavBarItem.tsx b/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavBarItem.tsx
 index b8d990d..86e06d1 100644
 --- a/node_modules/@graphcommerce/next-ui/LayoutParts/DesktopNavBarItem.tsx

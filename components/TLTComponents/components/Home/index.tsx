@@ -27,16 +27,17 @@ export function HomePage({
   return (
     <>
       <Box component='div' className='container-wrapper'>
-        <CategorySwiper swiperData={categoryData} />
+        {/* <CategorySwiper swiperData={categoryData} />
         <HomeSectionTwo content={sectionOneContent} />
         <div dangerouslySetInnerHTML={{ __html: sectionTwoconent }} />
-        <MostRecentlyView content={sectionThreeContent} productList={sectionProductList} />
+        <MostRecentlyView content={sectionThreeContent} productList={sectionProductList} /> */}
       </Box >
-      <TopPicks content={sectionFourContent} productList={topPicksProductList} />
+      {/* <TopPicks content={sectionFourContent} productList={topPicksProductList} />
       <ArrivingSoon content={arrivingSoonContent} productList={arrivingSoonProduct} />
       <UnlockSection content={unlockSectionContent} productList={unlockSectionProducts} />
       <RecentlyAdded content={recentlyAddedContent} productList={recentlyAddedProduct} />
-      <div dangerouslySetInnerHTML={{ __html: homeCtadataContent }} />
+      <div dangerouslySetInnerHTML={{ __html: homeCtadataContent }} /> */}
+      <p> this si the HomePage</p>
     </>
   )
 }
