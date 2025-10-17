@@ -1,4 +1,4 @@
-import { Box, type SxProps, TextField, Typography, type Theme } from '@mui/material';
+import { Box, type SxProps, TextField, Typography, type Theme, Button } from '@mui/material';
 import { useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { CustomTextField } from './Inputs/Textfield';
@@ -193,12 +193,34 @@ export function RefundrequestForm() {
         sx={inputFieldSx}
       />
 
-      <Box sx={{
+      {/* <Box sx={{
 
       }}>
         <Typography>
           Terms & Conditions
         </Typography>
+      </Box> */}
+      <Box sx={{
+        marginTop: { xs: '10px', md: '20px' },
+        width: '100%',
+      }}>
+        <Button sx={(theme) => ({
+          backgroundColor: theme.palette.custom.tltSecondary,
+          color: theme.palette.custom.tltContrastText,
+          width: '100%',
+          borderRadius: '3px',
+          fontSize: { xs: '16px', md: '18px' },
+          textAlign: 'center',
+          fontWeight: 700,
+          textTransform: 'uppercase',
+          lineHeight: '120%',
+          paddingBlock: '18px',
+          border: `1px solid ${theme.palette.custom.tltSecondary}`,
+          '&:hover': {
+            backgroundColor: 'transparent',
+            color: theme.palette.custom.tltSecondary,
+          },
+        })}>Submit</Button>
       </Box>
     </Box>
   )
