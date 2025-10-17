@@ -47,9 +47,7 @@
 .mb-20 {
   margin-bottom: 10px;
 }
-.container-wrapper {
-  padding-inline: 18px;
-}
+
 .responsive-fonts {
   font-size: 15px;
 }
@@ -864,9 +862,6 @@ ol {
     text-align: left;
   }
 
-  .container-wrapper {
-    padding-inline: 25px;
-  }
   .order-button {
     padding: 16px 60px;
   }
@@ -1201,9 +1196,7 @@ ol {
   .expore-btn {
     margin-inline: 0;
   }
-  .container-wrapper {
-    padding-inline: 55px;
-  }
+
   .mb-20 {
   }
 }
@@ -1933,6 +1926,10 @@ input[type='number'] {
 /* TLT CSS */
 
 /* === Common Clases === */
+
+.container-wrapper {
+  padding-inline: 13px;
+}
 .main-heading {
   background: linear-gradient(90deg, #2d2d2d 0%, #b4001a 70.88%);
   background-clip: text;
@@ -2906,4 +2903,34 @@ input[type='number'] {
 .wrapper {
   width: 100%;
   color: #fff;
+}
+
+/* ====== Responsive Css */
+
+/* Mobile Screen */
+@media (min-width: 641px) {
+  .container-wrapper {
+    padding-inline: 18px;
+  }
+}
+
+/* Tablet Screens */
+@media (min-width: 769px) {
+  .container-wrapper {
+    padding-inline: 25px;
+  }
+}
+
+/* Laptop and desktop screens */
+@media (min-width: 1025px) {
+  .container-wrapper {
+    padding-inline: 40px;
+  }
+}
+
+/* Extra Large Screens */
+@media (min-width: 1536px) {
+  .container-wrapper {
+    padding-inline: 55px;
+  }
 }
