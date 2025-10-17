@@ -337,7 +337,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                 {megaMenu?.map((menus) => (
                   <DesktopNavItem
                     key={menus?.uid}
-                    href={`/${menus?.url_path}`}
+                    href={`${menus?.url_path}`}
                     itemId={menus?.uid}
                     // onMouseEnter={(e) => {
                     //   handleMouseOver(menus, e)
