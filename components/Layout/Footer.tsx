@@ -62,7 +62,7 @@ export function Footer({ footerContent }) {
                   <a href='/our-locations'>Our Locations</a>
                 </li>
                 <li>
-                  <a href='/refund-request-form'>Refund Request Form</a>
+                  <a href='/refund-form'>Refund Request Form</a>
                 </li>
                 <li>
                   <a href='/keypers-loyalty-program-membership'>Keypers Loyalty  Program Membership</a>
