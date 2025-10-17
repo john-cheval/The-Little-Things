@@ -1977,9 +1977,7 @@ input[type='number'] {
 /*=============  Home ================ */
 
 .banner-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  display: none;
 }
 .banner-image-container {
   position: relative;
@@ -2919,12 +2917,19 @@ input[type='number'] {
   .container-wrapper {
     padding-inline: 25px;
   }
+  .banner-wrapper {
+    display: flex;
+    gap: 15px;
+  }
 }
 
 /* Laptop and desktop screens */
 @media (min-width: 1025px) {
   .container-wrapper {
     padding-inline: 40px;
+  }
+  .banner-wrapper {
+    flex-direction: column;
   }
 }
 
