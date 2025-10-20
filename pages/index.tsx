@@ -29,7 +29,7 @@ function CmsPage(props: CmsPageRouteProps) {
 
 
   const homesHeroData = cmsBlocks.find((block) => block.identifier === 'home-section-one')
-  const HomeSectionTwo = cmsBlocks.find((block) => block.identifier === 'home-section-two')
+  // const HomeSectionTwo = cmsBlocks.find((block) => block.identifier === 'home-section-two')
   const HomeSectionThree = cmsBlocks.find((block) => block.identifier === 'most-viewed-collectables')
   const HomeSectionFour = cmsBlocks.find((block) => block.identifier === 'top-picks')
   const HomeSectionFive = cmsBlocks.find((block) => block.identifier === 'arriving-soon-section')
@@ -40,7 +40,7 @@ function CmsPage(props: CmsPageRouteProps) {
 
 
   const decodedHomeHero = decodeHtmlEntities(homesHeroData?.content)
-  const decodedHomeHomeSectionTwo = decodeHtmlEntities(HomeSectionTwo?.content)
+  // const decodedHomeHomeSectionTwo = decodeHtmlEntities(HomeSectionTwo?.content)
   const decodedHomeSectionThree = decodeHtmlEntities(HomeSectionThree?.content)
   const decodedHomeSectionFour = decodeHtmlEntities(HomeSectionFour?.content)
   const decodedHomeSectionFive = decodeHtmlEntities(HomeSectionFive?.content)
@@ -63,7 +63,7 @@ function CmsPage(props: CmsPageRouteProps) {
       <HomePage
         categoryData={filteredCategory}
         sectionOneContent={decodedHomeHero}
-        sectionTwoconent={decodedHomeHomeSectionTwo}
+        // sectionTwoconent={decodedHomeHomeSectionTwo}
         sectionThreeContent={decodedHomeSectionThree}
         sectionProductList={mostViewedProducts}
         sectionFourContent={decodedHomeSectionFour}
@@ -106,7 +106,7 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
     variables: {
       blockIdentifiers: [
         'home-section-one',
-        'home-section-two',
+        // 'home-section-two',
         'most-viewed-collectables',
         'top-picks',
         'arriving-soon-section',

@@ -1,7 +1,7 @@
 import { Box, Modal, Typography } from '@mui/material';
 import { useMemo, useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import DOMPurify from 'dompurify';
+import DOMPurify from 'isomorphic-dompurify';
 import parse from 'html-react-parser';
 
 

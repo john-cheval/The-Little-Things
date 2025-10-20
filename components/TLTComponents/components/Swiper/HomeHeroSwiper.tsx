@@ -1,13 +1,9 @@
 import { Box, Link, Typography } from '@mui/material';
-import 'swiper/css'
 import { Image } from '@graphcommerce/image'
 import { useRef } from 'react'
 import type SwiperCore from 'swiper'
-import 'swiper/css/effect-fade'
 import { Autoplay, EffectFade } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/autoplay'
 import image1 from '../../assets/Home/1.png'
 import image2 from '../../assets/Home/2.png'
 

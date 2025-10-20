@@ -1,4 +1,8 @@
 import { amex, cash, jcb, master, visa } from '../footer/images'
+import image1 from '../images/offers/1.png'
+import image2 from '../images/offers/2.png'
+import image3 from '../images/offers/3.png'
+import image4 from '../images/offers/4.png'
 
 export const footerData = [
   {
@@ -194,5 +198,24 @@ export const cardData = [
     id: 5,
     image: cash,
     alt: 'cash',
+  },
+]
+
+export const homeSctionThree = [
+  {
+    image: image1,
+    title: 'Pop Mart',
+  },
+  {
+    image: image2,
+    title: 'Keep Shopping',
+  },
+  {
+    image: image3,
+    title: 'You May Like',
+  },
+  {
+    image: image4,
+    title: '50% off Products',
   },
 ]
