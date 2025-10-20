@@ -18,7 +18,6 @@ import { Box, Typography } from '@mui/material'
 import Link from 'next/link'
 import { useEffect, useRef, useState } from 'react'
 import { iconArrowDropDown, iconArrowDropDownUp, iconFilterProduct } from '../../plugins/icons'
-import filterIcon from '../Assets/instant_mix.svg'
 import mix from '../Assets/mix.svg'
 import { ProductListItems } from '../ProductListItems'
 import Loading from '../shared/Loading'
@@ -226,428 +225,156 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
             </Typography>
           </Box>
         )}
-
-        {!isShopPage && (
-          <>
-            <MediaQuery
-              query={(theme) => theme.breakpoints.down('md')}
-              sx={{
-                '& .ProductListFiltersContainer-wrapper': {
-                  display: 'inline-block',
+        <MediaQuery
+          query={(theme) => theme.breakpoints.up('md')}
+          display='block'
+          sx={{
+            gridArea: 'sidebar',
+            position: 'sticky',
+            top: '100px',
+            mt: { xs: '30px' },
+            height: 'calc(100vh - 100px)',
+          }}
+        >
+          <Box
+            sx={{
+              height: '100%',
+              overflowY: 'auto',
+              overflowX: 'hidden',
+              pr: 1,
+              pl: 1,
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              '&::-webkit-scrollbar': {
+                display: 'none',
+              },
+              '& .mui-style-h8pyxy-MuiPaper-root-MuiAccordion-root': {
+                '& .MuiCollapse-vertical': {
+                  position: 'relative',
+                  top: '-5px',
                 },
-              }}
-            >
-              <StickyBelowHeader
-                sx={{
-                  gridArea: 'horizontalFilters',
-                  display: 'flex',
-                  justifyContent: 'start',
-                  padding: '0 !important',
-                  width: '100%',
-                  marginBottom: { xs: '20px', sm: '25px' },
-                  // top: '68px !important',
-                  position: 'sticky',
-                  top: '65px !important',
-                  backgroundColor: '#fff',
-                  zIndex: 9999,
-                  borderTop: (theme) => `1px solid ${theme.palette.custom.borderSecondary}`,
-                }}
-              >
-                <ProductListFiltersContainer
-                  sx={(theme) => ({
-                    width: '100%',
-                    // display: 'flex',
-                    // justifyContent: 'space-between',
-                    borderBottom: '1px solid #d4d4d4',
-                    padding: '0px',
-                    margin: '0 !important',
-                    ...(scroll
-                      ? { boxShadow: '0px -9px 24px #000000-', backgroundColor: '#fff-' }
-                      : {}),
-
-                    '& .ProductListFiltersContainer-container': {
-                      textAlign: 'center',
-                      justifyContent: 'center',
-                      display: 'inline-block',
-                      width: '100%',
-
-                      '& .Scroller-root': {
-                        padding: 0,
-                        alignItems: 'center',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        overflow: 'visible',
-
-                        '& > button:nth-child(1)': {
-                          position: 'relative',
-                          top: '2px',
-                          // width: '50%',
-                        },
-                        '& > .MuiButtonBase-root': {
-                          // width: '50%',
-                        },
-                        '& .MuiChip-outlined': {
-                          width: '50%',
-                        },
-                        '& .ActionCardLayout-root.layoutList': {
-                          '& .MuiButtonBase-root': {
-                            borderRight: 0,
-                          },
-                        },
-                        '& .MuiButtonBase-root': {
-                          borderRight: '1px solid #d4d4d4',
-                          borderRadius: 0,
-                          paddingRight: { xs: '15px', sm: '30px' },
-                          // '& .MuiChip-label .MuiTypography-root': {
-                          //   '&::before': {
-                          //     content: '""',
-                          //     display: 'inline-block',
-                          //     backgroundImage: `url(${filterIcon.src})`,
-                          //     backgroundPosition: 'center',
-                          //     backgroundRepeat: 'repeat',
-                          //     width: '16px',
-                          //     height: '16px',
-                          //     marginRight: '8px',
-                          //   },
-                          // },
-
-                          '& .MuiChip-label': {
-                            paddingInline: '0 !important',
-                            position: 'relative',
-                            '& p': {
-                              display: 'inline-block',
-                              lineHeight: 'normal',
-                              paddingLeft: '25px',
-                              '& svg': {
-                                display: 'none',
-                              },
-                            },
-
-                            '& p::before': {
-                              content: '""',
-                              display: 'inline-block',
-                              width: '16px',
-                              height: '15px',
-                              marginRight: '8px',
-                              backgroundImage: `url(${filterIcon.src})`,
-                              backgroundSize: 'contain',
-                              backgroundPosition: 'center',
-                              backgroundRepeat: 'no-repeat',
-                              flexShrink: 0,
-                              position: 'absolute',
-                              left: 0,
-                              marginTop: '2px',
-                            },
-
-                            '& span': {
-                              display: 'none',
-                            },
-                          },
-                        },
-                        '& .MuiAccordionSummary-root': {
-                          borderRight: 0,
-                          paddingRight: 0,
-                        },
-                        '& .MuiBox-root': {
-                          minWidth: '120px',
-                          alignContent: 'center',
-                          height: '100%',
-                          alignItems: 'center',
-                          // paddingLeft: '10px',
-                          '& .MuiTypography-root': {
-                            display: 'inline-block',
-                            verticalAlign: 'top',
-                            marginTop: '3px',
-                          },
-                          '& .MuiInputBase-root': {
-                            fontSize: { xs: '15px', md: '16px' },
-                          },
-                        },
-                      },
+              },
+            }}
+          >
+            {!isSearch && (
+              <>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    borderBottom: (theme) =>
+                      `1px solid ${theme.palette.custom.tltBorder1}`,
+                    paddingBottom: '15px',
+                    '& .MuiButtonBase-root': {
+                      fontSize: { xs: '15px', md: '16px' },
+                      lineHeight: 'normal',
                     },
-
-                    '& .ProductListFiltersContainer-scroller': {
-                      // px: theme.page.horizontal,
-                      // mx: `calc(${theme.page.horizontal} * -1)`,
-
-                      '& .MuiButtonBase-root': {
-                        border: 'none',
-                        backgroundColor: 'transparent',
-
-                        '& span .MuiTypography-root': {
-                          color: theme.palette.custom.main,
-                          fontSize: { xs: '15px', md: '16px' },
-                          fontWeight: 500,
-                          lineHeight: 500,
-                        },
-                      },
-                    },
-                  })}
+                  }}
                 >
-                  {/* <ProductFiltersProAggregations renderer={productFiltersProChipRenderer} />*/}
-                  {/* products.items.length > 0 && (
-                <>
-                  <ProductFiltersProSortChip
-                    total_count={total_count}
-                    sort_fields={sort_fields}
-                    category={category}
-                  />
-                  <ProductFiltersProLimitChip />
-                </>
-              )*/}
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
 
-                  <ProductFiltersProAllFiltersChip
-                    total_count={total_count}
-                    sort_fields={sort_fields}
-                    category={category}
-                    menus={menuList}
-                    paramss={params}
-                  />
-
-                  <Box sx={{ display: { xs: 'block', md: 'none' }, flexGrow: 1, flexShrink: 0 }}>
-                    {props.params && props.products?.items && props.filterTypes && (
-                      <ProductFiltersPro
-                        params={props.params}
-                        aggregations={props.filters?.aggregations}
-                        appliedAggregations={props.products?.aggregations}
-                        filterTypes={props.filterTypes}
-                        autoSubmitMd
-                        handleSubmit={props.handleSubmit}
-                      >
-                        <ProductFiltersProSortSection
-                          sort_fields={props.products?.sort_fields}
-                          total_count={props.products?.total_count}
-                          category={props.category}
-                          openAccordionIcon={iconArrowDropDown}
-                          closeAccordionIcon={iconArrowDropDownUp}
-                          sx={{
-                            borderBottom: 'none !important',
-                            '& .MuiAccordionSummary-content .MuiTypography-body1': {
-                              color: (theme: any) => theme.palette.custom.main,
-                              fontWeight: 500,
-                              fontSize: { xs: '15px', md: '16px' },
-                              marginBottom: '0 !important',
-                              position: 'relative',
-                            },
-                            '& .MuiAccordionDetails-root > div': {
-                              position: 'absolute',
-                              backgroundColor: '#fff',
-                              width: '100%',
-                              borderRadius: '4px',
-                              zIndex: 1000,
-                              border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                              '& .ActionCardLayout-root ': {
-                                border: (theme) => theme.palette.custom.border,
-                                borderRadius: '4px',
-                                '& .MuiButtonBase-root': {
-                                  borderBottom: (theme) =>
-                                    `1px solid ${theme.palette.custom.border}`,
-
-                                  '& .ActionCard-title': {
-                                    fontSize: { xs: '15px', md: '16px' },
-                                    fontWeight: 400,
-                                  },
-                                  '& .ActionCard-end': {
-                                    display: 'none',
-                                  },
-                                },
-                              },
-                              '& .ActionCard-root.selected': {
-                                backgroundColor: (theme) => theme.palette.custom.border,
-                              },
-                            },
-                            '& .ActionCardLayout-root ': {
-                              backgroundColor: 'white',
-                            },
-                            '& .ActionCardLayout-root .MuiButtonBase-root': {
-                              paddingBlock: '12px',
-                              // borderRadius: '2px',
-                              textAlign: 'left',
-
-                              '& .ActionCard-title': {
-                                color: (theme: any) => theme.palette.custom.main,
-                                fontSize: { xs: '15px', md: '16px' },
-                                fontWeight: 500,
-                                lineHeight: '158%',
-                              },
-                            },
-                            '& .MuiAccordionSummary-expandIconWrapper': {
-                              position: 'relative',
-                              top: '10px',
-                              marginLeft: '15px',
-                            },
-                            '& .MuiAccordionSummary-content': {
-                              flexGrow: 'unset',
-                            },
-
-                            // '& .MuiCollapse-root': {
-                            //   position: 'absolute',
-                            //   height: '100px',
-                            //   width: '100%',
-                            // },
-                          }}
-                        // isDropdown={true}
-                        // isButton={true}
-                        />
-                      </ProductFiltersPro>
-                    )}
-                  </Box>
-                </ProductListFiltersContainer>
-              </StickyBelowHeader>
-            </MediaQuery>
-
-            <MediaQuery
-              query={(theme) => theme.breakpoints.up('md')}
-              display='block'
-              sx={(theme) => ({
-                gridArea: 'sidebar',
-                // mt: import.meta.graphCommerce.breadcrumbs === true ? 0 : theme.spacings.lg,
-                position: 'sticky',
-                top: '100px',
-                mt: { xs: '30px' },
-                height: 'calc(100vh - 100px)',
-              })}
-            >
-              <Box
-                sx={{
-                  height: '100%',
-                  overflowY: 'auto',
-                  overflowX: 'hidden',
-                  pr: 1,
-                  pl: 1,
-                  scrollbarWidth: 'none',
-                  msOverflowStyle: 'none',
-                  '&::-webkit-scrollbar': {
-                    display: 'none',
-                  },
-                  '& .mui-style-h8pyxy-MuiPaper-root-MuiAccordion-root': {
-                    '& .MuiCollapse-vertical': {
-                      position: 'relative',
-                      top: '-5px',
-                    },
-                  },
-                }}
-              >
-                {!isSearch && (
-                  <>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        borderBottom: (theme) =>
-                          `1px solid ${theme.palette.custom.tltBorder1}`,
-                        paddingBottom: '15px',
-                        '& .MuiButtonBase-root': {
-                          fontSize: { xs: '15px', md: '16px' },
-                          lineHeight: 'normal',
-                        },
-                      }}
-                    >
-                      <Box
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '8px',
-
-                          '& picture': {
-                            width: '30px',
-                            height: '30px',
-                          },
-                        }}
-                      >
-                        <Image src={mix} alt='mix_alter' sx={{ width: '30px', height: '30px' }} />{' '}
-                        <Typography
-                          sx={{
-                            fontSize: { xs: '15px', sm: '16px', md: '25px' },
-                            fontWeight: 700,
-                            lineHeight: '128%',
-                            color: (theme: any) => theme.palette.custom.textDarkAlter2,
-                          }}
-                        >
-                          Filter
-                        </Typography>
-                      </Box>
-
-                      <ProductFiltersProClearAll
-                        sx={{
-                          alignSelf: 'center',
-                          background: '#ffe7e7',
-                          border: '1px solid #ffe7e7',
-                          padding: '2px 13px',
-                          borderRadius: '8px',
-                          color: (theme: any) => theme.palette.custom.tltMain,
-                          width: 'fit-content',
-                          minWidth: 'unset',
-                          fontSize: '15px',
-                          '&:hover:not(.Mui-disabled)': {
-                            backgroundColor: 'transparent',
-
-                          },
-                        }}
-                        title='Clear'
-                        menuList={menuList}
-                      />
-                    </Box>
-                    {/* <ProductFiltersProAggregations renderer={productFiltersProSectionRenderer} /> */}
+                      '& picture': {
+                        width: '30px',
+                        height: '30px',
+                      },
+                    }}
+                  >
+                    <Image src={mix} alt='mix_alter' sx={{ width: '30px', height: '30px' }} />{' '}
                     <Typography
                       sx={{
-                        fontSize: { xs: '15px', sm: '16px', md: '22px' },
-                        fontWeight: 500,
+                        fontSize: { xs: '15px', sm: '16px', md: '25px' },
+                        fontWeight: 700,
                         lineHeight: '128%',
                         color: (theme: any) => theme.palette.custom.textDarkAlter2,
-                        paddingTop: isSearch ? '0px' : '20px',
-                        paddingBottom: '15px',
-                        borderBottom: (theme) =>
-                          `1px solid ${theme.palette.custom.tltBorder1}`,
                       }}
                     >
-                      Categories
+                      Filter
                     </Typography>
-                    {menuList
-                      ?.filter((menu) => menu?.uid !== 'MTM=' && menu?.uid !== 'NDc=')
-                      .map((menu, index) =>
-                        menu?.children?.length > 0 ? (
-                          <Box key={index}>
-                            <ProductFiltersProCategorySection
-                              filterIcons={iconFilterProduct}
-                              category={menu}
-                              params={params}
-                              hideBreadcrumbs
-                              urlPath={menu?.url_path}
-                              categoryTitle={menu?.name}
-                              expanded={expanded === menu?.name}
-                              handleChange={() => handleAccordionChange(menu?.name)}
-                            />
-                          </Box>
-                        ) : (
-                          <Link href={`/${menu?.url_path}`} legacyBehavior passHref>
-                            <Typography
-                              sx={{
-                                fontSize: { xs: '15px', sm: '16px', md: '20px' },
-                                fontWeight: 400,
-                                lineHeight: '120%',
-                                color: (theme: any) => theme.palette.custom.dark,
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                paddingBlock: '15px',
-                                cursor: 'pointer',
-                                borderBottom: (theme: any) =>
-                                  `1px solid ${theme.palette.custom.borderSecondary}`,
-                              }}
-                            >
-                              {menu?.name}
-                            </Typography>
-                          </Link>
-                        ),
-                      )}
-                  </>
-                )}
-              </Box>
-            </MediaQuery>
-          </>
-        )}
+                  </Box>
+
+                  <ProductFiltersProClearAll
+                    sx={{
+                      alignSelf: 'center',
+                      background: '#ffe7e7',
+                      border: '1px solid #ffe7e7',
+                      padding: '2px 13px',
+                      borderRadius: '8px',
+                      color: (theme: any) => theme.palette.custom.tltMain,
+                      width: 'fit-content',
+                      minWidth: 'unset',
+                      fontSize: '15px',
+                      '&:hover:not(.Mui-disabled)': {
+                        backgroundColor: 'transparent',
+
+                      },
+                    }}
+                    title='Clear'
+                    menuList={menuList}
+                  />
+                </Box>
+                {/* <ProductFiltersProAggregations renderer={productFiltersProSectionRenderer} /> */}
+                <Typography
+                  sx={{
+                    fontSize: { xs: '15px', sm: '16px', md: '22px' },
+                    fontWeight: 500,
+                    lineHeight: '128%',
+                    color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                    paddingTop: isSearch ? '0px' : '20px',
+                    paddingBottom: '15px',
+                    borderBottom: (theme) =>
+                      `1px solid ${theme.palette.custom.tltBorder1}`,
+                  }}
+                >
+                  Categories
+                </Typography>
+                {menuList
+                  ?.filter((menu) => menu?.uid !== 'MTM=' && menu?.uid !== 'NDc=')
+                  .map((menu, index) =>
+                    menu?.children?.length > 0 ? (
+                      <Box key={index}>
+                        <ProductFiltersProCategorySection
+                          filterIcons={iconFilterProduct}
+                          category={menu}
+                          params={params}
+                          hideBreadcrumbs
+                          urlPath={menu?.url_path}
+                          categoryTitle={menu?.name}
+                          expanded={expanded === menu?.name}
+                          handleChange={() => handleAccordionChange(menu?.name)}
+                        />
+                      </Box>
+                    ) : (
+                      <Link href={`/${menu?.url_path}`} legacyBehavior passHref>
+                        <Typography
+                          sx={{
+                            fontSize: { xs: '15px', sm: '16px', md: '20px' },
+                            fontWeight: 400,
+                            lineHeight: '120%',
+                            color: (theme: any) => theme.palette.custom.dark,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px',
+                            paddingBlock: '15px',
+                            cursor: 'pointer',
+                            borderBottom: (theme: any) =>
+                              `1px solid ${theme.palette.custom.borderSecondary}`,
+                          }}
+                        >
+                          {menu?.name}
+                        </Typography>
+                      </Link>
+                    ),
+                  )}
+              </>
+            )}
+          </Box>
+        </MediaQuery>
+
       </Container>
-    </ProductFiltersPro>
+    </ProductFiltersPro >
   )
 })

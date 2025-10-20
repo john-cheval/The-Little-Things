@@ -154,7 +154,7 @@ function CourseDetail({ categories, coursesList }) {
             display: 'none',
           },
           scrollbarWidth: 'none',
-          '-ms-overflow-style': 'none',
+          msOverflowStyle: 'none',
         }}
       >
         {categories?.map((course, index) => (
