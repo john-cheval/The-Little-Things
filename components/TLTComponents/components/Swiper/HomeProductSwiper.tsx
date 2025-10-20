@@ -1,18 +1,16 @@
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import 'swiper/css'
-import { Image } from '@graphcommerce/image'
 import { useRef } from 'react'
 import type SwiperCore from 'swiper'
-import 'swiper/css/effect-fade'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/autoplay'
-import crownImage from '../../assets/Home/crown.svg'
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 import { AddProductsToCartForm } from '@graphcommerce/magento-product';
 import { RenderType } from '@graphcommerce/next-ui';
 import { productListRenderer } from '../../../ProductListItems';
+
+const prevButtonClass = 'swiper-top-pick-prev';
+const nextButtonClass = 'swiper-top-pick-next';
 
 export function HomeProductSwiper({ products }) {
   const swiperRef = useRef<SwiperCore | null>(null)
@@ -23,9 +21,40 @@ export function HomeProductSwiper({ products }) {
     <Box component='div'
       sx={{
         marginTop: { xs: '20px', md: '30px' },
+        position: 'relative',
       }}
       onMouseEnter={() => swiperRef.current?.autoplay?.stop()}
       onMouseLeave={() => swiperRef.current?.autoplay?.start()}>
+      <Box
+        className={` ${prevButtonClass} `}
+        onClick={() => swiperRef.current?.slidePrev()}
+        sx={{
+          // display: 'none',
+          left: { xs: '-20px', lg: '-25px' },
+          top: '30%',
+          '&.swiper-button-disabled': {
+            opacity: 0.3,
+            pointerEvents: 'none',
+          },
+        }}
+      >
+        <MdKeyboardArrowLeft />
+      </Box>
+
+      <Box
+        className={`${nextButtonClass}`}
+        onClick={() => swiperRef.current?.slideNext()}
+        sx={{
+          right: { xs: '-20px', lg: '-25px' },
+          top: '30%',
+          '&.swiper-button-disabled': {
+            opacity: 0.3,
+            pointerEvents: 'none',
+          },
+        }}
+      >
+        <MdKeyboardArrowRight />
+      </Box>
       <AddProductsToCartForm>
         <Swiper
           onSwiper={(swiper) => {
@@ -37,8 +66,12 @@ export function HomeProductSwiper({ products }) {
           spaceBetween={14}
           breakpoints={{
             0: {
+              slidesPerView: 1,
+              spaceBetween: 15,
+            },
+            400: {
               slidesPerView: 2,
-              spaceBetween: 7,
+              spaceBetween: 18,
             },
             768: {
               slidesPerView: 3,
@@ -57,6 +90,7 @@ export function HomeProductSwiper({ products }) {
               <Box
                 sx={{
                   position: 'relative',
+
                 }}>
                 <RenderType renderer={productListRenderer} {...item} productItem={item} />
               </Box>

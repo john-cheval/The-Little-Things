@@ -33,6 +33,7 @@ export function TopPickSwiper({ productList }) {
         sx={{
           display: 'none',
           left: '-25px',
+          top: '50%',
           '&.swiper-button-disabled': {
             opacity: 0.3,
             pointerEvents: 'none',
@@ -47,6 +48,7 @@ export function TopPickSwiper({ productList }) {
         onClick={() => swiperRef.current?.slideNext()}
         sx={{
           right: '20px',
+          top: '50%',
           '&.swiper-button-disabled': {
             opacity: 0.3,
             pointerEvents: 'none',

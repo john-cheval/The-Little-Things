@@ -8,7 +8,7 @@ export function TopPicks({ content, productList }: SectionProps) {
   return (
     <>
       <Box component='section'
-        className='container-wrapper'
+        className='container-wrapper top_Picks'
         sx={{
           marginTop: { xs: '20px', md: '30px', lg: '50px' },
         }}>

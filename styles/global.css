@@ -1896,11 +1896,11 @@ input[type='number'] {
     bottom: 0;
     right: 0;
   }
-  .ProductListItem-titleContainer .ProductListPrice-root {
+  /* .ProductListItem-titleContainer .ProductListPrice-root {
     position: absolute;
     bottom: -3px;
     left: -4px;
-  }
+  } */
   .ProductListItem-titleContainer .ProductListItem-title {
     min-height: auto;
     padding-bottom: 43px;
@@ -2107,12 +2107,11 @@ input[type='number'] {
 .swiper-top-pick-prev,
 .swiper-top-pick-next {
   position: absolute;
-  top: 40%;
   transform: translateY(-50%);
   z-index: 10;
   cursor: pointer;
   color: var(--tltMain);
-  font-size: 30px;
+  font-size: 25px;
   background-color: #fff;
   border-radius: 50%;
   border: 1px solid #e8e8e8;
@@ -2168,10 +2167,11 @@ input[type='number'] {
 /* ============== Prodcut Item ============== */
 .product-title {
   color: #000;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 132%;
+  min-height: 40px;
 }
 .ProductListPrice-discountPrice span {
   color: #ccc;
@@ -2202,7 +2202,7 @@ input[type='number'] {
 .ProductListPrice-finalPrice {
   color: #000;
   font-family: 'Inter', sans-serif;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 800;
   line-height: normal;
@@ -2283,7 +2283,9 @@ input[type='number'] {
   background: transparent;
   color: var(--tltSecondary);
 }
-
+.top_Picks .viewallBtn {
+  display: none;
+}
 /* ================ Footer ================  */
 .footer-wrapper {
   background: #000;
@@ -2924,6 +2926,10 @@ input[type='number'] {
     font-size: 16px;
     padding: 5px 20px;
   }
+  .product-title,
+  .ProductListPrice-finalPrice {
+    font-size: 18px;
+  }
 }
 
 /* Tablet Screens */
@@ -2952,6 +2958,14 @@ input[type='number'] {
     border-image-slice: 1;
     clip-path: inset(0 round 3px);
   }
+  .top_Picks .viewallBtn {
+    display: block;
+  }
+  .swiper-top-pick-prev,
+  .swiper-top-pick-next {
+    font-size: 25px;
+    padding: 5px;
+  }
 }
 
 /* Laptop and desktop screens */
@@ -2967,6 +2981,11 @@ input[type='number'] {
   }
   .main-heading {
     font-size: 35px;
+  }
+  .swiper-top-pick-prev,
+  .swiper-top-pick-next {
+    font-size: 30px;
+    padding: 8px;
   }
 }
 

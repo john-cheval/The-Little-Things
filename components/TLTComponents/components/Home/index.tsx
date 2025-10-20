@@ -6,7 +6,7 @@ import DOMPurify from 'isomorphic-dompurify';
 import { TLTHomeSectionThree } from './HomeSectionThree';
 import { MostRecentlyView } from './MostRecentlyView'
 import { TopPicks } from './TopPicks'
-// import { ArrivingSoon } from './ArrivingSoon'
+import { ArrivingSoon } from './ArrivingSoon'
 // import { UnlockSection } from './UnlockSection'
 // import { RecentlyAdded } from './RecentlyAdded'
 
@@ -18,6 +18,8 @@ type Props = {
   sectionProductList: any
   sectionFourContent: string
   topPicksProductList: any
+  arrivingSoonContent: string
+  arrivingSoonProduct: any
 }
 
 export function HomePage({
@@ -28,8 +30,8 @@ export function HomePage({
   sectionProductList,
   sectionFourContent,
   topPicksProductList,
-  // arrivingSoonContent,
-  // arrivingSoonProduct,
+  arrivingSoonContent,
+  arrivingSoonProduct,
   // unlockSectionContent,
   // unlockSectionProducts,
   // recentlyAddedContent,
@@ -41,6 +43,7 @@ export function HomePage({
   const cleanedSectionOneContent = DOMPurify.sanitize(sectionOneContent)
   const cleanedSectionThreeContent = DOMPurify.sanitize(sectionThreeContent)
   const cleanedSectionFourContent = DOMPurify.sanitize(sectionFourContent)
+  const cleanedArrivingSoonContent = DOMPurify.sanitize(arrivingSoonContent)
 
   return (
     <>
@@ -51,8 +54,8 @@ export function HomePage({
         <MostRecentlyView content={cleanedSectionThreeContent} productList={sectionProductList} />
       </Box >
       <TopPicks content={cleanedSectionFourContent} productList={topPicksProductList} />
-      {/*    <ArrivingSoon content={arrivingSoonContent} productList={arrivingSoonProduct} />
-      <UnlockSection content={unlockSectionContent} productList={unlockSectionProducts} />
+      <ArrivingSoon content={cleanedArrivingSoonContent} productList={arrivingSoonProduct} />
+      {/*    <UnlockSection content={unlockSectionContent} productList={unlockSectionProducts} />
       <RecentlyAdded content={recentlyAddedContent} productList={recentlyAddedProduct} />
       <div dangerouslySetInnerHTML={{ __html: homeCtadataContent }} /> */}
       <p> this si the HomePage</p>
