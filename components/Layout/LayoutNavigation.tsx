@@ -27,6 +27,7 @@ import Image from 'next/image'
 import { megaMenu } from '../../constants/Navbar'
 import { MegaMenu } from './MegaMenu'
 import { PopoverMenu } from './PopoverMenu'
+import { useRouter } from 'next/router'
 // import { Image } from '@graphcommerce/image'
 
 export type LayoutNavigationProps = LayoutQuery &
@@ -34,6 +35,9 @@ export type LayoutNavigationProps = LayoutQuery &
 
 export function LayoutNavigation(props: LayoutNavigationProps) {
   const { menu, children, ...uiProps } = props
+
+  const router = useRouter()
+  const isHome = router?.pathname === '/'
 
   // const footerCmsData = props?.footer?.items?.[0]
   const menuItemsCmsData = props?.menu?.items?.[0]?.children
@@ -304,7 +308,8 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                     },
 
                   }}>
-                  <Image src={popmartImage} alt='popmartImage' /></Link>
+                  <Image src={popmartImage} alt='popmartImage' />
+                </Link>
               </DesktopNavActions>
             </Box>
 
@@ -360,23 +365,26 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
             </DesktopNavActions>
 
             {/* Small screen International shipping Banner */}
-            <Box sx={(theme) => ({
-              borderRadius: '3px',
-              backgroundColor: theme.palette.custom.tltMain,
-              color: theme.palette.custom.tltContrastText,
-              fontFamily: "'Inter', sans-serif",
-              textAlign: 'center',
-              fontWeight: 500,
-              textTransform: 'uppercase',
-              letterSpacing: '1.68px',
-              fontSize: { xs: '12px', sm: '14px' },
-              marginTop: '10px',
-              padding: '10px',
-              marginLeft: '5px',
-              display: { xs: 'block', md: 'none' },
-            })}>
-              we do international shipping
-            </Box>
+            {isHome && (
+              <Box sx={(theme) => ({
+                borderRadius: '3px',
+                backgroundColor: theme.palette.custom.tltMain,
+                color: theme.palette.custom.tltContrastText,
+                fontFamily: "'Inter', sans-serif",
+                textAlign: 'center',
+                fontWeight: 500,
+                textTransform: 'uppercase',
+                letterSpacing: '1.68px',
+                fontSize: { xs: '12px', sm: '14px' },
+                marginTop: '10px',
+                padding: '10px',
+                marginLeft: '5px',
+                display: { xs: 'block', md: 'none' },
+              })}>
+                we do international shipping
+              </Box>
+            )}
+
 
 
             {/* Menu Items */}

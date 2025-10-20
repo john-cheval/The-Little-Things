@@ -19,8 +19,10 @@ import {
   parseParams,
   ProductFiltersDocument,
   ProductFiltersPro,
+  ProductFiltersProAllFiltersChip,
   productListApplyCategoryDefaults,
   ProductListDocument,
+  ProductListFiltersContainer,
   productListLink,
   useProductList,
 } from '@graphcommerce/magento-product'
@@ -34,6 +36,7 @@ import { InnerTop } from '../components/shared/Inner/Innertop'
 import type { CategoryPageQuery } from '../graphql/CategoryPage.gql'
 import { CategoryPageDocument } from '../graphql/CategoryPage.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
+import { Box } from '@mui/material'
 
 export type CategoryProps = CategoryPageQuery &
   layoutProps &
@@ -111,6 +114,63 @@ function CategoryPage(props: CategoryProps) {
                   conf={apolloState}
                 />
               )}
+
+            <Box
+              sx={{
+                '& .ProductListFiltersContainer-wrapper': {
+                  position: 'fixed',
+                  top: '20%',
+                  right: '0',
+                  zIndex: 99999999,
+
+                  '& .MuiButtonBase-root': {
+                    backgroundColor: '#7B1316',
+                    height: '100px',
+                    borderRadius: 0,
+                    // border-top-left-radius: 10px;
+                    // border-bottom-left-radius: 10px;
+                    borderTopLeftRadius: '10px',
+                    borderBottomLeftRadius: '10px',
+                    position: 'relative',
+                    // '&::before': {
+                    //   content: '""',
+                    //   clipPath: 'polygon(100% 0, 0 0, 0 41%)',
+                    //   width: '100%',
+                    //   height: '100%',
+
+                    // },
+
+                    '& .IconSvg-root': {
+                      display: 'none',
+                    },
+                  },
+
+                  '& .sidebar_chip': {
+                    padding: '5px',
+                    '& .MuiTypography-root': {
+                      color: '#fff',
+                      fontSize: { xs: '15px', sm: '16px' },
+                      fontWeight: 500,
+                      lineHeight: '120%',
+                      writingMode: 'sideways-lr',
+                      marginBottom: '10px',
+
+                    },
+                  },
+                },
+
+              }}>
+              <ProductListFiltersContainer>
+                <ProductFiltersProAllFiltersChip
+                  total_count={products?.total_count}
+                  // sort_fields={sort_fields}
+                  category={category}
+                  menus={menu?.items[0]?.children}
+                  paramss={params}
+                />
+              </ProductListFiltersContainer>
+            </Box>
+
           </>
         )}
       </ProductFiltersPro>

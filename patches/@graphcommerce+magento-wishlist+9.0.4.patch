@@ -1,5 +1,5 @@
 diff --git a/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx b/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx
-index ad0f044..5395acf 100644
+index ad0f044..d32a049 100644
 --- a/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx
 +++ b/node_modules/@graphcommerce/magento-wishlist/components/ProductWishlistChip/ProductWishlistIconButton.tsx
 @@ -18,6 +18,7 @@ export type ProductWishlistChipProps = ProductListItemFragment & {
@@ -38,7 +38,7 @@ index ad0f044..5395acf 100644
 -        sx={[(theme) => ({ padding: theme.spacings.xxs }), ...(Array.isArray(sx) ? sx : [sx])]}
 +        sx={[(theme) => ({
 +          backgroundColor: (theme: any) => theme.palette.custom.tltContrastText,
-+          padding: '8px ',
++          padding: { xs: '5px', sm: '8px' },
 +          backdropFilter: 'blur(4px)',
 +          marginTop: { sm: '10px', md: '10px' },
 +          marginRight: { sm: '10px', md: '10px' },
@@ -46,7 +46,7 @@ index ad0f044..5395acf 100644
 +          transition: 'all 0.4s ease-in-out',
 +
 +          '& .ProductWishlistChipBase-wishlistIconActive': {
-+            fontSize: '18px',
++            fontSize: { xs: '16px', sm: '18px' },
 +          },
 +          '&:hover': {
 +            backgroundColor: '#EFF2F5DB',
