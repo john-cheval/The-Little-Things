@@ -966,7 +966,7 @@ index 41c917c..0cbedaf 100644
                '&.floatingSm': {
                  [theme.breakpoints.down('md')]: {
 diff --git a/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx b/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx
-index 30fc40b..5d190eb 100644
+index 30fc40b..a61eda6 100644
 --- a/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx
 +++ b/node_modules/@graphcommerce/next-ui/LayoutDefault/components/LayoutDefault.tsx
 @@ -4,9 +4,13 @@ import { Box, SxProps, Theme } from '@mui/material'
@@ -1030,6 +1030,15 @@ index 30fc40b..5d190eb 100644
              '& > *': {
                pointerEvents: 'all',
              },
+@@ -148,7 +175,7 @@ export function LayoutDefault(props: LayoutDefaultProps) {
+             )}
+           </Container>
+         ) : (
+-          <div />
++          <div style={{ display: 'none' }} />
+         )}
+         <div className={classes.children}>
+           <div id='skip-nav' tabIndex={-1} />
 diff --git a/node_modules/@graphcommerce/next-ui/LayoutOverlay/components/LayoutOverlay.tsx b/node_modules/@graphcommerce/next-ui/LayoutOverlay/components/LayoutOverlay.tsx
 index 3a5a250..20686c4 100644
 --- a/node_modules/@graphcommerce/next-ui/LayoutOverlay/components/LayoutOverlay.tsx

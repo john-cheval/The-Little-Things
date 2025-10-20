@@ -6,7 +6,6 @@ import type { GetStaticProps } from '@graphcommerce/next-ui'
 import { PageMeta } from '@graphcommerce/next-ui'
 import type { LayoutNavigationProps } from '../components'
 import { LayoutDocument, LayoutNavigation } from '../components'
-// import { HomePage } from '../components/Home'
 import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
 import { HomePage } from '../components/TLTComponents/components/Home'
@@ -29,7 +28,6 @@ function CmsPage(props: CmsPageRouteProps) {
 
 
   const homesHeroData = cmsBlocks.find((block) => block.identifier === 'home-section-one')
-  const HomeSectionTwo = cmsBlocks.find((block) => block.identifier === 'home-section-two')
   const HomeSectionThree = cmsBlocks.find((block) => block.identifier === 'most-viewed-collectables')
   const HomeSectionFour = cmsBlocks.find((block) => block.identifier === 'top-picks')
   const HomeSectionFive = cmsBlocks.find((block) => block.identifier === 'arriving-soon-section')
@@ -40,7 +38,6 @@ function CmsPage(props: CmsPageRouteProps) {
 
 
   const decodedHomeHero = decodeHtmlEntities(homesHeroData?.content)
-  const decodedHomeHomeSectionTwo = decodeHtmlEntities(HomeSectionTwo?.content)
   const decodedHomeSectionThree = decodeHtmlEntities(HomeSectionThree?.content)
   const decodedHomeSectionFour = decodeHtmlEntities(HomeSectionFour?.content)
   const decodedHomeSectionFive = decodeHtmlEntities(HomeSectionFive?.content)
@@ -63,7 +60,6 @@ function CmsPage(props: CmsPageRouteProps) {
       <HomePage
         categoryData={filteredCategory}
         sectionOneContent={decodedHomeHero}
-        sectionTwoconent={decodedHomeHomeSectionTwo}
         sectionThreeContent={decodedHomeSectionThree}
         sectionProductList={mostViewedProducts}
         sectionFourContent={decodedHomeSectionFour}
@@ -92,21 +88,12 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
   const staticClient = graphqlSsrClient(context)
   const conf = client.query({ query: StoreConfigDocument })
 
-  // const url = (await conf).data.storeConfig?.cms_home_page ?? 'home'
-
-  // const cmsPageQuery = staticClient.query({
-  //   query: cmsPageDocument,
-  //   variables: {
-  //     urlKey: url,
-  //   },
-  // })
 
   const cmsPageBlocksQuery = staticClient.query({
     query: cmsMultipleBlocksDocument,
     variables: {
       blockIdentifiers: [
         'home-section-one',
-        'home-section-two',
         'most-viewed-collectables',
         'top-picks',
         'arriving-soon-section',
@@ -164,21 +151,6 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
     },
   })
 
-
-  // const statementCakesQuery = await staticClient.query({
-  //   query: ProductListDocument,
-  //   variables: {
-  //     pageSize: 10,
-  //     currentPage: 1,
-  //     filters: {
-  //       category_id: { eq: '22' },
-  //     },
-  //   },
-  // })
-
-
-  // const result = await cmsPageQuery
-  // const cmsPage = result.data.cmsPage
   const cmsBlocks = (await cmsPageBlocksQuery)?.data.cmsBlocks?.items
   const mostViewedProducts = mostViewedQuery.data?.products?.items
   const topPicksProducts = topPicksQuery.data?.products?.items
@@ -188,7 +160,6 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
 
   return {
     props: {
-      // cmsPage: cmsPage,
       cmsBlocks,
       mostViewedProducts,
       topPicksProducts,

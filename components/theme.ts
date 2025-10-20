@@ -307,7 +307,7 @@ const createThemeWithPalette = (palette: PaletteOptions) =>
         sm: 641,
         md: 769,
         lg: 1025,
-        xls: 1280,
+        xls: 1281,
         xl: 1536,
       },
     },

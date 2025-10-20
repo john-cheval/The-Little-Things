@@ -1,11 +1,8 @@
-import 'swiper/css'
 import { Image } from '@graphcommerce/image'
 import { useRef } from 'react'
 import type SwiperCore from 'swiper'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/autoplay'
 import { Box, Link } from '@mui/material'
 
 type SwiperProps = {
@@ -16,13 +13,14 @@ export function CategorySwiper({ swiperData }: SwiperProps) {
   const clonedData = [...swiperData, ...swiperData]
   return <Box component='div'
     sx={{
-      marginTop: { xs: '30px' },
+      marginTop: { xs: 0, md: '20px', lg: '30px' },
     }}
     onMouseEnter={() => swiperRef.current?.autoplay?.stop()}
     onMouseLeave={() => swiperRef.current?.autoplay?.start()}>
-    <Swiper onSwiper={(swiper) => {
-      swiperRef.current = swiper
-    }}
+    <Swiper
+      onSwiper={(swiper) => {
+        swiperRef.current = swiper
+      }}
       modules={[Autoplay]}
       loop
       autoplay={{
@@ -32,11 +30,19 @@ export function CategorySwiper({ swiperData }: SwiperProps) {
       spaceBetween={16}
       breakpoints={{
         0: {
-          slidesPerView: 5.5,
+          slidesPerView: 4,
+          spaceBetween: 7,
+        },
+        650: {
+          slidesPerView: 4,
           spaceBetween: 7,
         },
         768: {
-          slidesPerView: 6.5,
+          slidesPerView: 5,
+          spaceBetween: 15,
+        },
+        1024: {
+          slidesPerView: 6,
           spaceBetween: 15,
         },
         1200: {
@@ -56,7 +62,7 @@ export function CategorySwiper({ swiperData }: SwiperProps) {
                 width: '100%',
                 height: 'auto',
                 objectFit: 'cover',
-                maxWidth: '130px',
+                // maxWidth: '130px',
               }} />
             </Link>
           </SwiperSlide>
