@@ -2,13 +2,13 @@ import { Box } from '@mui/material'
 import { CategorySwiper } from '../Swiper/CategorySwiper'
 import { HomeSectionTwo } from './HomeSectionTwo'
 import DOMPurify from 'isomorphic-dompurify';
-// import parse from 'html-react-parser';
+import parse from 'html-react-parser';
 import { TLTHomeSectionThree } from './HomeSectionThree';
 import { MostRecentlyView } from './MostRecentlyView'
 import { TopPicks } from './TopPicks'
 import { ArrivingSoon } from './ArrivingSoon'
-// import { UnlockSection } from './UnlockSection'
-// import { RecentlyAdded } from './RecentlyAdded'
+import { UnlockSection } from './UnlockSection'
+import { RecentlyAdded } from './RecentlyAdded'
 
 type Props = {
   categoryData: any
@@ -20,23 +20,27 @@ type Props = {
   topPicksProductList: any
   arrivingSoonContent: string
   arrivingSoonProduct: any
+  unlockSectionContent: string
+  unlockSectionProducts: any
+  recentlyAddedContent: string
+  recentlyAddedProduct: any
+  homeCtadataContent: string
 }
 
 export function HomePage({
   categoryData,
   sectionOneContent,
-  // sectionTwoconent,
   sectionThreeContent,
   sectionProductList,
   sectionFourContent,
   topPicksProductList,
   arrivingSoonContent,
   arrivingSoonProduct,
-  // unlockSectionContent,
-  // unlockSectionProducts,
-  // recentlyAddedContent,
-  // recentlyAddedProduct,
-  // homeCtadataContent,
+  unlockSectionContent,
+  unlockSectionProducts,
+  recentlyAddedContent,
+  recentlyAddedProduct,
+  homeCtadataContent,
 
 }: Props) {
 
@@ -44,6 +48,9 @@ export function HomePage({
   const cleanedSectionThreeContent = DOMPurify.sanitize(sectionThreeContent)
   const cleanedSectionFourContent = DOMPurify.sanitize(sectionFourContent)
   const cleanedArrivingSoonContent = DOMPurify.sanitize(arrivingSoonContent)
+  const cleanedUnlockSectionContent = DOMPurify.sanitize(unlockSectionContent)
+  const cleanedRecentlyAddedContent = DOMPurify.sanitize(recentlyAddedContent)
+  const cleanedHomeCtadataContent = DOMPurify.sanitize(homeCtadataContent)
 
   return (
     <>
@@ -55,10 +62,10 @@ export function HomePage({
       </Box >
       <TopPicks content={cleanedSectionFourContent} productList={topPicksProductList} />
       <ArrivingSoon content={cleanedArrivingSoonContent} productList={arrivingSoonProduct} />
-      {/*    <UnlockSection content={unlockSectionContent} productList={unlockSectionProducts} />
-      <RecentlyAdded content={recentlyAddedContent} productList={recentlyAddedProduct} />
-      <div dangerouslySetInnerHTML={{ __html: homeCtadataContent }} /> */}
-      <p> this si the HomePage</p>
+      <UnlockSection content={cleanedUnlockSectionContent} productList={unlockSectionProducts} />
+      <RecentlyAdded content={cleanedRecentlyAddedContent} productList={recentlyAddedProduct} />
+      {parse(cleanedHomeCtadataContent)}
     </>
   )
 }
+

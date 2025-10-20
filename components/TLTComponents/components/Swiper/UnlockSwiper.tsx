@@ -7,7 +7,8 @@ import 'swiper/css'
 import 'swiper/css/autoplay'
 import { Box, Link, Typography } from '@mui/material'
 import gradient from '../../assets/gradients/gradient2.svg'
-import { Image } from '@graphcommerce/image';
+import Image from 'next/image'
+// import { Image } from '@graphcommerce/image';
 
 
 type SwiperProps = {
@@ -18,7 +19,7 @@ export function UnlockSwiper({ swiperData }: SwiperProps) {
   const clonedData = [...swiperData, ...swiperData]
   return <Box component='div'
     sx={{
-      marginTop: { xs: '30px' },
+      marginTop: { xs: '20px', md: '30px' },
       '& .swiper-wrapper': {
         alignItems: 'flex-end',
       },
@@ -46,6 +47,10 @@ export function UnlockSwiper({ swiperData }: SwiperProps) {
           slidesPerView: 3,
           spaceBetween: 7,
         },
+        450: {
+          slidesPerView: 4,
+          spaceBetween: 7,
+        },
         768: {
           slidesPerView: 5,
           spaceBetween: 15,
@@ -67,16 +72,20 @@ export function UnlockSwiper({ swiperData }: SwiperProps) {
               background: `url(${gradient.src})`,
               backgroundRepeat: 'no-repeat',
               backgroundSize: '100% auto',
-              // backgroundPosition: 'center 50px',
+              backgroundPosition: 'bottom',
               display: 'flex',
               justifyContent: 'center',
             }}>
-              <Image src={item?.small_image?.url} alt={item?.name} width={135} height={120} sx={{
-                width: '100%',
-                height: 'auto',
-                objectFit: 'cover',
-                // maxWidth: '130px',
-              }} />
+              <Image src={item?.small_image?.url}
+                alt={item?.name}
+                width={135}
+                height={120}
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'cover',
+                  // maxWidth: '130px',
+                }} />
               <Typography className='unlock-title' >{item?.name}</Typography>
             </Box>
 

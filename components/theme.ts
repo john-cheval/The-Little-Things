@@ -127,7 +127,7 @@ const darkPalette: ThemePaletteOptions = {
 
     // TLT Colors
     tltMain: '#7B1316',
-    tltSecondary: '#D90F13',
+    tltSecondary: 'home-cta-wrapper',
     tltTertiary: '#767676',
     tltDark: '#313131',
     dark: '#000',

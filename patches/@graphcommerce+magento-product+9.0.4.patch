@@ -1765,7 +1765,7 @@ index 68f7cab..1e678e3 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
-index 0b9f236..48d473e 100644
+index 0b9f236..4ef5c35 100644
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 @@ -1,12 +1,12 @@
@@ -1804,7 +1804,7 @@ index 0b9f236..48d473e 100644
    onClick?: (
      event: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>,
      item: ProductListItemFragment,
-@@ -87,64 +93,138 @@ export function ProductListItemReal(props: ProductProps) {
+@@ -87,64 +93,139 @@ export function ProductListItemReal(props: ProductProps) {
      sx = [],
      onClick,
      slotProps = {},
@@ -1890,9 +1890,10 @@ index 0b9f236..48d473e 100644
 +                  {/* <ProductDiscountLabel className={classes.discount} price_range={price_range} /> */}
 +                  <Image
 +                    src={isNewImage ?? '/_next/static/media/new_arrival.a17948ef.svg'}
++                    className='product_badge'
 +                    alt='NewBadge'
 +                    sx={{
-+                      maxWidth: { xs: '40px', md: '60px', lg: '70px' },
++                      maxWidth: { xs: '50px', md: '60px', lg: '70px' },
 +                      height: 'auto',
 +                      display: isNew ? 'block' : 'none',
 +                    }}
@@ -1974,8 +1975,8 @@ index 0b9f236..48d473e 100644
 +                '& svg': {
 +                  fontSize: '30px',
 +                  stroke: 'unset !important',
-+                  left: { xs: '5px', md: '6px' },
-+                  top: { xs: '1px', md: '4px' },
++                  left: { xs: '6px' },
++                  top: { xs: '5px', md: '4px' },
 +                  position: 'relative',
 +                },
 +              }}
@@ -2039,7 +2040,7 @@ index a20a9d8..5cf6ccf 100644
            '& > picture, & > .ProductListItem-placeholder': {
              gridArea: '1 / 1 / 3 / 3',
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
-index 9dc2505..0d17ce3 100644
+index 9dc2505..06991a8 100644
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItemTitleAndPrice.tsx
 @@ -1,34 +1,30 @@
@@ -2110,12 +2111,18 @@ index 9dc2505..0d17ce3 100644
            {subTitle}
          </Box>
        )}
-@@ -58,10 +51,27 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
+@@ -58,10 +51,33 @@ export function ProductListItemTitleAndPrice(props: ProductListItemTitleAndPrice
          component='div'
          variant='body1'
          className={productListPrice.classes.root}
 -        sx={{ gridArea: 'price', textAlign: 'right', justifySelf: { sm: 'flex-end' } }}
-+        sx={{ gridArea: 'price', textAlign: 'left', lineHeight: 'normal', marginBottom: '4px' }}
++        sx={{
++          gridArea:
++            'price',
++          textAlign: 'left',
++          lineHeight: 'normal',
++          marginBottom: '4px'
++        }}
        >
          {children}
        </Typography>

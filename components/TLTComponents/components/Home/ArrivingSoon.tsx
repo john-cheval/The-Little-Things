@@ -8,7 +8,7 @@ export function ArrivingSoon({ content, productList }: SectionProps) {
     <Box component='section'
       className='container-wrapper '
       sx={{
-        marginTop: { xs: '30px', md: '65px' },
+        marginTop: { xs: '30px', md: '45px', lg: '50px', xl: '65px' },
       }}>
       <Box
         sx={{
