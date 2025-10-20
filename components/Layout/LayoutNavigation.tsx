@@ -13,7 +13,7 @@ import {
 } from '@graphcommerce/next-ui'
 import { Box, Link } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { decodeHtmlEntities } from '../../utils/htmlUtils'
+// import { decodeHtmlEntities } from '../../utils/htmlUtils'
 import { productListRenderer } from '../ProductListItems/productListRenderer'
 import { Footer } from './Footer'
 import type { LayoutQuery } from './Layout.gql'
@@ -35,9 +35,9 @@ export type LayoutNavigationProps = LayoutQuery &
 export function LayoutNavigation(props: LayoutNavigationProps) {
   const { menu, children, ...uiProps } = props
 
-  const footerCmsData = props?.footer?.items?.[0]
+  // const footerCmsData = props?.footer?.items?.[0]
   const menuItemsCmsData = props?.menu?.items?.[0]?.children
-  const decodedFooterData = decodeHtmlEntities(footerCmsData?.content)
+  // const decodedFooterData = decodeHtmlEntities(footerCmsData?.content)
   const [scroll, setScroll] = useState<boolean>(false)
   const [subMenuItem, setSubMenuItem] = useState<any>()
   const [menuActive, setMenuActive] = useState<boolean>(false)
@@ -447,8 +447,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
             </Box>
           </Box >
         }
-        // footer={<Footer footerContent={decodedFooterData} />}
-        footer={<p> Footer Responsive</p>}
+        footer={<Footer />}
       >
         {children}
       </LayoutDefault >
