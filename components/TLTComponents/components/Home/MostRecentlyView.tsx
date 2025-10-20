@@ -7,13 +7,13 @@ import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { useRef } from 'react';
 
-type Props = {
+export type SectionProps = {
   content: string
   productList: any
 }
 
 
-export function MostRecentlyView({ content, productList }: Props) {
+export function MostRecentlyView({ content, productList }: SectionProps) {
   const swiperRef = useRef<SwiperCore | null>(null)
   return (
     <Box component='section'

@@ -2074,12 +2074,9 @@ input[type='number'] {
 }
 
 /* Section Four */
-.gradient-border {
-  border-width: 3px;
-  border-style: solid;
-  border-image: linear-gradient(230deg, #000000 4.01%, #ff7300 82.77%);
-  border-image-slice: 1;
-  clip-path: inset(0 round 3px);
+.top-picks.gradient-border {
+  border: 1px solid #e8e8e8;
+  border-radius: 3px;
 }
 
 .gradient-border2 {
@@ -2100,6 +2097,11 @@ input[type='number'] {
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   pointer-events: none;
+}
+
+.swiper-top-pick-prev.top-picks-arrows,
+.top-picks-arrows.swiper-top-pick-next {
+  display: none;
 }
 
 .swiper-top-pick-prev,
@@ -2938,6 +2940,17 @@ input[type='number'] {
   }
   .main-heading {
     font-size: 30px;
+  }
+  .swiper-top-pick-prev.top-picks-arrows,
+  .top-picks-arrows.swiper-top-pick-next {
+    display: flex;
+  }
+  .top-picks.gradient-border {
+    border-width: 3px;
+    border-style: solid;
+    border-image: linear-gradient(230deg, #000000 4.01%, #ff7300 82.77%);
+    border-image-slice: 1;
+    clip-path: inset(0 round 3px);
   }
 }
 

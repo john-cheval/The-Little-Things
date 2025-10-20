@@ -1,13 +1,9 @@
 import { Box, Typography } from '@mui/material';
-import 'swiper/css'
 import { Image } from '@graphcommerce/image'
 import { useRef } from 'react'
 import type SwiperCore from 'swiper'
-import 'swiper/css/effect-fade'
 import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/autoplay'
 import crownImage from '../../assets/Home/crown.svg'
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
 
@@ -26,15 +22,16 @@ export function TopPickSwiper({ productList }) {
       sx={{
         position: 'relative',
         '& .swiper': {
-          overflowY: 'visible',
+          overflowY: { xs: 'hidden', md: 'visible' },
           // overflowX: 'hidden',
         },
       }}
     >
       <Box
-        className={prevButtonClass}
+        className={`top-picks-arrows ${prevButtonClass} `}
         onClick={() => swiperRef.current?.slidePrev()}
         sx={{
+          display: 'none',
           left: '-25px',
           '&.swiper-button-disabled': {
             opacity: 0.3,
@@ -46,7 +43,7 @@ export function TopPickSwiper({ productList }) {
       </Box>
 
       <Box
-        className={nextButtonClass}
+        className={`top-picks-arrows ${nextButtonClass}`}
         onClick={() => swiperRef.current?.slideNext()}
         sx={{
           right: '20px',
@@ -72,11 +69,15 @@ export function TopPickSwiper({ productList }) {
         }}
         breakpoints={{
           0: {
-            slidesPerView: 2.5,
+            slidesPerView: 2.2,
             spaceBetween: 7,
           },
+          // 0: {
+          //   slidesPerView: 2.2,
+          //   spaceBetween: 7,
+          // },
           768: {
-            slidesPerView: 3.5,
+            slidesPerView: 3.2,
             spaceBetween: 15,
           },
           1200: {
@@ -98,27 +99,53 @@ export function TopPickSwiper({ productList }) {
               <Box sx={{
                 position: 'relative',
               }}>
-                <Box component='div' className='gradient-border' sx={{
-                  marginTop: '50px',
+                <Box component='div' className='top-picks gradient-border' sx={{
+                  marginTop: { xs: '40px', lg: '50px' },
+                  backdropFilter: { xs: 'blur(3.75px)', md: 'none' },
+                  position: 'realtive',
                 }} >
                   <Image src={item?.small_image?.url} alt={item?.name} width={250} height={150} />
+
+                  <Typography
+                    sx={{
+                      width: { xs: '25px', sm: '30px' },
+                      height: { xs: '25px', sm: '30px' },
+                      borderRadius: '50%',
+                      border: '1px solid #D0011F',
+                      color: '#FFF',
+                      fontWeight: 700,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      textAlign: 'center',
+                      backgroundColor: '#D0011FB8',
+                      fontFamily: "'Inter', sans-serif",
+                      position: 'absolute',
+                      bottom: '10px',
+                      left: '10px',
+                      zIndex: 1000,
+                      display: { xs: 'flex', md: 'none' },
+                    }}>
+                    {index + 1}
+                  </Typography>
                 </Box>
                 <Typography component='p' sx={{
                   color: '#070707',
                   textAlign: 'left',
                   fontSize: { xs: '16px', md: '18px' },
-                  fontWeight: 500,
+                  fontWeight: { xs: 500, md: 500 },
                   lineHeight: '140%',
                   overflow: 'hidden',
                   marginTop: '15px',
+                  maxWidth: { xs: '80%', md: '100%' },
                 }}>
                   {item?.name}
                 </Typography>
                 <Box sx={{
                   position: 'absolute',
-                  top: { xs: '-50px', md: firsttThreeCards ? '-50px' : '-30px' },
+                  top: { xs: '-50px', md: firsttThreeCards ? '-40px' : '-20px', lg: firsttThreeCards ? '-50px' : '-30px' },
                   left: '50%',
                   transform: 'translateX(-50%)',
+                  display: { xs: 'none', md: 'block' },
                 }}>
                   {firsttThreeCards && (
                     <Image src={crownImage} alt='crownImage' width={24} height={24} sx={{
@@ -134,17 +161,18 @@ export function TopPickSwiper({ productList }) {
                   <Typography component='span' sx={{
                     color: '#fff',
                     textAlign: 'center',
-                    fontSize: { xs: '20px', md: '25px' },
+                    fontSize: { xs: '20px', lg: '25px' },
                     fontWeight: 700,
                     lineHeight: 'normal',
                     backgroundColor: '#FF7300',
-                    width: { xs: '30px', md: '50px' },
-                    height: { xs: '30px', md: '50px' },
+                    width: { xs: '30px', lg: '50px' },
+                    height: { xs: '30px', lg: '50px' },
                     borderRadius: '50%',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     border: '3px solid #D90F13',
+
                   }}>{index + 1}</Typography>
                 </Box>
               </Box>

@@ -5,7 +5,7 @@ import DOMPurify from 'isomorphic-dompurify';
 // import parse from 'html-react-parser';
 import { TLTHomeSectionThree } from './HomeSectionThree';
 import { MostRecentlyView } from './MostRecentlyView'
-// import { TopPicks } from './TopPicks'
+import { TopPicks } from './TopPicks'
 // import { ArrivingSoon } from './ArrivingSoon'
 // import { UnlockSection } from './UnlockSection'
 // import { RecentlyAdded } from './RecentlyAdded'
@@ -16,6 +16,8 @@ type Props = {
   // sectionTwoconent: string
   sectionThreeContent: string
   sectionProductList: any
+  sectionFourContent: string
+  topPicksProductList: any
 }
 
 export function HomePage({
@@ -24,8 +26,8 @@ export function HomePage({
   // sectionTwoconent,
   sectionThreeContent,
   sectionProductList,
-  // sectionFourContent,
-  // topPicksProductList,
+  sectionFourContent,
+  topPicksProductList,
   // arrivingSoonContent,
   // arrivingSoonProduct,
   // unlockSectionContent,
@@ -38,6 +40,7 @@ export function HomePage({
 
   const cleanedSectionOneContent = DOMPurify.sanitize(sectionOneContent)
   const cleanedSectionThreeContent = DOMPurify.sanitize(sectionThreeContent)
+  const cleanedSectionFourContent = DOMPurify.sanitize(sectionFourContent)
 
   return (
     <>
@@ -47,8 +50,8 @@ export function HomePage({
         <TLTHomeSectionThree />
         <MostRecentlyView content={cleanedSectionThreeContent} productList={sectionProductList} />
       </Box >
-      {/* <TopPicks content={sectionFourContent} productList={topPicksProductList} />
-      <ArrivingSoon content={arrivingSoonContent} productList={arrivingSoonProduct} />
+      <TopPicks content={cleanedSectionFourContent} productList={topPicksProductList} />
+      {/*    <ArrivingSoon content={arrivingSoonContent} productList={arrivingSoonProduct} />
       <UnlockSection content={unlockSectionContent} productList={unlockSectionProducts} />
       <RecentlyAdded content={recentlyAddedContent} productList={recentlyAddedProduct} />
       <div dangerouslySetInnerHTML={{ __html: homeCtadataContent }} /> */}
