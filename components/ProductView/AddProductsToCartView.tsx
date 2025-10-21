@@ -114,7 +114,7 @@ export function AddProductsToCartView(props: AddProductsToCartViewProps) {
                     '& .ProductListPrice-finalPrice span span:first-child': {
                       backgroundSize: { xs: '25px auto', md: '27px auto' },
                       backgroundPosition: { xs: '-2px center', md: '-2px 14px' },
-                      width: { xs: '20px', md: '30px' },
+                      width: { xs: '25px', md: '30px' },
                     },
 
                     '& .ProductListPrice-finalPrice .MuiBox-root:not(:nth-child(1))': {

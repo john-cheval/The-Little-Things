@@ -4,7 +4,7 @@ import {
   mergeDeep,
   PrivateQueryMaskProvider,
   usePrivateQuery,
-  // useApolloClient,
+  useApolloClient,
 } from '@graphcommerce/graphql'
 import { /* CartStartCheckout ,*/ useCartQuery } from '@graphcommerce/magento-cart'
 import { CartPageDocument } from '@graphcommerce/magento-cart-checkout'
@@ -15,7 +15,7 @@ import {
   getProductStaticPaths,
   jsonLdProduct,
   jsonLdProductOffer,
-  ProductListPrice,
+  // ProductListPrice,
   ProductPageAddToCartActionsRow,
   ProductPageBreadcrumbs,
   productPageCategory,
@@ -23,7 +23,7 @@ import {
   ProductPageJsonLd,
   ProductPageMeta,
   ProductPageName,
-  // ProductListDocument,
+  ProductListDocument,
   // ProductShortDescription,
 } from '@graphcommerce/magento-product'
 import { defaultConfigurableOptionsSelection } from '@graphcommerce/magento-product-configurable'
@@ -36,12 +36,10 @@ import { i18n } from '@lingui/core'
 import { Box, Button, Link, Typography } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import type { GetStaticPaths } from 'next'
-import { /* useEffect,*/ useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { LayoutNavigationProps } from '../../components'
 import { LayoutDocument, LayoutNavigation } from '../../components'
 import { AddProductsToCartView } from '../../components/ProductView/AddProductsToCartView'
-
-import { fontSize } from '../../components/theme'
 import { cmsMultipleBlocksDocument } from '../../graphql/CmsMultipleBlocks.gql'
 import type { ProductPage2Query } from '../../graphql/ProductPage2.gql'
 import { ProductPage2Document } from '../../graphql/ProductPage2.gql'
@@ -54,6 +52,7 @@ import tabbyImage from './assets/tabby.png'
 import tamaraImage from './assets/tamara.png'
 import Image from 'next/image'
 import { IoBagHandleOutline } from 'react-icons/io5'
+import { HomeProductSwiper } from '../../components/TLTComponents/components/Swiper/HomeProductSwiper'
 // import { InnerTop } from '../../components/shared/Inner/Innertop'
 // import { useRouter } from 'next/router'
 // import { linkStyle } from '../../components/shared/swiper/ProductSwiper'
@@ -78,10 +77,12 @@ function ProductPage(props: Props) {
   const { defaultValues, urlKey, cmsBlocks } = props
   const weOfferContent = cmsBlocks?.find((block) => block.identifier === 'detail-page-we-offer')
   const paymentMethodContent = cmsBlocks?.find((block) => block.identifier === 'product-detail-payment-method')
+  const alsoMayLikeContent = cmsBlocks?.find((block) => block.identifier === 'you-may-also-like')
 
 
   const decodedWeOfferContent = decodeHtmlEntities(weOfferContent?.content)
   const decodedpaymentMethodContent = decodeHtmlEntities(paymentMethodContent?.content)
+  const decodedYouMayAlsoLikeContent = decodeHtmlEntities(alsoMayLikeContent?.content)
 
   // const [openContactForm, setOpenContactheme.palette.custom.tltBorder4tForm] = useState(false)
 
@@ -91,9 +92,9 @@ function ProductPage(props: Props) {
     props,
   )
   const { products, relatedUpsells } = scopedQuery.data
-  // const client = useApolloClient()
-  // const [isLoading, setIsLoading] = useState(false)
-  // const [relatedProducts, setRelatedProducts] = useState<any>([])
+  const client = useApolloClient()
+  const [isLoading, setIsLoading] = useState(false)
+  const [alsoLikeProducts, setAlsoLikeProducts] = useState<any>([])
   const [isBuyNow, setIsBuyNow] = useState<boolean>(false)
 
   const product = mergeDeep(
@@ -110,89 +111,145 @@ function ProductPage(props: Props) {
   // const hasItems =
   //   (data?.cart?.total_quantity ?? 0) > 0 &&
   //   typeof data?.cart?.prices?.grand_total?.value !== 'undefined'
-  const isLargeScreen = useMediaQuery('(max-width:1250px)')
+  const isSmallestScreen = useMediaQuery('(max-width:450px)')
 
+
+
+
+
+
+  const fetchProducts = async (categoryId) => {
+    setIsLoading(true)
+
+    const pageProducts = await client.query({
+      query: ProductListDocument,
+      variables: {
+        pageSize: 10,
+        currentPage: 1,
+        filters: {
+          category_id: { eq: categoryId },
+        },
+      },
+    })
+    setAlsoLikeProducts([...(pageProducts.data.products?.items ?? [])])
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
+    // if (product?.categories && product.categories.length > 0) {
+    //   const categoryId = product.categories[0]?.id
+    //   if (categoryId) {
+    //     fetchProducts(String(categoryId))
+    //   }
+    // }
+
+    fetchProducts('37')
+  }, [])
 
 
   if (!product?.sku || !product.url_key) return null
 
-
-
-  // const fetchProducts = async (categoryId) => {
-  //   setIsLoading(true)
-
-  //   const pageProducts = await client.query({
-  //     query: ProductListDocument,
-  //     variables: {
-  //       pageSize: 10,
-  //       currentPage: 1,
-  //       filters: {
-  //         category_id: { eq: categoryId },
-  //       },
-  //     },
-  //   })
-  //   setRelatedProducts([...(pageProducts.data.products?.items ?? [])])
-  //   setIsLoading(false)
-  // }
-
-  // useEffect(() => {
-  //   if (product?.categories && product.categories.length > 0) {
-  //     const categoryId = product.categories[0]?.id
-  //     if (categoryId) {
-  //       fetchProducts(String(categoryId))
-  //     }
-  //   }
-  // }, [])
-
   const matchedCartItem = cartItems?.find((cart) => cart?.product?.sku === product?.sku)
 
-  // console.log(product, '==>this is the product')
+  // console.log(alsoLikeProducts, '==>this is the alsoLikeProducts')
 
   return (
     <>
       <PrivateQueryMaskProvider mask={scopedQuery.mask}>
-        <Box
+        <AddProductsToCartForm
+          key={product.uid}
+          defaultValues={defaultValues}
           sx={{
             display: { xs: 'flex', lg: 'none' },
             flexDirection: 'column',
             paddingInline: { xs: '18px', md: '25px' },
             marginBottom: { xs: '15px', md: '30px' },
-
+            marginTop: { xs: '15px', sm: '20px', md: '30px' },
           }}
         >
+          {product?.categories && product?.categories?.length > 0 && (
+            <Typography
+              sx={(theme) => ({
+                color: theme.palette.custom.tltSecondary,
+                fontSize: '16px',
+                fontWeight: 500,
+                lineHeight: '120%',
+                letterSpacing: '4px',
+                textTransform: 'uppercase',
+              })}>
+              {product?.categories?.[0]?.name}
+            </Typography>
+          )}
           <Typography
-            variant='h3'
-            component='div'
-            gutterBottom
-            sx={{
-              color: (theme: any) => theme.palette.custom.dark,
-              fontWeight: 400,
-              lineHeight: '120%',
-              margin: 0,
-            }}
+            component='h1'
+            sx={(theme) => ({
+              color: theme.palette.custom.dark,
+              fontSize: { xs: '20px', sm: '25px', md: '30px' },
+              fontWeight: 700,
+              lineHeight: '128%',
+              marginTop: { xs: '10px', md: '15px' },
+            })}
           >
             <ProductPageName product={product} />
           </Typography>
-          <ProductListPrice
-            {...product.price_range.minimum_price}
-            sx={{
-              borderBottom: '1px solid rgba(199, 202, 205, 0.42)',
-              paddingBottom: { xs: '0', md: '5px' },
 
-              '& .ProductListPrice-finalPrice .MuiBox-root:nth-child(1)': {
-                marginRight: '2px',
-              },
-              '& .ProductListPrice-finalPrice .MuiBox-root:not(:nth-child(1))': {
-                ...fontSize(25, 40),
-              },
-            }}
-          />
-        </Box>
+          {product?.sku && (
+            <Typography
+              component='h1'
+              sx={(theme) => ({
+                color: theme.palette.custom.dark,
+                fontSize: { xs: '15px', md: '16px' },
+                lineHeight: '128%',
+                width: 'fit-content',
+                backgroundColor: theme.palette.custom.tltlGray2,
+                borderRadius: '3px',
+                padding: '5px 10px',
+                marginBlock: { xs: '15px', md: '20px' },
+              })}
+            >
+              sku: {product?.sku}
+            </Typography>
+          )}
+
+          <Box
+            sx={{
+              display: 'flex',
+              alingItems: 'center',
+              justifyContent: 'space-between',
+              gap: '10px',
+            }}>
+            {/* {product?.rating_summary > 0 && ( */}
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+            }}>
+              <IoMdStar color='#D90F13' size={20} />
+              <Typography
+                component='p'
+                sx={(theme) => ({
+                  color: theme.palette.custom.dark,
+                  fontSize: { xs: '15px', md: '16px' },
+                  display: 'flex',
+                  gap: '3px',
+                })}
+              >
+                <span>{Number(product?.rating_summary || 4.0).toFixed(1)}</span>
+                <span>({product?.rating_summary || 17}  Reviews)</span>
+              </Typography>
+            </Box>
+            {/* )} */}
+
+
+            <ProductWishlistIconButton
+              {...product} />
+          </Box>
+        </AddProductsToCartForm>
         <AddProductsToCartForm
           key={product.uid}
           defaultValues={defaultValues}
           sx={{
-            marginTop: { xs: '30px', md: '60px' },
+            marginTop: { xs: '25px', md: '45px', lg: '60px' },
             '& .SidebarGallery-row': {
               marginBottom: {
                 xs: product?.related_products?.length === 0 ? '30px' : 0,
@@ -218,10 +275,14 @@ function ProductPage(props: Props) {
                 },
               },
               '& .SidebarGallery-bottomCenter': {
-                bottom: { xs: '20px', md: '30px', lg: isLargeScreen ? '100px' : '50px', xl: '-100px' },
+                bottom: { xs: '20px', md: '30px', lg: '-100px' },
+
 
                 '& .ScrollerThumbnail-thumbnail  img': {
                   minHeight: { xs: '50px', lg: '70px' },
+                  borderRadius: '3px',
+                  border: '1px solid #dadada',
+                  overflow: 'hidden',
                 },
               },
             },
@@ -293,8 +354,9 @@ function ProductPage(props: Props) {
             product={product}
             isProduct
             sx={{
+              display: { xs: 'none', lg: 'bock' },
               color: '#747474',
-              fontSize: { xs: '16px', md: '18px' },
+              fontSize: '18px',
               fontWeight: 400,
               lineHeight: '120%',
               marginBottom: { xs: '10px', md: '15px' },
@@ -323,7 +385,7 @@ function ProductPage(props: Props) {
                   zIndex: 1000,
                   alignItems: 'center',
                   justifyContent: 'flex-end',
-                  display: { xs: 'flex', lg: 'flex' },
+                  display: { xs: 'none', lg: 'flex' },
                 }}
               >
                 <ProductWishlistIconButton
@@ -362,10 +424,10 @@ function ProductPage(props: Props) {
             >
               <Box
                 sx={{
-                  display: { xs: 'none', lg: 'flex' },
+                  display: 'flex',
                   flexDirection: 'column',
                   // rowGap: '3px',
-                  marginTop: { xs: '10px', md: '20px' },
+                  marginTop: { xs: '0px', lg: '20px' },
                 }}
               >
                 {product?.categories && product?.categories?.length > 0 && (
@@ -377,6 +439,7 @@ function ProductPage(props: Props) {
                       lineHeight: '120%',
                       letterSpacing: '4px',
                       textTransform: 'uppercase',
+                      display: { xs: 'none', lg: 'block' },
                     })}>
                     {product?.categories?.[0]?.name}
                   </Typography>
@@ -386,10 +449,11 @@ function ProductPage(props: Props) {
                   component='h1'
                   sx={(theme) => ({
                     color: theme.palette.custom.dark,
-                    fontSize: { xs: '20px', md: '25px', lg: '30px', xl: '35px' },
+                    fontSize: { lg: '30px', xl: '35px' },
                     fontWeight: 700,
                     lineHeight: '128%',
                     marginTop: { xs: '10px', md: '15px' },
+                    display: { xs: 'none', lg: 'block' },
                   })}
                 >
                   <ProductPageName product={product} />
@@ -397,10 +461,10 @@ function ProductPage(props: Props) {
 
                 {product?.sku && (
                   <Box sx={{
-                    display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
                     marginTop: { xs: '10px', md: '15px', lg: '20px' },
+                    display: { xs: 'none', lg: 'flex' },
                   }}>
                     <Typography
                       component='h1'
@@ -446,13 +510,13 @@ function ProductPage(props: Props) {
                   sx={{
                     background: 'linear-gradient(90deg, #B4001A 0%, #D90F13 100%)',
                     borderRadius: '3px',
-                    padding: { xs: '5px 10px', md: '10px 15px' },
-                    marginTop: { xs: '20px', md: '30px' },
+                    padding: { xs: '10px 10px 7px', lg: '10px 15px' },
+                    marginTop: { xs: '-3px', lg: '30px' },
                   }}>
                   <Typography sx={{
                     color: '#fff',
                     display: 'flex',
-                    alingItens: 'center',
+                    alignItems: 'center',
                     gap: '5px',
                     fontSize: '16px',
                     fontWeight: 500,
@@ -486,7 +550,7 @@ function ProductPage(props: Props) {
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: { xs: '5px', md: '10px' },
+                    gap: '10px',
                   }}>
                   <Typography
                     sx={{
@@ -498,7 +562,7 @@ function ProductPage(props: Props) {
                       lineHeight: '127%',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: { xs: '10px', md: '20px' },
+                      gap: { xs: '23px', md: '20px' },
 
                     }}>
                     <Image src={tabbyImage} alt='tabbyImage' />
@@ -514,7 +578,7 @@ function ProductPage(props: Props) {
                       lineHeight: '127%',
                       display: 'flex',
                       alignItems: 'center',
-                      gap: { xs: '10px', md: '20px' },
+                      gap: { xs: '23px', md: '20px' },
 
                     }}>
                     <Image src={tamaraImage} alt='tamaraImage' />
@@ -542,7 +606,7 @@ function ProductPage(props: Props) {
                 py: 0.1,
                 backgroundColor: '#fff',
                 zIndex: 99999,
-                position: 'static',
+                // position: { xs: 'sticky', lg: 'static' },
                 // bottom: 'unset !important',
                 '& .CartTotals-root ': {
                   backgroundColor: 'transparent',
@@ -561,6 +625,7 @@ function ProductPage(props: Props) {
                   alignItems: { xs: 'center', lg: 'end' },
                   rowGap: { xs: '10px', md: 0 },
                   width: '100%',
+                  flexWrap: isSmallestScreen ? 'wrap' : 'nowrap',
                   '& .MuiBox-root': {
                     width: { xs: '100%', sm: '100%' },
                     paddingRight: 0,
@@ -587,6 +652,7 @@ function ProductPage(props: Props) {
                     boxShadow: 'none !important',
                     padding: '8px',
                     backgroundColor: theme => theme.palette.custom.tltMain,
+                    border: theme => `1px solid ${theme.palette.custom.tltMain}`,
                     '& span': {
                       color: theme => theme.palette.custom.tltMain,
                       backgroundColor: theme => theme.palette.custom.tltContrastText,
@@ -595,7 +661,7 @@ function ProductPage(props: Props) {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      border: theme => `1px solid ${theme.palette.custom.tltContrastText}`,
+                      border: theme => `1px solid ${theme.palette.custom.tltMain}`,
                       transition: 'all 0.4s ease-in-out',
                     },
                     '& .MuiTypography-body1': {
@@ -607,6 +673,7 @@ function ProductPage(props: Props) {
                       textTransform: 'uppercase',
                       width: '100%',
                       transition: 'all 0.4s ease-in-out',
+                      marginLeft: { xs: '5px', sm: 0 },
                     },
                     '&:hover span': {
                       border: theme => `1px solid ${theme.palette.custom.tltMain}`,
@@ -704,8 +771,8 @@ function ProductPage(props: Props) {
                 component='div'
                 className='product_payments'
                 sx={{
-                  borderTop: theme => `1px solid ${theme.palette.custom.tltBorder2}`,
-                  paddingTop: { xs: '10px', md: '20px', lg: '25px' },
+                  borderTop: theme => `1px solid ${theme.palette.custom.tltBorder3}`,
+                  paddingTop: { xs: '20px', lg: '25px' },
                   marginTop: { xs: '10px', md: '20px', lg: '25px' },
                   '& p': {
                     color: theme => theme.palette.custom.textDarkAlter2,
@@ -718,6 +785,7 @@ function ProductPage(props: Props) {
                   '& div.card-wrappers': {
                     display: 'flex',
                     gap: { xs: '5px', md: '10px' },
+                    flexWrap: 'wrap',
 
                     '& img': {
                       maxWidth: '65px',
@@ -735,44 +803,31 @@ function ProductPage(props: Props) {
         </AddProductsToCartForm>
 
         {/* Relative Products */}
-        {/* {relatedProducts && relatedProducts?.length > 0 && (
+        {alsoLikeProducts && alsoLikeProducts?.length > 0 && (
           <Box
+            className='container-wrapper'
             sx={{
-              paddingInline: { xs: '18px', md: '25px', lg: '55px' },
               paddingTop: { xs: '30px' },
-              paddingBottom: { xs: '30px', md: '45px', lg: '50px' },
+              // paddingBottom: { xs: '30px', md: '45px', lg: '50px' },
             }}
             component='section'
           >
             <Box
               sx={{
-                display: 'flex',
-                justifyContent: { xs: 'center', md: 'space-between' },
-                alignItems: 'center',
-                //  marginBottom: { xs: '10px', md: '20px' },
                 paddingBottom: { xs: '20px', md: '20px', lg: '30px' },
               }}
             >
-              {decodedRelativeProductsTitle && (
-                <div dangerouslySetInnerHTML={{ __html: decodedRelativeProductsTitle }} />
+              {decodedYouMayAlsoLikeContent && (
+                <div dangerouslySetInnerHTML={{ __html: decodedYouMayAlsoLikeContent }} />
               )}
 
-              <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-                <Link href={`/${relatedProducts[0]?.categories[0]?.url_key}`} css={linkStyle}>
-                  View All
-                </Link>
-              </Box>
             </Box>
 
-            <Box component='div' sx={{ display: { xs: 'none', md: 'block' } }}>
-              <RelativeProductSwiper productList={relatedProducts} />
-            </Box>
-
-            <Box component='div' sx={{ display: { xs: 'block', md: 'none' } }}>
-              <RelativeProductListMobile count={4} productList={relatedProducts ?? []} />
+            <Box component='div'>
+              <HomeProductSwiper products={alsoLikeProducts} />
             </Box>
           </Box>
-        )} */}
+        )}
       </PrivateQueryMaskProvider>
       {/* <AnimatePresence>
         {openContactForm && <CustomisedCakeForm key="custom-cake-form" setIsOpen={setOpenContactForm} product={product?.sku} uid={product?.uid} />}
@@ -829,9 +884,9 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
     query: cmsMultipleBlocksDocument,
     variables: {
       blockIdentifiers: [
-        // 'relative-products',
         'detail-page-we-offer',
         'product-detail-payment-method',
+        'you-may-also-like',
       ],
     },
   })
