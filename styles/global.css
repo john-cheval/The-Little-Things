@@ -2948,7 +2948,7 @@ input[type='number'] {
 /* ==== prodcut Details Page  */
 .we_offer_box_grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 12px;
   margin-bottom: 12px;
 }
@@ -2966,7 +2966,7 @@ input[type='number'] {
 
 .we_offer_box_content h5 {
   color: #d90f13;
-  font-size: 18px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 114%; /* 20.52px */
@@ -2983,12 +2983,9 @@ input[type='number'] {
 }
 .we_offer_box_full .we_offer_box_content {
   display: flex;
-  gap: 14px;
+  flex-direction: column;
 }
-.we_offer_box_full .we_offer_box_content p {
-  font-weight: 400;
-  margin-top: 0;
-}
+
 .we_offer_box:hover {
   border: 1px solid #d90f13;
 }
@@ -3020,6 +3017,20 @@ input[type='number'] {
 }
 
 /* ====== Responsive Css */
+/*  Extra small Screen */
+@media (min-width: 451px) {
+  .we_offer_box_grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .we_offer_box_full .we_offer_box_content {
+    flex-direction: row;
+    gap: 14px;
+  }
+  .we_offer_box_full .we_offer_box_content p {
+    margin-top: 0;
+    font-weight: 400;
+  }
+}
 
 /* Mobile Screen */
 @media (min-width: 641px) {
@@ -3063,6 +3074,9 @@ input[type='number'] {
   }
   .mobile-copy {
     font-size: 16px;
+  }
+  .we_offer_box_content h5 {
+    font-size: 18px;
   }
 }
 
