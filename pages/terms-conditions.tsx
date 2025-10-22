@@ -24,7 +24,7 @@ function TermsConditionPage(props: CmsBlocksProps) {
         // metaRobots={page?.metaRobots.toLowerCase().split('_') as MetaRobots[] | undefined}
         canonical='/terms-conditions'
       />
-      <InnerTop title={'Terms Conditions'} isFilter={false} />
+      <InnerTop title='Terms Conditions' isFilter={false} />
       {decodedTermsConditionsContent && (
         <div dangerouslySetInnerHTML={{ __html: decodedTermsConditionsContent }} />
       )}
@@ -38,7 +38,6 @@ TermsConditionPage.pageOptions = {
 export default TermsConditionPage
 
 export const getStaticProps: GetPageStaticProps = async (context) => {
-  const { params, locale } = context
   const client = graphqlSharedClient(context)
   const conf = client.query({ query: StoreConfigDocument })
 

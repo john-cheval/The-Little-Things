@@ -1,6 +1,5 @@
 import type { LayoutDefaultProps } from '@graphcommerce/next-ui'
 import { LayoutDefault } from '@graphcommerce/next-ui'
-import { decodeHtmlEntities } from '../../utils/htmlUtils'
 import { Footer } from './Footer'
 import type { LayoutQuery } from './Layout.gql'
 import { Logo } from './Logo'
@@ -10,14 +9,12 @@ export type LayoutMinimalProps = LayoutQuery &
 
 export function LayoutMinimal(props: LayoutMinimalProps) {
   const { menu, children, ...uiProps } = props
-  const footerCmsData = props?.footer?.items?.[0]
-  const decodedFooterData = decodeHtmlEntities(footerCmsData?.content)
 
   return (
     <LayoutDefault
       {...uiProps}
       header={<Logo />}
-      footer={<Footer footerContent={decodedFooterData} />}
+      footer={<Footer />}
       sx={{
         '& .LayoutDefault-header .GcLogo-parent': {
           justifyContent: 'center',
