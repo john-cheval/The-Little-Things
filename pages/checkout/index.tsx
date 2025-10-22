@@ -43,14 +43,14 @@ import { useRouter } from 'next/router'
 import { useState } from 'react'
 import type { LayoutNavigationProps } from '../../components'
 import { LayoutDocument, LayoutNavigation } from '../../components'
-import PickupStoreForm from '../../components/checkout/components/PickUpStore/PickupstoreForm'
+// import PickupStoreForm from '../../components/checkout/components/PickUpStore/PickupstoreForm'
 import { a11yProps, TabPanel } from '../../components/checkout/TabPanel'
-import { AdsOnProductsDocument, AdsOnProductsQuery } from '../../graphql/AdsOnProduct.gql'
-import {
-  // GetTimeSlotsByZipcodeDocument,
-  GetTimeSlotsByZipcodeQuery,
-} from '../../graphql/GetDeliverySlotData.gql'
-import { GetStorePickupDocument, GetStorePickupQuery } from '../../graphql/StorePickup.gql'
+// import { AdsOnProductsDocument, AdsOnProductsQuery } from '../../graphql/AdsOnProduct.gql'
+// import {
+//   // GetTimeSlotsByZipcodeDocument,
+//   GetTimeSlotsByZipcodeQuery,
+// } from '../../graphql/GetDeliverySlotData.gql'
+// import { GetStorePickupDocument, GetStorePickupQuery } from '../../graphql/StorePickup.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../../lib/graphql/graphqlSsrClient'
 import { TopBannerMesasge } from '../../components/checkout/components/TopBannerMesasge'
 import { TopContactDetails } from '../../components/checkout/components/TopContactDetails'
@@ -65,16 +65,16 @@ import { BottomLinks } from '../../components/checkout/components/BottomLinks'
 import { cmsMultipleBlocksDocument } from '../../graphql/CmsMultipleBlocks.gql'
 import { decodeHtmlEntities } from '../../utils/htmlUtils'
 
-export type adsOnProps = {
-  addonProductsData?: AdsOnProductsQuery[]
-  prickupstoreData?: GetStorePickupQuery[]
-  slotData?: GetTimeSlotsByZipcodeQuery
-}
+// export type adsOnProps = {
+//   addonProductsData?: AdsOnProductsQuery[]
+//   prickupstoreData?: GetStorePickupQuery[]
+//   slotData?: GetTimeSlotsByZipcodeQuery
+// }
 export type CmsBlocksProps = { cmsBlocks?: any; }
 type Props = Record<string, unknown>
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps, Props>
 
-export type ShippingPageProps = GetPageStaticProps & adsOnProps & CmsBlocksProps
+export type ShippingPageProps = GetPageStaticProps & CmsBlocksProps
 
 function ShippingPage(props: ShippingPageProps) {
   const { prickupstoreData, cmsBlocks } = props
@@ -474,7 +474,7 @@ function ShippingPage(props: ShippingPageProps) {
 
                         )}
                       </ComposedForm>
-                      <PickupStoreForm storeData={prickupstoreData} />
+                      {/* <PickupStoreForm storeData={prickupstoreData} /> */}
                     </TabPanel>
                   </Box>
                 </Box>
