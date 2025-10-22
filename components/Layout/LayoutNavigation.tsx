@@ -11,7 +11,7 @@ import {
   IconSvg,
   LayoutDefault,
 } from '@graphcommerce/next-ui'
-import { Box, Link } from '@mui/material'
+import { Box, Link, Typography, useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'
 // import { decodeHtmlEntities } from '../../utils/htmlUtils'
 import { productListRenderer } from '../ProductListItems/productListRenderer'
@@ -28,6 +28,7 @@ import { megaMenu } from '../../constants/Navbar'
 import { MegaMenu } from './MegaMenu'
 import { PopoverMenu } from './PopoverMenu'
 import { useRouter } from 'next/router'
+import { IoIosArrowBack } from 'react-icons/io'
 // import { Image } from '@graphcommerce/image'
 
 export type LayoutNavigationProps = LayoutQuery &
@@ -89,9 +90,23 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
     // return window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // const menuLinks = ['/checkout']
+  const staticPageLinks = [
+    {
+      name: 'Our Locations',
+      path: '/our-locations',
+    },
+    {
+      name: 'About',
+      path: '/about-us',
+    },
+  ]
 
+  const isSmallScreen = useMediaQuery('(max-width:768px)')
 
+  const isStaticPage = staticPageLinks?.filter((item) => item?.path === router?.pathname)
+  const handleBack = () => {
+    router.back()
+  }
 
   return (
     <>
@@ -132,7 +147,36 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
               borderBottom: { xs: 0, lg: theme => `1px solid ${theme.palette.custom.tltBorder1}` },
               transition: 'all 0.4s ease-in-out',
             }}>
-              <Logo isHome />
+              {(isStaticPage && isStaticPage?.length > 0 && isSmallScreen) ? (
+                <Box
+                  className='container-wrapper'
+                  onClick={handleBack}
+                  sx={{
+                    // paddingTop: { xs: '30px', sm: '35px' },
+                    display: { xs: 'flex', md: 'none' },
+                    alignItems: 'center',
+                    gap: '5px',
+                    paddingBottom: '10px',
+                  }}>
+                  <IoIosArrowBack size={20} />
+                  <Typography
+                    sx={{
+                      background: 'linear-gradient(90deg, #2D2D2D 0%, #B4001A 100%)',
+                      backgroundClip: 'text',
+                      WebkitBackgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                      width: 'fit-content',
+                      fontSize: '20px !important',
+                      fontWeight: 700,
+                      lineHeight: '120%',
+                    }}>
+                    {isStaticPage?.[0]?.name}
+                  </Typography>
+                </Box>
+              ) : (
+
+                <Logo isHome />
+              )}
               <DesktopNavActions
                 sx={{
                   width: '100%',
