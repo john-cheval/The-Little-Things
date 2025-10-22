@@ -20,7 +20,7 @@ import {
 } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
-import { Box, CircularProgress, Container, Divider, Link, Typography } from '@mui/material'
+import { Box, CircularProgress, Container, Divider, Link, Typography, useMediaQuery } from '@mui/material'
 import type { LayoutOverlayProps } from '../components'
 import { LayoutOverlay, productListRenderer } from '../components'
 import { graphqlSharedClient } from '../lib/graphql/graphqlSsrClient'
@@ -47,6 +47,8 @@ function CartPage() {
     // formState,
     // error: clearCartError
   } = useClearCart();
+
+  const isSmallScreen = useMediaQuery('(max-width:450px)')
 
   return (
     <>
@@ -123,7 +125,7 @@ function CartPage() {
               <Typography
                 component='p'
                 sx={{
-                  backgroundColor: (theme: any) => theme.palette.custom.tltGray2,
+                  backgroundColor: (theme: any) => theme.palette.custom.tltlGray2,
                   borderRadius: '3px',
                   color: (theme: any) => theme.palette.custom.tltGray1,
                   textAlign: 'center',
@@ -208,7 +210,7 @@ function CartPage() {
                   zIndex: 1,
                   '& .ActionCard-image': {
                     '& picture': {
-                      width: { xs: '150px', md: '160px' },
+                      width: { xs: '120px', sm: '140px', md: '160px' },
                     },
                     '& img': {
                       borderRadius: '3px',
@@ -220,7 +222,7 @@ function CartPage() {
                   },
                   '& .ActionCard-title a': {
                     color: (theme: any) => theme.palette.custom.dark,
-                    fontSize: { xs: '15px', md: '18px', lg: '20px' },
+                    fontSize: { xs: '16px', md: '18px', lg: '20px' },
                     fontWeight: 400,
                     lineHeight: '127%',
                     textDecoration: 'none',
@@ -237,7 +239,11 @@ function CartPage() {
                   },
                 }}
               />
-              <CouponAccordion key='couponform' />
+              <CouponAccordion key='couponform' sx={{
+                '& .MuiInputBase-input': {
+                  padding: { xs: '15px', md: '20px 24px' },
+                },
+              }} />
 
               <ApolloCartErrorAlert error={error} />
             </Container>
@@ -273,7 +279,8 @@ function CartPage() {
 
               <Box sx={{
                 display: 'flex',
-                columnGap: { xs: '10px', md: '10px' },
+                flexDirection: isSmallScreen ? 'column' : 'row',
+                gap: { xs: '8px', md: '10px' },
                 width: '100%',
               }}>
                 <Link href='/' className='cart_buttons'
@@ -374,7 +381,9 @@ const pageOptions: PageOptions<LayoutOverlayProps> = {
         },
         position: 'relative',
         '& .LayoutOverlayBase-background': {
-          paddingTop: { xs: '20px', md: '30px', lg: '60px' },
+          paddingTop: '60px',
+          borderTopLeftRadius: { xs: '30px', md: 0 },
+          borderTopRightRadius: { xs: '30px', md: 0 },
         },
       },
       '& .LayoutOverlayBase-beforeOverlay': {

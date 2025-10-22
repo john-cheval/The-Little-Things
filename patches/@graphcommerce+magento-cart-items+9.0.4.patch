@@ -19,7 +19,7 @@ index 8ef7bb9..f46a92f 100644
          title={title ?? <Trans>Complete your purchase</Trans>}
          titleProps={{ variant: 'h6', ...titleProps }}
 diff --git a/node_modules/@graphcommerce/magento-cart-items/components/CartItemActionCard/CartItemActionCard.tsx b/node_modules/@graphcommerce/magento-cart-items/components/CartItemActionCard/CartItemActionCard.tsx
-index de7b68f..779ab63 100644
+index de7b68f..fe31b95 100644
 --- a/node_modules/@graphcommerce/magento-cart-items/components/CartItemActionCard/CartItemActionCard.tsx
 +++ b/node_modules/@graphcommerce/magento-cart-items/components/CartItemActionCard/CartItemActionCard.tsx
 @@ -1,6 +1,6 @@
@@ -138,7 +138,7 @@ index de7b68f..779ab63 100644
          }),
          ...(Array.isArray(sx) ? sx : [sx]),
        ]}
-@@ -94,70 +132,167 @@ export function CartItemActionCard(props: CartItemActionCardProps) {
+@@ -94,70 +132,170 @@ export function CartItemActionCard(props: CartItemActionCardProps) {
              layout='fill'
              src={thumbnail?.url}
              sx={{
@@ -193,7 +193,7 @@ index de7b68f..779ab63 100644
 -        ) : (
 -          name
 -        )
-+              marginTop: '10px',
++              marginTop: { xs: '5px', sm: '10px' }
 +            }}>
 +            <Money value={totalPrice} currency={prices?.price.currency} />
 +          </Box>
@@ -250,7 +250,10 @@ index de7b68f..779ab63 100644
 +                <RemoveItemFromCart
 +                  isCart
 +                  sx={{
-+                    marginLeft: 0, color: '#9D9D9D !important', stroke: '#9D9D9D !important'
++                    marginLeft: 0,
++                    color: '#9D9D9D !important',
++                    stroke: '#9D9D9D !important',
++                    marginTop: { xs: '5px', md: 0 },
 +                  }}
 +                  {...cartItem}
 +                  buttonProps={{ size: size === 'responsive' ? 'large' : size }}
