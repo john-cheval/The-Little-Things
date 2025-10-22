@@ -77,7 +77,7 @@ type GetPageStaticProps = GetStaticProps<LayoutNavigationProps, Props>
 export type ShippingPageProps = GetPageStaticProps & CmsBlocksProps
 
 function ShippingPage(props: ShippingPageProps) {
-  const { prickupstoreData, cmsBlocks } = props
+  const { /* prickupstoreData,*/ cmsBlocks } = props
   const router = useRouter()
   const session = useCustomerSession()
   const shippingPage = useCartQuery(ShippingPageDocument, { fetchPolicy: 'cache-and-network' })
@@ -698,16 +698,16 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
     fetchPolicy: cacheFirst(staticClient),
   })
 
-  const addonProducts = client.query({
-    query: AdsOnProductsDocument,
-    variables: {
-      categoryId: '13',
-    },
-  })
+  // const addonProducts = client.query({
+  //   query: AdsOnProductsDocument,
+  //   variables: {
+  //     categoryId: '13',
+  //   },
+  // })
 
-  const getPickupstore = staticClient.query({
-    query: GetStorePickupDocument,
-  })
+  // const getPickupstore = staticClient.query({
+  //   query: GetStorePickupDocument,
+  // })
 
   // const GetDeliverySlotData = staticClient.query({
   //   query: GetTimeSlotsByZipcodeDocument,
@@ -735,8 +735,8 @@ export const getStaticProps: GetPageStaticProps = async (context) => {
       cmsBlocks,
       up: { href: '/cart', title: i18n._(/* i18n */ 'Cart') },
       // slotData: (await GetDeliverySlotData).data.getTimeSlots?.slotData,
-      addonProductsData: (await addonProducts).data?.products?.items || [],
-      prickupstoreData: (await getPickupstore).data.pickupLocations?.items || [],
+      // addonProductsData: (await addonProducts).data?.products?.items || [],
+      // prickupstoreData: (await getPickupstore).data.pickupLocations?.items || [],
       apolloState: await conf.then(() => client.cache.extract()),
     },
   }
