@@ -30,7 +30,7 @@ type CategoryLayoutProps = {
   id: string
   title: string
   category: CategoryDefaultFragment &
-    NonNullable<NonNullable<CategoryPageQuery['categories']>['items']>[number]
+  NonNullable<NonNullable<CategoryPageQuery['categories']>['items']>[number]
 }
 
 export type MenuPropsTypes = {
@@ -56,15 +56,15 @@ export const useLayoutConfiguration = (hasSidebar: boolean): Configuration => {
 
   const sidebarWidths = hasSidebar
     ? {
-        md: responsiveVal(200, 250, 960, 1920),
-        lg: responsiveVal(200, 250, 960, 1920),
-        xl: responsiveVal(200, 350, 960, 1920),
-      }
+      md: responsiveVal(200, 250, 960, 1920),
+      lg: responsiveVal(200, 250, 960, 1920),
+      xl: responsiveVal(200, 350, 960, 1920),
+    }
     : {
-        md: '0px',
-        lg: '0px',
-        xl: '0px',
-      }
+      md: '0px',
+      lg: '0px',
+      xl: '0px',
+    }
 
   const maxWidth = (bp: Breakpoint) =>
     `calc(${theme.breakpoints.values[bp]}px - ${sidebarWidths[bp]})`
