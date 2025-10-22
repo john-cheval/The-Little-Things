@@ -808,7 +808,7 @@ function ProductPage(props: Props) {
             className='container-wrapper'
             sx={{
               paddingTop: { xs: '30px' },
-              // paddingBottom: { xs: '30px', md: '45px', lg: '50px' },
+              paddingBottom: { xs: '30px', md: '45px', lg: '50px' },
             }}
             component='section'
           >

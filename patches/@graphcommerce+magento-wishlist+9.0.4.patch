@@ -292,7 +292,7 @@ index a533979..227120e 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx b/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx
-index 81c7382..51694ad 100644
+index 81c7382..9b66dc5 100644
 --- a/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx
 +++ b/node_modules/@graphcommerce/magento-wishlist/components/WishlistItemActionCard/WishlistItemActionCard.tsx
 @@ -1,16 +1,17 @@
@@ -370,7 +370,7 @@ index 81c7382..51694ad 100644
                    : typographySizes[size],
                mb: { xs: 0.5, sm: 0 },
              },
-@@ -128,52 +131,113 @@ export function WishlistItemActionCard(props: WishlistItemActionCardProps) {
+@@ -128,52 +131,166 @@ export function WishlistItemActionCard(props: WishlistItemActionCardProps) {
                layout='fill'
                src={product?.small_image?.url}
                sx={{
@@ -426,7 +426,48 @@ index 81c7382..51694ad 100644
 +              }}>
 +              <Money {...product?.price_range.minimum_price.final_price} />
 +            </Box>
-+            <AddProductsToCartQuantity variant='standard' InputProps={{ disableUnderline: true }} />
++            <Box sx={{
++              display: { xs: 'flex', md: 'block' },
++              gap: '8px',
++              justifyContent: 'start !important',
++              '& .MuiBox-root': {
++                display: { xs: 'block', md: 'none' },
++                '& .IconSvg-root': {
++                  top: '8px',
++                  left: '6px'
++                }
++              },
++              '& .MuiFormControl-root': {
++                // width: { xs: '150px', md: 'inherit' },
++                width: { xs: '100px', sm: '150px' },
++                '& .MuiInputBase-root ': {
++                  padding: { xs: '7px !important', md: '10px !important' },
++                },
++              },
++            }}>
++              <AddProductsToCartQuantity variant='standard' InputProps={{ disableUnderline: true }} />
++
++              {((product?.__typename === 'SimpleProduct' ||
++                product?.__typename === 'ConfigurableProduct') && (
++                  <Box sx={{
++                    width: { xs: 'fit-content', sm: '100%' },
++                    maxWidth: { xs: '150px', md: '175px' },
++                    '& .MuiButtonBase-root': {
++                      minWidth: { xs: 0, sm: '64px' },
++                      '& .MuiTypography-root': {
++                        display: { xs: 'none', sm: 'block' },
++                      },
++                    },
++                  }}>
++                    <AddWishlistItemToCart
++                      product={product}
++                      selectedOptions={[]}
++                      showIcon={isIcon}
++                      isConfigurable={product?.__typename === 'ConfigurableProduct'} />
++                  </Box>
++                ))}
++            </Box>
++
 +          </Box>
          }
          secondaryAction={
@@ -437,47 +478,59 @@ index 81c7382..51694ad 100644
 -            <AddWishlistItemToCart product={product} selectedOptions={[]} />
 -          ))
 +            product?.__typename === 'ConfigurableProduct') && (
-+              <Box sx={{
-+                width: '100%',
-+                maxWidth: { xs: '150px', md: '175px' }
-+              }}>
-+                <AddWishlistItemToCart
-+                  product={product}
-+                  selectedOptions={[]}
-+                  showIcon={isIcon}
-+                  isConfigurable={product?.__typename === 'ConfigurableProduct'} />
-+                {/* <Box sx={{
-+                  ['& span']: {
-+                    fontSize: { xs: '16px', lg: '20px' },
-+                    lineHeight: "24px",
-+                    fontWeight: "700",
-+                    color: (theme: any) => theme.palette.custom.dark,
-+                    ['&:first-child']: {
-+                      paddingRight: "6px"
-+                    }
-+                  }
++              <Box
++                sx={{
++                  width: '100%',
++                  maxWidth: { xs: '100px', md: '175px' },
++                  // display: { xs: 'none', md: 'block' }
 +                }}>
-+                  <Money {...product?.price_range.minimum_price.final_price} />
-+                </Box> */}
++                <Box
++                  sx={{
++                    display: { xs: 'none', md: 'block' }
++                  }}>
++                  <AddWishlistItemToCart
++                    product={product}
++                    selectedOptions={[]}
++                    showIcon={isIcon}
++                    isConfigurable={product?.__typename === 'ConfigurableProduct'} />
++                </Box>
++
++                <Box sx={{
++                  display: { xs: 'block', md: 'none' },
++                  '& .MuiButtonBase-root': {
++                    margin: 0,
++                  },
++                }}>
++                  <Button
++                    variant='inline'
++                    // color='secondary'
++                    size='medium'
++                    type='button'
++                    disableRipple
++                    sx={{
++                      backgroundColor: (theme: any) => theme.palette.custom.tltlGray2,
++                      color: (theme: any) => theme.palette.custom.tltGray1,
++                      textAlign: 'center',
++                      fontSize: '16px !important',
++                      borderRadius: '3px',
++                      padding: '5px 10px',
++                      minWidth: 'unset',
++                      height: '35px',
++                      '&:hover': {
++                        backgroundColor: (theme: any) => theme.palette.custom.tltlGray2,
++                        color: (theme: any) => theme.palette.custom.tltGray1,
++                      }
++                    }}
++                    onClick={() => remove([id])}
++                    {...actionButtonProps}
++                  >
++                    <Trans id='Delete' />
++                  </Button>
++                </Box>
 +              </Box>
 +            ))
          }
 -        price={<Money {...product?.price_range.minimum_price.final_price} />}
-+        // price={
-+        //   <Box sx={{
-+        //     ['& span']: {
-+        //       fontSize: { xs: '16px', lg: '20px' },
-+        //       lineHeight: "24px",
-+        //       fontWeight: "700",
-+        //       color: (theme: any) => theme.palette.custom.dark,
-+        //       ['&:first-child']: {
-+        //         paddingRight: "6px"
-+        //       }
-+        //     }
-+        //   }}>
-+        //     <Money {...product?.price_range.minimum_price.final_price} />
-+        //   </Box>
-+        // }
          action={
            <Button
              variant='inline'
