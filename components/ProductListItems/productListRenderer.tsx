@@ -25,8 +25,7 @@ export const productListRenderer: ProductListItemRenderer = {
         aspectRatio={[1, 1]}
         bottomLeft={<ProductReviewSummary {...props} />}
         topRight={<ProductWishlistChip {...props} />}
-        product={props?.productItem}
-        isNewImage={newArivalBadge}
+      // isNewImage={newArivalBadge}
       // bottomRight={<AddProductsToCartFab sku={sku} />}
       />
     )

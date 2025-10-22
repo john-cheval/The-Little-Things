@@ -1,5 +1,5 @@
 
-import { Controller, type Control, FieldValues, RegisterOptions } from 'react-hook-form';
+import { type Control, FieldValues, RegisterOptions, UseFormSetValue } from 'react-hook-form';
 
 import { TextField, Typography, Box, type SxProps, type Theme } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -22,6 +22,7 @@ interface CustomNumberFieldProps {
   control: Control<FieldValues, any>;
   rules?: RegisterOptions;
   sx?: SxProps<Theme>;
+  setValue: UseFormSetValue<FieldValues>;
 }
 
 const inputFieldSx: SxProps<Theme> = {
@@ -54,6 +55,7 @@ export function CustomNumberField(
     label,
     control,
     countryCodeName,
+    setValue,
   }: CustomNumberFieldProps) {
 
   const defaultCountry: CountryOption = countriesList.find(c => c.code === 'AE') || {
@@ -65,12 +67,12 @@ export function CustomNumberField(
   // const [value, setValue] = useState<{ code: string; label: string; phone: string } | null>(null);
   const [open, setOpen] = useState(false);
 
-  const { setValue } = control._formValues;
+  // const { setValue } = control._formValues;
   const handleCountryChange = (newValue: CountryOption | null) => {
     setSelectedCountry(newValue);
 
     // 4. Update the country code field in react-hook-form state
-    control.setValue(countryCodeName, newValue ? `+${newValue.phone}` : '', { shouldValidate: true, shouldDirty: true });
+    setValue(countryCodeName, newValue ? `+${newValue.phone}` : '', { shouldValidate: true, shouldDirty: true });
   };
   return (
     <Box>
@@ -156,7 +158,7 @@ export function CustomNumberField(
                 minWidth: '70px',
                 // Keep the input text hidden
                 '& .MuiInputBase-input': {
-                  display: 'none'
+                  display: 'none',
                 },
               }}
             />

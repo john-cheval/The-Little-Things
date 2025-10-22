@@ -39,7 +39,7 @@ export function RefundrequestForm() {
   const recaptchaRef = useRef<RecaptchaRefType>(null)
   const [token, setToken] = useState('')
 
-  const { control, handleSubmit, reset } = useForm({
+  const { control, handleSubmit, reset, setValue } = useForm({
     // defaultValues: getDefaultValues(),
   })
 
@@ -110,6 +110,7 @@ export function RefundrequestForm() {
         label='Phone'
         control={control}
         countryCodeName='+971'
+        setValue={setValue}
       />
 
       <CustomTextField
