@@ -87,7 +87,8 @@ export function BottomLinks({ shippingContent, refundPolicyContent, privacyPolic
       >
         <Box
           sx={{
-            maxWidth: { xs: '400px', md: '650px' },
+            // maxWidth: { sm: '00px', md: '650px' },
+            width: { xs: '80%', sm: '550px', md: '650px' },
             position: 'absolute',
             top: '50%',
             left: '50%',

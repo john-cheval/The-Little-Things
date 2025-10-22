@@ -89,7 +89,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
     // return window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const menuLinks = ['/checkout']
+  // const menuLinks = ['/checkout']
 
 
 
