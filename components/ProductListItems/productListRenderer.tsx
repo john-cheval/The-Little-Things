@@ -26,7 +26,7 @@ export const productListRenderer: ProductListItemRenderer = {
         bottomLeft={<ProductReviewSummary {...props} />}
         topRight={<ProductWishlistChip {...props} />}
         product={props?.productItem}
-        isNewImage={newArivalBadge}
+      // isNewImage={newArivalBadge}
       // bottomRight={<AddProductsToCartFab sku={sku} />}
       />
     )
