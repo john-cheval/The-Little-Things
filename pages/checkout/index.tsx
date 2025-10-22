@@ -65,6 +65,7 @@ import { cmsMultipleBlocksDocument } from '../../graphql/CmsMultipleBlocks.gql'
 import { decodeHtmlEntities } from '../../utils/htmlUtils'
 import { ResponsiveOrderSummary } from '../../components/checkout/components/ResposinveOrdersummay'
 import { PickupLocations } from '../../components/checkout/components/PickupLocations'
+import { IoIosArrowBack } from 'react-icons/io'
 
 // export type adsOnProps = {
 //   addonProductsData?: AdsOnProductsQuery[]
@@ -114,6 +115,10 @@ function ShippingPage(props: ShippingPageProps) {
   const decodedRefundPolicyData = decodeHtmlEntities(refundPolicyData?.content)
   const decodedPrivacyPolicyData = decodeHtmlEntities(privacyPolicyData?.content)
   const decodedTermsServiceData = decodeHtmlEntities(termsServiceData?.content)
+
+  const handleBack = () => {
+    router.back()
+  }
   return (
     <Box sx={{ backgroundColor: '' }}>
       <PageMeta title={i18n._(/* i18n */ 'Shipping')} metaRobots={['noindex']} />
@@ -129,6 +134,30 @@ function ShippingPage(props: ShippingPageProps) {
           </FullPageMessage>
         }
       >
+
+        <Box
+          className='container-wrapper'
+          onClick={handleBack}
+          sx={{
+            paddingTop: { xs: '30px', sm: '35px' },
+            display: { xs: 'flex', md: 'none' },
+            alignItems: 'center',
+            gap: '5px',
+          }}>
+          <IoIosArrowBack size={20} />
+          <Typography sx={{
+            background: 'linear-gradient(90deg, #2D2D2D 0%, #B4001A 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            width: 'fit-content',
+            fontSize: '20px',
+            fontWeight: 700,
+            lineHeight: '120%',
+          }}>
+            Checkout
+          </Typography>
+        </Box>
 
         <Box
           component='section'
@@ -487,7 +516,7 @@ function ShippingPage(props: ShippingPageProps) {
               gridColumn: { xs: 'span 12', lg: 'span 6', xl: 'span 5' },
               display: { xs: 'none', lg: 'block' },
               position: { xs: 'static', lg: 'sticky' },
-              top: { xs: 'auto', lg: '150px' },
+              top: { xs: '  auto', lg: '150px' },
               alignSelf: { xs: 'unset', lg: 'start' },
             }}
           >
