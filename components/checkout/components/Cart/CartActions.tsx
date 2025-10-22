@@ -23,7 +23,7 @@ export function CartActions({ product, size = 'responsive' }) {
           minWidth: 0,
           background: theme => theme.palette.custom.tltContrastText,
           borderRadius: '3px',
-          fontSize: { xs: '14px', md: '16px' },
+          fontSize: { xs: '15px', md: '16px' },
           textAlign: 'center',
           fontWeight: 400,
           lineHeight: 'normal',
@@ -44,7 +44,7 @@ export function CartActions({ product, size = 'responsive' }) {
           '& button': {
             background: theme => theme.palette.custom.tltContrastText,
             color: theme => theme.palette.custom.tltGray1,
-            fontSize: { xs: '14px', md: '16px' },
+            fontSize: { xs: '15px', md: '16px' },
             height: 'unset',
             padding: { xs: '3px 10px', md: '2px 15px' },
             '&:hover': {

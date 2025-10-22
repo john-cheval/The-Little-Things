@@ -1612,9 +1612,9 @@ ol {
 }
 .orderProduct span span:first-child {
   background: url(../components/Assets/aed.svg) 2px center no-repeat;
-  background-size: 25px auto;
+  background-size: 20px auto;
   color: transparent;
-  width: 32px;
+  width: 25px;
   display: inline-block;
 }
 .OrderItem-itemPrice span span:first-child,
@@ -1765,7 +1765,8 @@ ol {
     padding: 8px 25px;
   }
   .CartTotals-root .cart-bottom-bottom-right-price span span:first-child {
-    background: url(../components/Assets/aed.svg) 0px 9px no-repeat;
+    background: url(../components/Assets/aed.svg) 0px 6px no-repeat;
+    width: 25px;
   }
 }
 
@@ -3041,9 +3042,9 @@ input[type='number'] {
   .container-wrapper {
     padding-inline: 18px;
   }
-  .container-wrapper p {
+  /* .container-wrapper p {
     padding-inline: 25px;
-  }
+  } */
   .home-cta-wrapper p {
     padding-inline: 0;
     font-size: 20px;

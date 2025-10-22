@@ -5,8 +5,6 @@ import { CartPriceAndQuantity } from './CartPriceAndQuantity'
 import { CartActions } from './CartActions'
 
 export function CartTop({ item }) {
-  // const configurationOptions = item?.configurable_options?.map(option => option.value_label)
-
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       <Box>
@@ -23,60 +21,22 @@ export function CartTop({ item }) {
             {truncateByChars(item?.product?.name, 30)}
           </Typography>
         </Link>
-
-        {/* {configurationOptions?.length > 0 && (
-          <Box>
-            {configurationOptions?.slice(0, 2)?.map((data, index, array) => (
-              <Typography
-                sx={{
-                  color: '#000',
-                  fontSize: { xs: '15px' },
-                  fontWeight: 400,
-                }}
-                component='span'
-                key={`${data}-${index}`}
-              >
-                {data}
-
-                {index < array.length - 1 ? ', ' : ''}
-              </Typography>
-            ))}
-            {configurationOptions?.length > 2 && configurationOptions[2] && (
-              <Typography
-                sx={{
-                  color: '#000',
-                  fontSize: { xs: '15px' },
-                  fontWeight: 400,
-                }}
-                component='span'
-              >
-                {configurationOptions[2]}
-              </Typography>
-            )}
-          </Box>
-        )} */}
-
-
       </Box>
 
 
       <Box sx={{
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'flex-end',
-        marginTop: 'auto',
+        justifyContent: { xs: 'flex-start', lg: 'space-between' },
+        alignItems: { xs: 'flex-start', lg: 'flex-end' },
+        marginTop: { xs: '10px', lg: 'auto' },
+        flexDirection: { xs: 'column', lg: 'row' },
+        gap: { xs: '8px', lg: 0 },
+
       }}>
 
         <CartPriceAndQuantity product={item} />
         <CartActions product={item} />
       </Box>
-
-      {/* <Box sx={{ display: { xs: 'block', md: 'none' } }}>
-        <CartActions product={item} />
-      </Box>
-      <Box sx={{ display: { xs: 'none', md: 'block' } }}>
-        <CartPriceAndQuantity product={item} />
-      </Box> */}
     </Box>
   )
 }

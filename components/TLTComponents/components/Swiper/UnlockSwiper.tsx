@@ -23,9 +23,9 @@ export function UnlockSwiper({ swiperData }: SwiperProps) {
       '& .swiper-wrapper': {
         alignItems: 'flex-end',
       },
-      '& .swiper': {
-        overflowY: 'visible',
-      },
+      // '& .swiper': {
+      //   overflowY: 'visible',
+      // },
       '& .swiper-slide': {
         paddingBottom: '25px',
       },
