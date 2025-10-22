@@ -4,7 +4,7 @@ import { Form } from '@graphcommerce/next-ui'
 import { FormAutoSubmit } from '@graphcommerce/react-hook-form'
 import { Box, FormControlLabel, Radio, RadioGroup, Typography } from '@mui/material'
 import { Controller } from 'react-hook-form'
-import { SetPickupLocationOnCartDocument } from '../../../../graphql/CreatePickupStore.gql'
+// import { SetPickupLocationOnCartDocument } from '../../../../graphql/CreatePickupStore.gql'
 import { useEffect } from 'react'
 import { ShippingMethodFormDocument } from '@graphcommerce/magento-cart-shipping-method'
 
@@ -15,24 +15,24 @@ function PickupStoreForm({ storeData }) {
 
   const billingAddress = availableMethods.data?.cart?.billing_address
 
-  const form = useFormGqlMutationCart(SetPickupLocationOnCartDocument, {
-    mode: 'onChange',
-    onBeforeSubmit: (variables: any) => {
-      return {
-        ...variables,
-        pickupLocationAddress: {
-          firstname: shippingAddress?.firstname ?? billingAddress?.firstname ?? '',
-          lastname: shippingAddress?.lastname ?? billingAddress?.lastname ?? '',
-          city: '_',
-          country_code: shippingAddress?.country?.code ?? billingAddress?.country?.code ?? '',
-          street: ['_'],
-          telephone: shippingAddress?.telephone ?? billingAddress?.telephone ?? '_',
-          postcode: '_',
-          region: shippingAddress?.region?.code ?? billingAddress?.region?.code ?? '_',
-        },
-      }
-    },
-  })
+  // const form = useFormGqlMutationCart(SetPickupLocationOnCartDocument, {
+  //   mode: 'onChange',
+  //   onBeforeSubmit: (variables: any) => {
+  //     return {
+  //       ...variables,
+  //       pickupLocationAddress: {
+  //         firstname: shippingAddress?.firstname ?? billingAddress?.firstname ?? '',
+  //         lastname: shippingAddress?.lastname ?? billingAddress?.lastname ?? '',
+  //         city: '_',
+  //         country_code: shippingAddress?.country?.code ?? billingAddress?.country?.code ?? '',
+  //         street: ['_'],
+  //         telephone: shippingAddress?.telephone ?? billingAddress?.telephone ?? '_',
+  //         postcode: '_',
+  //         region: shippingAddress?.region?.code ?? billingAddress?.region?.code ?? '_',
+  //       },
+  //     }
+  //   },
+  // })
 
   const { data, control, required, handleSubmit } = form
   const submit = handleSubmit(() => { })
