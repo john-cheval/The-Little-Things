@@ -25,8 +25,6 @@ function AboutPage(props: CmsBlocksProps) {
         canonical='/about-us'
       />
 
-
-
       <About content={decodedAboutContent} />
     </>
   )
