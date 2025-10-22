@@ -7,11 +7,11 @@ import {
 import type { PageOptions } from '@graphcommerce/framer-next-pages'
 import { cacheFirst } from '@graphcommerce/graphql'
 import {
-  ApolloCartErrorAlert,
   ApolloCartErrorFullPage,
   ApolloCartErrorSnackbar,
-  CartTotals,
-  EmptyCart,
+  // ApolloCartErrorAlert,
+  // CartTotals,
+  // EmptyCart,
   getCheckoutIsDisabled,
   useCartQuery,
 } from '@graphcommerce/magento-cart'
@@ -33,8 +33,7 @@ import type { GetStaticProps } from '@graphcommerce/next-ui'
 import {
   FormActions,
   FullPageMessage,
-
-  OverlayStickyBottom,
+  // OverlayStickyBottom,
 } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
@@ -60,10 +59,13 @@ import picked from '../../components/TLTComponents/assets/chekout/package.svg'
 import activePacked from '../../components/TLTComponents/assets/chekout/activePack.svg'
 import { Image } from '@graphcommerce/image'
 import { OrderSummary } from '../../components/checkout/components/OrderSummary'
-import { CartItems } from '../../components/checkout/components/Cart/CartItems'
+// import { CartItems } from '../../components/checkout/components/Cart/CartItems'
 import { BottomLinks } from '../../components/checkout/components/BottomLinks'
 import { cmsMultipleBlocksDocument } from '../../graphql/CmsMultipleBlocks.gql'
 import { decodeHtmlEntities } from '../../utils/htmlUtils'
+import { ResponsiveOrderSummary } from '../../components/checkout/components/ResposinveOrdersummay'
+import { PickupLocations } from '../../components/checkout/components/PickupLocations'
+import { IoIosArrowBack } from 'react-icons/io'
 
 // export type adsOnProps = {
 //   addonProductsData?: AdsOnProductsQuery[]
@@ -87,7 +89,6 @@ function ShippingPage(props: ShippingPageProps) {
     fetchPolicy: 'cache-and-network',
   })
   const customerAddresses = useCustomerQuery(CustomerDocument, { fetchPolicy: 'cache-and-network' })
-
   const cartExists =
     typeof shippingPage.data?.cart !== 'undefined' &&
     (shippingPage.data.cart?.items?.length ?? 0) > 0
@@ -96,27 +97,28 @@ function ShippingPage(props: ShippingPageProps) {
   const hasItems =
     (cartData?.cart?.total_quantity ?? 0) > 0 &&
     typeof cartData?.cart?.prices?.grand_total?.value !== 'undefined'
-  const cartItems = cartData?.cart?.items
+  // const cartItems = cartData?.cart?.items
 
   const [value, setValue] = useState(0)
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue)
   }
-  const selectedMethod = shippingPage?.data?.cart?.shipping_addresses?.[0]?.selected_shipping_method
+  // const selectedMethod = shippingPage?.data?.cart?.shipping_addresses?.[0]?.selected_shipping_method
 
   const shippingData = cmsBlocks.find((block) => block.identifier === 'checkout-shipping')
   const refundPolicyData = cmsBlocks.find((block) => block.identifier === 'checkout-refund-policy')
   const privacyPolicyData = cmsBlocks.find((block) => block.identifier === 'checkout-privacy-policy')
-  const termsServiceData = cmsBlocks.find((block) => block.identifier ===
-    'checkout-terms-service')
-
-
+  const termsServiceData = cmsBlocks.find((block) => block.identifier === 'checkout-terms-service')
 
   const decodedShippingData = decodeHtmlEntities(shippingData?.content)
   const decodedRefundPolicyData = decodeHtmlEntities(refundPolicyData?.content)
   const decodedPrivacyPolicyData = decodeHtmlEntities(privacyPolicyData?.content)
   const decodedTermsServiceData = decodeHtmlEntities(termsServiceData?.content)
+
+  const handleBack = () => {
+    router.back()
+  }
   return (
     <Box sx={{ backgroundColor: '' }}>
       <PageMeta title={i18n._(/* i18n */ 'Shipping')} metaRobots={['noindex']} />
@@ -134,6 +136,30 @@ function ShippingPage(props: ShippingPageProps) {
       >
 
         <Box
+          className='container-wrapper'
+          onClick={handleBack}
+          sx={{
+            paddingTop: { xs: '30px', sm: '35px' },
+            display: { xs: 'flex', md: 'none' },
+            alignItems: 'center',
+            gap: '5px',
+          }}>
+          <IoIosArrowBack size={20} />
+          <Typography sx={{
+            background: 'linear-gradient(90deg, #2D2D2D 0%, #B4001A 100%)',
+            backgroundClip: 'text',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            width: 'fit-content',
+            fontSize: '20px',
+            fontWeight: 700,
+            lineHeight: '120%',
+          }}>
+            Checkout
+          </Typography>
+        </Box>
+
+        <Box
           component='section'
           className='container-wrapper'
           sx={{
@@ -145,18 +171,22 @@ function ShippingPage(props: ShippingPageProps) {
             zIndex: 100,
             paddingTop: { xs: '15px', md: '20px', lg: '30px', xl: '45px' },
             paddingBottom: { xs: '19px', md: '30px', lg: '45px' },
-            maxWidth: '85%',
+            maxWidth: { xs: '100%', xls: '90%', xl: '85%' },
             margin: '0 auto',
           }}
         >
           <Box
             component='article'
-            sx={{ gridColumn: { xs: 'span 12', lg: 'span 7', xl: 'span 7' } }}
+            sx={{ gridColumn: { xs: 'span 12', lg: 'span 6', xl: 'span 7' } }}
           >
+
+            {/* Cart Items for small screens */}
+            <ResponsiveOrderSummary cartItems={cartData} />
+
             {!session.loggedIn && <TopBannerMesasge />}
 
             <Divider sx={{
-              marginTop: { xs: '15px', md: '25px' },
+              marginTop: { xs: '30px', md: '25px' },
               '&::before, &::after': {
                 borderColor: theme => theme.palette.custom.tltBorder2,
               },
@@ -172,78 +202,7 @@ function ShippingPage(props: ShippingPageProps) {
 
             <TopContactDetails />
 
-
-
-            {/* Cart Items for small screens */}
-            <Box
-              sx={{ display: { xs: 'block', lg: 'none' }, marginTop: { xs: '20px', md: '25px' } }}
-            >
-              <Typography
-                sx={{
-                  color: (theme: any) => theme.palette.custom.dark,
-                  fontSize: { xs: '16px', md: '18px', lg: '20px' },
-                  lineHeight: '120%',
-                  marginBottom: { xs: '10px', md: '14px' },
-                }}
-              >
-                Your Order
-              </Typography>
-              <Box
-                sx={{
-                  width: '100%',
-                  borderRadius: '8px',
-                  backgroundColor: (theme: any) => theme.palette.primary.contrastText,
-                  padding: { xs: '10px', md: '24px 20px' },
-                  position: 'relative',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  height: '100%',
-                }}
-              >
-                {hasItems ? (
-                  <Box>
-                    {cartItems?.map((item, index) => (
-                      <CartItems
-                        items={item}
-                        key={`index-${index + 1}`}
-                        length={cartItems?.length}
-                        index={index}
-                      />
-                    ))}
-                  </Box>
-                ) : (
-                  <EmptyCart
-                    sx={{
-                      // minHeight: '100vh',
-                      margin: 'auto',
-                      display: 'flex',
-                      '&  .FullPageMessage-button .MuiButtonBase-root': {
-                        backgroundColor: (theme: any) => theme.palette.custom.heading,
-                        borderRadius: '8px',
-                        color: 'white',
-                        boxShadow: 'none !important',
-                      },
-                      '& svg': {
-                        fontSize: '40px',
-                        stroke: 'unset !important',
-                      },
-                      '& .FullPageMessage-iconWrapper': {
-                        position: 'relative',
-                        top: { xs: '24px' },
-                        right: { xs: '-7px' },
-                      },
-                    }}
-                    disableMargin
-                  >
-                    {error && <ApolloCartErrorAlert error={error} />}
-                  </EmptyCart>
-                )}
-              </Box>
-            </Box>
-
-
-
-            {!hasItems && (
+            {hasItems && (
               <>
                 {/* Shiping */}
                 <Box
@@ -301,12 +260,18 @@ function ShippingPage(props: ShippingPageProps) {
                           display: 'none',
                         },
                         '& button': {
-                          display: 'inline-block',
+                          display: 'flex',
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                          gap: '10px',
                         },
                         '& picture': {
                           display: 'inline-block',
                           verticalAlign: 'top',
-                          marginRight: '5px',
+                          // marginRight: '5px',
+                          '& img': {
+                            minWidth: { xs: '25px', md: '25px' },
+                          },
                         },
                       }}
                       value={value}
@@ -317,34 +282,105 @@ function ShippingPage(props: ShippingPageProps) {
                       <Tab label='Pickup' icon={<Image src={value === 1 ? activePacked : picked} alt='package' />} />
                     </Tabs>
                     <TabPanel
-                      sx={{
-                        '&.MuiBox-root.mui-style-19kzrtu': {
-                          padding: { xs: '15px 0', md: '25px 0', lg: '30px 0' },
-
-                          '& .MuiTypography-h4': {},
-                        },
-                      }}
                       value={value}
                       index={0}
                     >
-                      <ComposedForm>
-                        {(customerAddresses.data?.customer?.addresses?.length ?? 0) >= 1 ? (
-                          <CustomerAddressForm
-                            step={2}
-                            sx={(theme) => ({ mt: theme.spacings.lg })}
-                          >
-                            <ShippingAddressForm step={3} isPickup={value === 1} />
-                          </CustomerAddressForm>
-                        ) : (
-                          <>
+                      <Box sx={{
+                        marginTop: { xs: '30px' },
+                      }}>
+                        <ComposedForm>
+                          {(customerAddresses.data?.customer?.addresses?.length ?? 0) >= 1 ? (
+                            <CustomerAddressForm
+                              step={2}
+                              sx={(theme) => ({ mt: theme.spacings.lg })}
+                            >
+                              <ShippingAddressForm step={3} isPickup={value === 1} />
+                            </CustomerAddressForm>
+                          ) : (
+                            <>
+
+                              <ShippingAddressForm
+                                sx={{
+                                  paddingTop: '0',
+                                  '& .MuiInputLabel-formControl': {
+                                    color: (theme) => theme.palette.custom.textDarkAlter2,
+                                    fontSize: { xs: '15px', md: '18px' },
+                                    lineHeight: '120%',
+                                    fontWeight: 400,
+
+                                    '&.Mui-focused': {
+                                      color: (theme) => theme.palette.custom.textDarkAlter2,
+                                    },
+                                    '& .MuiFormLabel-asterisk': {
+                                      display: 'none',
+                                    },
+                                    '&.MuiInputLabel-animated': {
+                                      backgroundColor: '#fff',
+                                      padding: '0 6px',
+                                    },
+                                  },
+
+                                  '& .MuiOutlinedInput-root': {
+                                    border: (theme) => `1px solid ${theme.palette.custom.tltBorder2}`,
+                                    borderRadius: '3px',
+                                    paddingRight: '0',
+
+                                    '& .InputCheckmark': {
+                                      display: 'none',
+                                    },
+
+                                    '&:hover': {
+                                      border: (theme) => `1px solid ${theme.palette.custom.tltBorder2}`,
+                                    },
+                                    '&.Mui-focused': {
+                                      border: (theme) => `1px solid ${theme.palette.custom.tltBorder2}`,
+                                      '& .MuiOutlinedInput-input': {
+                                        color: (theme) => theme.palette.custom.textDarkAlter2,
+                                        // caretColor: (theme) => theme.palette.custom.main,
+                                      },
+                                    },
+
+                                    '& .MuiOutlinedInput-notchedOutline': {
+                                      border: 'none',
+                                    },
+                                  },
+                                }}
+                                step={3}
+                                isPickup={value === 1}
+                              />
+                              {/* Pickup Location */}
+                              {/* <PickupLocations /> */}
+                            </>
+                          )}
+                        </ComposedForm>
+                      </Box>
+                    </TabPanel>
+
+                    <TabPanel
+                      value={value}
+                      index={1}
+                    >
+                      <Box className='hello' sx={{
+                        marginTop: { xs: '20px' },
+                      }}>
+                        <ComposedForm>
+                          {(customerAddresses.data?.customer?.addresses?.length ?? 0) >= 1 ? (
+                            <CustomerAddressForm
+                              step={2}
+                              sx={(theme) => ({ mt: theme.spacings.lg })}
+                            >
+                              <ShippingAddressForm step={3} isPickup={value === 1} />
+                            </CustomerAddressForm>
+                          ) : (
 
                             <ShippingAddressForm
+                              isPickup={value === 1}
                               sx={{
-                                paddingTop: '0',
+                                paddingTop: 0,
                                 '& .MuiInputLabel-formControl': {
                                   color: (theme) => theme.palette.custom.textDarkAlter2,
-                                  fontSize: { xs: '15px', md: '18px' },
-                                  lineHeight: '120%',
+                                  fontSize: { xs: '15px', md: '16px' },
+                                  lineHeight: '158%',
                                   fontWeight: 400,
 
                                   '&.Mui-focused': {
@@ -354,14 +390,13 @@ function ShippingPage(props: ShippingPageProps) {
                                     display: 'none',
                                   },
                                   '&.MuiInputLabel-animated': {
-                                    backgroundColor: '#fff',
                                     padding: '0 6px',
                                   },
                                 },
 
                                 '& .MuiOutlinedInput-root': {
-                                  border: (theme) => `1px solid ${theme.palette.custom.tltBorder2}`,
-                                  borderRadius: '3px',
+                                  border: (theme) => `1px solid ${theme.palette.custom.textDarkAlter2}`,
+                                  borderRadius: '4px',
                                   paddingRight: '0',
 
                                   '& .InputCheckmark': {
@@ -369,14 +404,10 @@ function ShippingPage(props: ShippingPageProps) {
                                   },
 
                                   '&:hover': {
-                                    border: (theme) => `1px solid ${theme.palette.custom.tltBorder2}`,
+                                    border: (theme) => `1px solid ${theme.palette.custom.textDarkAlter2}`,
                                   },
                                   '&.Mui-focused': {
-                                    border: (theme) => `1px solid ${theme.palette.custom.tltBorder2}`,
-                                    '& .MuiOutlinedInput-input': {
-                                      color: (theme) => theme.palette.custom.textDarkAlter2,
-                                      // caretColor: (theme) => theme.palette.custom.main,
-                                    },
+                                    border: (theme) => `1px solid ${theme.palette.custom.textDarkAlter2}`,
                                   },
 
                                   '& .MuiOutlinedInput-notchedOutline': {
@@ -385,96 +416,15 @@ function ShippingPage(props: ShippingPageProps) {
                                 },
                               }}
                               step={3}
-                              isPickup={value === 1}
                             />
 
-                            <Box
-                              sx={{
-                                borderTop: theme => `1px solid ${theme.palette.custom.tltBorder2}`,
-                                paddingTop: { xs: '20px', md: '30px' },
-                                marginTop: { xs: '20px', md: '30px' },
-                              }}>
-                              <Typography
-                                component='p'
-                                className='checkout-headings'
+                          )}
+                        </ComposedForm>
+                        {/* Pickup Location */}
+                        <PickupLocations />
+                        {/* <PickupStoreForm storeData={prickupstoreData} /> */}
+                      </Box>
 
-
-                              >
-                                Shipping Method
-                              </Typography>
-                            </Box>
-                          </>
-                        )}
-                      </ComposedForm>
-                    </TabPanel>
-
-                    <TabPanel
-                      value={value}
-                      index={1}
-                      sx={{
-                        '& > .MuiBox-root': {
-                          padding: { xs: '15px 0', md: '25px 0', lg: '30px 0' },
-                        },
-                      }}
-                    >
-                      <ComposedForm>
-                        {(customerAddresses.data?.customer?.addresses?.length ?? 0) >= 1 ? (
-                          <CustomerAddressForm
-                            step={2}
-                            sx={(theme) => ({ mt: theme.spacings.lg })}
-                          >
-                            <ShippingAddressForm step={3} isPickup={value === 1} />
-                          </CustomerAddressForm>
-                        ) : (
-
-                          <ShippingAddressForm
-                            isPickup={value === 1}
-                            sx={{
-                              paddingTop: 0,
-                              '& .MuiInputLabel-formControl': {
-                                color: (theme) => theme.palette.custom.main,
-                                fontSize: { xs: '15px', md: '16px' },
-                                lineHeight: '158%',
-                                fontWeight: 400,
-
-                                '&.Mui-focused': {
-                                  color: (theme) => theme.palette.custom.main,
-                                },
-                                '& .MuiFormLabel-asterisk': {
-                                  display: 'none',
-                                },
-                                '&.MuiInputLabel-animated': {
-                                  padding: '0 6px',
-                                },
-                              },
-
-                              '& .MuiOutlinedInput-root': {
-                                border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                                borderRadius: '4px',
-                                paddingRight: '0',
-
-                                '& .InputCheckmark': {
-                                  display: 'none',
-                                },
-
-                                '&:hover': {
-                                  border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                                },
-                                '&.Mui-focused': {
-                                  border: (theme) => `1px solid ${theme.palette.custom.border}`,
-                                },
-
-                                '& .MuiOutlinedInput-notchedOutline': {
-                                  border: 'none',
-                                },
-                              },
-                            }}
-                            step={3}
-                          />
-
-                        )}
-                      </ComposedForm>
-                      {/* <PickupStoreForm storeData={prickupstoreData} /> */}
                     </TabPanel>
                   </Box>
                 </Box>
@@ -563,10 +513,10 @@ function ShippingPage(props: ShippingPageProps) {
           <Box
             component='article'
             sx={{
-              gridColumn: { xs: 'span 12', lg: 'span 5', xl: 'span 5' },
+              gridColumn: { xs: 'span 12', lg: 'span 6', xl: 'span 5' },
               display: { xs: 'none', lg: 'block' },
               position: { xs: 'static', lg: 'sticky' },
-              top: { xs: 'auto', lg: '100px' },
+              top: { xs: '  auto', lg: '150px' },
               alignSelf: { xs: 'unset', lg: 'start' },
             }}
           >
@@ -580,98 +530,14 @@ function ShippingPage(props: ShippingPageProps) {
         {
           hasItems && (
             <Box
+              className='container-wrapper'
               sx={{
-                paddingInline: { xs: '18px', md: '25px', lg: '55px' },
                 display: { xs: 'block', lg: 'none' },
-                paddingBottom: '20px',
+                // paddingBottom: '20px',
+
               }}
             >
-              <OverlayStickyBottom
-                sx={{
-                  padding: { xs: '15px 10px 20px', md: '24px 20px' },
-                  backgroundColor: '#fff',
-                  borderRadius: '8px',
-                  bottom: 'unset !important',
-                  '& .CartTotals-root ': {
-                    backgroundColor: 'transparent',
-                    borderRadius: 0,
-                  },
-                  flexShrink: 0,
-                  mt: 'auto',
-                }}
-              >
-                <CartTotals
-                  //  containerMargin
-                  sx={{
-                    typography: 'body1',
-                    '& .CartTotals-costsRow': {
-                      color: (theme) => theme.palette.custom.smallHeading,
-                    },
-                    '& .CartTotals-costsRow:nth-child(2)': {
-                      color: (theme) => theme.palette.custom.smallHeading,
-                      fontWeight: '600 !important',
-                      fontSize: '16px !important',
-                    },
-                  }}
-                />
-                {!shippingPage.error && cartExists && (
-                  <ComposedForm>
-                    <Box>
-                      <>
-                        {/* {!shippingPage.data?.cart?.is_virtual && (
-                        <ShippingMethodForm
-                          step={4}
-                          sx={(theme) => ({ mt: theme.spacings.lg })}
-                          isPickup={value === 1}
-                        />
-                      )} */}
-
-                        <ComposedSubmit
-                          onSubmitSuccessful={() => router.push('/checkout/payment')}
-                          render={(renderProps) => (
-                            <>
-                              <FormActions
-                                sx={{
-                                  paddingTop: { xs: '10px', md: '15px', lg: '25px' },
-                                  paddingBottom: 0,
-                                  justifyContent: 'unset',
-                                  '& .mui-style-dhqdz6-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root:not(.Mui-disabled):not(.MuiButton-disableElevation) ':
-                                  {
-                                    boxShadow: 'none',
-                                  },
-                                  '& .MuiButtonBase-root': {
-                                    fontSize: { xs: '15px', md: '16px' },
-                                    backgroundColor: (theme) => theme.palette.custom.heading,
-                                    borderColor: (theme) => theme.palette.custom.heading,
-                                    borderRadius: '4px',
-                                    '& span': {
-                                      display: 'none',
-                                    },
-                                  },
-                                }}
-                              >
-                                <ComposedSubmitButton
-                                  {...renderProps}
-                                  disabled={!selectedMethod?.carrier_code}
-                                  size='large'
-                                  id='next'
-                                >
-                                  <Trans id='Proceed To Pay' />
-                                </ComposedSubmitButton>
-                              </FormActions>
-                              <ApolloCartErrorSnackbar
-                                error={
-                                  renderProps.buttonState.isSubmitting ? undefined : renderProps.error
-                                }
-                              />
-                            </>
-                          )}
-                        />
-                      </>
-                    </Box>
-                  </ComposedForm>
-                )}
-              </OverlayStickyBottom>
+              <ResponsiveOrderSummary cartItems={cartData} />
             </Box>
           )
         }

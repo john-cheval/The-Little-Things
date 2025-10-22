@@ -38,6 +38,8 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
 
   const router = useRouter()
   const isHome = router?.pathname === '/'
+  const ischeckout = router?.pathname === '/checkout'
+  // console.log(ischeckout, router?.pathname, '==>tuter')
 
   // const footerCmsData = props?.footer?.items?.[0]
   const menuItemsCmsData = props?.menu?.items?.[0]?.children
@@ -77,8 +79,6 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
     }, 100);
   };
 
-
-
   useEffect(() => {
     const handleScroll = () => {
       setScroll(window.scrollY > 0)
@@ -88,6 +88,10 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
 
     // return window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const menuLinks = ['/checkout']
+
+
 
   return (
     <>
@@ -112,11 +116,12 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
         }}
         {...uiProps}
         header={
-          <Box sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            paddingBlock: { xs: '20px', md: 0 },
-          }}>
+          <Box
+            sx={{
+              display: { xs: ischeckout ? 'none' : 'flex', md: 'flex' },
+              flexDirection: 'column',
+              paddingBlock: { xs: '20px', md: 0 },
+            }}>
             <Box sx={{
               display: 'flex',
               justifyContent: 'space-between',
@@ -429,9 +434,9 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                     key={menus?.uid}
                     href={`${menus?.url_path}`}
                     itemId={menus?.uid}
-                    // onMouseEnter={(e) => {
-                    //   handleMouseOver(menus, e)
-                    // }}
+                    onMouseEnter={(e) => {
+                      handleMouseOver(menus, e)
+                    }}
                     onClick={handleMouseLeaveNav}
                   >
                     {menus?.name}

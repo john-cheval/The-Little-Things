@@ -45,7 +45,7 @@ export function CartPriceAndQuantity({ product }) {
       >
         <Money value={totalPrice} currency={product?.prices?.price.currency} />
       </Box>
-      <Box sx={{ marginTop: { xs: '0', md: '8px' } }}>
+      <Box sx={{ marginTop: { xs: '10px', md: '8px' } }}>
         <UpdateItemQuantity
           sx={{
             flexShrink: '0',
@@ -64,7 +64,6 @@ export function CartPriceAndQuantity({ product }) {
               borderColor: theme => theme.palette.custom.tltBorder4,
             },
             '& .MuiButtonBase-root': {
-              color: 'red',
               fontsize: { xs: '15px', lg: '18px' },
               fontWeight: 500,
             },
@@ -77,6 +76,10 @@ export function CartPriceAndQuantity({ product }) {
               fontSize: { xs: '15px', md: '18px' },
               stroke: theme => theme.palette.custom.textPopmart,
               strokeWidth: '1.7px',
+            },
+            '&.MuiFormControl-root': {
+              width: 'auto',
+              maxWidth: { xs: '100px', sm: '125px', md: '100px' },
             },
           }}
           uid={product?.uid}

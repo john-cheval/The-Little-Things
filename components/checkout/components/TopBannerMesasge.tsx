@@ -11,7 +11,7 @@ export function TopBannerMesasge() {
         <Link href='/account/signin?tab=signin'
           sx={{
             color: '#fff',
-            fontSize: { xs: '18px', md: '18px' },
+            fontSize: { xs: '15px', sm: '16px', md: '18px' },
             fontWeight: 700,
             textAlign: 'center',
             lineHeight: '120%',
@@ -20,7 +20,7 @@ export function TopBannerMesasge() {
             textDecoration: 'none',
             display: 'block',
             background: 'linear-gradient(90deg, #6B000F 0%, #D0011F 100%)',
-            paddingBlock: { xs: '20px', md: '20px' },
+            paddingBlock: { xs: '15px', md: '20px' },
             width: '100%',
             borderRadius: '3px',
           }}
@@ -43,7 +43,7 @@ export function TopBannerMesasge() {
           <Typography
             sx={{
               color: '#000',
-              fontSize: { xs: '16px', md: '18px' },
+              fontSize: { xs: '15px', sm: '16px', md: '18px' },
               lineHeight: '120%',
             }}>
             Express Checkout
@@ -53,10 +53,6 @@ export function TopBannerMesasge() {
             src={gpay}
             alt='gPay'
             sx={{
-              // width: '100%',
-              // height: 'auto',
-              // objectFit: 'cover',
-              // maxWidth: '60px',
               marginTop: { xs: '10px', md: '10px' },
               width: 'revert-layer',
             }} />

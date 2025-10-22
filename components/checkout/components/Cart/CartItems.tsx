@@ -22,9 +22,9 @@ export function CartItems({ items, size = 'responsive', length, index }: CartIte
             index !== (length ?? 0) - 1
               ? `1px solid ${theme.palette.custom.tltBorder5}`
               : 'none',
-          md: `1px solid ${theme.palette.custom.tltBorder5}`,
+          lg: `1px solid ${theme.palette.custom.tltBorder5}`,
         }),
-        paddingBlock: { xs: '10px', md: '18px' },
+        paddingBlock: { xs: '10px', sm: '15px', md: '18px' },
         width: '100%',
       }}
     >
