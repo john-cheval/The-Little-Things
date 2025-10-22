@@ -435,7 +435,7 @@ function ShippingPage(props: ShippingPageProps) {
                   }}
                 >
                   {/* Shipping Method */}
-                  {!shippingPage.error && !cartExists && (
+                  {!shippingPage.error && cartExists && (
                     <ComposedForm>
                       <Box>
                         <>
@@ -533,14 +533,24 @@ function ShippingPage(props: ShippingPageProps) {
               className='container-wrapper'
               sx={{
                 display: { xs: 'block', lg: 'none' },
-                // paddingBottom: '20px',
-
               }}
             >
               <ResponsiveOrderSummary cartItems={cartData} />
             </Box>
           )
         }
+
+        <Box sx={{
+          xs: 'block', lg: 'none',
+          paddingBottom: { xs: '20px', md: '30px' },
+        }}>
+          <BottomLinks
+            shippingContent={decodedShippingData}
+            refundPolicyContent={decodedRefundPolicyData}
+            privacyPolicyContent={decodedPrivacyPolicyData}
+            termsServiceContent={decodedTermsServiceData}
+          />
+        </Box>
       </WaitForQueries >
     </Box >
   )

@@ -2666,7 +2666,7 @@ input[type='number'] {
   -webkit-text-fill-color: transparent;
   width: fit-content;
   margin: 0;
-  font-size: 25px;
+  font-size: 18px;
   font-style: normal;
   line-height: 175%; /* 43.75px */
 }
@@ -2692,7 +2692,7 @@ input[type='number'] {
 }
 .processing {
   color: #2d2d2d;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 120%;
@@ -2710,7 +2710,7 @@ input[type='number'] {
 .content p {
   margin: 0;
   color: #000;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 127%; /* 25.4px */
@@ -3197,6 +3197,14 @@ input[type='number'] {
   .cart-bottom-bottom-left-heading,
   .cart-bottom-bottom-right-price span span {
     font-size: 22px;
+  }
+  .pop-title,
+  .pop-title2 {
+    font-size: 25px;
+  }
+  .processing,
+  .content p {
+    font-size: 20px;
   }
 }
 
