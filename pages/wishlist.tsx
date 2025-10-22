@@ -46,10 +46,10 @@ function WishlistPage() {
         sx={{
           '& .MuiButtonBase-root svg': {
             color: (theme: any) => theme.palette.custom.textDarkAlter,
-            fontSize: { xs: '25px', lg: '28px' },
+            fontSize: { xs: '20px', sm: '25px', lg: '28px' },
           },
           '& .LayoutHeaderContent-content': {
-            paddingInline: { xs: '20px' },
+            paddingInline: { sm: '20px' },
           },
           '& .LayoutHeaderContent-center': {
             opacity: '1 !important',
@@ -113,7 +113,7 @@ function WishlistPage() {
               <Typography
                 component='p'
                 sx={{
-                  backgroundColor: (theme: any) => theme.palette.custom.tltGray2,
+                  backgroundColor: (theme: any) => theme.palette.custom.tltlGray2,
                   borderRadius: '3px',
                   color: (theme: any) => theme.palette.custom.tltGray1,
                   textAlign: 'center',
@@ -194,7 +194,7 @@ function WishlistPage() {
                 },
               },
               '& .ActionCard-title.sizeResponsive': {
-                fontSize: { xs: '15px', md: '18px', lg: '20px' },
+                fontSize: { xs: '16px', md: '18px', lg: '20px' },
                 fontWeight: 400,
                 color: (theme: any) => theme.palette.custom.dark,
                 lineHeight: '127%',
@@ -208,8 +208,12 @@ function WishlistPage() {
               },
               '& .ActionCard-end ': {
                 flexDirection: 'row',
+                display: { xs: 'none', md: 'flex' },
                 '& .ActionCard-action': {
                   marginBottom: '0px',
+                  '& button': {
+                    margin: 0,
+                  },
                 },
               },
 
@@ -309,7 +313,9 @@ const pageOptions: PageOptions<LayoutOverlayProps> = {
         // paddingTop: { xs: 'calc(200px * 0.3) !important', md: 0 },
         position: 'relative',
         '& .LayoutOverlayBase-background': {
-          paddingTop: { xs: '20px', md: '30px', lg: '60px' },
+          paddingTop: '60px',
+          borderTopLeftRadius: { xs: '30px', md: 0 },
+          borderTopRightRadius: { xs: '30px', md: 0 },
         },
       },
       '& .LayoutOverlayBase-beforeOverlay': {
