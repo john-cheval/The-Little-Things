@@ -1782,7 +1782,7 @@ index 68f7cab..1e678e3 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
-index 0b9f236..4ef5c35 100644
+index 0b9f236..957cbdb 100644
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 @@ -1,12 +1,12 @@
@@ -1801,7 +1801,7 @@ index 0b9f236..4ef5c35 100644
  import type { ProductListItemImageProps } from './ProductListItemImage'
  import { ProductListItemImage, ProductListItemImageSkeleton } from './ProductListItemImage'
  import type {
-@@ -17,6 +17,11 @@ import { ProductImageContainer, ProductListItemImageAreas } from './ProductListI
+@@ -17,6 +17,12 @@ import { ProductImageContainer, ProductListItemImageAreas } from './ProductListI
  import { ProductListItemLinkOrDiv, ProductListItemLinkOrDivProps } from './ProductListItemLinkOrDiv'
  import type { ProductListItemTitleAndPriceProps } from './ProductListItemTitleAndPrice'
  import { ProductListItemTitleAndPrice } from './ProductListItemTitleAndPrice'
@@ -1810,10 +1810,11 @@ index 0b9f236..4ef5c35 100644
 +import dayjs from 'dayjs';
 +import isBetween from 'dayjs/plugin/isBetween';
 +dayjs.extend(isBetween);
++import newArrivalBadge from "../../../../../components/TLTComponents/assets/new_arrival.svg"
  
  const { classes, selectors } = extendableComponent('ProductListItem', [
    'root',
-@@ -44,6 +49,7 @@ export type BaseProps = {
+@@ -44,6 +50,7 @@ export type BaseProps = {
    imageOnly?: boolean
    children?: React.ReactNode
    sx?: SxProps<Theme>
@@ -1821,7 +1822,7 @@ index 0b9f236..4ef5c35 100644
    onClick?: (
      event: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>,
      item: ProductListItemFragment,
-@@ -87,64 +93,139 @@ export function ProductListItemReal(props: ProductProps) {
+@@ -87,64 +94,139 @@ export function ProductListItemReal(props: ProductProps) {
      sx = [],
      onClick,
      slotProps = {},
@@ -1906,7 +1907,7 @@ index 0b9f236..4ef5c35 100644
 +                <>
 +                  {/* <ProductDiscountLabel className={classes.discount} price_range={price_range} /> */}
 +                  <Image
-+                    src={isNewImage ?? '/_next/static/media/new_arrival.a17948ef.svg'}
++                    src={newArrivalBadge ?? ''}
 +                    className='product_badge'
 +                    alt='NewBadge'
 +                    sx={{
