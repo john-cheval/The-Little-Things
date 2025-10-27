@@ -1,0 +1,81 @@
+import { Box, Select, Typography, type SxProps, type Theme, MenuItem } from '@mui/material';
+import { type FieldValues, type Control, type RegisterOptions, Controller, type Path } from 'react-hook-form';
+
+
+interface customSelectFielldProps<TFieldValues extends FieldValues> {
+  name: Path<TFieldValues>;
+  control: Control<TFieldValues, any>;
+  rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
+  labelText?: string
+  isLabel?: boolean
+  sx?: SxProps<Theme>;
+  options?: any;
+  label: string;
+
+}
+
+export function CustomSelectField<TFieldValues extends FieldValues>({
+  label,
+  control,
+  rules,
+  isLabel = true,
+  sx,
+  options,
+  labelText,
+  name,
+}: customSelectFielldProps<TFieldValues>) {
+
+
+  return (
+    <Box sx={{
+      width: '100%',
+    }}>
+      {isLabel && (
+        <Typography className='label'>
+          {label}
+        </Typography>
+      )}
+
+      <Controller
+        name={name}
+        control={control}
+        rules={rules}
+        render={({ field, fieldState }) => (
+          <>
+
+            <Select
+              {...field}
+              label={labelText}
+              variant='filled'
+              sx={{
+                ...sx,
+                '& .MuiSelect-select.MuiSelect-filled.MuiInputBase-input': {
+                  paddingBlock: '17px !important',
+                },
+                '& .MuiSelect-select.MuiSelect-filled.MuiInputBase-input:focus': {
+                  backgroundColor: '#fff !important',
+                },
+                '& svg': {
+                  color: '#000',
+                  fontSize: { xs: '20px', md: '25px' },
+                },
+              }}
+              fullWidth
+              error={!!fieldState.error}
+            >
+
+              {options?.map((item, index) => (
+                <MenuItem key={`index-${index + 1}`} value={item}>{item}</MenuItem>
+              ))}
+            </Select>
+            {fieldState.error && (
+              <Typography variant='caption' color='error'>
+                {fieldState.error.message}
+              </Typography>
+            )}
+          </>
+        )}
+      />
+    </Box>
+  )
+}

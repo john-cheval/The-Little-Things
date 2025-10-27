@@ -96,8 +96,12 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
       path: '/our-locations',
     },
     {
-      name: 'About',
+      name: 'Who We Are',
       path: '/about-us',
+    },
+    {
+      name: 'Refund Request Form',
+      path: '/refund-form',
     },
   ]
 

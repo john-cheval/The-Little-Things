@@ -1,13 +1,13 @@
-import { Controller, type Control, FieldValues, RegisterOptions } from 'react-hook-form';
+import { Controller, type Control, type FieldValues, type RegisterOptions, type Path } from 'react-hook-form';
 import { TextField, Typography, Box, type SxProps, type Theme } from '@mui/material';
 
 
-// Define the props for the reusable component
-interface CustomTextFieldProps {
-  name: string;
+
+interface CustomTextFieldProps<TFieldValues extends FieldValues> {
+  name: Path<TFieldValues>;
   label: string;
-  control: Control<FieldValues, any>;
-  rules?: RegisterOptions;
+  control: Control<TFieldValues, any>;
+  rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
   labelText?: string
   multiline?: boolean;
   rows?: number;
@@ -16,7 +16,7 @@ interface CustomTextFieldProps {
 }
 
 // Reusable CustomTextField Component
-export function CustomTextField({
+export function CustomTextField<TFieldValues extends FieldValues>({
   name,
   label,
   control,
@@ -26,11 +26,13 @@ export function CustomTextField({
   isLabel = true,
   labelText,
   sx,
-}: CustomTextFieldProps) {
+}: CustomTextFieldProps<TFieldValues>) {
 
 
   return (
-    <Box>
+    <Box sx={{
+      width: '100%',
+    }}>
       {isLabel && (
         <Typography className='label'>
           {label}
@@ -53,7 +55,7 @@ export function CustomTextField({
               rows={rows}
               sx={sx}
               onChange={(e) => {
-                if (name === 'phone') {
+                if (name === 'ordernumber') {
                   field.onChange(e.target.value.replace(/\D/g, ''));
                 } else {
                   field.onChange(e.target.value);
