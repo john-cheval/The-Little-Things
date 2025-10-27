@@ -1,20 +1,20 @@
 import { Box, Select, Typography, type SxProps, type Theme, MenuItem } from '@mui/material';
-import { type FieldValues, type Control, type RegisterOptions, Controller } from 'react-hook-form';
+import { type FieldValues, type Control, type RegisterOptions, Controller, type Path } from 'react-hook-form';
 
 
-interface customSelectFielldProps {
-  label: string;
-  control: Control<FieldValues, any>;
-  rules?: RegisterOptions;
+interface customSelectFielldProps<TFieldValues extends FieldValues> {
+  name: Path<TFieldValues>;
+  control: Control<TFieldValues, any>;
+  rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
   labelText?: string
   isLabel?: boolean
   sx?: SxProps<Theme>;
   options?: any;
-  name: string;
+  label: string;
 
 }
 
-export function CustomSelectField({
+export function CustomSelectField<TFieldValues extends FieldValues>({
   label,
   control,
   rules,
@@ -23,11 +23,13 @@ export function CustomSelectField({
   options,
   labelText,
   name,
-}: customSelectFielldProps) {
+}: customSelectFielldProps<TFieldValues>) {
 
 
   return (
-    <Box>
+    <Box sx={{
+      width: '100%',
+    }}>
       {isLabel && (
         <Typography className='label'>
           {label}

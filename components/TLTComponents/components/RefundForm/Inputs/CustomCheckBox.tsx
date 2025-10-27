@@ -1,16 +1,17 @@
 import { Box, Typography, FormGroup, FormControlLabel, Checkbox } from '@mui/material';
-import { type FieldValues, type Control, type RegisterOptions, Controller } from 'react-hook-form';
+import { type FieldValues, type Control, type RegisterOptions, Controller, type Path } from 'react-hook-form';
 
-interface CustomCheckboxfieldsProps {
-  control: Control<FieldValues, any>;
-  rules?: RegisterOptions;
+interface CustomCheckboxfieldsProps<TFieldValues extends FieldValues> {
+  control: Control<TFieldValues, any>;
+  rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
+  name: Path<TFieldValues>;
   labelText?: string
   isLabel?: boolean
   options?: string[];
-  name: string;
+  // name: string;
 }
 
-export function CustomCheckBox(
+export function CustomCheckBox<TFieldValues extends FieldValues>(
   {
     control,
     rules,
@@ -18,7 +19,7 @@ export function CustomCheckBox(
     options,
     labelText,
     name,
-  }: CustomCheckboxfieldsProps) {
+  }: CustomCheckboxfieldsProps<TFieldValues>) {
   return (
     <Box
       sx={{
@@ -40,7 +41,7 @@ export function CustomCheckBox(
         control={control}
         rules={rules}
         render={({ field, fieldState }) => {
-          const selectedValues = Array.isArray(field.value) ? field.value : [];
+          const selectedValues = Array.isArray(field.value) ? (field.value as unknown as string[]) : [];
 
           const handleToggle = (itemValue: string, checked: boolean) => {
             const newArray = checked

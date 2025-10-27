@@ -18,7 +18,7 @@ interface RecaptchaRefType {
 const inputFieldSx: SxProps<Theme> = {
   borderRadius: '3px',
   overflow: 'hidden',
-  minWidth: { xs: '300px', md: '500px', lg: '550px' },
+  minWidth: { sm: '550px', md: '500px', lg: '550px' },
   backgroundColor: 'transparent',
   '&::after,&::before': {
     display: 'none',
@@ -66,8 +66,24 @@ export function RefundrequestForm() {
   const error = [confirm, refundPolicy].filter((v) => v).length !== 2;
 
   const { control, handleSubmit /* , reset*/, setValue } = useForm({
-    refundReasons: [],
-    attachmentFiles: null,
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      ordernumber: '',
+      purchaseDay: '',
+      purchaseMonth: '',
+      purchaseYear: '',
+      purchasePlatform: '',
+      others: '',
+      refundType: '',
+      returnMethod: '',
+      othersRefundMethod: '',
+      comments: '',
+
+      refundReasons: [],
+      othersfiles: null,
+    },
 
   })
 
@@ -126,17 +142,17 @@ export function RefundrequestForm() {
         display: 'flex',
         flexDirection: 'column',
         marginTop: { xs: '20px', md: '25px', lg: '35px' },
-        rowGap: { xs: '10px', md: '15px', lg: '20px' },
-        maxWidth: { xs: '300px', md: '500px', lg: '550px' },
+        rowGap: { xs: '15px', lg: '20px' },
+        maxWidth: { xs: '100%', md: '500px', lg: '550px' },
         alignItems: 'center',
-        margin: '0 auto',
+        margin: { xs: 'none', md: '0 auto' },
         '& .label': {
           color: theme => theme.palette.custom.dark,
           fontSize: { xs: '16px', md: '18px' },
           fontWeight: 400,
           lineHeight: '120%',
           marginBottom: { xs: '8px', md: '13px' },
-          paddingLeft: { xs: '15px', md: '25px' },
+          paddingLeft: { xs: '0px', md: '25px' },
         },
       }}>
 
@@ -169,7 +185,7 @@ export function RefundrequestForm() {
         label='Phone'
         control={control}
         countryCodeName='+971'
-        setValue={setValue}
+        setValue={setValue as any}
       />
 
       <CustomTextField

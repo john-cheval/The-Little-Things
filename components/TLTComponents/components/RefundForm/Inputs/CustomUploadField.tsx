@@ -1,12 +1,12 @@
 import { Box, Button, styled, Typography } from '@mui/material';
-import { type FieldValues, type Control, type RegisterOptions, Controller } from 'react-hook-form';
+import { type FieldValues, type Control, type RegisterOptions, Controller, type Path } from 'react-hook-form';
 
 
-interface customFileUploadProps {
-  name: string;
+interface customFileUploadProps<TFieldValues extends FieldValues> {
+  name: Path<TFieldValues>;
   label: string;
-  control: Control<FieldValues, any>;
-  rules?: RegisterOptions;
+  control: Control<TFieldValues, any>;
+  rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
   isLabel?: boolean
 }
 
@@ -23,13 +23,13 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-export function CustomFileUpload({
+export function CustomFileUpload<TFieldValues extends FieldValues>({
   name,
   label,
   control,
   rules,
   isLabel = true,
-}: customFileUploadProps) {
+}: customFileUploadProps<TFieldValues>) {
   return (
     <Box sx={{
       alignSelf: 'flex-start',
@@ -56,7 +56,7 @@ export function CustomFileUpload({
           control={control}
           rules={rules}
           render={({ field: { value, onChange }, fieldState }) => {
-            const isFileList = typeof window !== 'undefined' && value instanceof FileList;
+            const isFileList = typeof window !== 'undefined' && (value as unknown) instanceof FileList;
             return (
               <>
                 <Button
@@ -91,9 +91,9 @@ export function CustomFileUpload({
 
                 {isFileList && value.length > 0 && (
                   <Box sx={{ mt: 1, p: 1, border: '1px solid #ccc', borderRadius: '4px' }}>
-                    {Array.from(value).map((file, index) => (
+                    {Array.from(value as FileList).map((file: File, index: number) => (
                       <Typography key={`index-${index + 1}`} variant="body2" component="p">
-                        - {file.name}
+                        - {file?.name}
                       </Typography>
                     ))}
                   </Box>

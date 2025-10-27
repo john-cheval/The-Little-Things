@@ -1,21 +1,21 @@
 import { Box, TextField, Typography, type SxProps, type Theme } from '@mui/material';
-import { type FieldValues, type Control, type RegisterOptions, Controller } from 'react-hook-form';
+import { type FieldValues, type Control, type RegisterOptions, Controller, type Path } from 'react-hook-form';
 
 
-interface CustomDateFieldProps {
+interface CustomDateFieldProps<TFieldValues extends FieldValues> {
   label: string;
-  control: Control<FieldValues, any>;
-  rules?: RegisterOptions;
+  control: Control<TFieldValues, any>;
+  rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
   labelText?: string
   multiline?: boolean;
   rows?: number;
   isLabel?: boolean
   sx?: SxProps<Theme>;
-  dayName: string;
-  monthName: string;
-  yearName: string;
+  dayName: Path<TFieldValues>;
+  monthName: Path<TFieldValues>;
+  yearName: Path<TFieldValues>;
 }
-export function CustomDateField({
+export function CustomDateField<TFieldValues extends FieldValues>({
   label,
   control,
   rules,
@@ -24,7 +24,7 @@ export function CustomDateField({
   monthName,
   yearName,
   sx,
-}: CustomDateFieldProps) {
+}: CustomDateFieldProps<TFieldValues>) {
 
   const dateInputSx: SxProps<Theme> = {
     ...sx,
@@ -39,7 +39,9 @@ export function CustomDateField({
     maxLength: { value: 4, message: 'Invalid length' },
   };
   return (
-    <Box>
+    <Box sx={{
+      width: '100%',
+    }}>
       {isLabel && (
         <Typography className='label'>
           {label}

@@ -1,5 +1,5 @@
 
-import type { Control, FieldValues, RegisterOptions, UseFormSetValue } from 'react-hook-form';
+import type { Control, FieldValues, Path, RegisterOptions, UseFormSetValue } from 'react-hook-form';
 import { TextField, Typography, Box, type SxProps, type Theme } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -15,12 +15,12 @@ type CountryOption = {
   phone: string;
 }
 
-interface CustomNumberFieldProps {
-  name: string;
+interface CustomNumberFieldProps<TFieldValues extends FieldValues> {
+  name: Path<TFieldValues>;
   countryCodeName: string;
   label: string;
-  control: Control<FieldValues, any>;
-  rules?: RegisterOptions;
+  control: Control<TFieldValues, any>;
+  rules?: RegisterOptions<TFieldValues, Path<TFieldValues>>;
   sx?: SxProps<Theme>;
   setValue: UseFormSetValue<FieldValues>;
 }
@@ -50,13 +50,13 @@ const inputFieldSx: SxProps<Theme> = {
   },
 }
 
-export function CustomNumberField(
+export function CustomNumberField<TFieldValues extends FieldValues>(
   {
     label,
     control,
     countryCodeName,
     setValue,
-  }: CustomNumberFieldProps) {
+  }: CustomNumberFieldProps<TFieldValues>) {
 
   const defaultCountry: CountryOption = countriesList.find(c => c.code === 'AE') || {
     code: 'AE',
@@ -79,7 +79,9 @@ export function CustomNumberField(
     setOpen((prev) => !prev)
   }
   return (
-    <Box>
+    <Box sx={{
+      width: '100%',
+    }}>
       <Typography className='label'>
         {label}
       </Typography>
@@ -218,7 +220,7 @@ export function CustomNumberField(
         />
 
         <CustomTextField
-          name='phone'
+          name={'phone' as Path<TFieldValues>}
           label='Phone'
           isLabel={false}
           control={control}
