@@ -1,12 +1,12 @@
 
-import { type Control, FieldValues, RegisterOptions, UseFormSetValue } from 'react-hook-form';
-
+import type { Control, FieldValues, RegisterOptions, UseFormSetValue } from 'react-hook-form';
 import { TextField, Typography, Box, type SxProps, type Theme } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useState } from 'react';
 import { countriesList } from '../../../../../constants/countriesList';
 import { CustomTextField } from './Textfield';
+import { IoMdArrowDropdown, IoMdArrowDropup } from 'react-icons/io';
 
 
 type CountryOption = {
@@ -74,6 +74,10 @@ export function CustomNumberField(
     // 4. Update the country code field in react-hook-form state
     setValue(countryCodeName, newValue ? `+${newValue.phone}` : '', { shouldValidate: true, shouldDirty: true });
   };
+
+  const handleInputClick = () => {
+    setOpen((prev) => !prev)
+  }
   return (
     <Box>
       <Typography className='label'>
@@ -89,6 +93,12 @@ export function CustomNumberField(
           minWidth: { xs: '300px', md: '500px', lg: '550px' },
           '& .MuiAutocomplete-root': {
             gridColumn: 'span 3',
+            '& .MuiInputBase-root': {
+              borderRadius: '3px',
+              paddingRight: '0px !important',
+              justifyContent: 'space-around',
+            },
+
             '& .MuiAutocomplete-endAdornment': {
               display: 'none',
             },
@@ -101,6 +111,7 @@ export function CustomNumberField(
             borderWidth: '1px !important',
           },
 
+
         }}>
         <Autocomplete
           id="country-select-demo"
@@ -112,10 +123,33 @@ export function CustomNumberField(
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
           getOptionLabel={(option) => option.label}
+          slotProps={{
+            paper: {
+              sx: {
+                background: '#fff',
+                position: 'absolute',
+                zIndex: '9999999',
+                minWidth: { xs: '300px', md: '400px' },
+                boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px',
+              },
+            },
+          }}
+
           renderOption={(props, option) => (
             <Box
               component="li"
-              sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+              sx={{
+                '& ul': {
+                  color: 'green',
+                },
+                '&  img': {
+                  mr: 2,
+                  flexShrink: 0,
+                  width: { xs: '30px', height: '100%' },
+                  objectFit: 'cover',
+                  paddingBlock: { xs: '15px' },
+                },
+              }}
               {...props}
             >
               <img
@@ -123,7 +157,7 @@ export function CustomNumberField(
                 width="20"
                 src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
                 srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                alt=""
+                alt="country"
               />
               {option.label} ({option.code}) +{option.phone}
             </Box>
@@ -139,14 +173,32 @@ export function CustomNumberField(
               }}
               InputProps={{
                 ...params.InputProps,
+                endAdornment: (
+                  <InputAdornment position="end" sx={{ mr: 1, cursor: 'pointer' }}>
+                    {open ? <IoMdArrowDropup color='#000' size={20} /> : <IoMdArrowDropdown color='#000' size={20} />}
+                  </InputAdornment>
+                ),
                 startAdornment: selectedCountry ? (
-                  <InputAdornment position="start" onClick={() => setOpen(true)} sx={{ mr: 0, cursor: 'pointer' }}>
+                  <InputAdornment
+                    position="start"
+                    onClick={handleInputClick}
+                    sx={{
+                      mr: 0, cursor: 'pointer',
+                      paddingBlock: '8px',
+                      height: '100%',
+                      maxHeight: '100%',
+                      paddingInline: '8px',
+                      '& img': {
+                        width: '30px',
+                        height: '100%',
+                      },
+                    }}>
                     <img
                       loading="lazy"
                       width="20"
                       src={`https://flagcdn.com/w20/${selectedCountry.code.toLowerCase()}.png`}
                       srcSet={`https://flagcdn.com/w40/${selectedCountry.code.toLowerCase()}.png 2x`}
-                      alt=""
+                      alt="country"
                     />
                   </InputAdornment>
                 ) : null,
@@ -154,7 +206,7 @@ export function CustomNumberField(
 
               sx={{
                 // 1. Style to make the select menu fit its content
-                width: '100px',
+                // width: '100px',x
                 minWidth: '70px',
                 // Keep the input text hidden
                 '& .MuiInputBase-input': {

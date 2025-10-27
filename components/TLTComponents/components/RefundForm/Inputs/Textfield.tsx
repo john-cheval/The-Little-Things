@@ -1,8 +1,8 @@
-import { Controller, type Control, FieldValues, RegisterOptions } from 'react-hook-form';
+import { Controller, type Control, type FieldValues, type RegisterOptions } from 'react-hook-form';
 import { TextField, Typography, Box, type SxProps, type Theme } from '@mui/material';
 
 
-// Define the props for the reusable component
+
 interface CustomTextFieldProps {
   name: string;
   label: string;
@@ -53,7 +53,7 @@ export function CustomTextField({
               rows={rows}
               sx={sx}
               onChange={(e) => {
-                if (name === 'phone') {
+                if (name === 'ordernumber') {
                   field.onChange(e.target.value.replace(/\D/g, ''));
                 } else {
                   field.onChange(e.target.value);
