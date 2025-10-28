@@ -103,11 +103,27 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
       name: 'Refund Request Form',
       path: '/refund-form',
     },
+    {
+      name: 'FAQs',
+      path: '/faq',
+    },
+  ]
+
+
+  const noMenus = [
+    {
+      name: 'FAQs',
+      path: '/faq',
+    },
   ]
 
   const isSmallScreen = useMediaQuery('(max-width:768px)')
 
   const isStaticPage = staticPageLinks?.filter((item) => item?.path === router?.pathname)
+  const noMenuPages = noMenus?.filter((item) => item?.path === router?.pathname)
+  const isPaddingTop = (noMenuPages || isStaticPage) && isSmallScreen;
+
+
   const handleBack = () => {
     router.back()
   }
@@ -139,7 +155,9 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
             sx={{
               display: { xs: ischeckout ? 'none' : 'flex', md: 'flex' },
               flexDirection: 'column',
-              paddingBlock: { xs: '20px', md: 0 },
+              paddingTop: { xs: isPaddingTop ? '40px' : '0', md: 0 },
+              paddingBottom: { xs: isPaddingTop ? '20px' : '0', md: 0 },
+              // paddingBlock: { xs: !isPaddingTop ? '20px' : 0, md: 0 },
             }}>
             <Box sx={{
               display: 'flex',
@@ -153,7 +171,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
             }}>
               {(isStaticPage && isStaticPage?.length > 0 && isSmallScreen) ? (
                 <Box
-                  className='container-wrapper'
+                  // className='container-wrapper'
                   onClick={handleBack}
                   sx={{
                     // paddingTop: { xs: '30px', sm: '35px' },
@@ -239,183 +257,192 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                 />
               </DesktopNavActions>
 
-              <DesktopNavActions
-                sx={{
-                  '& .MuiformControl': {
-                    border: 'none',
-                  },
-                }}
-              >
-
-                <CurrecySelctor />
-                <LangauageSelctor />
-                <WishlistFab
+              {(noMenuPages && noMenuPages?.length > 0 && isSmallScreen) ? (
+                null
+              ) : (
+                <DesktopNavActions
                   sx={{
-                    width: { xs: '36px' },
-                    height: { xs: '30px', md: '36px' },
-                    color: (theme) => theme.palette.custom.main,
-                    '&  svg': {
-                      fontSize: { xs: '20px' },
-                      strokeWidth: '1.5',
-                    },
-                    ' &:focus ': {
-                      backgroundColor: 'transparent',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'transparent',
+                    '& .MuiformControl': {
+                      border: 'none',
                     },
                   }}
-                  icon={
-                    <IconSvg
-                      src={iconHeart}
-                      size='medium'
-                      sx={{ stroke: (theme) => theme.palette.custom.main }}
-                    />
-                  }
-                />
+                >
 
-                <CartFab
-                  sx={{
-                    display: { xs: 'none', lg: 'inline-flex' },
-                    color: (theme) => theme.palette.custom.textDarkAlter2,
-                    width: { md: 'fit-content' },
-
-                    transition: 'all 0.4s ease-in-out',
-                    '&:focus': {
-                      backgroundColor: 'transparent',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                    },
-                    '& .MuiBadge-root': {
-                      left: '5px',
-                      top: '3px',
-
-                      '& .MuiBadge-badge': {
-                        top: '5px',
-                        right: '11px',
+                  <CurrecySelctor />
+                  <LangauageSelctor />
+                  <WishlistFab
+                    sx={{
+                      width: { xs: '36px' },
+                      height: { xs: '30px', md: '36px' },
+                      color: (theme) => theme.palette.custom.main,
+                      '&  svg': {
+                        fontSize: { xs: '20px' },
+                        strokeWidth: '1.5',
                       },
-                    },
-                    '& svg': {
-                      fontSize: { md: '30px' },
-                      stroke: 'unset !important',
-                    },
-                    '& .MuiButtonBase-root': {
-                      height: 'unset !important',
-                      width: 'unset !important',
-                      boxShadow: 'none',
-                      backgroundColor: 'transparent !important',
-                    },
-                    '& .mui-style-1jnnhmg-MuiButtonBase-root-MuiFab-root': {
-                      minHeight: 'unset',
-                      boxShadow: 'none',
-                      backgroundcolor: 'transparent',
-                      transition: 'unset',
-                    },
-                  }}
-                />
-                <CustomerFab
-                  sx={{
-                    width: { md: '36px' },
-                    height: { md: '35px' },
-                    display: { xs: 'none', lg: 'inline-flex' },
-                    color: (theme) => theme.palette.custom.textDarkAlter2,
-
-                    '&  svg': {
-                      // width: '1em',
-                      fontSize: { md: '25px' },
-                      stroke: 'unset !important',
-                    },
-                    '&:focus': {
-                      backgroundColor: 'transparent',
-                    },
-                    '&:hover': {
-                      backgroundColor: 'transparent',
-                    },
-                    '& .MuiBadge-root': {
-                      left: '0px',
-                      top: '3px',
-                      '& .MuiBadge-dot': {
-                        display: 'none',
+                      ' &:focus ': {
+                        backgroundColor: 'transparent',
                       },
-                    },
-                  }}
-                  guestHref='/account/signin'
-                  authHref='/account'
-                />
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                    icon={
+                      <IconSvg
+                        src={iconHeart}
+                        size='medium'
+                        sx={{ stroke: (theme) => theme.palette.custom.main }}
+                      />
+                    }
+                  />
 
-                <Link
-                  href='/popmart'
-                  sx={{
-                    display: { xs: 'none', lg: 'block' },
-                    // overflow: 'hidden',
-                    transition: 'transform 0.4s ease-in-out',
-                    '&:hover': {
-                      transform: 'scale(1.05)',
-                    },
-                    '& img': {
-                      borderRadius: '3px',
-                      height: 'auto',
-                      width: { xs: '120px' },
-                      objectFit: 'cover',
-                    },
+                  <CartFab
+                    sx={{
+                      display: { xs: 'none', lg: 'inline-flex' },
+                      color: (theme) => theme.palette.custom.textDarkAlter2,
+                      width: { md: 'fit-content' },
 
-                  }}>
-                  <Image src={popmartImage} alt='popmartImage' />
-                </Link>
-              </DesktopNavActions>
+                      transition: 'all 0.4s ease-in-out',
+                      '&:focus': {
+                        backgroundColor: 'transparent',
+                      },
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                      '& .MuiBadge-root': {
+                        left: '5px',
+                        top: '3px',
+
+                        '& .MuiBadge-badge': {
+                          top: '5px',
+                          right: '11px',
+                        },
+                      },
+                      '& svg': {
+                        fontSize: { md: '30px' },
+                        stroke: 'unset !important',
+                      },
+                      '& .MuiButtonBase-root': {
+                        height: 'unset !important',
+                        width: 'unset !important',
+                        boxShadow: 'none',
+                        backgroundColor: 'transparent !important',
+                      },
+                      '& .mui-style-1jnnhmg-MuiButtonBase-root-MuiFab-root': {
+                        minHeight: 'unset',
+                        boxShadow: 'none',
+                        backgroundcolor: 'transparent',
+                        transition: 'unset',
+                      },
+                    }}
+                  />
+                  <CustomerFab
+                    sx={{
+                      width: { md: '36px' },
+                      height: { md: '35px' },
+                      display: { xs: 'none', lg: 'inline-flex' },
+                      color: (theme) => theme.palette.custom.textDarkAlter2,
+
+                      '&  svg': {
+                        // width: '1em',
+                        fontSize: { md: '25px' },
+                        stroke: 'unset !important',
+                      },
+                      '&:focus': {
+                        backgroundColor: 'transparent',
+                      },
+                      '&:hover': {
+                        backgroundColor: 'transparent',
+                      },
+                      '& .MuiBadge-root': {
+                        left: '0px',
+                        top: '3px',
+                        '& .MuiBadge-dot': {
+                          display: 'none',
+                        },
+                      },
+                    }}
+                    guestHref='/account/signin'
+                    authHref='/account'
+                  />
+
+                  <Link
+                    href='/popmart'
+                    sx={{
+                      display: { xs: 'none', lg: 'block' },
+                      // overflow: 'hidden',
+                      transition: 'transform 0.4s ease-in-out',
+                      '&:hover': {
+                        transform: 'scale(1.05)',
+                      },
+                      '& img': {
+                        borderRadius: '3px',
+                        height: 'auto',
+                        width: { xs: '120px' },
+                        objectFit: 'cover',
+                      },
+
+                    }}>
+                    <Image src={popmartImage} alt='popmartImage' />
+                  </Link>
+                </DesktopNavActions>
+              )}
+
             </Box>
 
             {/* Search field for small Screens */}
-            <DesktopNavActions
-              sx={{
-                width: '100%',
-                display: { xs: 'flex', md: 'none' },
 
-              }}>
-              <SearchField
-                visible
-                isNav
-                formControl={{
-                  sx: {
-                    width: '100%',
-                    color: (theme: any) => theme.palette.custom.textDarkAlter2,
-                    '& .MuiOutlinedInput-root': {
-                      color: (theme: any) => theme.palette.custom.textDarkAlter2,
-                      fontSize: '14px',
-                      borderRadius: '3px',
-                      background: 'transparent',
-                      paddingRight: '0px',
+            {(noMenuPages && noMenuPages?.length > 0 && isSmallScreen) ? null : (
+              <DesktopNavActions
+                sx={{
+                  width: '100%',
+                  display: { xs: 'flex', md: 'none' },
+
+                }}>
+                <SearchField
+                  visible
+                  isNav
+                  formControl={{
+                    sx: {
                       width: '100%',
-                      '& input': {
-                        padding: '15px 12px',
-                      },
-                      '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
-                        fontSize: '14px',
-                        fontStyle: 'normal',
-                        fontWeight: 400,
-                        lineHeight: '158%',
+                      color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                      '& .MuiOutlinedInput-root': {
                         color: (theme: any) => theme.palette.custom.textDarkAlter2,
-                        opacity: 1,
-                      },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: (theme: any) => theme.palette.custom.tltBorder4,
-                      },
-                      '&:hover .MuiOutlinedInput-notchedOutline': {
-                        borderColor: (theme: any) => theme.palette.custom.tltBorder4,
-                      },
+                        fontSize: '14px',
+                        borderRadius: '3px',
+                        background: 'transparent',
+                        paddingRight: '0px',
+                        width: '100%',
+                        '& input': {
+                          padding: '15px 12px',
+                        },
+                        '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
+                          fontSize: '14px',
+                          fontStyle: 'normal',
+                          fontWeight: 400,
+                          lineHeight: '158%',
+                          color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                          opacity: 1,
+                        },
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                        },
 
-                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                        borderColor: (theme: any) => theme.palette.custom.tltBorder4,
-                      },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                        },
 
+                      },
                     },
-                  },
-                }}
-                searchField={{ productListRenderer }}
+                  }}
+                  searchField={{ productListRenderer }}
 
-              />
-            </DesktopNavActions>
+                />
+              </DesktopNavActions>
+            )}
+
 
             {/* Small screen International shipping Banner */}
             {isHome && (

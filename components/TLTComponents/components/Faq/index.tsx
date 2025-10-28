@@ -47,9 +47,6 @@ export function Faq({ content }: Props) {
     }
   }, [content, router])
   return (
-
     <div dangerouslySetInnerHTML={{ __html: content }} />
-
-
   )
 }
