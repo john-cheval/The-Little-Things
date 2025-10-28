@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
+import parse from 'html-react-parser';
+
 
 interface Props {
   content: string
@@ -47,6 +49,8 @@ export function Faq({ content }: Props) {
     }
   }, [content, router])
   return (
-    <div dangerouslySetInnerHTML={{ __html: content }} />
+    <div >
+      {parse(content)}
+    </div>
   )
 }

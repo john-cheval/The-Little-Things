@@ -2727,18 +2727,18 @@ input[type='number'] {
 }
 .privacy_content p {
   color: #000;
-  font-size: 18px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 134%; /* 24.12px */
   margin: 0;
 }
 .privacy_content p:not(:last-child) {
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 .privacy_content h5 {
   color: #000;
-  font-size: 20px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 500;
   line-height: 128%; /* 25.6px */
@@ -3120,13 +3120,16 @@ input[type='number'] {
     max-width: 350px;
   }
   .faq_accordion-title,
-  .faq_detail-title {
+  .faq_detail-title,
+  .privacy_content h5 {
     font-size: 18px;
   }
   .faq_accordion_details p,
-  .faq_details p {
+  .faq_details p,
+  .privacy_content p {
     font-size: 16px;
   }
+
   .faq_details {
     gap: 12px;
   }
@@ -3305,11 +3308,13 @@ input[type='number'] {
     gap: 15px;
   }
   .faq_accordion-title,
-  .faq_detail-title {
+  .faq_detail-title,
+  .privacy_content h5 {
     font-size: 20x;
   }
   .faq_accordion_details p,
-  .faq_details p {
+  .faq_details p,
+  .privacy_content p {
     font-size: 18px;
   }
   .faq_details {
@@ -3318,6 +3323,9 @@ input[type='number'] {
   .faq_accordion_details p:last-child,
   .faq_details p:last-child {
     padding-bottom: 25px;
+  }
+  .privacy_content p:not(:last-child) {
+    margin-bottom: 20px;
   }
 }
 

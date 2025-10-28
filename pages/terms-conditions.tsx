@@ -1,12 +1,13 @@
-import { PageOptions } from '@graphcommerce/framer-next-pages'
+import type { PageOptions } from '@graphcommerce/framer-next-pages'
 import { cacheFirst } from '@graphcommerce/graphql'
 import { StoreConfigDocument } from '@graphcommerce/magento-store'
-import { GetStaticProps, PageMeta } from '@graphcommerce/next-ui'
-import { LayoutDocument, LayoutNavigation, LayoutNavigationProps } from '../components'
-import { InnerTop } from '../components/shared/Inner/Innertop'
+import { type GetStaticProps, PageMeta } from '@graphcommerce/next-ui'
+import { LayoutDocument, LayoutNavigation, type LayoutNavigationProps } from '../components'
 import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../lib/graphql/graphqlSsrClient'
 import { decodeHtmlEntities } from '../utils/htmlUtils'
+import DOMPurify from 'isomorphic-dompurify';
+import parse from 'html-react-parser';
 
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps>
 export type CmsBlocksProps = { cmsBlocks?: any }
@@ -16,6 +17,7 @@ function TermsConditionPage(props: CmsBlocksProps) {
   const termsConditionsContent = cmsBlocks.find((block) => block.identifier === 'terms-conditions')
   const decodedTermsConditionsContent = decodeHtmlEntities(termsConditionsContent?.content)
 
+  const cleanedContent = DOMPurify.sanitize(decodedTermsConditionsContent)
   return (
     <>
       <PageMeta
@@ -24,9 +26,10 @@ function TermsConditionPage(props: CmsBlocksProps) {
         // metaRobots={page?.metaRobots.toLowerCase().split('_') as MetaRobots[] | undefined}
         canonical='/terms-conditions'
       />
-      <InnerTop title='Terms Conditions' isFilter={false} />
       {decodedTermsConditionsContent && (
-        <div dangerouslySetInnerHTML={{ __html: decodedTermsConditionsContent }} />
+        <div>
+          {parse(cleanedContent)}
+        </div>
       )}
     </>
   )

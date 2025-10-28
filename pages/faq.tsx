@@ -7,6 +7,8 @@ import { cacheFirst } from '@graphcommerce/graphql'
 import { cmsMultipleBlocksDocument } from '../graphql/CmsMultipleBlocks.gql'
 import { decodeHtmlEntities } from '../utils/htmlUtils'
 import { Faq } from '../components/TLTComponents/components/Faq'
+import DOMPurify from 'isomorphic-dompurify';
+
 
 
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps>
@@ -16,6 +18,7 @@ function FaqPage(props: CmsBlocksProps) {
   const { cmsBlocks } = props
   const faqContent = cmsBlocks.find((block) => block.identifier === 'faq')
   const decodedFaqContent = decodeHtmlEntities(faqContent?.content)
+  const cleanedContent = DOMPurify.sanitize(decodedFaqContent)
   return (
     <>
       <PageMeta
@@ -25,7 +28,7 @@ function FaqPage(props: CmsBlocksProps) {
         canonical='/faq'
       />
 
-      <Faq content={decodedFaqContent} />
+      <Faq content={cleanedContent} />
     </>
   )
 }
