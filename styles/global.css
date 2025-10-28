@@ -2851,7 +2851,7 @@ input[type='number'] {
 .faq_detail-title {
   margin: 0;
   color: #d90f13;
-  font-size: 25px;
+  font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 159%; /* 39.75px */
@@ -2884,21 +2884,21 @@ input[type='number'] {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 150x;
   margin-top: 10px;
 }
 .faq_accordion_details p,
 .faq_details p {
   margin: 0;
   color: #000;
-  font-size: 18px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 132%; /* 23.76px */
 }
 .faq_accordion_details p:last-child,
 .faq_details p:last-child {
-  padding-bottom: 30px;
+  padding-bottom: 18px;
 }
 .faq_accordion_details.is-expanded {
   max-height: 500px;
@@ -3119,6 +3119,21 @@ input[type='number'] {
   .ironManImage {
     max-width: 350px;
   }
+  .faq_accordion-title,
+  .faq_detail-title {
+    font-size: 18px;
+  }
+  .faq_accordion_details p,
+  .faq_details p {
+    font-size: 16px;
+  }
+  .faq_details {
+    gap: 12px;
+  }
+  .faq_accordion_details p:last-child,
+  .faq_details p:last-child {
+    padding-bottom: 20px;
+  }
 }
 
 /* Tablet Screens */
@@ -3289,6 +3304,21 @@ input[type='number'] {
   .about_content {
     gap: 15px;
   }
+  .faq_accordion-title,
+  .faq_detail-title {
+    font-size: 20x;
+  }
+  .faq_accordion_details p,
+  .faq_details p {
+    font-size: 18px;
+  }
+  .faq_details {
+    gap: 15px;
+  }
+  .faq_accordion_details p:last-child,
+  .faq_details p:last-child {
+    padding-bottom: 25px;
+  }
 }
 
 /* Laptop and desktop screens */
@@ -3367,6 +3397,14 @@ input[type='number'] {
   }
   .about_content-container img {
     margin-block: 30px;
+  }
+  .faq_accordion-title,
+  .faq_detail-title {
+    font-size: 25px;
+  }
+  .faq_accordion_details p:last-child,
+  .faq_details p:last-child {
+    padding-bottom: 30px;
   }
 }
 
