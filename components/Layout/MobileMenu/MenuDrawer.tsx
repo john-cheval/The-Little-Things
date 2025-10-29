@@ -1,15 +1,28 @@
+
 import { Box, styled, Typography } from '@mui/material'
 import { m } from 'framer-motion'
-import Link from 'next/link'
-import { FaArrowRight } from 'react-icons/fa6'
-import { IoClose } from 'react-icons/io5'
 import { drawerVariants } from '../../../constants/animationVariation'
+import { useRouter } from 'next/router'
+import { IoIosArrowBack } from 'react-icons/io';
+import { SearchField } from '@graphcommerce/magento-search'
+import { productListRenderer } from '../../ProductListItems';
+import { MobileMenuLink } from './MobileMenuLink';
+import ordersIcon from './icons/order.svg'
+import nameIcon from './icons/name.svg'
+import mailIcon from './icons/mail.svg'
+import { moreMenu } from './moreMenu';
+
 
 const MotionDiv = styled(m.div)({})
 
-function MenuDrawer({ isOpen, setIsOpen, more }) {
-  return (
+export function MenuDrawer({ setIsOpen }) {
+  const router = useRouter()
 
+  const handleBack = () => {
+    router.back()
+    setIsOpen(false)
+  }
+  return (
     <MotionDiv
       initial={{ opacity: 0, y: '-100%' }}
       animate={{ opacity: 1, y: 0 }}
@@ -17,94 +30,124 @@ function MenuDrawer({ isOpen, setIsOpen, more }) {
       transition={{ duration: 0.5, ease: 'easeInOut' }}
       sx={{
         position: 'fixed',
-        top: { xs: '65px', md: '80px' },
+        top: 0,
         left: 0,
         bottom: '80px',
         width: '100%',
-        // height: '100vh',
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         zIndex: 99999,
         padding: '24px',
-        //display: 'flex',
         flexDirection: 'column',
         alignItems: 'flex-start',
         gap: '30px',
         overflowY: 'auto',
       }}
     >
-      {/* Close Button */}
-      <Box
-        onClick={() => setIsOpen(false)}
-        sx={{
-          cursor: 'pointer',
-          alignSelf: 'flex-end',
-          textAlign: 'right',
+      <Box sx={{
+        marginTop: '20px',
 
-          '& svg': {
-            fontWeight: 400,
-            fontSize: '25px',
-          },
-        }}
-      >
-        <IoClose />
-      </Box>
+      }}>
+        <Box
+          // className='container-wrapper'
+          onClick={handleBack}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '5px',
+            paddingBottom: '15px',
+          }}>
+          <IoIosArrowBack size={20} />
+          <Typography
+            sx={{
+              background: 'linear-gradient(90deg, #2D2D2D 0%, #B4001A 100%)',
+              backgroundClip: 'text',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              width: 'fit-content',
+              fontSize: '20px !important',
+              fontWeight: 700,
+              lineHeight: '120%',
+            }}>
+            Profile
+          </Typography>
+        </Box>
+        <Box>
+          <SearchField
+            visible
+            isNav
+            formControl={{
+              sx: {
+                width: '100%',
+                color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                '& .MuiOutlinedInput-root': {
+                  color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                  fontSize: '14px',
+                  borderRadius: '3px',
+                  background: 'transparent',
+                  paddingRight: '0px',
+                  width: '100%',
+                  '& input': {
+                    padding: '15px 12px',
+                  },
+                  '& .MuiOutlinedInput-input, & .MuiOutlinedInput-input::placeholder': {
+                    fontSize: '14px',
+                    fontStyle: 'normal',
+                    fontWeight: 400,
+                    lineHeight: '158%',
+                    color: (theme: any) => theme.palette.custom.textDarkAlter2,
+                    opacity: 1,
+                  },
+                  '& .MuiOutlinedInput-notchedOutline': {
+                    borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                  },
 
-      <Box
-        sx={{
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: (theme: any) => theme.palette.custom.tltBorder4,
+                  },
+
+                },
+              },
+            }}
+            searchField={{ productListRenderer }}
+
+          />
+        </Box>
+
+        <Box sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: '20px',
-          marginTop: '20px',
-        }}
-      >
-        {/* Animated Links */}
-        {more.map((item, i) => (
-          <MotionDiv
-            key={item.id}
-            custom={i}
-            initial='hidden'
-            animate='visible'
-            exit='hidden'
-            onClick={() => setIsOpen(false)}
-            variants={drawerVariants}
-            sx={{
-              borderBottom: '1px solid #d4d4d4',
-              width: '100%',
-              paddingBottom: '20px',
-            }}
-          >
-            <Link href={item.link} passHref legacyBehavior>
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  width: '100%',
-                }}
-              >
-                <Typography
-                  sx={{
-                    fontSize: '18px',
-                    fontWeight: 400,
-                    color: '#000',
-                    textDecoration: 'none',
-                    lineHeight: '120%',
-                    '&:hover': { textDecoration: 'underline' },
-                  }}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.title}
-                </Typography>
+          marginTop: { xs: '25px', md: '30px' },
+          borderTop: '1px solid #C8C8C8',
+          paddingTop: '20px',
+          overflowY: 'scroll',
+        }}>
 
-                <FaArrowRight color='#F6DBE0' size={20} />
-              </Box>
-            </Link>
-          </MotionDiv>
-        ))}
+          <MobileMenuLink icon={ordersIcon} link='/account/orders' title='Orders' subTitle='6 days ago' subTitleTwo='6 days ago' />
+          <MobileMenuLink icon={nameIcon} link='/account/name' title='Name' subTitle='John Doe' />
+          <MobileMenuLink icon={mailIcon} link='/account/contact' title='Contact' subTitle='Johndoe@example.com' />
+
+          {/* Animated Links */}
+          {moreMenu?.map((item, i) => (
+            <MotionDiv
+              key={item.id}
+              custom={i}
+              initial='hidden'
+              animate='visible'
+              exit='hidden'
+              onClick={() => setIsOpen(false)}
+              variants={drawerVariants}
+            >
+              <MobileMenuLink icon={item?.icon} link={item?.link} title={item?.title} subTitle={item?.subTitle} />
+            </MotionDiv>
+          ))}
+        </Box>
       </Box>
     </MotionDiv>
-
   )
 }
 
-export default MenuDrawer
+

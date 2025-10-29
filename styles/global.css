@@ -2254,6 +2254,10 @@ input[type='number'] {
 .empty {
   height: 32px;
 }
+/* .LayoutOverlayBase-backdrop {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6.400000095367432px);
+} */
 
 /* ====================  Link Buttons ============================ */
 .linkButton {
@@ -3016,7 +3020,31 @@ input[type='number'] {
   border: 1px solid #d90f13;
 }
 
-/* ====== refund form page  ====== */
+/* ====== Mobile Menu ====== */
+.mobile_menu_title,
+.mobile_menu_subTitle {
+  color: #2d2d2d;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  /* line-height: 159%; */
+}
+.mobile_menu_subTitle {
+  color: #767676;
+  font-weight: 400;
+}
+.mobile_menu_subTitleTwo {
+  color: #fff;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 120%;
+  background-color: #7b1316;
+  border-radius: 3px;
+  padding: 3px 5px;
+  margin-left: 10px;
+  display: inline-block;
+}
 
 /* ====== Animations ========== */
 
@@ -3136,6 +3164,13 @@ input[type='number'] {
   .faq_accordion_details p:last-child,
   .faq_details p:last-child {
     padding-bottom: 20px;
+  }
+  .mobile_menu_title,
+  .mobile_menu_subTitle {
+    font-size: 18px;
+  }
+  .mobile_menu_subTitleTwo {
+    font-size: 16px;
   }
 }
 
