@@ -43,6 +43,10 @@ const pageOptions: PageOptions<LayoutOverlayProps> = {
       },
       '& .LayoutOverlayBase-overlayPane': {
         paddingTop: 'calc(200px * 0.5) !important',
+        '& .LayoutOverlayBase-background': {
+          borderTopRightRadius: '30px !important',
+          borderTopLeftRadius: '30px !important',
+        },
       },
       '& .LayoutOverlayBase-background': {
         '& .LayoutHeaderContent-right button': {

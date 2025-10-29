@@ -92,8 +92,6 @@ export function MegaMenu({ item, isActive, isMegaMenu, onLinkClick }) {
                     </Link>
                   </MotionDiv>
 
-
-
                 ))}
               </Box>
             )}

@@ -18,7 +18,6 @@ import { productListRenderer } from '../ProductListItems/productListRenderer'
 import { Footer } from './Footer'
 import type { LayoutQuery } from './Layout.gql'
 import { Logo } from './Logo'
-import MobileMenu from './MobileMenu/MobileMenu'
 import { InfiniteMarquee } from '../TLTComponents/Shared/InfiniteMarquee'
 import { CurrecySelctor } from '../TLTComponents/components/CurrenySelector'
 import { LangauageSelctor } from '../TLTComponents/components/LanguageSelector'
@@ -29,6 +28,7 @@ import { MegaMenu } from './MegaMenu'
 import { PopoverMenu } from './PopoverMenu'
 import { useRouter } from 'next/router'
 import { IoIosArrowBack } from 'react-icons/io'
+import { MobileMenu } from './MobileMenu/MobileMenu'
 // import { Image } from '@graphcommerce/image'
 
 export type LayoutNavigationProps = LayoutQuery &
@@ -43,7 +43,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
   // console.log(ischeckout, router?.pathname, '==>tuter')
 
   // const footerCmsData = props?.footer?.items?.[0]
-  const menuItemsCmsData = props?.menu?.items?.[0]?.children
+  // const menuItemsCmsData = props?.menu?.items?.[0]?.children
   // const decodedFooterData = decodeHtmlEntities(footerCmsData?.content)
   const [scroll, setScroll] = useState<boolean>(false)
   const [subMenuItem, setSubMenuItem] = useState<any>()
@@ -531,25 +531,8 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
       </LayoutDefault >
 
       <Box
-        sx={{
-          paddingInline: { xs: '25px', md: '30px' },
-          background: 'rgba(255, 255, 255, 0.91)',
-          backdropFilter: 'blur(8.75px)',
-          display: { xs: 'flex', lg: 'none' },
-          paddingBlock: { xs: '16px', md: '20px' },
-          color: (theme: any) => theme.palette.custom.main,
-          justifyContent: 'space-between',
-          columnGap: '20px',
-          position: 'fixed',
-          bottom: 0,
-          left: 0,
-          zIndex: '999999',
-          alignItems: 'center',
-          height: '80px',
-          width: '100%',
-        }}
       >
-        <MobileMenu ShopCategories={menuItemsCmsData} />
+        <MobileMenu />
       </Box>
     </>
   )
