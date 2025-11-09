@@ -1,19 +1,15 @@
 
 import { Accordion, AccordionDetails, AccordionSummary, Box, Link, styled, Typography } from '@mui/material'
 import { m } from 'framer-motion'
-import { drawerVariants } from '../../../constants/animationVariation'
 import { useRouter } from 'next/router'
 import { IoIosArrowBack, IoMdArrowForward } from 'react-icons/io';
 import { SearchField } from '@graphcommerce/magento-search'
 import { productListRenderer } from '../../ProductListItems';
-import { MobileMenuLink } from './MobileMenuLink';
-import ordersIcon from './icons/order.svg'
-import nameIcon from './icons/name.svg'
-import mailIcon from './icons/mail.svg'
+
 import { moreMenu } from './moreMenu';
-import { megaMenu } from '../../../constants/Navbar';
+import { megaMenuTwo } from '../../../constants/Navbar';
 import { useState } from 'react';
-import { FiPlus, FiMinus } from "react-icons/fi";
+import { FiPlus, FiMinus } from 'react-icons/fi';
 
 
 const MotionDiv = styled(m.div)({})
@@ -24,14 +20,12 @@ type ShopDrawerTypes = {
 }
 
 
-function AccordionIcon({ expanded }: { expanded: boolean }) {
-  return expanded ? <FiMinus color='#B4001A' /> : <FiPlus color='#B4001A' />;
-}
 
 export function ShopDrawer({ closeAllPopups /* , isMoreMenu */ }: ShopDrawerTypes) {
   const router = useRouter()
-  const [isSelectedItm, setIsSelectedItem] = useState(megaMenu[0])
-
+  const [isSelectedItm, setIsSelectedItem] = useState(megaMenuTwo[0])
+  const [isSelectedAccordion, setIsSelectedAccordion] = useState<number | null>(null);
+  console.log('==>isSelectedAccordion', isSelectedAccordion);
 
   const handleBack = () => {
     router.back()
@@ -156,7 +150,7 @@ export function ShopDrawer({ closeAllPopups /* , isMoreMenu */ }: ShopDrawerType
               paddingTop: { xs: '20px', md: '30px' },
             }}>
 
-              {megaMenu?.map((menuItem, menuIndex) => {
+              {megaMenuTwo?.map((menuItem, menuIndex) => {
                 const isLastItem = moreMenu.length - 1 === menuIndex
                 const selected = isSelectedItm?.name === menuItem?.name
                 return (
@@ -232,7 +226,7 @@ export function ShopDrawer({ closeAllPopups /* , isMoreMenu */ }: ShopDrawerType
                 }}
               >{isSelectedItm?.name}</Typography>
 
-              {isSelectedItm?.collections && (
+              {Array.isArray(isSelectedItm?.collections) && (
                 <Box sx={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -277,56 +271,71 @@ export function ShopDrawer({ closeAllPopups /* , isMoreMenu */ }: ShopDrawerType
                   },
                 }}>
 
-                  {isSelectedItm?.subMenu?.map((subMenuItem, subMenuIndex) => (
-                    <Accordion
-                      sx={{
-                        boxShadow: 'none !important',
-                        borderBottom: '1px solid #C8C8C8',
-                        '& .MuiAccordionSummary-root': {
-                          paddingInline: '0',
-                          '&.Mui-expanded': {
+                  {isSelectedItm?.subMenu?.map((subMenuItem, subMenuIndex) => {
+                    console.log('==>subMenuItem', subMenuItem);
+                    const isAccordionSelected = isSelectedAccordion === subMenuIndex;
+                    return (
+                      <Accordion
+                        onChange={() =>
+                          setIsSelectedAccordion(isAccordionSelected ? null : subMenuIndex)
+                        }
+                        sx={{
+                          boxShadow: 'none !important',
+                          borderBottom: '1px solid #C8C8C8',
+                          '& .MuiAccordionSummary-root': {
+                            paddingInline: '0',
+                            '&.Mui-expanded': {
+                              margin: 0,
+                            },
+                          },
+                          '& .MuiAccordionSummary-content': {
+                            paddingBlock: { xs: '10px', sm: '15px' },
                             margin: 0,
                           },
-                        },
-                        '& .MuiAccordionSummary-content': {
-                          paddingBlock: { xs: '10px', sm: '15px' },
-                          margin: 0,
-                        },
 
-                      }}>
-                      <AccordionSummary expandIcon={<AccordionIcon color='#B4001A' />}
-                        aria-controls={`panel${subMenuIndex + 1}-content`}
-                        id={`panel${subMenuIndex + 1}-header`}>
-                        <Typography sx={{
-                          color: '#2D2D2D',
-                          fontSize: { xs: '14px', sm: '16px' },
-                          fontWeight: 500,
-                          lineHeight: '160%',
-                          textTransform: 'capitalize',
-                          textDecoration: 'none',
-                        }}>{subMenuItem?.name}</Typography>
-                      </AccordionSummary>
-                      {subMenuItem?.children && subMenuItem?.children?.map((childItem, childIndex) => (
-                        <AccordionDetails key={`childIndex-${childIndex + 1}`} sx={{
-                          padding: '0px 0px 10px 10px',
                         }}>
-                          <Link href={childItem?.url_path}
-                            onClick={closeAllPopups}
-                            sx={{
-                              textDecoration: 'none',
-                              textTransform: 'capitalize',
-                              color: '#2D2D2D',
-                              fontSize: { xs: '14px', sm: '16px' },
-                              fontWeight: 400,
-                              lineHeight: '160%',
-                              display: 'block',
-                            }}>
-                            {childItem?.name}
-                          </Link>
-                        </AccordionDetails>
-                      ))}
-                    </Accordion>
-                  ))}
+                        <AccordionSummary
+
+                          expandIcon={
+                            isAccordionSelected ? (
+                              <FiMinus size={16} color='#B4001A' />
+                            ) : (
+                              <FiPlus size={16} color='#B4001A' />
+                            )
+                          }
+                          aria-controls={`panel${subMenuIndex + 1}-content`}
+                          id={`panel${subMenuIndex + 1}-header`}>
+                          <Typography sx={{
+                            color: '#2D2D2D',
+                            fontSize: { xs: '14px', sm: '16px' },
+                            fontWeight: 500,
+                            lineHeight: '160%',
+                            textTransform: 'capitalize',
+                            textDecoration: 'none',
+                          }}>{subMenuItem?.name}</Typography>
+                        </AccordionSummary>
+                        {subMenuItem?.children && subMenuItem?.children?.map((childItem, childIndex) => (
+                          <AccordionDetails key={`childIndex-${childIndex + 1}`} sx={{
+                            padding: '0px 0px 10px 10px',
+                          }}>
+                            <Link href={childItem?.url_path}
+                              onClick={closeAllPopups}
+                              sx={{
+                                textDecoration: 'none',
+                                textTransform: 'capitalize',
+                                color: '#2D2D2D',
+                                fontSize: { xs: '14px', sm: '16px' },
+                                fontWeight: 400,
+                                lineHeight: '160%',
+                                display: 'block',
+                              }}>
+                              {childItem?.name}
+                            </Link>
+                          </AccordionDetails>
+                        ))}
+                      </Accordion>
+                    )
+                  })}
 
                 </Box>
               )}

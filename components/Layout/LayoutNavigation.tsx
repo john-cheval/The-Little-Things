@@ -21,8 +21,8 @@ import { Logo } from './Logo'
 import { InfiniteMarquee } from '../TLTComponents/Shared/InfiniteMarquee'
 import { CurrecySelctor } from '../TLTComponents/components/CurrenySelector'
 import { LangauageSelctor } from '../TLTComponents/components/LanguageSelector'
-import popmartImage from '../Assets/popmart.png'
-import Image from 'next/image'
+// import popmartImage from '../Assets/popmart.png'
+// import Image from 'next/image'
 import { megaMenu } from '../../constants/Navbar'
 import { MegaMenu } from './MegaMenu'
 import { PopoverMenu } from './PopoverMenu'
@@ -150,7 +150,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
             sx={{
               display: { xs: ischeckout ? 'none' : 'flex', md: 'flex' },
               flexDirection: 'column',
-              paddingTop: { xs: isPaddingTop ? '40px' : '0', md: 0 },
+              paddingTop: { xs: isPaddingTop ? '15px' : '0', md: 0 },
               paddingBottom: { xs: isPaddingTop ? '20px' : '0', md: 0 },
               // paddingBlock: { xs: !isPaddingTop ? '20px' : 0, md: 0 },
             }}>
@@ -361,21 +361,31 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
                 <Link
                   href='/popmart'
                   sx={{
-                    display: { xs: 'none', lg: 'block' },
+                    display: { xs: 'none', lg: 'flex' },
                     // overflow: 'hidden',
-                    transition: 'transform 0.4s ease-in-out',
+                    transition: 'all 0.4s ease-in-out',
+                    textTransform: 'uppercase',
+                    textDecoration: 'none',
+                    backgroundColor: (theme) => theme.palette.custom.textPopmart,
+                    color: (theme) => theme.palette.custom.tltContrastText,
+                    fontSize: '20px',
+                    borderRadius: '3px',
+                    fontWeight: 700,
+                    padding: '8px 10px',
+                    // display:'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    minWidth: '130px',
                     '&:hover': {
                       transform: 'scale(1.05)',
-                    },
-                    '& img': {
-                      borderRadius: '3px',
-                      height: 'auto',
-                      width: { xs: '120px' },
-                      objectFit: 'cover',
+                      backgroundColor: '#000000',
+                      // width
                     },
 
+
                   }}>
-                  <Image src={popmartImage} alt='popmartImage' />
+                  {/* <Image src={popmartImage} alt='popmartImage' /> */}
+                  Pop mart
                 </Link>
               </DesktopNavActions>
 

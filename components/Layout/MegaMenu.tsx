@@ -70,7 +70,11 @@ export function MegaMenu({ item, isActive, isMegaMenu, onLinkClick }) {
                       justifyContent: 'center',
                       '&:hover': {
                         borderColor: theme.palette.custom.tltSecondary,
-                        color: theme.palette.custom.tltMain,
+                        color: '#fff',
+                        backgroundColor: theme.palette.custom.tltSecondary,
+                      },
+                      '&:hover a': {
+                        color: '#fff',
                       },
                     }}>
                     <Link
