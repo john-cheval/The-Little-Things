@@ -3509,3 +3509,14 @@ input[type='number'] {
     max-width: 900px;
   }
 }
+
+.selected-indicator::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '""';
+  width: 15px;
+  height: 100%;
+  clip-path: polygon(100% 0, 0 0, 0 100%);
+  background-color: white;
+}

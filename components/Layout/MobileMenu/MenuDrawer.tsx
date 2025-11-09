@@ -15,12 +15,17 @@ import { moreMenu } from './moreMenu';
 
 const MotionDiv = styled(m.div)({})
 
-export function MenuDrawer({ setIsOpen }) {
+type MenuDrawerTypes = {
+  closeAllPopups: any;
+}
+
+export function MenuDrawer({ closeAllPopups }: MenuDrawerTypes) {
   const router = useRouter()
+
 
   const handleBack = () => {
     router.back()
-    setIsOpen(false)
+    closeAllPopups()
   }
   return (
     <MotionDiv
@@ -116,6 +121,8 @@ export function MenuDrawer({ setIsOpen }) {
           />
         </Box>
 
+
+
         <Box sx={{
           display: 'flex',
           flexDirection: 'column',
@@ -123,12 +130,21 @@ export function MenuDrawer({ setIsOpen }) {
           marginTop: { xs: '25px', md: '30px' },
           borderTop: '1px solid #C8C8C8',
           paddingTop: '20px',
-          overflowY: 'scroll',
+          // overflowY: 'scroll',
         }}>
 
-          <MobileMenuLink icon={ordersIcon} link='/account/orders' title='Orders' subTitle='6 days ago' subTitleTwo='6 days ago' />
-          <MobileMenuLink icon={nameIcon} link='/account/name' title='Name' subTitle='John Doe' />
-          <MobileMenuLink icon={mailIcon} link='/account/contact' title='Contact' subTitle='Johndoe@example.com' />
+          <Box onClick={closeAllPopups}>
+            <MobileMenuLink icon={ordersIcon} link='/account/orders' title='Orders' subTitle='6 days ago' subTitleTwo='6 days ago' />
+          </Box>
+
+          <Box onClick={closeAllPopups}>
+            <MobileMenuLink icon={nameIcon} link='/account/name' title='Name' subTitle='John Doe' />
+          </Box>
+
+          <Box onClick={closeAllPopups}>
+            <MobileMenuLink icon={mailIcon} link='/account/contact' title='Contact' subTitle='Johndoe@example.com' />
+          </Box>
+
 
           {/* Animated Links */}
           {moreMenu?.map((item, i) => (
@@ -138,7 +154,7 @@ export function MenuDrawer({ setIsOpen }) {
               initial='hidden'
               animate='visible'
               exit='hidden'
-              onClick={() => setIsOpen(false)}
+              onClick={closeAllPopups}
               variants={drawerVariants}
             >
               <MobileMenuLink icon={item?.icon} link={item?.link} title={item?.title} subTitle={item?.subTitle} />

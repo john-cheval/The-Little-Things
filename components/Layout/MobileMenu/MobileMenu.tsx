@@ -19,24 +19,36 @@ import { IoMenuSharp } from 'react-icons/io5'
 import { MdOutlineInterests } from 'react-icons/md'
 import { useCustomerQuery, UseCustomerValidateTokenDocument } from '@graphcommerce/magento-customer'
 import { MenuDrawer } from './MenuDrawer'
+import ShopMenuDrawer from './ShopMenuDrawer'
+import { ShopDrawer } from './ShopDrawer'
 
 
 export function MobileMenu() {
   const [openDrawer, setOpenDrawer] = useState(false)
+  const [openShopDrawer, setOpenShopDrawer] = useState(false)
+
   const customerEmailQuery = useCustomerQuery(UseCustomerValidateTokenDocument)
   const { email } = customerEmailQuery.data?.customer ?? {}
-  //  const [openshopMenu, setOpenShopMenu] = useState(false)
   const router = useRouter()
   const currentPath = router?.pathname
 
 
   const handleMoreMenuOpen = () => {
     setOpenDrawer(!openDrawer)
+    setOpenShopDrawer(false)
+  }
+
+  const handleShopMenuOpen = () => {
+    setOpenShopDrawer(!openShopDrawer)
+    setOpenDrawer(false)
   }
 
   const handleCloseAllOtherPopups = () => {
     setOpenDrawer(false)
+    setOpenShopDrawer(false)
   }
+
+
 
   const cartEnabled = useCartEnabled()
   const shouldLoginToContinue = useCartShouldLoginToContinue()
@@ -60,7 +72,7 @@ export function MobileMenu() {
           justifyContent: 'space-between',
           columnGap: '20px',
           position: 'fixed',
-          bottom: 0,
+          bottom: '-1px',
           left: 0,
           zIndex: '999999',
           alignItems: 'center',
@@ -84,21 +96,22 @@ export function MobileMenu() {
           </Box>
         </Link>
 
-        <Link href='/shop' onClick={handleCloseAllOtherPopups}>
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              rowGap: '6px',
-              alignItems: 'center',
-              cursor: 'pointer',
-              color: router?.asPath === '/shop' ? '#D90F13' : '#1C1B1F',
-            }}
-          >
-            <MdOutlineInterests size={20} />
-            <Typography sx={{ fontSize: { xs: '15px', md: '16px' } }}>Shop</Typography>
-          </Box>
-        </Link>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            rowGap: '6px',
+            alignItems: 'center',
+            cursor: 'pointer',
+            // color: router?.asPath === '/shop' ? '#D90F13' : '#1C1B1F',
+          }}
+          onClick={handleShopMenuOpen}
+        >
+          <MdOutlineInterests size={20} />
+          <Typography sx={{ fontSize: { xs: '15px', md: '16px' } }}>Shop</Typography>
+        </Box>
+
 
         <Link href='/cart' onClick={handleCloseAllOtherPopups}>
           <Box>
@@ -171,19 +184,18 @@ export function MobileMenu() {
 
       {/* moreMenu */}
       <AnimatePresence>
-        {openDrawer && <MenuDrawer setIsOpen={setOpenDrawer} />}
+        {openDrawer && <MenuDrawer
+          closeAllPopups={handleCloseAllOtherPopups}
+        // isMoreMenu
+        />}
       </AnimatePresence>
 
-      {/* Shop Menu 
+      {/* Shop Menu */}
       <AnimatePresence>
-        {openshopMenu && (
-          <ShopMenuDrawer
-            isOpen={openshopMenu}
-            setIsOpen={setOpenShopMenu}
-            shopMenu={ShopCategories}
-          />
-        )}
-      </AnimatePresence>*/}
+        {openShopDrawer && <ShopDrawer
+          closeAllPopups={handleCloseAllOtherPopups}
+        />}
+      </AnimatePresence>
     </>
   )
 }
