@@ -1782,7 +1782,7 @@ index 68f7cab..1e678e3 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
-index 0b9f236..957cbdb 100644
+index 0b9f236..d99ed71 100644
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 @@ -1,12 +1,12 @@
@@ -1822,7 +1822,7 @@ index 0b9f236..957cbdb 100644
    onClick?: (
      event: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>,
      item: ProductListItemFragment,
-@@ -87,64 +94,139 @@ export function ProductListItemReal(props: ProductProps) {
+@@ -87,64 +94,143 @@ export function ProductListItemReal(props: ProductProps) {
      sx = [],
      onClick,
      slotProps = {},
@@ -1963,6 +1963,10 @@ index 0b9f236..957cbdb 100644
 +              border: 'none',
 +              justifyContent: 'start',
 +              textAlign: 'center',
++              transition: 'all 0.3s ease-in-out',
++              '&:hover': {
++                background: 'linear-gradient(90deg, #73080a 45%, #d90f13 100%) !important',
++              },
 +              '&.MuiLoadingButton-root': {
 +                minHeight: '50px',
 +                '& .MuiCircularProgress-root': {

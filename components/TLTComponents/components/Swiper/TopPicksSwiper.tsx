@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Link, Typography } from '@mui/material';
 import { Image } from '@graphcommerce/image'
 import { useRef } from 'react'
 import type SwiperCore from 'swiper'
@@ -6,6 +6,7 @@ import { Navigation } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import crownImage from '../../assets/Home/crown.svg'
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from 'react-icons/md';
+// import Image from 'next/image';
 
 
 const prevButtonClass = 'swiper-top-pick-prev';
@@ -98,15 +99,24 @@ export function TopPickSwiper({ productList }) {
               position: 'relative',
               // overflowY: 'visible',
             }}>
-              <Box sx={{
+              <Link href={`/${item?.url_key}`} sx={{
                 position: 'relative',
+                cursor: 'pointer',
+                textDecoration: 'none',
+
               }}>
                 <Box component='div' className='top-picks gradient-border' sx={{
                   marginTop: { xs: '40px', lg: '50px' },
                   backdropFilter: { xs: 'blur(3.75px)', md: 'none' },
                   position: 'realtive',
                 }} >
-                  <Image src={item?.small_image?.url} alt={item?.name} width={250} height={150} />
+                  <Image src={item?.small_image?.url} alt={item?.name} width={250} height={150}
+                  // style={{
+                  //   width: '100%',
+                  //   height: 'auto',
+                  //   objectFit: 'cover',
+                  // }} 
+                  />
 
                   <Typography
                     sx={{
@@ -144,7 +154,7 @@ export function TopPickSwiper({ productList }) {
                 </Typography>
                 <Box sx={{
                   position: 'absolute',
-                  top: { xs: '-50px', md: firsttThreeCards ? '-40px' : '-20px', lg: firsttThreeCards ? '-50px' : '-30px' },
+                  top: { xs: '-50px', md: firsttThreeCards ? '0px' : '20px', lg: firsttThreeCards ? '0px' : '20px' },
                   left: '50%',
                   transform: 'translateX(-50%)',
                   display: { xs: 'none', md: 'block' },
@@ -177,7 +187,7 @@ export function TopPickSwiper({ productList }) {
 
                   }}>{index + 1}</Typography>
                 </Box>
-              </Box>
+              </Link>
             </SwiperSlide>
           )
         })}
