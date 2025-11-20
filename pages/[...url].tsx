@@ -122,6 +122,7 @@ function CategoryPage(props: CategoryProps) {
                   top: '20%',
                   right: '0',
                   zIndex: 99999999,
+                  display: 'none',
 
                   '& .MuiButtonBase-root': {
                     backgroundColor: '#7B1316',
@@ -147,6 +148,7 @@ function CategoryPage(props: CategoryProps) {
 
                   '& .sidebar_chip': {
                     padding: '5px',
+                    display: 'none',
                     '& .MuiTypography-root': {
                       color: '#fff',
                       fontSize: { xs: '15px', sm: '16px' },

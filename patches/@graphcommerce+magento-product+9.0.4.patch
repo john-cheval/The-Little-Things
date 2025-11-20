@@ -10,7 +10,7 @@ index be7f746..82e0f7c 100644
 +  new_to_date
  }
 diff --git a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx
-index 6ae6263..e5e8b03 100644
+index 6ae6263..81f3118 100644
 --- a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartButton.tsx
 @@ -1,11 +1,21 @@
@@ -96,7 +96,7 @@ index 6ae6263..e5e8b03 100644
 +          {...action}
 +          disabled={disabled || loading}
 +        >
-+           {loading ? (
++          {loading ? (
 +            <CircularProgress color='inherit' size={24} />
 +          ) : (
 +            children ? (
@@ -113,7 +113,7 @@ index 6ae6263..e5e8b03 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
-index 2050980..a75df8d 100644
+index 2050980..2bcac84 100644
 --- a/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/AddProductsToCart/AddProductsToCartFab.tsx
 @@ -2,18 +2,23 @@ import { useCartEnabled } from '@graphcommerce/magento-cart'
@@ -185,7 +185,7 @@ index 2050980..a75df8d 100644
 +            textAlign: 'inherit',
 +            width: 'fit-content',
 +            '&:hover': {
-+              background: 'transparent'
++              background: 'transparent',
 +            }
 +          }}> {action.loading ? 'Adding' : 'Cart'}   <Box
 +            component="span"
@@ -1782,7 +1782,7 @@ index 68f7cab..1e678e3 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
-index 0b9f236..d99ed71 100644
+index 0b9f236..53bee74 100644
 --- a/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 +++ b/node_modules/@graphcommerce/magento-product/components/ProductListItem/ProductListItem.tsx
 @@ -1,12 +1,12 @@
@@ -1822,7 +1822,7 @@ index 0b9f236..d99ed71 100644
    onClick?: (
      event: React.MouseEvent<HTMLAnchorElement | HTMLDivElement>,
      item: ProductListItemFragment,
-@@ -87,64 +94,143 @@ export function ProductListItemReal(props: ProductProps) {
+@@ -87,64 +94,154 @@ export function ProductListItemReal(props: ProductProps) {
      sx = [],
      onClick,
      slotProps = {},
@@ -1955,17 +1955,28 @@ index 0b9f236..d99ed71 100644
 +        <Box component='div' sx={{ marginTop: '10px' }}>
 +          <AddProductsToCartButton
 +            sx={{
-+              background: 'linear-gradient(90deg, #d90f13 0%, #73080a 100%) !important',
++              background: (theme: any) => theme.palette.custom?.tltMain,
 +              borderRadius: '3px',
 +              padding: '5px',
 +              display: 'flex',
 +              width: '100%',
-+              border: 'none',
++              // border: 'none',
 +              justifyContent: 'start',
 +              textAlign: 'center',
 +              transition: 'all 0.3s ease-in-out',
++              border: (theme: any) => ` 1px solid ${theme.palette.custom?.tltMain}`,
 +              '&:hover': {
-+                background: 'linear-gradient(90deg, #73080a 45%, #d90f13 100%) !important',
++                background: 'transparent !important',
++                '& .addTocartText': {
++                  color: (theme: any) => `${theme.palette.custom?.tltMain} !important`,
++                },
++                '& button': {
++                  border: (theme: any) => ` 1px solid ${theme.palette.custom?.tltMain} !important`,
++                  backgroundColor: 'transparent !important',
++                  // '& svg': {
++                  //   left: '8px'
++                  // }
++                }
 +              },
 +              '&.MuiLoadingButton-root': {
 +                minHeight: '50px',
@@ -1997,7 +2008,7 @@ index 0b9f236..d99ed71 100644
 +                '& svg': {
 +                  fontSize: '30px',
 +                  stroke: 'unset !important',
-+                  left: { xs: '6px' },
++                  left: { xs: '8px' },
 +                  top: { xs: '5px', md: '4px' },
 +                  position: 'relative',
 +                },

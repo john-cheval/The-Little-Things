@@ -52,7 +52,9 @@ export function TLTHomeSectionThree() {
 
         {homeSctionThree?.map((item, index) => (
           <SwiperSlide key={`index-${index + 1}`}>
-            <Link href={`/${item?.href}`} className="offer-container">
+            <Link href={`/${item?.href}`} className="offer-container" sx={{
+              textDecoration: 'none',
+            }}>
               <p>{item?.title}</p>
               {/* <img src="{{media u rl=.renditions/catalog/category/Pages/Home/popmart.png}}" alt="image1" /> */}
               <Image src={item?.image} alt={item?.title} />

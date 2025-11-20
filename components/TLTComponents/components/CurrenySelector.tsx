@@ -2,9 +2,16 @@ import { styled } from '@mui/material/styles';
 import { FormControl, InputLabel, MenuItem, Select, Box } from '@mui/material';
 import { useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';
-import France from '../../../constants/images/flags/france.png'
-import Allemagne from '../../../constants/images/flags/germany.png';
+// import France from '../../../constants/images/flags/france.png'
+// import Allemagne from '../../../constants/images/flags/germany.png';
 import Suisse from '../../../constants/images/flags/switzerland.png';
+import unitedStates from '../../../constants/images/flags/united-states.png';
+import argentina from '../../../constants/images/flags/ar.svg';
+import unitedArabEmirates from '../../../constants/images/flags/ae.svg';
+import india from '../../../constants/images/flags/in.svg';
+
+
+
 
 
 
@@ -17,22 +24,35 @@ type CountryOption = {
 
 const countries: CountryOption[] = [
   {
-    label: 'France',
-    src: France,
+    label: 'ae',
+    src: unitedArabEmirates,
     link: '" "',
-    value: 'FR',
+    value: 'AED',
   },
   {
-    label: ' Allemagne',
-    src: Allemagne,
-    link: ' ',
-    value: 'DE',
+    label: 'inr',
+    src: india,
+    link: '" "',
+    value: 'INR',
   },
+  {
+    label: 'argentina',
+    src: argentina,
+    link: '" "',
+    value: 'ARS',
+  },
+
   {
     label: 'Suisse',
     src: Suisse,
     link: ' ',
-    value: 'CH',
+    value: 'CHF',
+  },
+  {
+    label: 'unitedStates',
+    src: unitedStates,
+    link: ' ',
+    value: 'USD',
   },
 ];
 

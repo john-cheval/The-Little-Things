@@ -2131,7 +2131,7 @@ input[type='number'] {
   color: #fff;
   -webkit-text-stroke-width: 1.5px;
   -webkit-text-stroke-color: #b4001a;
-  font-size: 18px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: 120%;
@@ -3120,14 +3120,18 @@ input[type='number'] {
   }
   .linkButton {
     font-size: 16px;
-    padding: 5px 20px;
+    padding: 9px 20px 5px;
+  }
+  .linkButton:hover {
+    background-color: #000;
+    color: #fff;
   }
   .product-title,
   .ProductListPrice-finalPrice {
     font-size: 18px;
   }
   .unlock-title {
-    font-size: 25px;
+    font-size: 30px;
   }
   .home-cta-wrapper {
     margin-block: 25px;
