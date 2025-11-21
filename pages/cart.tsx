@@ -3,7 +3,6 @@ import type { PageOptions } from '@graphcommerce/framer-next-pages'
 import {
   ApolloCartErrorAlert,
   CartTotals,
-  EmptyCart,
   getCartDisabled,
   useCartQuery,
 } from '@graphcommerce/magento-cart'
@@ -13,6 +12,7 @@ import { CartCrosssellsScroller, CartItemsActionCards } from '@graphcommerce/mag
 import { PageMeta, StoreConfigDocument } from '@graphcommerce/magento-store'
 import type { GetStaticProps } from '@graphcommerce/next-ui'
 import {
+  Button,
   FullPageMessage,
   LayoutOverlayHeader,
   LayoutTitle,
@@ -26,6 +26,7 @@ import { LayoutOverlay, productListRenderer } from '../components'
 import { graphqlSharedClient } from '../lib/graphql/graphqlSsrClient'
 import { iconDelete } from '../plugins/icons'
 import { useClearCart } from '../hooks/useClearCart'
+import { IoBagHandleOutline } from 'react-icons/io5'
 
 type Props = Record<string, unknown>
 type GetPageStaticProps = GetStaticProps<LayoutOverlayProps, Props>
@@ -317,43 +318,57 @@ function CartPage() {
             </OverlayStickyBottom>
           </>
         ) : (
-          <EmptyCart
+          <FullPageMessage
             sx={{
-              minHeight: '100vh',
-              margin: 'auto',
-              display: 'flex',
-              '& .FullPageMessage-subject': {
-                marginTop: '10px',
-                '& .MuiTypography-h3': {
-                  color: (theme) => theme.palette.custom.tltMain,
-                  marginBottom: 0,
+              '& .MuiContainer-root': {
+                // height: '100%',
+
+                '& .FullPageMessage-iconWrapper ': {
+                  position: 'relative',
+                  top: '15px',
+                  '& svg': {
+                    color: (theme) => theme.palette.custom.tltSecondary,
+                    fontSize: { xs: '24px', md: '30px' },
+                    stroke: (theme) => theme.palette.custom.tltSecondary,
+                  },
                 },
-                '& .MuiBox-root': {
-                  color: (theme) => theme.palette.custom.textDarkAlter,
+                '& .FullPageMessage-subject': {
+                  '& .MuiTypography-h3': {
+                    color: (theme) => theme.palette.custom.tltMain,
+                  },
+                  '& .MuiBox-root': {
+                    color: (theme) => theme.palette.custom.textDarkAlter,
+                  },
                 },
-              },
-              '&  .FullPageMessage-button .MuiButtonBase-root': {
-                backgroundColor: (theme: any) => theme.palette.custom.tltSecondary,
-                borderRadius: '3px',
-                color: 'white',
-                boxShadow: 'none !important',
-                border: (theme) => `1px solid ${theme.palette.custom.tltSecondary}`,
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                  color: (theme) => theme.palette.custom.tltSecondary,
+                '& .FullPageMessage-button ': {
+                  '& .MuiButtonBase-root': {
+                    boxShadow: 'none',
+                    borderRadius: '3px',
+                    backgroundColor: (theme) => theme.palette.custom.tltSecondary,
+                    color: '#fff',
+                    border: (theme) => `1px solid ${theme.palette.custom.tltSecondary}`,
+                    transition: 'all 0.4s ease-in-out',
+                    '&:hover': {
+                      backgroundColor: 'transparent',
+                      color: (theme) => theme.palette.custom.tltSecondary,
+                    },
+                  },
                 },
-              },
-              '& svg': {
-                fontSize: '40px',
-                stroke: 'unset !important',
               },
             }}
-            disableMargin
+            title={<Trans id='Your Cart is empty' />}
+            icon={<IoBagHandleOutline color='#FF7300' size='30px' />}
+            button={
+              <Button href='/' variant='pill' color='primary' size='large'>
+                <Trans id='Continue shopping' />
+              </Button>
+            }
           >
-            {error && <ApolloCartErrorAlert error={error} />}
-          </EmptyCart>
-        )}
-      </WaitForQueries>
+            <Trans id='Discover our collection and add items to your wishlist!' />
+          </FullPageMessage >
+        )
+        }
+      </WaitForQueries >
     </>
   )
 }

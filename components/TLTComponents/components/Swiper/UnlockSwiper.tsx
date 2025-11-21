@@ -35,7 +35,7 @@ export function UnlockSwiper({ swiperData }: SwiperProps) {
     <Swiper onSwiper={(swiper) => {
       swiperRef.current = swiper
     }}
-      modules={[Autoplay]}
+      // modules={[Autoplay]}
       loop
       autoplay={{
         delay: 3000,

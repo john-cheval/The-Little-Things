@@ -95,6 +95,7 @@ export function InnerTop(props: InnerTopProps) {
                 overflowX: 'auto',
                 whiteSpace: 'nowrap',
                 paddingBottom: '4px',
+                justifyContent: { xs: 'flex-start', md: 'center' },
                 '&::-webkit-scrollbar': {
                   display: 'none',
                 },
@@ -242,7 +243,7 @@ export function InnerTop(props: InnerTopProps) {
             </Box>
 
 
-            {/* {count && count > 0 && (
+            {count && count > 0 && (
               <Box sx={{ display: { xs: 'none', md: 'block' } }}>
                 {params && products?.items && filterTypes && (
                   <ProductFiltersProSortSection
@@ -308,29 +309,12 @@ export function InnerTop(props: InnerTopProps) {
 
                 )}
               </Box>
-            )} */}
+            )}
 
 
           </Box>
         )}
 
-        {/* {responsiveTitle && (
-          <Typography
-            component='h2'
-            variant='h2'
-            sx={{
-              display: { xs: 'block', lg: 'none' },
-              borderBottom: {
-                xs: (theme) => `1px solid ${theme.palette.custom.borderSecondary}`,
-                lg: 'none',
-              },
-              marginBottom: { xs: '0', md: '15px', lg: '0' },
-              paddingBottom: { xs: '0', md: '15px', lg: '0' },
-            }}
-          >
-            {responsiveTitle}
-          </Typography>
-        )} */}
       </Box>
     </Box>
   )

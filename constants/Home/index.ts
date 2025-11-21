@@ -205,17 +205,21 @@ export const homeSctionThree = [
   {
     image: image1,
     title: 'Pop Mart',
+    href: '#',
   },
   {
     image: image2,
     title: 'Keep Shopping',
+    href: '#',
   },
   {
     image: image3,
     title: 'You May Like',
+    href: '#',
   },
   {
     image: image4,
     title: '50% off Products',
+    href: '#',
   },
 ]

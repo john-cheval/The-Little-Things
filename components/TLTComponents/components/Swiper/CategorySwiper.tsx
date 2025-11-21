@@ -1,9 +1,10 @@
-import { Image } from '@graphcommerce/image'
+// import { Image } from '@graphcommerce/image'
 import { useRef } from 'react'
 import type SwiperCore from 'swiper'
 import { Autoplay } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Box, Link } from '@mui/material'
+import Image from 'next/image'
 
 type SwiperProps = {
   swiperData: any
@@ -58,7 +59,7 @@ export function CategorySwiper({ swiperData }: SwiperProps) {
         item?.image && (
           <SwiperSlide key={item?.uid || index + 1}>
             <Link href={`/${item?.url_path}`}>
-              <Image src={item?.image} alt={item?.name} width={135} height={120} sx={{
+              <Image src={item?.image} alt={item?.name} width={135} height={120} style={{
                 width: '100%',
                 height: 'auto',
                 objectFit: 'cover',

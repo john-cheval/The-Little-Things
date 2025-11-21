@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Link } from '@mui/material';
 import { useRef } from 'react'
 import type SwiperCore from 'swiper'
 import { Autoplay } from 'swiper/modules'
@@ -52,11 +52,13 @@ export function TLTHomeSectionThree() {
 
         {homeSctionThree?.map((item, index) => (
           <SwiperSlide key={`index-${index + 1}`}>
-            <Box className="offer-container">
+            <Link href={`/${item?.href}`} className="offer-container" sx={{
+              textDecoration: 'none',
+            }}>
               <p>{item?.title}</p>
               {/* <img src="{{media u rl=.renditions/catalog/category/Pages/Home/popmart.png}}" alt="image1" /> */}
               <Image src={item?.image} alt={item?.title} />
-            </Box>
+            </Link>
           </SwiperSlide>
         ))}
       </Swiper>
