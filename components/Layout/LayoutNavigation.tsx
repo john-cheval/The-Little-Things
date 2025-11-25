@@ -150,8 +150,8 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
             sx={{
               display: { xs: ischeckout ? 'none' : 'flex', md: 'flex' },
               flexDirection: 'column',
-              paddingTop: { xs: isPaddingTop ? '15px' : '0', md: 0 },
-              paddingBottom: { xs: isPaddingTop ? '20px' : '0', md: 0 },
+              paddingTop: { xs: isPaddingTop ? '0' : '0', md: 0 },
+              paddingBottom: { xs: isPaddingTop ? '10px' : '0', md: 0 },
               // paddingBlock: { xs: !isPaddingTop ? '20px' : 0, md: 0 },
             }}>
             <Box sx={{
@@ -163,7 +163,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
               // borderBottom: theme => `1px solid ${theme.palette.custom.tltBorder1}`,
               borderBottom: { xs: 0, lg: theme => `1px solid ${theme.palette.custom.tltBorder1}` },
               transition: 'all 0.4s ease-in-out',
-              paddingBottom: { xs: '10px', md: 0 },
+              // paddingBottom: { xs: '10px', md: 0 },
             }}>
               {(isStaticPage && isStaticPage?.length > 0 && isSmallScreen) ? (
                 <Box

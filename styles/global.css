@@ -2169,7 +2169,7 @@ ul.about-product-content li::before {
 /* unlock section */
 .unlock-title {
   color: #fff;
-  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: #b4001a;
   font-size: 20px;
   font-style: normal;
@@ -3191,7 +3191,7 @@ ul.about-product-content li::before {
     font-size: 18px;
   }
   .unlock-title {
-    font-size: 30px;
+    font-size: 34px;
   }
   .home-cta-wrapper {
     margin-block: 25px;
