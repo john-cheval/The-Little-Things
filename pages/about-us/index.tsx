@@ -7,6 +7,10 @@ import { cmsMultipleBlocksDocument } from '../../graphql/CmsMultipleBlocks.gql'
 import { graphqlSharedClient, graphqlSsrClient } from '../../lib/graphql/graphqlSsrClient'
 import { About } from '../../components/About'
 import { decodeHtmlEntities } from '../../utils/htmlUtils'
+import tlt from "./tlt.png"
+import hulk from "./imageHulk.png"
+import ironman from "./about_ironman.png"
+import Image from 'next/image'
 
 type GetPageStaticProps = GetStaticProps<LayoutNavigationProps>
 export type CmsBlocksProps = { cmsBlocks?: any; }
@@ -26,6 +30,7 @@ function AboutPage(props: CmsBlocksProps) {
       />
 
       <About content={decodedAboutContent} />
+
     </>
   )
 }

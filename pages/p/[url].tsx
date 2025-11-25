@@ -33,7 +33,7 @@ import { ProductWishlistIconButton } from '@graphcommerce/magento-wishlist'
 import type { GetStaticProps } from '@graphcommerce/next-ui'
 import { OverlayStickyBottom } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
-import { Box, Button, Link, Typography } from '@mui/material'
+import { Box, Button, Link, Modal, Typography } from '@mui/material'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import type { GetStaticPaths } from 'next'
 import { useEffect, useState } from 'react'
@@ -53,6 +53,7 @@ import tamaraImage from './assets/tamara.png'
 import Image from 'next/image'
 import { IoBagHandleOutline } from 'react-icons/io5'
 import { HomeProductSwiper } from '../../components/TLTComponents/components/Swiper/HomeProductSwiper'
+import { ProductDetails } from '../../components/TLTComponents/ProdutDetails'
 // import { InnerTop } from '../../components/shared/Inner/Innertop'
 // import { useRouter } from 'next/router'
 // import { linkStyle } from '../../components/shared/swiper/ProductSwiper'
@@ -75,6 +76,8 @@ type GetPageStaticProps = GetStaticProps<LayoutNavigationProps, Props, RouteProp
 
 function ProductPage(props: Props) {
   const { defaultValues, urlKey, cmsBlocks } = props
+  const [open, setOpen] = useState(false);
+
   const weOfferContent = cmsBlocks?.find((block) => block.identifier === 'detail-page-we-offer')
   const paymentMethodContent = cmsBlocks?.find((block) => block.identifier === 'product-detail-payment-method')
   const alsoMayLikeContent = cmsBlocks?.find((block) => block.identifier === 'you-may-also-like')
@@ -114,10 +117,6 @@ function ProductPage(props: Props) {
   const isSmallestScreen = useMediaQuery('(max-width:450px)')
 
 
-
-
-
-
   const fetchProducts = async (categoryId) => {
     setIsLoading(true)
 
@@ -151,7 +150,12 @@ function ProductPage(props: Props) {
 
   const matchedCartItem = cartItems?.find((cart) => cart?.product?.sku === product?.sku)
 
-  // console.log(alsoLikeProducts, '==>this is the alsoLikeProducts')
+  const handleOpen = (title) => {
+    console.log(title, '==>title')
+    setOpen(true);
+  }
+
+  const handleClose = () => setOpen(false);
 
   return (
     <>
@@ -482,11 +486,14 @@ function ProductPage(props: Props) {
                     </Typography>
 
                     {/* {product?.rating_summary > 0 && ( */}
-                    <Box sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '5px',
-                    }}>
+                    <Link
+                      href='#reviews' sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '5px',
+                        cursor: 'pointer',
+                        textDecoration: 'none',
+                      }}>
                       <IoMdStar color='#D90F13' size={20} />
                       <Typography
                         component='p'
@@ -500,7 +507,7 @@ function ProductPage(props: Props) {
                         <span>{Number(product?.rating_summary || 4.0).toFixed(1)}</span>
                         <span>({product?.rating_summary || 17}  Reviews)</span>
                       </Typography>
-                    </Box>
+                    </Link>
                     {/* )} */}
                   </Box>
                 )}
@@ -566,7 +573,19 @@ function ProductPage(props: Props) {
 
                     }}>
                     <Image src={tabbyImage} alt='tabbyImage' />
-                    Split your purchase into monthly payments. Learn more
+                    <Typography component='p'>Split your purchase into monthly payments.
+                      <Typography
+                        component='span'
+                        onClick={() => handleOpen('Tabby')}
+                        sx={{
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease-in-out',
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}>Learn more</Typography></Typography>
+
+
                   </Typography>
                   <Typography
                     sx={{
@@ -582,7 +601,20 @@ function ProductPage(props: Props) {
 
                     }}>
                     <Image src={tamaraImage} alt='tamaraImage' />
-                    Or split in 4 payments of AED 249.75 No late fees, Sharia compliant! Learn more
+                    <Typography component='p'>
+                      Or split in 4 payments of AED 249.75 No late fees, Sharia compliant!
+                      <Typography
+                        component='span'
+                        onClick={() => handleOpen('Tamara')}
+                        sx={{
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease-in-out',
+                          '&:hover': {
+                            textDecoration: 'underline',
+                          },
+                        }}>Learn more</Typography>
+                    </Typography>
+
                   </Typography>
                 </Box>
 
@@ -798,6 +830,8 @@ function ProductPage(props: Props) {
 
                 <div dangerouslySetInnerHTML={{ __html: decodedpaymentMethodContent }} />
               </Box>
+              <ProductDetails />
+
             </Box>
           </ProductPageGallery>
         </AddProductsToCartForm>
@@ -828,6 +862,40 @@ function ProductPage(props: Props) {
             </Box>
           </Box>
         )}
+
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          slotProps={{
+            backdrop: {
+              sx: {
+                backgroundColor: 'rgba(0,0,0,0.9)',
+              },
+            },
+          }}
+        >
+          <Box sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: 400,
+            bgcolor: 'background.paper',
+            border: '1px solid #000',
+            boxShadow: 24,
+            p: 4,
+            borderRadius: '8px',
+          }}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Text in a modal
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            </Typography>
+          </Box>
+        </Modal>
       </PrivateQueryMaskProvider>
       {/* <AnimatePresence>
         {openContactForm && <CustomisedCakeForm key="custom-cake-form" setIsOpen={setOpenContactForm} product={product?.sku} uid={product?.uid} />}

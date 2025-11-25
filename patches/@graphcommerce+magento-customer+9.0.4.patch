@@ -767,7 +767,7 @@ index 93fd266..6012393 100644
    )
  }
 diff --git a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
-index 7bebe6d..8b9eff4 100644
+index 7bebe6d..0ace0e7 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
 +++ b/node_modules/@graphcommerce/magento-customer/components/AddressFields/AddressCountryRegion.tsx
 @@ -4,9 +4,12 @@ import { useQuery } from '@graphcommerce/graphql'
@@ -815,7 +815,7 @@ index 7bebe6d..8b9eff4 100644
    if (loading) {
      return (
        <FormRow>
-@@ -58,40 +71,169 @@ export function AddressCountryRegion<
+@@ -58,40 +71,167 @@ export function AddressCountryRegion<
            name={name.countryCode}
            showValid
            InputProps={{ readOnly }}
@@ -940,75 +940,73 @@ index 7bebe6d..8b9eff4 100644
        )}
 -    </FormRow>
 +
-+
-+
-+      <FormRow sx={{
-+        '& .MuiInputLabel-root.MuiInputLabel-animated': {
-+          padding: '0 6px',
-+        },
-+        '& .MuiOutlinedInput-root .MuiSelect-icon': {
-+          color: (theme: any) => 'red',
-+        },
-+        '& .MuiOutlinedInput-root .InputCheckmark': {
-+          display: 'none'
-+        }
-+      }}>
-+        {regionList.length > 0 && (
-+          <SelectElement
-+            control={control}
-+            name={name.regionId}
-+            variant='outlined'
-+            label={<Trans id='Region' />}
-+            required
-+            showValid
-+            InputProps={{ readOnly }}
-+            options={regionList.map((region) => ({ ...region, label: region.name }))}
-+            SelectProps={{
-+              MenuProps: {
-+                PaperProps: {
-+                  sx: {
-+                    backgroundColor: (theme: any) => theme.palette.custom.border,
-+                    color: (theme: any) => theme.palette.custom.main,
-+                    "&::-webkit-scrollbar": {
-+                      width: '6px',
-+                      borderRadius: 0,
-+                      backgroundColor: '#ebebeb',
-+                    },
-+                    '&::-webkit-scrollbar-track': {
-+                      baxkgroundColor: '#ebebeb',
-+                      borderRadius: '0px'
-+                    },
-+                    "&::-webkit-scrollbar-thumb": {
-+                      backgroundColor: (theme: any) => theme.palette.custom.tltSecondary,
-+                      borderRadius: '0px'
-+                    },
-+                    // scrollbarWidth:'none',
-+                    // msOverflowStyle:'none',
-+                    '& .MuiMenuItem-root': {
++      {isRegion && (
++        <FormRow sx={{
++          '& .MuiInputLabel-root.MuiInputLabel-animated': {
++            padding: '0 6px',
++          },
++          '& .MuiOutlinedInput-root .MuiSelect-icon': {
++            color: (theme: any) => 'red',
++          },
++          '& .MuiOutlinedInput-root .InputCheckmark': {
++            display: 'none'
++          }
++        }}>
++          {regionList.length > 0 && (
++            <SelectElement
++              control={control}
++              name={name.regionId}
++              variant='outlined'
++              label={<Trans id='Region' />}
++              required
++              showValid
++              InputProps={{ readOnly }}
++              options={regionList.map((region) => ({ ...region, label: region.name }))}
++              SelectProps={{
++                MenuProps: {
++                  PaperProps: {
++                    sx: {
++                      backgroundColor: (theme: any) => theme.palette.custom.border,
 +                      color: (theme: any) => theme.palette.custom.main,
-+                      transition: 'background-color 0.3s ease',
-+                      '&:hover': {
-+                        backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                      "&::-webkit-scrollbar": {
++                        width: '6px',
++                        borderRadius: 0,
++                        backgroundColor: '#ebebeb',
 +                      },
-+                      '&.Mui-selected': {
-+                        backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                      '&::-webkit-scrollbar-track': {
++                        baxkgroundColor: '#ebebeb',
++                        borderRadius: '0px'
 +                      },
++                      "&::-webkit-scrollbar-thumb": {
++                        backgroundColor: (theme: any) => theme.palette.custom.tltSecondary,
++                        borderRadius: '0px'
++                      },
++                      // scrollbarWidth:'none',
++                      // msOverflowStyle:'none',
++                      '& .MuiMenuItem-root': {
++                        color: (theme: any) => theme.palette.custom.main,
++                        transition: 'background-color 0.3s ease',
++                        '&:hover': {
++                          backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                        },
++                        '&.Mui-selected': {
++                          backgroundColor: (theme: any) => theme.palette.custom.wishlistColor
++                        },
++                      }
 +                    }
 +                  }
 +                }
-+              }
-+            }}
-+            onChange={(value) => {
-+              form.setValue("regionId" as any, value as any)
-+            }}
-+          />
-+        )}
-+        <AddressCity {...props} />
++              }}
++              onChange={(value) => {
++                form.setValue("regionId" as any, value as any)
++              }}
++            />
++          )}
++          <AddressCity {...props} />
 +
 +
-+      </FormRow>
-+
-+
++        </FormRow>
++      )}
 +
 +    </>
    )
@@ -1757,10 +1755,10 @@ index 3cba4b8..9daef9f 100644
 + 
 \ No newline at end of file
 diff --git a/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx b/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
-index 24faf9f..55c21c7 100644
+index 24faf9f..777b450 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
 +++ b/node_modules/@graphcommerce/magento-customer/components/NameFields/NameFields.tsx
-@@ -43,23 +43,26 @@ export function NameFields(props: NameFieldProps) {
+@@ -43,12 +43,14 @@ export function NameFields(props: NameFieldProps) {
              name='prefix'
              label={<Trans id='Prefix' />}
              showValid
@@ -1777,28 +1775,21 @@ index 24faf9f..55c21c7 100644
          <TextFieldElement
            control={control}
            name='firstname'
-           required={required.firstname}
-           variant='outlined'
-           type='text'
--          label={<Trans id='First Name' />}
-+          label={<Trans id='Name' />}
+@@ -59,6 +61,7 @@ export function NameFields(props: NameFieldProps) {
            InputProps={{ readOnly }}
            showValid
          />
--        <TextFieldElement
 +
-+        {/* <TextFieldElement
+         <TextFieldElement
            control={control}
            name='lastname'
-           required={required.lastname}
-@@ -68,6 +71,18 @@ export function NameFields(props: NameFieldProps) {
-           label={<Trans id='Last Name' />}
+@@ -69,6 +72,18 @@ export function NameFields(props: NameFieldProps) {
            InputProps={{ readOnly }}
            showValid
-+        /> */}
+         />
 +
 +
-+        <TextFieldElement
++        {/* <TextFieldElement
 +          control={control}
 +          name='lastname'
 +          required={required.lastname}
@@ -1807,9 +1798,10 @@ index 24faf9f..55c21c7 100644
 +          label={<Trans id='Phone Number' />}
 +          InputProps={{ readOnly }}
 +          showValid
-         />
++        /> */}
        </FormRow>
      </>
+   )
 diff --git a/node_modules/@graphcommerce/magento-customer/components/NoOrdersFound/NoOrdersFound.tsx b/node_modules/@graphcommerce/magento-customer/components/NoOrdersFound/NoOrdersFound.tsx
 index 85cfe9f..356d87f 100644
 --- a/node_modules/@graphcommerce/magento-customer/components/NoOrdersFound/NoOrdersFound.tsx

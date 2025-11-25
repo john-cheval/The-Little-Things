@@ -171,7 +171,7 @@ export const ProductListLayoutSidebar = memoDeep((props: ProductListLayoutProps)
                 lg: isSearch ? '60px' : 0,
               },
               '& .ProductListItemsBase-root': {
-                gap: { xs: '20px', md: '20px' },
+                gap: { xs: '15px', md: '20px' },
                 gridTemplateColumns: {
                   xs: 'repeat(2, 1fr)',
                   sm: isSearch ? 'repeat(3, 1fr)' : 'repeat(2, 1fr)',

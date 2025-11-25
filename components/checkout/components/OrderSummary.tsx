@@ -45,7 +45,7 @@ export function OrderSummary({ orderData, error, IsItems }: OrderSummaryPropsTyp
           display: 'flex',
           flexDirection: 'column',
           height: '100%',
-          padding: { xs: '20px 20px', md: '37px' },
+          padding: { xs: '20px 20px' },
         }}
       >
         <Typography component='p'
