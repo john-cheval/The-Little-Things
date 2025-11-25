@@ -11,7 +11,7 @@ index 6f4add4..f5be44e 100644
    const cartShippingId =
      findCustomerAddressFromCartAddress(customerAddresses, cartShipping)?.id || null
 diff --git a/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx b/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
-index a128fe9..0a3a85f 100644
+index a128fe9..2f1d611 100644
 --- a/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
 +++ b/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
 @@ -1,6 +1,7 @@
@@ -199,8 +199,8 @@ index a128fe9..0a3a85f 100644
        <CompanyFields form={form} />
        <NameFields form={form} />
 +
-+      <AddressFields form={form} />
        <AddressFields form={form} />
++      {/* <AddressFields form={form} /> */}
  
 -      <FormRow>
 +      <FormRow

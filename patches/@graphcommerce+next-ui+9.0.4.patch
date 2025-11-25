@@ -760,7 +760,7 @@ index af23c02..22606ae 100644
 +});
 \ No newline at end of file
 diff --git a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx
-index 66a1d96..13adc5e 100644
+index 66a1d96..b02b182 100644
 --- a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx
 +++ b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeader.tsx
 @@ -10,7 +10,7 @@ import { LayoutHeaderContent } from './LayoutHeaderContent'
@@ -768,7 +768,7 @@ index 66a1d96..13adc5e 100644
  
  export type LayoutHeaderProps = FloatingProps &
 -  Omit<LayoutHeaderContentProps, 'left' | 'right'> &
-+  Omit<LayoutHeaderContentProps,  'right'> &
++  Omit<LayoutHeaderContentProps, 'right'> &
    Pick<BackProps, 'disableBackNavigation'> & {
      /**
       * Button to display on the left side of the title
@@ -776,11 +776,10 @@ index 66a1d96..13adc5e 100644
      hideMd = false,
      disableBackNavigation,
    } = props
--  const showBack = useShowBack() && !hideBackButton
 +
-+ const showBack = useShowBack() && !hideBackButton
+   const showBack = useShowBack() && !hideBackButton
    const showClose = useShowClose()
-+ // const showBack = true
++  // const showBack = true
 +
  
    const floatFallback = !children
@@ -792,9 +791,9 @@ index 66a1d96..13adc5e 100644
 -            '&.hideSm .LayoutHeaderContent-left': {
 -              display: 'none',
 -            },
-+           // '&.hideSm .LayoutHeaderContent-left': {
-+           //   display: 'none',
-+           // },
++            // '&.hideSm .LayoutHeaderContent-left': {
++            //   display: 'none',
++            // },
            },
  
            [theme.breakpoints.up('md')]: {
@@ -858,7 +857,7 @@ index d40b712..716a6b6 100644
      )
  
 diff --git a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
-index 41c917c..0cbedaf 100644
+index 41c917c..c8c8f98 100644
 --- a/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
 +++ b/node_modules/@graphcommerce/next-ui/Layout/components/LayoutHeaderContent.tsx
 @@ -116,20 +116,20 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
@@ -898,7 +897,7 @@ index 41c917c..0cbedaf 100644
                justifyContent: 'start',
              })}
            >
-@@ -168,16 +168,24 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+@@ -168,18 +168,33 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
          <Box
            className={classes.center}
            sx={(theme) => ({
@@ -929,8 +928,17 @@ index 41c917c..0cbedaf 100644
 +
              '&.scrolled': {
                opacity: 1,
++              // top: 0,
++              // position: 'relative',
++              height: '70px',
++              // backgroundColor: 'blue',
++              backgroundColor: '#fff',
++              alignItems: 'center',
++              paddingBlock: '20px',
                '& > *': { pointerEvents: 'all' },
-@@ -207,11 +215,14 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+             },
+ 
+@@ -207,11 +222,15 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
                pointerEvents: 'all',
                width: 'min-content',
              },
@@ -939,6 +947,7 @@ index 41c917c..0cbedaf 100644
 -            gap: theme.spacings.sm,
 -            gridArea: 'right',
 -            justifyContent: 'end',
++            display: { xs: 'none', md: 'block' },
 +            position: 'absolute',
 +            top: '10px',
 +            right: '20px',
@@ -950,7 +959,7 @@ index 41c917c..0cbedaf 100644
            })}
          >
            <MotionDiv layout={layout} layoutDependency={layoutDependency}>
-@@ -222,10 +233,10 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
+@@ -222,10 +241,10 @@ export function LayoutHeaderContent(props: LayoutHeaderContentProps) {
            <Box
              className={classes.divider}
              sx={(theme) => ({

@@ -392,7 +392,7 @@ const pageOptions: PageOptions<LayoutOverlayProps> = {
         height: '100%',
         minHeight: '100vh',
         '&.variantSmBottom': {
-          paddingTop: { xs: 'calc(46px * 2)', md: 0 },
+          // paddingTop: { xs: 'calc(46px * 2)', md: 0 },
         },
         position: 'relative',
         '& .LayoutOverlayBase-background': {
