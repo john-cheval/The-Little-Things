@@ -1,5 +1,3 @@
-// import { CheckboxElement, FormAutoSubmit } from '@graphcommerce/ecommerce-ui';
-// import { Trans } from '@lingui/macro';
 import { Box, Link, Typography } from '@mui/material';
 
 export function PickupLocations() {
@@ -120,19 +118,6 @@ export function PickupLocations() {
             </Typography>
           </Box>
         </Box>
-
-        {/* <FormAutoSubmit
-          // submit={submit}
-          control={form.control}
-          name={['postcode', 'countryCode', 'regionId', 'city']}
-        />
-        <CheckboxElement
-          // control={form.control}
-          name='saveInAddressBook'
-          label={<Trans>Text me with news and offers</Trans>}
-        />
-      </FormAutoSubmit> */}
-
       </Box>
     </Box >
   )

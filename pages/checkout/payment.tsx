@@ -26,11 +26,11 @@ import {
   FormActions,
   FullPageMessage,
   iconChevronRight,
-  iconId,
+  // iconId,
   IconSvg,
   LayoutHeader,
-  LayoutTitle,
-  Stepper,
+  // LayoutTitle,
+  // Stepper,
 } from '@graphcommerce/next-ui'
 import { i18n } from '@lingui/core'
 import { Trans } from '@lingui/react'
@@ -174,11 +174,16 @@ function PaymentPage() {
 
               <Typography
                 variant='h1'
+                className='main-heading'
                 sx={(theme) => ({
                   mt: theme.spacings.lg,
-                  mb: theme.spacings.sm,
+                  // mb: theme.spacings.md,
                   color: (theme) => theme.palette.custom.heading,
                   textAlign: 'center',
+                  marginInline: ' auto',
+                  marginBottom: '20px !important',
+                  width: '100% !important',
+
                 })}
               >
                 <Trans id='Payment method' />
@@ -201,17 +206,17 @@ function PaymentPage() {
                           '& .SectionHeader-left': {
                             fontSize: { xs: '15px', md: '16px' },
                             fontWeight: 700,
-                            color: (theme) => theme.palette.custom.main,
+                            color: (theme) => theme.palette.custom.dark,
                           },
                           '& .SectionHeader-right a': {
-                            color: (theme) => theme.palette.custom.main,
+                            color: (theme) => theme.palette.custom.dark,
                             cursor: 'pointer',
                             fontSize: { xs: '15px', md: '16px' },
                           },
                         },
                       },
                       '& .MuiTypography-body1': {
-                        color: (theme) => theme.palette.custom.main,
+                        color: (theme) => theme.palette.custom.dark,
                         fontSize: { xs: '15px', md: '16px' },
                         fontWeight: 400,
                       },

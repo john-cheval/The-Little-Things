@@ -16,11 +16,13 @@ import {
 import { DownloadableProductOptions } from '@graphcommerce/magento-product-downloadable'
 import { GroupedProducts } from '@graphcommerce/magento-product-grouped'
 import { isTypename } from '@graphcommerce/next-ui'
-import { Box, Typography } from '@mui/material'
+import { Box, IconButton, Popover, Tooltip, Typography } from '@mui/material'
 import { useWatch } from 'react-hook-form'
 import type { ProductPage2Query } from '../../graphql/ProductPage2.gql'
 import { fontSize } from '../theme'
 import { IoShareSocialOutline } from 'react-icons/io5'
+import { useState } from 'react'
+import { FaFacebook, FaLink, FaLinkedin, FaTwitter, FaWhatsapp } from 'react-icons/fa6'
 
 
 
@@ -30,6 +32,7 @@ export type AddProductsToCartViewProps = AddToCartItemSelector & {
 }
 
 export function AddProductsToCartView(props: AddProductsToCartViewProps) {
+  const [anchorEl, setAnchorEl] = useState(null);
 
   const { product, index = 0 } = props
   const cartEnabled = useCartEnabled()
@@ -72,6 +75,23 @@ export function AddProductsToCartView(props: AddProductsToCartViewProps) {
 
   // const customizableProduct = product?.categories && product?.categories?.length > 0 && product?.categories?.some((item) => item?.id === 11)
 
+  const url = typeof window !== 'undefined' ? window.location.href : '';
+
+  const handleOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'share-popover' : undefined;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(url);
+    handleClose();
+  };
   return (
     <>
       {isTypename(product, ['ConfigurableProduct']) && (
@@ -197,12 +217,14 @@ export function AddProductsToCartView(props: AddProductsToCartViewProps) {
                   </Box>
 
                   <Box
+                    onClick={handleOpen}
                     sx={{
                       borderRadius: '3px',
                       border: (theme: any) => `1px solid ${theme.palette.custom.tltBorder4}`,
                       display: 'flex',
                       alignItems: 'center',
                       padding: { xs: '8px 15px', md: '12px 15px' },
+                      cursor: 'pointer',
                     }}>
                     <Typography sx={{
                       color: (theme: any) => theme.palette.custom.tltSecondary,
@@ -216,6 +238,88 @@ export function AddProductsToCartView(props: AddProductsToCartViewProps) {
                       Share <IoShareSocialOutline />
                     </Typography>
                   </Box>
+
+                  <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'left',
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'left',
+                    }}
+                    sx={{
+                      '& .MuiPaper-root': {
+                        padding: '10px 15px',
+                        borderRadius: '10px',
+                      },
+                    }}
+                  >
+                    <Box sx={{ display: 'flex', gap: 2 }}>
+                      <Tooltip title="Facebook">
+                        <IconButton
+                          onClick={() =>
+                            window.open(
+                              `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+                              '_blank',
+                            )
+                          }
+                        >
+                          <FaFacebook color="#1877F2" />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="WhatsApp">
+                        <IconButton
+                          onClick={() =>
+                            window.open(
+                              `https://wa.me/?text=${encodeURIComponent(url)}`,
+                              '_blank',
+                            )
+                          }
+                        >
+                          <FaWhatsapp color="#25D366" />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Twitter (X)">
+                        <IconButton
+                          onClick={() =>
+                            window.open(
+                              `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}`,
+                              '_blank',
+                            )
+                          }
+                        >
+                          <FaTwitter color="#1DA1F2" />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="LinkedIn">
+                        <IconButton
+                          onClick={() =>
+                            window.open(
+                              `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                                url)}`,
+                              '_blank',
+                            )
+                          }
+                        >
+                          <FaLinkedin color="#0A66C2" />
+                        </IconButton>
+                      </Tooltip>
+
+                      <Tooltip title="Copy Link">
+                        <IconButton onClick={handleCopy}>
+                          <FaLink color="#333" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  </Popover>
 
                 </Box>
               )}

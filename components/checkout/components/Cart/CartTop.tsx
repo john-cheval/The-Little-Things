@@ -18,7 +18,7 @@ export function CartTop({ item }) {
               cursor: 'pointer',
             }}
           >
-            {truncateByChars(item?.product?.name, 30)}
+            {truncateByChars(item?.product?.name, 25)}
           </Typography>
         </Link>
       </Box>

@@ -255,6 +255,11 @@ function ShippingPage(props: ShippingPageProps) {
                             color: '#6B000F',
                             border: '1px solid #6B000F',
                           },
+                          '&:hover': {
+                            border: '1px solid #6B000F',
+                            backgroundColor: '#FFD4DA52',
+                            color: '#6B000F',
+                          },
                         },
                         '& .MuiTabs-indicator': {
                           display: 'none',
@@ -270,7 +275,7 @@ function ShippingPage(props: ShippingPageProps) {
                           verticalAlign: 'top',
                           // marginRight: '5px',
                           '& img': {
-                            minWidth: { xs: '25px', md: '25px' },
+                            minWidth: { xs: '25px', md: '20px' },
                           },
                         },
                       }}
@@ -278,8 +283,15 @@ function ShippingPage(props: ShippingPageProps) {
                       onChange={handleChange}
                       centered
                     >
-                      <Tab label='Ship' icon={<Image src={value === 0 ? activeTruck : truck} alt='truck' />} {...a11yProps(0)} />
-                      <Tab label='Pickup' icon={<Image src={value === 1 ? activePacked : picked} alt='package' />} />
+                      <Tab
+                        label='Ship'
+                        icon={<Image src={value === 0 ? activeTruck : truck} alt='truck' />}
+                        {...a11yProps(0)}
+                      />
+                      <Tab
+                        label='Pickup'
+                        icon={<Image src={value === 1 ? activePacked : picked} alt='package'
+                        />} />
                     </Tabs>
                     <TabPanel
                       value={value}
@@ -363,63 +375,7 @@ function ShippingPage(props: ShippingPageProps) {
                       <Box className='hello' sx={{
                         marginTop: { xs: '20px' },
                       }}>
-                        <ComposedForm>
-                          {(customerAddresses.data?.customer?.addresses?.length ?? 0) >= 1 ? (
-                            <CustomerAddressForm
-                              step={2}
-                              sx={(theme) => ({ mt: theme.spacings.lg })}
-                            >
-                              <ShippingAddressForm step={3} isPickup={value === 1} />
-                            </CustomerAddressForm>
-                          ) : (
 
-                            <ShippingAddressForm
-                              isPickup={value === 1}
-                              sx={{
-                                paddingTop: 0,
-                                '& .MuiInputLabel-formControl': {
-                                  color: (theme) => theme.palette.custom.textDarkAlter2,
-                                  fontSize: { xs: '15px', md: '16px' },
-                                  lineHeight: '158%',
-                                  fontWeight: 400,
-
-                                  '&.Mui-focused': {
-                                    color: (theme) => theme.palette.custom.textDarkAlter2,
-                                  },
-                                  '& .MuiFormLabel-asterisk': {
-                                    display: 'none',
-                                  },
-                                  '&.MuiInputLabel-animated': {
-                                    padding: '0 6px',
-                                  },
-                                },
-
-                                '& .MuiOutlinedInput-root': {
-                                  border: (theme) => `1px solid ${theme.palette.custom.textDarkAlter2}`,
-                                  borderRadius: '4px',
-                                  paddingRight: '0',
-
-                                  '& .InputCheckmark': {
-                                    display: 'none',
-                                  },
-
-                                  '&:hover': {
-                                    border: (theme) => `1px solid ${theme.palette.custom.textDarkAlter2}`,
-                                  },
-                                  '&.Mui-focused': {
-                                    border: (theme) => `1px solid ${theme.palette.custom.textDarkAlter2}`,
-                                  },
-
-                                  '& .MuiOutlinedInput-notchedOutline': {
-                                    border: 'none',
-                                  },
-                                },
-                              }}
-                              step={3}
-                            />
-
-                          )}
-                        </ComposedForm>
                         {/* Pickup Location */}
                         <PickupLocations />
                         {/* <PickupStoreForm storeData={prickupstoreData} /> */}
@@ -541,7 +497,7 @@ function ShippingPage(props: ShippingPageProps) {
         }
 
         <Box sx={{
-          xs: 'block', lg: 'none',
+          display: { xs: 'block', lg: 'none' },
           paddingBottom: { xs: '20px', md: '30px' },
         }}>
           <BottomLinks

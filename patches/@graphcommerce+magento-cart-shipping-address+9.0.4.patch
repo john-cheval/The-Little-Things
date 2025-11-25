@@ -11,7 +11,7 @@ index 6f4add4..f5be44e 100644
    const cartShippingId =
      findCustomerAddressFromCartAddress(customerAddresses, cartShipping)?.id || null
 diff --git a/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx b/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
-index a128fe9..ca4c05c 100644
+index a128fe9..0a3a85f 100644
 --- a/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
 +++ b/node_modules/@graphcommerce/magento-cart-shipping-address/components/ShippingAddressForm/ShippingAddressForm.tsx
 @@ -1,6 +1,7 @@
@@ -55,7 +55,15 @@ index a128fe9..ca4c05c 100644
    const { data: cartQuery } = useCartQuery(GetAddressesDocument)
    const { data: config } = useQuery(StoreConfigDocument)
    const countryQuery = useQuery(CountryRegionsDocument, { fetchPolicy: 'cache-and-network' })
-@@ -86,24 +91,24 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
+@@ -64,6 +69,7 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
+   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+   // @ts-ignore The pickup_location_code is optional
+   const isAddressAPickupLocation = Boolean(shippingAddress?.pickup_location_code)
++  const newsLetter = true
+   const isShippingMethodPickup =
+     shippingAddress?.selected_shipping_method?.carrier_code === 'instore'
+ 
+@@ -86,24 +92,25 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
      defaultValues: isCartAddressACustomerAddress(customerQuery?.customer?.addresses, currentAddress)
        ? { saveInAddressBook: true, isCompany: false }
        : {
@@ -92,13 +100,14 @@ index a128fe9..ca4c05c 100644
 +        regionId: currentAddress?.region?.region_id ?? null,
 +        countryCode: currentAddress?.country.code ?? shopCountry, // todo: replace by the default shipping country of the store + geoip,
 +        saveInAddressBook: true,
++        // newsLetter: true,
 +        isCompany: Boolean(currentAddress?.company || currentAddress?.vat_id),
 +        customerNote: '',
 +      },
      skipUnchanged: true,
      onBeforeSubmit: (variables) => {
        const regionId = countries
-@@ -114,7 +119,6 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
+@@ -114,7 +121,6 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
          variables.company = ''
          variables.vatId = ''
        }
@@ -106,7 +115,7 @@ index a128fe9..ca4c05c 100644
        return {
          ...variables,
          telephone: variables.telephone || '000 - 000 0000',
-@@ -124,24 +128,124 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
+@@ -124,24 +130,90 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
        }
      },
    })
@@ -190,62 +199,23 @@ index a128fe9..ca4c05c 100644
        <CompanyFields form={form} />
        <NameFields form={form} />
 +
++      <AddressFields form={form} />
        <AddressFields form={form} />
-+      {/* <FormRow>
-+        <EmailForm
-+          step={1}
-+          sx={{
-+            '& .MuiInputLabel-formControl': {
-+              color: (theme) => theme.palette.custom.main,
-+              //    marginBottom:'clamp(10px, (9.14px + 0.27vw), 16px)',
-+              fontSize: { xs: '15px', md: '16px' },
-+              lineHeight: '158%',
-+              fontWeight: 400,
-+
-+              '&.Mui-focused': {
-+                color: (theme) => theme.palette.custom.main,
-+              },
-+              '& .MuiFormLabel-asterisk': {
-+                display: 'none',
-+              },
-+            },
  
 -      <FormRow>
-+            '& .MuiOutlinedInput-root': {
-+              border: (theme) => `1px solid ${theme.palette.custom.border}`,
-+              borderRadius: '4px',
-+
-+              '&:hover': {
-+                border: (theme) => `1px solid ${theme.palette.custom.main}`,
-+              },
-+              '&.Mui-focused': {
-+                border: (theme) => `1px solid ${theme.palette.custom.main}`,
-+              },
-+
-+              '& .MuiOutlinedInput-notchedOutline': {
-+                border: 'none',
-+              },
-+            },
-+          }}
-+        />
-+ </FormRow> */}
-+      <FormRow sx={{
-+        paddingTop: 0,
-+        paddingBottom: 0,
-+      }}>
++      <FormRow
++        sx={{
++          paddingTop: 0,
++          paddingBottom: 0,
++        }}>
          <TelephoneElement
            control={form.control}
            name='telephone'
-@@ -150,16 +254,45 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
+@@ -150,16 +222,40 @@ export const ShippingAddressForm = React.memo<ShippingAddressFormProps>((props)
            showValid
          />
        </FormRow>
 -      {customerQuery?.customer && (
-+
-+      <Box>
-+      </Box>
-+
-+
 +
 +      {/* {customerQuery?.customer && ( */}
 +      <Box sx={{
@@ -273,7 +243,7 @@ index a128fe9..ca4c05c 100644
 -      )}
 +        <CheckboxElement
 +          control={form.control}
-+          name='saveInAddressBook'
++          name={'newsLetter' as any}
 +          label={<Trans>Text me with news and offers</Trans>}
 +        />
 +      </Box>

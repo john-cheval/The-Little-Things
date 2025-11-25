@@ -125,7 +125,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
 
   return (
     <>
-      <InfiniteMarquee text='We do international shipping' />
+      {/* <InfiniteMarquee text='We do international shipping' /> */}
       <LayoutDefault
         sx={{
           position: 'sticky',
@@ -159,7 +159,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
               justifyContent: 'space-between',
               alignItems: 'center',
               width: '100%',
-              paddingBlock: { xs: '0px', md: '5px', lg: scroll ? '10px' : '23px' },
+              paddingBlock: { xs: '0px', md: '5px', lg: scroll ? '10px' : '10px' },
               // borderBottom: theme => `1px solid ${theme.palette.custom.tltBorder1}`,
               borderBottom: { xs: 0, lg: theme => `1px solid ${theme.palette.custom.tltBorder1}` },
               transition: 'all 0.4s ease-in-out',
@@ -472,7 +472,7 @@ export function LayoutNavigation(props: LayoutNavigationProps) {
               onMouseLeave={handleMouseLeaveNav}
               sx={{
                 display: { xs: 'none', lg: 'block' },
-                paddingBlock: { xs: '20px', lg: scroll ? '15px' : '20px' },
+                paddingBlock: { xs: '20px', lg: scroll ? '15px' : '15px' },
                 '& span': {
                   justifyContent: 'space-between',
                 },
